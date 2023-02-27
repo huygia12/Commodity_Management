@@ -16,8 +16,8 @@ import java.util.Scanner;
  * @author FPTSHOP
  */
 public class DanhSachSinhVien {
-    public static void cc(){
-         
+    public static void temp(){
+        
     }
     public static void main(String[] args) throws FileNotFoundException {
         List<SinhVien> list = new ArrayList<SinhVien>();
