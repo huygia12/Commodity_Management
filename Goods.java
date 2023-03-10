@@ -13,21 +13,19 @@ import java.util.List;
  */
 public class Goods {
     private String goodsName;
-    private String goodsID;
+    private String goodsID = null;
     private String provider;
     private int listPrice;
-    private int totalQuantity;
+    private int totalQuantity = 0;
     List<Shipment> shipments = new ArrayList<>();
 
     public Goods() {
     }
 
-    public Goods(String goodsName, String goodsID, String provider, int listPrice, int totalQuantity) {
+    public Goods(String goodsName, String provider, int listPrice) {
         this.goodsName = goodsName;
-        this.goodsID = goodsID;
         this.provider = provider;
         this.listPrice = listPrice;
-        this.totalQuantity = totalQuantity;
     }
 
     public Shipment getShipment(int pos) {

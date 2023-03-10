@@ -16,18 +16,17 @@ import java.text.SimpleDateFormat;
 class Shipment {
     private int quantity;
     private int importPrice;
-    private String shipmentID;
+    private String shipmentID = null;
     private Date nsx;
     private Date hsd;
 
     public Shipment() {
     }
 
-    public Shipment(int quantity, int importPrice, String shipmentID, String nsx, String hsd) throws ParseException {
+    public Shipment(int quantity, int importPrice, String nsx, String hsd) throws ParseException {
         DateFormat df = new SimpleDateFormat("dd/MM/yyyy");
         this.quantity = quantity;
         this.importPrice = importPrice;
-        this.shipmentID = shipmentID;
         this.nsx = df.parse(nsx);
         this.hsd = df.parse(hsd);
     }
