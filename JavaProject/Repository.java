@@ -5,6 +5,7 @@
 package JavaProject;
 
 import java.util.ArrayList;
+import java.util.InputMismatchException;
 import java.util.List;
 import java.util.Scanner;
 
@@ -14,14 +15,35 @@ import java.util.Scanner;
  */
 public class Repository {
 
-    List<Goods> goods = new ArrayList<>();
+    List<Goods> goodsList = new ArrayList<>();
     Scanner sc = new Scanner(System.in);
 
-    public void addNewGoods() {
+    public void showRepository(List<Goods> goodsList) {
+        // Chi
+    }
+
+    public void searchGoods() {
+        // Tuyen
+    }
+
+    private void menuOfRepoManagement() {
+        System.out.println("\n********************************");
+        System.out.println("* 1. Add New Goods             *");
+        System.out.println("* 2. Import Goods              *");
+        System.out.println("* 3. Change Goods Infor        *");
+        System.out.println("* 4. Delete Goods              *");
+        System.out.println("* 5. Show Repository           *");
+        System.out.println("* 6. Make a filter             *");
+        System.out.println("* 7. Back                      *");
+        System.out.println("********************************");
+        System.out.print("Option => ");
+    }
+
+    private void addNewGoods() {
+        sc.nextLine();
         Goods good = new Goods();
         int n = 1;
         String input;
-
         while (n != 3) {
             switch (n) {
                 case 1:
@@ -71,15 +93,53 @@ public class Repository {
             }
         }
 
-        goods.add(good);
-        good.setGoodsID(String.format("%06d", goods.indexOf(good)));
+        goodsList.add(good);
+        good.setGoodsID(String.format("%06d", goodsList.indexOf(good)));
     }
 
-    public void importGoods() {
-
+    private void importGoods() {
+        // Huy
+        sc.nextLine();
     }
 
-    public void deleteAGoods() {
+    private void deleteAGoods() {
+        // Huy
+    }
 
+    public void repositoryManagement() {
+        // Huy
+        int choice;
+        do {
+            try {
+                menuOfRepoManagement();
+                choice = sc.nextInt();
+                switch (choice) {
+                    case 1:
+                        addNewGoods();
+                        break;
+                    case 2:
+                        importGoods();
+                        break;
+                    case 3:
+
+                        break;
+                    case 4:
+                        deleteAGoods();
+                        break;
+                    case 5:
+                        showRepository(goodsList);
+                        break;
+                    case 6:
+
+                        break;
+                    case 7:
+                        System.out.println("Back...");
+                        break;
+                }
+            } catch (InputMismatchException ime) {
+                System.out.println("Wrong input, Please type from 1->7!");
+                choice = -1;
+            }
+        } while (choice != 7);
     }
 }

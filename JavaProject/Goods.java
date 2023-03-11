@@ -17,7 +17,7 @@ public class Goods {
     private String provider;
     private int listPrice;
     private int totalQuantity = 0;
-    List<Shipment> shipments = new ArrayList<>();
+    private List<Shipment> shipments = new ArrayList<>();
 
     public Goods() {
     }

@@ -17,8 +17,8 @@ class Shipment {
     private int quantity;
     private int importPrice;
     private String shipmentID = null;
-    private Date nsx;
-    private Date hsd;
+    private Date nsx = null;
+    private Date hsd = null;
 
     public Shipment() {
     }
