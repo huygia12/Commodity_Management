@@ -2,7 +2,7 @@ package cloneRemoteRepo;
 
 import JavaProject.Repository;
 
-public class commodityManagementx {
+public class CommodityManagement {
     public static void menuOfMainFunction(){
         System.out.println("\n********************************");
         System.out.println("* 1. Repository Management     *");
