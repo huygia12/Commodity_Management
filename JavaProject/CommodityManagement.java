@@ -32,16 +32,20 @@ public class CommodityManagement {
                         order.makeNewOrder();
                         break;
                     case 3:
-                        
+                        //undeveloped
                         break;
                     case 4:
                         System.out.println("Exiting...");
                         break;
+                    default:
+                        System.out.println("Wrong input, Please type from 1->4!");
+                        break;
                 }
             } catch (InputMismatchException ime) {
-                System.out.println("Wrong input! Please type form 1->4!");
+                System.out.println("Wrong input!");
                 choice = -1;
             }
         } while (choice != 4);
+        sc.close();
     }
 }

@@ -41,21 +41,29 @@ public class Order {
         return this.orderID;
     }
 
-    private void addToOrder() {
-
-    }
-
-    private void deleteFromOrder(){
-    }
-
     private int totalPayment() {
         return 0;
     }
 
-    private int totalAfterDiscount(){
+    private int totalAfterDiscount(){ 
         return 0;
     }
 
+    //funtion 1
+    private void addToOrder() {
+        //undeveloped
+    }
+    
+    //function 2
+    private void deleteFromOrder(){
+        //undeveloped
+    }
+
+    //funtion 3
+    private void pay(){
+        //undeveloped
+    }
+    
     public void makeNewOrder(){
         
         int choice;
@@ -70,11 +78,14 @@ public class Order {
                         deleteFromOrder();
                         break;
                     case 3:
-
+                        pay();
+                        break;
+                    default:
+                        System.out.println("Wrong input! Please type form 1->3!");
                         break;
                 }
             } catch (InputMismatchException ime) {
-                System.out.println("Wrong input! Please type form 1->3!");
+                System.out.println("Wrong input!");
                 choice = -1;
             }
         } while (choice != 3);

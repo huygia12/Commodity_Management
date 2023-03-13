@@ -28,8 +28,8 @@ public class Goods {
         this.listPrice = listPrice;
     }
 
-    public Shipment getShipment(int pos) {
-        return shipments.get(pos);
+    public List<Shipment> getShipments() {
+        return this.shipments;
     }
 
     public void setShipment(Shipment shipment) {

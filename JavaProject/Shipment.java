@@ -5,9 +5,7 @@
 package JavaProject;
 
 import java.util.Date;
-import java.text.DateFormat;
 import java.text.ParseException;
-import java.text.SimpleDateFormat;
 
 /**
  *
@@ -23,30 +21,27 @@ class Shipment {
     public Shipment() {
     }
 
-    public Shipment(int quantity, int importPrice, String nsx, String hsd) throws ParseException {
-        DateFormat df = new SimpleDateFormat("dd/MM/yyyy");
+    public Shipment(int quantity, int importPrice, Date nsx, Date hsd) throws ParseException {
         this.quantity = quantity;
         this.importPrice = importPrice;
-        this.nsx = df.parse(nsx);
-        this.hsd = df.parse(hsd);
+        this.nsx = nsx;
+        this.hsd = hsd;
     }
 
     public Date getNsx() {
         return nsx;
     }
 
-    public void setNsx(String nsx) throws ParseException {
-        DateFormat df = new SimpleDateFormat("dd/MM/yyyy");
-        this.nsx = df.parse(nsx);
+    public void setNsx(Date nsx) {
+        this.nsx = nsx;
     }
 
     public Date getHsd() {
         return hsd;
     }
 
-    public void setHsd(String hsd) throws ParseException {
-        DateFormat df = new SimpleDateFormat("dd/MM/yyyy");
-        this.hsd = df.parse(hsd);
+    public void setHsd(Date hsd) {
+        this.hsd = hsd;
     }
 
     public int getQuantity() {
