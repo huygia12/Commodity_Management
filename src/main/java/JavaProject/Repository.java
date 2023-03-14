@@ -248,9 +248,36 @@ public class Repository {
     }
 
     // function 5
-    public void showGoodsList(List<Goods> goodsList) {
-        // Tuyen
+  public void showGoodsList(List<Goods> goodsList) {
+    if (goodsList.isEmpty()) {
+        System.out.println("No items found in the repository.");
+        return;
     }
+    System.out.printf("|%-10s|%-20s|%-20s|%-10s|%-15s|\n", "ID", "Name", "Provider", "Price", "Total Quantity");
+    System.out.println("-------------------------------------------------------------");
+    for (Goods goods : goodsList) {
+        System.out.printf("|%-10s|%-20s|%-20s|%-10s|%-15s|\n",
+                goods.getGoodsID(), 
+                goods.getGoodsName(), 
+                goods.getProvider(), 
+                goods.getListPrice(), 
+                goods.getTotalQuantity());
+        if (!goods.getShipments().isEmpty()) {
+            System.out.println("|-----------------------------------------------------------|");
+            System.out.printf("|%-20s|%-20s|%-15s|%-15s|\n", "Production Date", "Expiration Date", "Import Price", "Quantity");
+            System.out.println("|-----------------------------------------------------------|");
+            for (Shipment shipment : goods.getShipments()) {
+                System.out.printf("|%-20s|%-20s|%-15s|%-15s|\n",
+                        shipment.getNsx().toString(),
+                        shipment.getHsd().toString(),
+                        shipment.getImportPrice(),
+                        shipment.getQuantity());
+            }
+        }
+        System.out.println("-------------------------------------------------------------");
+    }
+}
+
 
     // function 6
     private void makeAFilter() {
