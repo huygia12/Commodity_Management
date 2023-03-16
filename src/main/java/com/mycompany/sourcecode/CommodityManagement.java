@@ -1,4 +1,4 @@
-package SourceCode;
+package com.mycompany.sourcecode;
 
 import java.util.InputMismatchException;
 import java.util.Scanner;
