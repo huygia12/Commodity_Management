@@ -1,4 +1,4 @@
-package JavaProject;
+package sourceCode;
 
 import java.util.InputMismatchException;
 import java.util.Scanner;
@@ -44,6 +44,7 @@ public class CommodityManagement {
             } catch (InputMismatchException ime) {
                 System.out.println("Wrong input!");
                 choice = -1;
+                sc.next();
             }
         } while (choice != 4);
         sc.close();

@@ -2,7 +2,7 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
-package JavaProject;
+package sourceCode;
 
 import java.util.Date;
 import java.text.ParseException;
@@ -21,7 +21,7 @@ class Shipment {
     public Shipment() {
     }
 
-    public Shipment(int quantity, int importPrice, Date nsx, Date hsd) throws ParseException {
+    public Shipment(int quantity, int importPrice, Date nsx, Date hsd){
         this.quantity = quantity;
         this.importPrice = importPrice;
         this.nsx = nsx;

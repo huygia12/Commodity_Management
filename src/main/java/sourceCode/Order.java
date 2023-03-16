@@ -1,4 +1,4 @@
-package JavaProject;
+package sourceCode;
 
 import java.util.ArrayList;
 import java.util.InputMismatchException;

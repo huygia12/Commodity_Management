@@ -2,7 +2,7 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
-package JavaProject;
+package sourceCode;
 
 import java.util.Date;
 import java.text.DateFormat;
@@ -21,15 +21,50 @@ public class Repository {
 
     List<Goods> goodsList = new ArrayList<>();
     Scanner sc = new Scanner(System.in);
-    
-    // sub methods
+    DateFormat df = new SimpleDateFormat("dd/MM/yyyy");
+
     public Goods searchGoods() {
-        // Huy
-        Goods goods = new Goods();
-        int length = goodsList.size();
-        for (int i = 0; i < length; i++) {
-        }
-        return goods;
+        //search(Goods) : null neu nhap BACK/ 1 Goods neu tim kiem thanh cong 
+        sc.nextLine();
+        String input = new String();
+        boolean completed = false;
+        Goods result = null;
+        do {
+            try {
+                System.out.print("Input productID to search(Type name for suggestion) or Back to go back: ");
+                input = sc.nextLine();
+                int searchingKey = Integer.parseInt(input);
+                for (Goods goods1 : goodsList) {
+                    if (goods1.getGoodsID().equals(input)) {
+                        result = goods1;
+                    }
+                }
+                if(result == null){
+                    System.out.println("Your input ID doesnt exist.");
+                    continue;
+                }
+                completed = true;
+            } catch (NumberFormatException nfe) {
+                if (input.equalsIgnoreCase("back")) {
+                    break;
+                }
+                List<Goods> bucket = new ArrayList<>();
+                for (Goods goods2 : goodsList) {
+                    String nameToLowerCase = goods2.getGoodsName().toLowerCase();
+                    String inputToLowerCase = input.toLowerCase();
+                    if (nameToLowerCase.contains(inputToLowerCase)) {
+                        bucket.add(goods2);
+                    }
+                }
+                if (bucket.isEmpty()) {
+                    System.out.println("No product match with your input!");
+                } else {
+                    System.out.print("\nSearching : \"" + input + "\"");
+                    showGoodsList(bucket);
+                }
+            }
+        } while (!completed);
+        return result;
     }
 
     private int shipmentCompare(Shipment shipment, Goods goods) {
@@ -77,6 +112,9 @@ public class Repository {
                     input = sc.nextLine();
                     if (input.equalsIgnoreCase("exit")) {
                         return;
+                    } else if (input == "") {
+                        System.out.println("Input is required!");
+                        continue;
                     } else {
                         good.setGoodsName(input);
                     }
@@ -86,6 +124,10 @@ public class Repository {
                     if (input.equalsIgnoreCase("exit")) {
                         return;
                     } else if (input.equalsIgnoreCase("back")) {
+                        continue;
+                    } else if (input == "") {
+                        System.out.println("Input is required!");
+                        n = 2;
                         continue;
                     } else {
                         good.setProvider(input);
@@ -105,10 +147,18 @@ public class Repository {
                         } else {
                             try {
                                 int listPrice = Integer.parseInt(input);
+                                if (listPrice < 0) {
+                                    System.out.println("List price must be a positive number!");
+                                    continue;
+                                }
                                 good.setListPrice(listPrice);
                                 completed = true;
                             } catch (NumberFormatException nfe) {
-                                System.out.println("Wrong input!");
+                                if (input == "") {
+                                    System.out.println("Input is required!");
+                                } else {
+                                    System.out.println("Wrong input!");
+                                }
                             }
                         }
                     }
@@ -124,10 +174,14 @@ public class Repository {
 
     // function 2
     private void importGoods(Goods goods) {
+        if(goodsList.isEmpty()){
+            System.out.println("No product found in the repository.");
+        }
         int n = 1;
         String input;
         Shipment shipment = new Shipment();
-        DateFormat df = new SimpleDateFormat("dd/MM/yyyy");
+        Date nsx = new Date();
+        Date hsd = new Date();
         while (n != 4) {
             switch (n) {
                 case 1:
@@ -143,26 +197,47 @@ public class Repository {
                                 shipment.setQuantity(quantity);
                                 completed = true;
                             } catch (NumberFormatException nfe) {
-                                System.out.println("Wrong input!");
+                                if (input == "") {
+                                    System.out.println("Input is required!");
+                                } else {
+                                    System.out.println("Wrong input!");
+                                }
                             }
                         }
                     }
                 case 2:
-                    System.out.print("Input product import price or type BACK/EXIT to go back/exit:");
-                    input = sc.nextLine();
-                    if (input.equalsIgnoreCase("exit")) {
-                        return;
-                    } else if (input.equalsIgnoreCase("back")) {
-                        continue;
-                    } else {
-                        shipment.setImportPrice(n);
+                    completed = false;
+                    while (!completed) {
+                        System.out.print("Input product import price or type BACK/EXIT to go back/exit: ");
+                        input = sc.nextLine();
+                        if (input.equalsIgnoreCase("exit")) {
+                            return;
+                        } else if (input.equalsIgnoreCase("back")) {
+                            continue;
+                        } else {
+                            try {
+                                int importPrice = Integer.parseInt(input);
+                                if (importPrice < 0) {
+                                    System.out.println("List price must be a positive number!");
+                                    continue;
+                                }
+                                shipment.setImportPrice(importPrice);
+                                completed = true;
+                            } catch (NumberFormatException nfe) {
+                                if (input == "") {
+                                    System.out.println("Input is required!");
+                                } else {
+                                    System.out.println("Wrong input!");
+                                }
+                            }
+                        }
                     }
                 case 3:
                     n = 2;
                     completed = false;
                     boolean chooseBack = false;
                     while (!completed) {
-                        System.out.print("Input production date or type BACK/EXIT to go back/exit:");
+                        System.out.print("Input production date or type BACK/EXIT to go back/exit: ");
                         input = sc.nextLine();
                         if (input.equalsIgnoreCase("exit")) {
                             return;
@@ -171,7 +246,7 @@ public class Repository {
                             break;
                         } else {
                             try {
-                                Date nsx = df.parse(input);
+                                nsx = df.parse(input);
                                 shipment.setNsx(nsx);
                                 completed = true;
                             } catch (ParseException pe) {
@@ -186,7 +261,7 @@ public class Repository {
                     completed = false;
                     chooseBack = false;
                     while (!completed) {
-                        System.out.print("Input product expiration Date or type BACK/EXIT to go back/exit: ");
+                        System.out.print("Input expiration Date or type BACK/EXIT to go back/exit: ");
                         input = sc.nextLine();
                         if (input.equalsIgnoreCase("exit")) {
                             return;
@@ -195,9 +270,14 @@ public class Repository {
                             break;
                         } else {
                             try {
-                                Date hsd = df.parse(input);
+                                hsd = df.parse(input);
                                 shipment.setHsd(hsd);
-                                completed = true;
+                                if (hsd.before(nsx)) {
+                                    System.out.println("Invalid Date, must be equal or greater than production date!");
+                                    continue;
+                                } else {
+                                    completed = true;
+                                }
                             } catch (ParseException pe) {
                                 System.out.println("Wrong input!");
                             }
@@ -244,35 +324,44 @@ public class Repository {
     }
 
     // function 5
-  public void showGoodsList(List<Goods> goodsList) {
-    if (goodsList.isEmpty()) {
-        System.out.println("No items found in the repository.");
-        return;
-    }
-    System.out.printf("|%-10s|%-20s|%-20s|%-10s|%-15s|\n", "ID", "Name", "Provider", "Price", "Total Quantity");
-    System.out.println("-------------------------------------------------------------");
-    for (Goods goods : goodsList) {
-        System.out.printf("|%-10s|%-20s|%-20s|%-10s|%-15s|\n",
-                goods.getGoodsID(), 
-                goods.getGoodsName(), 
-                goods.getProvider(), 
-                goods.getListPrice(), 
-                goods.getTotalQuantity());
-        if (!goods.getShipments().isEmpty()) {
-            System.out.println("|-----------------------------------------------------------|");
-            System.out.printf("|%-20s|%-20s|%-15s|%-15s|\n", "Production Date", "Expiration Date", "Import Price", "Quantity");
-            System.out.println("|-----------------------------------------------------------|");
-            for (Shipment shipment : goods.getShipments()) {
-                System.out.printf("|%-20s|%-20s|%-15s|%-15s|\n",
-                        shipment.getNsx().toString(),
-                        shipment.getHsd().toString(),
+    public void showGoodsList(List<Goods> goodsList) {
+        if (goodsList.isEmpty()) {
+            System.out.println("No product found in the repository.");
+            return;
+        }
+        System.out.println();
+        System.out.printf("|%-12s|%-15s|%-15s|%-12s|%-15s|%-12s|%-18s|%-18s|%-12s|%-10s|\n",
+                "Product ID", "Name", "Provider", "List Price", "Total Quantity", "Shipment ID",
+                "Production Date", "Expiration Date", "Import Price", "Quantity");
+        System.out.println("|" + "-".repeat(148) + "|");
+        for (Goods goods : goodsList) {
+            System.out.printf("|%-12s|%-15s|%-15s|%-12s|%-15s|",
+                    goods.getGoodsID(),
+                    goods.getGoodsName(),
+                    goods.getProvider(),
+                    goods.getListPrice(),
+                    goods.getTotalQuantity());
+            if (!goods.getShipments().isEmpty()) {
+                Shipment shipment = goods.getShipments().get(0);
+                System.out.printf("%-12s|%-18s|%-18s|%-12s|%-10s|\n", shipment.getShipmentID(),
+                        df.format(shipment.getNsx()).toString(),
+                        df.format(shipment.getHsd()).toString(),
                         shipment.getImportPrice(),
                         shipment.getQuantity());
+                for (int i = 1; i < goods.getShipments().size(); i++) {
+                    shipment = goods.getShipments().get(i);
+                    System.out.printf("|%-73s|%-12s|%-18s|%-18s|%-12s|%-10s|\n", "", shipment.getShipmentID(),
+                            df.format(shipment.getNsx()).toString(),
+                            df.format(shipment.getHsd()).toString(),
+                            shipment.getImportPrice(),
+                            shipment.getQuantity());
+                }
+            } else {
+                System.out.printf("%-12s|%-18s|%-18s|%-12s|%-10s|\n", "", "", "", "", "", "");
             }
+            System.out.println("|" + "-".repeat(148) + "|");
         }
-        System.out.println("-------------------------------------------------------------");
     }
-}
 
     // function 6
     private void makeAFilter() {
@@ -291,7 +380,11 @@ public class Repository {
                         addNewGoods();
                         break;
                     case 2:
-                        importGoods(searchGoods());
+                        Goods goods = searchGoods();
+                        if(goods == null){
+                            break;
+                        }
+                        importGoods(goods);
                         break;
                     case 3:
                         changeGoodsInfor();
@@ -315,6 +408,7 @@ public class Repository {
             } catch (InputMismatchException ime) {
                 System.out.println("Wrong input!");
                 choice = -1;
+                sc.next();
             }
         } while (choice != 7);
     }

@@ -2,7 +2,7 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
-package JavaProject;
+package sourceCode;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -73,10 +73,9 @@ public class Goods {
     }
 
     public int getTotalQuantity() {
-        return totalQuantity;
-    }
-
-    public void setTotalQuantity(int totalQuantity) {
-        this.totalQuantity = totalQuantity;
+        for (int i = 0; i < shipments.size(); i++) {
+            this.totalQuantity += shipments.get(i).getQuantity();
+        }
+        return this.totalQuantity;
     }
 }
