@@ -79,5 +79,4 @@ public class Goods {
     public void setTotalQuantity(int totalQuantity) {
         this.totalQuantity = totalQuantity;
     }
-    
 }

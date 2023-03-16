@@ -66,7 +66,6 @@ public class Repository {
 
     // function 1
     private void addNewGoods() {
-        // Tung
         sc.nextLine();
         Goods good = new Goods();
         int n = 1;
@@ -125,8 +124,6 @@ public class Repository {
 
     // function 2
     private void importGoods(Goods goods) {
-        // Huy
-        sc.nextLine();
         int n = 1;
         String input;
         Shipment shipment = new Shipment();
@@ -144,7 +141,6 @@ public class Repository {
                             try {
                                 int quantity = Integer.parseInt(input);
                                 shipment.setQuantity(quantity);
-                                ;
                                 completed = true;
                             } catch (NumberFormatException nfe) {
                                 System.out.println("Wrong input!");
@@ -277,7 +273,6 @@ public class Repository {
         System.out.println("-------------------------------------------------------------");
     }
 }
-
 
     // function 6
     private void makeAFilter() {
