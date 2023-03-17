@@ -25,7 +25,7 @@ public class Repository {
 
     public Goods searchGoods() {
         //search(Goods) : null neu nhap BACK/ 1 Goods neu tim kiem thanh cong 
-        if(goodsList.isEmpty()){
+        if (goodsList.isEmpty()) {
             System.out.println("No product found in the repository.");
             return null;
         }
@@ -43,7 +43,7 @@ public class Repository {
                         result = goods1;
                     }
                 }
-                if(result == null){
+                if (result == null) {
                     System.out.println("Your input ID doesnt exist.");
                     continue;
                 }
@@ -85,9 +85,26 @@ public class Repository {
                 break;
             }
         }
-        if (i == length)
+        if (i == length) {
             return -1;
+        }
         return i;
+    }
+
+    private int goodsCompare(Goods goods) {
+        int i = 0;
+        if (goodsList == null) {
+            return 0;
+        } else {
+            for (Goods goodNeedCompare : goodsList) {
+                if (goodNeedCompare.getGoodsName().equalsIgnoreCase(goods.getGoodsName()) && goodNeedCompare.getProvider().equalsIgnoreCase(goods.getProvider())) {
+                    i = 1;
+                } else {
+                    i = 0;
+                }
+            }
+            return i;
+        }
     }
 
     private void menuOfRepoManagement() {
@@ -135,6 +152,12 @@ public class Repository {
                         continue;
                     } else {
                         good.setProvider(input);
+                    }
+                    int matched = goodsCompare(good);
+                    if (matched == 1) {
+                        System.out.println("Good already existed!");
+                        System.out.println("Aborting...");
+                        return;
                     }
                 case 3:
                     n = 2;
@@ -326,7 +349,7 @@ public class Repository {
     // function 4
     private void deleteAGoods() {
         int input;
-        
+
         do {
             System.out.println("********************************");
             System.out.println("* 1. Delete a good             *");
@@ -341,13 +364,59 @@ public class Repository {
                 input = -1;
                 sc.next();
             }
-        } while (input != 3);
-        
+            if (input != 3 && input != 1 && input != 2) {
+                System.out.println("Wrong input!");
+            }
+        } while (input != 3 && input != 1 && input != 2);
+
         switch (input) {
             case 1:
+                Goods goods = searchGoods();
+                if (goods == null) {
+                    break;
+                }
+                for (Goods goods1 : goodsList) {
+                    if (goods1.getGoodsID().equals(goods.getGoodsID())) {
+                        goodsList.remove(goods1);
+                        break;
+                    }
+                }
+                for (Goods goods1 : goodsList) {
+                    goods1.setGoodsID(String.format("%06d", goodsList.indexOf(goods1)));
+                }
+                break;
             case 2:
+                List<Goods> searchBucket = new ArrayList<>();
+                Goods searchGoods = searchGoods();
+                if (searchGoods.getShipments().isEmpty()) {
+                    System.out.println("No shipment exist within the good");
+                    System.out.println("Aborting...");
+                    return;
+                }
+                searchBucket.add(searchGoods);
+                String shipmentInput;
+                do {
+                    showGoodsList(searchBucket);
+                    System.out.print("Input shipment ID or type EXIT to exit: ");
+                    shipmentInput = sc.nextLine();
+                    if (shipmentInput.equalsIgnoreCase("exit")) {
+                        System.out.println("Exiting...");
+                        break;
+                    } else {
+                        for (Shipment searchShipment : searchGoods.getShipments()) {
+                            if (shipmentInput.equals(searchShipment.getShipmentID())) {
+                               searchGoods.getShipments().remove(searchShipment);
+                               break;
+                            }
+                        }
+                        for (Shipment shipment : searchGoods.getShipments()) {
+                            shipment.setShipmentID(String.format("%06d", searchGoods.getShipments().indexOf(shipment)));
+                            break;
+                        }
+                    }
+                } while (true);
+                break;
             case 3:
-            default:
                 System.out.println("Back...");
                 break;
         }
@@ -411,7 +480,7 @@ public class Repository {
                         break;
                     case 2:
                         Goods goods = searchGoods();
-                        if(goods == null){
+                        if (goods == null) {
                             break;
                         }
                         importGoods(goods);
