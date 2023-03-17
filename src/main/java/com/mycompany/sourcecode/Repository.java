@@ -413,6 +413,7 @@ public class Repository {
                             shipment.setShipmentID(String.format("%06d", searchGoods.getShipments().indexOf(shipment)));
                             break;
                         }
+                        break;
                     }
                 } while (true);
                 break;
