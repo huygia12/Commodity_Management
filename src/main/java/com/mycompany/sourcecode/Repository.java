@@ -386,6 +386,7 @@ public class Repository {
                 }
                 break;
             case 2:
+                boolean found = false;
                 List<Goods> searchBucket = new ArrayList<>();
                 Goods searchGoods = searchGoods();
                 if (searchGoods.getShipments().isEmpty()) {
@@ -406,8 +407,13 @@ public class Repository {
                         for (Shipment searchShipment : searchGoods.getShipments()) {
                             if (shipmentInput.equals(searchShipment.getShipmentID())) {
                                searchGoods.getShipments().remove(searchShipment);
+                               found = true;
                                break;
                             }
+                        }
+                        if (!found) {
+                            System.out.println("No shipment found!");
+                            continue;
                         }
                         for (Shipment shipment : searchGoods.getShipments()) {
                             shipment.setShipmentID(String.format("%06d", searchGoods.getShipments().indexOf(shipment)));
