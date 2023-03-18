@@ -1,11 +1,9 @@
 # Java_project
 DA_CNTT - Phần mềm quản lý mua bán hàng tạp hóa bằng JAVA
-PROJECT: 
-XÂY DỰNG PHẦN MỀM QUẢN LÝ VIỆC MUA/BÁN HÀNG CỦA CỬA HÀNG TẠP HÓA.
-MEMBERS: Nguyen Gia Huy, Vu Hung Tung, Dao Van Tuyen, Nguyen Thao Chi
-A.	GENERAL REQUIREMENTS:
- 
 
+MEMBERS: Nguyen Gia Huy, Vu Hung Tung, Dao Van Tuyen, Nguyen Thao Chi
+
+A.	GENERAL REQUIREMENTS: 
 B.	DETAILS (DEMO ON CONSOLE):
 I.	Project overview:
 Goods
