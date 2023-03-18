@@ -45,7 +45,7 @@ public class Goods {
     }
 
     public void setGoodsName(String goodsName) {
-        this.goodsName = goodsName;
+        this.goodsName = goodsName.trim();
     }
 
     public String getGoodsID() {
@@ -61,7 +61,7 @@ public class Goods {
     }
 
     public void setProvider(String provider) {
-        this.provider = provider;
+        this.provider = provider.trim();
     }
 
     public int getListPrice() {
