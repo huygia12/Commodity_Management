@@ -4,8 +4,11 @@ DA_CNTT - Phần mềm quản lý mua bán hàng tạp hóa bằng JAVA
 MEMBERS: Nguyen Gia Huy, Vu Hung Tung, Dao Van Tuyen, Nguyen Thao Chi
 
 A.	GENERAL REQUIREMENTS: 
+
 B.	DETAILS (DEMO ON CONSOLE):
+
 I.	Project overview:
+
 Goods
 -goodsName(String)
 -goodsID(String)
