@@ -4,10 +4,9 @@
  */
 package com.mycompany.sourcecode;
 
-import java.util.Date;
-import java.text.DateFormat;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
+import java.time.DateTimeException;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.InputMismatchException;
 import java.util.List;
@@ -21,7 +20,8 @@ public class Repository {
 
     List<Goods> goodsList = new ArrayList<>();
     Scanner sc = new Scanner(System.in);
-    DateFormat df = new SimpleDateFormat("dd/MM/yyyy");
+    String inputDatePattern = "d/M/y";
+    String outputDatePattern = "dd/MM/yyyy";
 
     public Goods searchGoods() {
         // search(Goods) : null neu nhap BACK/ 1 Goods neu tim kiem thanh cong
@@ -80,8 +80,8 @@ public class Repository {
         for (i = 0; i < length; i++) {
             Shipment temp = goods.getShipments().get(i);
             if (temp.getImportPrice() == shipment.getImportPrice()
-                    && temp.getHsd().equals(shipment.getHsd())
-                    && temp.getNsx().equals(shipment.getNsx())) {
+                    && temp.getHsd().isEqual(shipment.getHsd())
+                    && temp.getNsx().isEqual(shipment.getNsx())) {
                 break;
             }
         }
@@ -267,8 +267,8 @@ public class Repository {
         int n = 1;
         String input;
         Shipment shipment = new Shipment();
-        Date nsx = new Date();
-        Date hsd = new Date();
+        LocalDate nsx = null;
+        LocalDate hsd = null;
         while (n != 4) {
             switch (n) {
                 case 1:
@@ -281,6 +281,10 @@ public class Repository {
                         } else {
                             try {
                                 int quantity = Integer.parseInt(input);
+                                if (quantity <= 0) {
+                                    System.out.println("Shipment quantity must be a positive number!");
+                                    continue;
+                                }
                                 shipment.setQuantity(quantity);
                                 completed = true;
                             } catch (NumberFormatException nfe) {
@@ -338,10 +342,10 @@ public class Repository {
                             break;
                         } else {
                             try {
-                                nsx = df.parse(input);
+                                nsx = LocalDate.parse(input, DateTimeFormatter.ofPattern(inputDatePattern));
                                 shipment.setNsx(nsx);
                                 completed = true;
-                            } catch (ParseException pe) {
+                            } catch (DateTimeException dte) {
                                 System.out.println("Wrong input!");
                             }
                         }
@@ -362,14 +366,14 @@ public class Repository {
                             break;
                         } else {
                             try {
-                                hsd = df.parse(input);
+                                hsd = LocalDate.parse(input, DateTimeFormatter.ofPattern(inputDatePattern));
                                 shipment.setHsd(hsd);
-                                if (hsd.before(nsx)) {
+                                if (hsd.isBefore(nsx)) {
                                     System.out.println("Invalid Date, must be equal or greater than production date!");
                                 } else {
                                     completed = true;
                                 }
-                            } catch (ParseException pe) {
+                            } catch (DateTimeException dte) {
                                 System.out.println("Wrong input!");
                             }
                         }
@@ -383,12 +387,29 @@ public class Repository {
         // check if shipment already exists
         int shipmentIndex = shipmentCompare(shipment, goods);
         if (shipmentIndex != -1 && goods.getShipments().isEmpty() == false) {
-            int sumQuantity = goods.getShipments().get(shipmentIndex).getQuantity() + shipment.getQuantity();
-            goods.getShipments().get(shipmentIndex).setQuantity(sumQuantity);
+            while (true) {
+                System.out.println(
+                        "This shipment already exists, do you want to keep your changes?");
+                System.out
+                        .print("(Y:add to the existing one / N:abort)=>Y/N: ");
+                String yesNo = sc.nextLine();
+                if (yesNo.equalsIgnoreCase("y")) {
+                    int sumQuantity = goods.getShipments().get(shipmentIndex).getQuantity() + shipment.getQuantity();
+                    goods.getShipments().get(shipmentIndex).setQuantity(sumQuantity);
+                    System.out.println("Add succceed...");
+                    break;
+                } else if (yesNo.equalsIgnoreCase("n")) {
+                    System.out.println("Aborting...");
+                    break;
+                } else {
+                    System.out.println("Wrong input!");
+                }
+            }
         } else {
             shipment.setShipmentID(String.format("%06d", goods.getShipments().size()));
             goods.getShipments().add(shipment);
         }
+
     }
 
     // function 3
@@ -440,7 +461,7 @@ public class Repository {
                                             } else {
                                                 try {
                                                     int listPrice = Integer.parseInt(inputString);
-                                                    if (listPrice < 0) {
+                                                    if (listPrice <= 0) {
                                                         System.out.println("List price must be a positive number!");
                                                         continue;
                                                     }
@@ -555,10 +576,11 @@ public class Repository {
                                                 break;
                                             } else {
                                                 try {
-                                                    Date nsx = df.parse(inputString);
+                                                    LocalDate nsx = LocalDate.parse(inputString,
+                                                            DateTimeFormatter.ofPattern(inputDatePattern));
                                                     token.setNsx(nsx);
                                                     break;
-                                                } catch (ParseException pe) {
+                                                } catch (DateTimeException dte) {
                                                     System.out.println("Wrong input!");
                                                 }
                                             }
@@ -572,10 +594,16 @@ public class Repository {
                                                 break;
                                             } else {
                                                 try {
-                                                    Date hsd = df.parse(inputString);
+                                                    LocalDate hsd = LocalDate.parse(inputString,
+                                                            DateTimeFormatter.ofPattern(inputDatePattern));
+                                                    if (hsd.isBefore(token.getNsx())) {
+                                                        System.out.println(
+                                                                "Invalid Date, must be equal or greater than production date!");
+                                                        continue;
+                                                    }
                                                     token.setHsd(hsd);
                                                     break;
-                                                } catch (ParseException pe) {
+                                                } catch (DateTimeException dte) {
                                                     System.out.println("Wrong input!");
                                                 }
                                             }
@@ -590,6 +618,30 @@ public class Repository {
                                             } else {
                                                 try {
                                                     int quantity = Integer.parseInt(inputString);
+                                                    if (quantity < 0) {
+                                                        System.out.println(
+                                                                "Shipment quantity must be a positive number!");
+                                                        continue;
+                                                    } else if (quantity == 0) {
+                                                        System.out.println(
+                                                                "Your changes make quantity equal 0, keep your changes?");
+                                                        System.out.println(
+                                                                "(Y: automatically delete shipment / N: retype the quantity)=>Y/N: ");
+                                                        String yesNo = sc.nextLine();
+                                                        if (yesNo.equalsIgnoreCase("y")) {
+                                                            searchGoods.getShipments().remove(searchShipment);
+                                                            System.out.println("Delete succeed...");
+                                                            for (Shipment shipment : searchGoods.getShipments()) {
+                                                                shipment.setShipmentID(String.format("%06d",
+                                                                        searchGoods.getShipments().indexOf(shipment)));
+                                                            }
+                                                        } else if (yesNo.equalsIgnoreCase("n")) {
+                                                            continue;
+                                                        } else {
+                                                            System.out.println("Wrong input!");
+                                                            continue;
+                                                        }
+                                                    }
                                                     token.setQuantity(quantity);
                                                     break;
                                                 } catch (NumberFormatException nfe) {
@@ -604,21 +656,22 @@ public class Repository {
                                         break;
                                     case 5:
                                         int shipmentIndex = shipmentCompare(token, searchGoods);
-                                        if (shipmentIndex != -1 && shipmentIndex != searchGoods.getShipments().indexOf(searchShipment)) {
-                                            completed = false;
+                                        if (shipmentIndex != -1 && shipmentIndex != searchGoods.getShipments()
+                                                .indexOf(searchShipment)) {
                                             Shipment duplicateShipment = searchGoods.getShipments().get(shipmentIndex);
-                                            do {
+                                            while (true) {
                                                 System.out.println(
-                                                        "This shipment already exists, do you want to keep your changes?");
+                                                        "This shipment already exists, keep your changes?");
                                                 System.out
-                                                        .print("(Y:add to the existing one / N:abort changes)=>Y/N: ");
+                                                        .print("(Y:add to the existing one / N:abort)=>Y/N: ");
                                                 String yesNo = sc.nextLine();
                                                 if (yesNo.equalsIgnoreCase("y")) {
                                                     int sum = token.getQuantity() + duplicateShipment.getQuantity();
                                                     searchGoods.getShipments().get(shipmentIndex).setQuantity(sum);
                                                     searchGoods.getShipments().remove(searchShipment);
                                                     for (Shipment shipment : searchGoods.getShipments()) {
-                                                        shipment.setShipmentID(String.format("%06d", searchGoods.getShipments().indexOf(shipment)));
+                                                        shipment.setShipmentID(String.format("%06d",
+                                                                searchGoods.getShipments().indexOf(shipment)));
                                                     }
                                                     System.out.println("Add succceed...");
                                                     break;
@@ -628,7 +681,7 @@ public class Repository {
                                                 } else {
                                                     System.out.println("Wrong input!");
                                                 }
-                                            } while (!completed);
+                                            }
                                         } else if (shipmentIndex == -1) {
                                             searchShipment.setHsd(token.getHsd());
                                             searchShipment.setNsx(token.getNsx());
@@ -748,16 +801,20 @@ public class Repository {
                     goods.getTotalQuantity());
             if (!goods.getShipments().isEmpty()) {
                 Shipment shipment = goods.getShipments().get(0);
+                String productionDateString = shipment.getNsx().format(DateTimeFormatter.ofPattern(outputDatePattern));
+                String expirationDateString = shipment.getHsd().format(DateTimeFormatter.ofPattern(outputDatePattern));
                 System.out.printf("%-12s|%-18s|%-18s|%-12s|%-10s|\n", shipment.getShipmentID(),
-                        df.format(shipment.getNsx()),
-                        df.format(shipment.getHsd()),
+                        productionDateString,
+                        expirationDateString,
                         shipment.getImportPrice(),
                         shipment.getQuantity());
                 for (int i = 1; i < goods.getShipments().size(); i++) {
                     shipment = goods.getShipments().get(i);
+                    productionDateString = shipment.getNsx().format(DateTimeFormatter.ofPattern(outputDatePattern));
+                    expirationDateString = shipment.getHsd().format(DateTimeFormatter.ofPattern(outputDatePattern));
                     System.out.printf("|%-73s|%-12s|%-18s|%-18s|%-12s|%-10s|\n", "", shipment.getShipmentID(),
-                            df.format(shipment.getNsx()),
-                            df.format(shipment.getHsd()),
+                            productionDateString,
+                            expirationDateString,
                             shipment.getImportPrice(),
                             shipment.getQuantity());
                 }

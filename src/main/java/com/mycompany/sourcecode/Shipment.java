@@ -4,7 +4,7 @@
  */
 package com.mycompany.sourcecode;
 
-import java.util.Date;
+import java.time.LocalDate;
 
 /**
  *
@@ -14,32 +14,32 @@ class Shipment {
     private int quantity;
     private int importPrice;
     private String shipmentID = null;
-    private Date nsx = null;
-    private Date hsd = null;
+    private LocalDate nsx = null;
+    private LocalDate hsd = null;
 
     public Shipment() {
     }
 
-    public Shipment(int quantity, int importPrice, Date nsx, Date hsd){
+    public Shipment(int quantity, int importPrice, LocalDate nsx, LocalDate hsd){
         this.quantity = quantity;
         this.importPrice = importPrice;
         this.nsx = nsx;
         this.hsd = hsd;
     }
 
-    public Date getNsx() {
+    public LocalDate getNsx() {
         return nsx;
     }
 
-    public void setNsx(Date nsx) {
+    public void setNsx(LocalDate nsx) {
         this.nsx = nsx;
     }
 
-    public Date getHsd() {
+    public LocalDate getHsd() {
         return hsd;
     }
 
-    public void setHsd(Date hsd) {
+    public void setHsd(LocalDate hsd) {
         this.hsd = hsd;
     }
 
