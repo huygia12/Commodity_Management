@@ -1,36 +1,30 @@
 package com.mycompany.sourcecode;
 
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.InputMismatchException;
 import java.util.List;
 import java.util.Scanner;
 
 public class Order {
-    private List<Goods> goodsList = new ArrayList<Goods>();
+
     private String orderID = null;
     private int discount;
     Scanner sc = new Scanner(System.in);
+    Repository myRepository = new Repository();
+    List<Goods> orderGoodsList = new ArrayList<>();
+    String invoiceDate = LocalDateTime.now().format(DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm:ss"));
+
     public Order() {
     }
 
-    public void setOrderID(String orderID) {
-        this.orderID = orderID;
+    public Order(Repository myRepo) {
+        this.myRepository = myRepo;
     }
 
     public void setDiscount(int discount) {
         this.discount = discount;
-    }
-
-    public void setGoods(Goods goods) {
-        for (Goods goods2 : this.goodsList) {
-            if (goods2 == null) {
-                goods2 = goods;
-            }
-        }
-    }
-
-    public Goods getGoods(int index) {
-        return this.goodsList.get(index);
     }
 
     public int getDiscount() {
@@ -45,7 +39,7 @@ public class Order {
         return 0;
     }
 
-    private int totalAfterDiscount(){ 
+    private int totalAfterDiscount() {
         return 0;
     }
 
@@ -53,22 +47,52 @@ public class Order {
     private void addToOrder() {
         //undeveloped
     }
-    
+
     //function 2
-    private void deleteFromOrder(){
+    private void deleteFromOrder() {
         //undeveloped
     }
 
     //funtion 3
-    private void pay(){
+    private void pay() {
         //undeveloped
     }
-    
-    public void makeNewOrder(){
-        
+    //function 4
+
+    public void showBill() {
+        System.out.println("----------------------");
+        System.out.println("|      YOUR BILL     |");
+        System.out.println("----------------------");
+        System.out.println("Date: " + invoiceDate);
+        System.out.println("");
+        System.out.println("Order items:");
+        System.out.format("%-25s %-10s %-15s\n", "Name", "Quantity", "Price");
+        System.out.format("%-25s %-10s %-15s\n", "-------------------------", "----------", "---------------");
+        for (int i = 0; i < orderGoodsList.size(); i++) {
+            Goods goods = orderGoodsList.get(i);
+
+            int totalQuantity = goods.getTotalQuantity();
+            int totalPrice = totalQuantity * goods.getListPrice();
+            System.out.format("%-25s %-10d %-15d\n", goods.getGoodsName(), totalQuantity, totalPrice);
+        }
+        System.out.println("");
+        System.out.println("Total payment: " + totalPayment());
+        System.out.println("Discount: " + discount + "%");
+        System.out.println("Total after discount: " + totalAfterDiscount());
+        System.out.println("----------------------");
+    }
+
+    public void makeNewOrder() {
         int choice;
         do {
             try {
+                System.out.println("----------------------");
+                System.out.println("| MAKE A NEW ORDER    |");
+                System.out.println("----------------------");
+                System.out.println("| 1. Add to order     |");
+                System.out.println("| 2. Delete from order|");
+                System.out.println("| 3. Pay              |");
+                System.out.println("----------------------");
                 choice = sc.nextInt();
                 switch (choice) {
                     case 1:
