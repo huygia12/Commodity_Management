@@ -17,7 +17,7 @@ public class CommodityManagement {
 
     public static void main(String[] args) {
         Scanner sc = new Scanner(System.in);
-        Repository goodsList = new Repository();
+        Repository myRepository = new Repository();
         int choice;
         do {
             try {
@@ -25,10 +25,10 @@ public class CommodityManagement {
                 choice = sc.nextInt();
                 switch (choice) {
                     case 1:
-                        goodsList.repositoryManagement();
+                        myRepository.repositoryManagement();
                         break;
                     case 2:
-                        Order order = new Order();
+                        Order order = new Order(myRepository);
                         order.makeNewOrder();
                         break;
                     case 3:

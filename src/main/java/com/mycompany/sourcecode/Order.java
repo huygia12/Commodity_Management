@@ -1,36 +1,30 @@
 package com.mycompany.sourcecode;
 
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.InputMismatchException;
 import java.util.List;
 import java.util.Scanner;
 
+
 public class Order {
-    private List<Goods> goodsList = new ArrayList<Goods>();
     private String orderID = null;
     private int discount;
     Scanner sc = new Scanner(System.in);
+    Repository myRepository = new Repository();
+    List<Goods> orderGoodsList = new ArrayList<>();
+    String invoiceDate = LocalDateTime.now().format(DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm:ss"));
+    
     public Order() {
     }
 
-    public void setOrderID(String orderID) {
-        this.orderID = orderID;
+    public Order(Repository myRepo) {
+        this.myRepository = myRepo;
     }
 
     public void setDiscount(int discount) {
         this.discount = discount;
-    }
-
-    public void setGoods(Goods goods) {
-        for (Goods goods2 : this.goodsList) {
-            if (goods2 == null) {
-                goods2 = goods;
-            }
-        }
-    }
-
-    public Goods getGoods(int index) {
-        return this.goodsList.get(index);
     }
 
     public int getDiscount() {
@@ -45,7 +39,7 @@ public class Order {
         return 0;
     }
 
-    private int totalAfterDiscount(){ 
+    private int totalAfterDiscount() {
         return 0;
     }
 
@@ -53,19 +47,18 @@ public class Order {
     private void addToOrder() {
         //undeveloped
     }
-    
+
     //function 2
-    private void deleteFromOrder(){
+    private void deleteFromOrder() {
         //undeveloped
     }
 
     //funtion 3
-    private void pay(){
+    private void pay() {
         //undeveloped
     }
-    
-    public void makeNewOrder(){
-        
+
+    public void makeNewOrder() {
         int choice;
         do {
             try {
