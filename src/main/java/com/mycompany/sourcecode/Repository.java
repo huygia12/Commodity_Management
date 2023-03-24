@@ -18,101 +18,16 @@ import java.util.Scanner;
  */
 public class Repository {
 
-    List<Goods> goodsList = new ArrayList<>();
+    List<Goods> goodsList;
     Scanner sc = new Scanner(System.in);
     String inputDatePattern = "d/M/y";
-    String outputDatePattern = "dd/MM/yyyy";
+    UsefulFunctions uf = new UsefulFunctions();
 
     public Repository() {
     }
     
     public Repository(List<Goods> goodsList) {
         this.goodsList = goodsList;
-    }
-
-    public Goods searchGoods() {
-        // search(Goods) : null neu nhap BACK/ 1 Goods neu tim kiem thanh cong
-        if (goodsList.isEmpty()) {
-            System.out.println("No product found in the repository.");
-            return null;
-        }
-        sc.nextLine();
-        String input = new String();
-        boolean completed = false;
-        Goods result = null;
-        do {
-            try {
-                System.out.print("Input productID to search(Type name for suggestion) or Back to go back: ");
-                input = sc.nextLine();
-                int searchingKey = Integer.parseInt(input);
-                for (Goods goods1 : goodsList) {
-                    if (goods1.getGoodsID().equals(input)) {
-                        result = goods1;
-                    }
-                }
-                if (result == null) {
-                    System.out.println("Your input ID doesnt exist.");
-                    continue;
-                }
-                completed = true;
-            } catch (NumberFormatException nfe) {
-                if (input.equalsIgnoreCase("back")) {
-                    break;
-                }
-                List<Goods> bucket = new ArrayList<>();
-                for (Goods goods2 : goodsList) {
-                    String nameToLowerCase = goods2.getGoodsName().toLowerCase();
-                    String inputToLowerCase = input.toLowerCase();
-                    if (nameToLowerCase.contains(inputToLowerCase)) {
-                        bucket.add(goods2);
-                    }
-                }
-                if (bucket.isEmpty()) {
-                    System.out.println("No product match with your input!");
-                } else {
-                    System.out.print("\nSearching : \"" + input + "\"");
-                    showGoodsList(bucket);
-                }
-            }
-        } while (!completed);
-        return result;
-    }
-
-    private int shipmentCompare(Shipment shipment, Goods goods) {
-        // return -1 if shipments in goods not contain shipment
-        // != 0 if shipments in goods contain shipment and is the index of shipment in
-        // goods'sshipments
-        int i = 0;
-        int length = goods.getShipments().size();
-        for (i = 0; i < length; i++) {
-            Shipment temp = goods.getShipments().get(i);
-            if (temp.getImportPrice() == shipment.getImportPrice()
-                    && temp.getHsd().isEqual(shipment.getHsd())
-                    && temp.getNsx().isEqual(shipment.getNsx())) {
-                break;
-            }
-        }
-        if (i == length) {
-            return -1;
-        }
-        return i;
-    }
-
-    private int goodsCompare(Goods goods) {
-        int i = 0;
-        if (goodsList == null) {
-            return 0;
-        } else {
-            for (Goods goodNeedCompare : goodsList) {
-                if (goodNeedCompare.getGoodsName().equalsIgnoreCase(goods.getGoodsName())
-                        && goodNeedCompare.getProvider().equalsIgnoreCase(goods.getProvider())) {
-                    i = 1;
-                } else {
-                    i = 0;
-                }
-            }
-            return i;
-        }
     }
 
     private void menuOfRepoManagement() {
@@ -158,34 +73,6 @@ public class Repository {
         System.out.print("Option => ");
     }
 
-    private Shipment searchShipments(Goods goods) {
-        // tra ve 0 neu khong ton tai shipment nao trong goods
-        // -1 neu chon 'BACK', >1 neu tim duoc shipment
-        List<Goods> bucket = new ArrayList<>();
-        if (goods.getShipments().isEmpty()) {
-            System.out.println("No shipment exist within the goods");
-            System.out.println("Aborting...");
-            return null;
-        }
-        bucket.add(goods);
-        do {
-            showGoodsList(bucket);
-            System.out.print("Input shipment ID or type BACK to go back: ");
-            String input = sc.nextLine();
-            if (input.equalsIgnoreCase("back")) {
-                System.out.println("Back...");
-                return null;
-            } else {
-                for (Shipment shipment : goods.getShipments()) {
-                    if (input.equals(shipment.getShipmentID())) {
-                        return shipment;
-                    }
-                }
-                System.out.println("No shipment found!");
-            }
-        } while (true);
-    }
-
     // function 1
     private void addNewGoods() {
         sc.nextLine();
@@ -219,7 +106,7 @@ public class Repository {
                     } else {
                         good.setProvider(input);
                     }
-                    int matched = goodsCompare(good);
+                    int matched = uf.goodsCompare(good, goodsList);
                     if (matched == 1) {
                         System.out.println("Good already existed!");
                         System.out.println("Aborting...");
@@ -267,7 +154,7 @@ public class Repository {
 
     // function 2
     private void importGoods() {
-        Goods goods = searchGoods();
+        Goods goods = uf.searchGoods(goodsList);
         if (goods == null) {
             return;
         }
@@ -282,6 +169,7 @@ public class Repository {
                     boolean completed = false;
                     while (!completed) {
                         System.out.print("Input product quantity or type EXIT to exit: ");
+                        sc.nextLine();
                         input = sc.nextLine();
                         if (input.equalsIgnoreCase("exit")) {
                             return;
@@ -392,7 +280,7 @@ public class Repository {
             }
         }
         // check if shipment already exists
-        int shipmentIndex = shipmentCompare(shipment, goods);
+        int shipmentIndex = uf.shipmentCompare(shipment, goods);
         if (shipmentIndex != -1 && goods.getShipments().isEmpty() == false) {
             while (true) {
                 System.out.println(
@@ -432,7 +320,7 @@ public class Repository {
                 boolean completed;
                 switch (choice1) {
                     case 1:
-                        searchGoods = searchGoods();
+                        searchGoods = uf.searchGoods(goodsList);
                         if (searchGoods == null) {
                             return;
                         }
@@ -512,7 +400,7 @@ public class Repository {
                                         if (!bucket.isEmpty()) {
                                             System.out.print(
                                                     "Cannot implement your changes cause it conflicts with these goods information!");
-                                            showGoodsList(bucket);
+                                            uf.showGoodsList(bucket);
                                         } else {
                                             searchGoods.setGoodsName(temp.getGoodsName());
                                             searchGoods.setProvider(temp.getProvider());
@@ -532,11 +420,11 @@ public class Repository {
                         } while (choice2 != 4);
                         break;
                     case 2:
-                        searchGoods = searchGoods();
+                        searchGoods = uf.searchGoods(goodsList);
                         if (searchGoods == null) {
                             return;
                         }
-                        Shipment searchShipment = searchShipments(searchGoods);
+                        Shipment searchShipment = uf.searchShipments(searchGoods);
                         if (searchShipment == null) {
                             return;
                         }
@@ -662,7 +550,7 @@ public class Repository {
                                         }
                                         break;
                                     case 5:
-                                        int shipmentIndex = shipmentCompare(token, searchGoods);
+                                        int shipmentIndex = uf.shipmentCompare(token, searchGoods);
                                         if (shipmentIndex != -1 && shipmentIndex != searchGoods.getShipments()
                                                 .indexOf(searchShipment)) {
                                             Shipment duplicateShipment = searchGoods.getShipments().get(shipmentIndex);
@@ -749,7 +637,7 @@ public class Repository {
 
         switch (input) {
             case 1:
-                Goods goods = searchGoods();
+                Goods goods = uf.searchGoods(goodsList);
                 if (goods == null) {
                     break;
                 }
@@ -764,11 +652,11 @@ public class Repository {
                 }
                 break;
             case 2:
-                Goods searchGoods = searchGoods();
+                Goods searchGoods = uf.searchGoods(goodsList);
                 if (searchGoods == null) {
                     return;
                 }
-                Shipment searchShipment = searchShipments(searchGoods);
+                Shipment searchShipment = uf.searchShipments(searchGoods);
                 if (searchShipment == null) {
                     return;
                 } else {
@@ -785,50 +673,6 @@ public class Repository {
             case 3:
                 System.out.println("Back...");
                 break;
-        }
-    }
-
-    // function 5
-    public void showGoodsList(List<Goods> goodsList) {
-        if (goodsList.isEmpty()) {
-            System.out.println("No product found in the repository.");
-            return;
-        }
-        System.out.println();
-        System.out.printf("|%-12s|%-15s|%-15s|%-12s|%-15s|%-12s|%-18s|%-18s|%-12s|%-10s|\n",
-                "Goods ID", "Name", "Provider", "List Price", "Total Quantity", "Shipment ID",
-                "Production Date", "Expiration Date", "Import Price", "Quantity");
-        System.out.println("|" + "-".repeat(148) + "|");
-        for (Goods goods : goodsList) {
-            System.out.printf("|%-12s|%-15s|%-15s|%-12s|%-15s|",
-                    goods.getGoodsID(),
-                    goods.getGoodsName(),
-                    goods.getProvider(),
-                    goods.getListPrice(),
-                    goods.getTotalQuantity());
-            if (!goods.getShipments().isEmpty()) {
-                Shipment shipment = goods.getShipments().get(0);
-                String productionDateString = shipment.getNsx().format(DateTimeFormatter.ofPattern(outputDatePattern));
-                String expirationDateString = shipment.getHsd().format(DateTimeFormatter.ofPattern(outputDatePattern));
-                System.out.printf("%-12s|%-18s|%-18s|%-12s|%-10s|\n", shipment.getShipmentID(),
-                        productionDateString,
-                        expirationDateString,
-                        shipment.getImportPrice(),
-                        shipment.getQuantity());
-                for (int i = 1; i < goods.getShipments().size(); i++) {
-                    shipment = goods.getShipments().get(i);
-                    productionDateString = shipment.getNsx().format(DateTimeFormatter.ofPattern(outputDatePattern));
-                    expirationDateString = shipment.getHsd().format(DateTimeFormatter.ofPattern(outputDatePattern));
-                    System.out.printf("|%-73s|%-12s|%-18s|%-18s|%-12s|%-10s|\n", "", shipment.getShipmentID(),
-                            productionDateString,
-                            expirationDateString,
-                            shipment.getImportPrice(),
-                            shipment.getQuantity());
-                }
-            } else {
-                System.out.printf("%-12s|%-18s|%-18s|%-12s|%-10s|\n", "", "", "", "", "", "");
-            }
-            System.out.println("|" + "-".repeat(148) + "|");
         }
     }
 
@@ -858,7 +702,7 @@ public class Repository {
                         deleteGoodsAndShipments();
                         break;
                     case 5:
-                        showGoodsList(goodsList);
+                        uf.showGoodsList(goodsList);
                         break;
                     case 6:
                         makeAFilter();
