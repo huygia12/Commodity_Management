@@ -86,6 +86,13 @@ public class Order {
         int choice;
         do {
             try {
+                System.out.println("----------------------");
+                System.out.println("| MAKE A NEW ORDER    |");
+                System.out.println("----------------------");
+                System.out.println("| 1. Add to order     |");
+                System.out.println("| 2. Delete from order|");
+                System.out.println("| 3. Pay              |");
+                System.out.println("----------------------");
                 choice = sc.nextInt();
                 switch (choice) {
                     case 1:
