@@ -12,15 +12,15 @@ public class Order {
     private String orderID = null;
     private int discount;
     Scanner sc = new Scanner(System.in);
-    Repository myRepository = new Repository();
+    List<Goods> myGoodsList = new ArrayList<>();
     List<Goods> orderGoodsList = new ArrayList<>();
     String invoiceDate = LocalDateTime.now().format(DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm:ss"));
 
     public Order() {
     }
 
-    public Order(Repository myRepo) {
-        this.myRepository = myRepo;
+    public Order(List<Goods> myGoodsList) {
+        this.myGoodsList = myGoodsList;
     }
 
     public void setDiscount(int discount) {
