@@ -7,15 +7,15 @@ import java.util.InputMismatchException;
 import java.util.List;
 import java.util.Scanner;
 
-
 public class Order {
+
     private String orderID = null;
     private int discount;
     Scanner sc = new Scanner(System.in);
     Repository myRepository = new Repository();
     List<Goods> orderGoodsList = new ArrayList<>();
     String invoiceDate = LocalDateTime.now().format(DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm:ss"));
-    
+
     public Order() {
     }
 
@@ -56,6 +56,30 @@ public class Order {
     //funtion 3
     private void pay() {
         //undeveloped
+    }
+    //function 4
+
+    public void showBill() {
+        System.out.println("----------------------");
+        System.out.println("|      YOUR BILL     |");
+        System.out.println("----------------------");
+        System.out.println("Date: " + invoiceDate);
+        System.out.println("");
+        System.out.println("Order items:");
+        System.out.format("%-25s %-10s %-15s\n", "Name", "Quantity", "Price");
+        System.out.format("%-25s %-10s %-15s\n", "-------------------------", "----------", "---------------");
+        for (int i = 0; i < orderGoodsList.size(); i++) {
+            Goods goods = orderGoodsList.get(i);
+
+            int totalQuantity = goods.getTotalQuantity();
+            int totalPrice = totalQuantity * goods.getListPrice();
+            System.out.format("%-25s %-10d %-15d\n", goods.getGoodsName(), totalQuantity, totalPrice);
+        }
+        System.out.println("");
+        System.out.println("Total payment: " + totalPayment());
+        System.out.println("Discount: " + discount + "%");
+        System.out.println("Total after discount: " + totalAfterDiscount());
+        System.out.println("----------------------");
     }
 
     public void makeNewOrder() {
