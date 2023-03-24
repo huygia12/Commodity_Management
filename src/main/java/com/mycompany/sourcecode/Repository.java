@@ -23,6 +23,13 @@ public class Repository {
     String inputDatePattern = "d/M/y";
     String outputDatePattern = "dd/MM/yyyy";
 
+    public Repository() {
+    }
+    
+    public Repository(List<Goods> goodsList) {
+        this.goodsList = goodsList;
+    }
+
     public Goods searchGoods() {
         // search(Goods) : null neu nhap BACK/ 1 Goods neu tim kiem thanh cong
         if (goodsList.isEmpty()) {

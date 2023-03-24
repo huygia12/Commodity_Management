@@ -1,6 +1,8 @@
 package com.mycompany.sourcecode;
 
+import java.util.ArrayList;
 import java.util.InputMismatchException;
+import java.util.List;
 import java.util.Scanner;
 
 public class CommodityManagement {
@@ -17,7 +19,8 @@ public class CommodityManagement {
 
     public static void main(String[] args) {
         Scanner sc = new Scanner(System.in);
-        Repository myRepository = new Repository();
+        List<Goods> goodsList = new ArrayList<>();
+        Repository myRepository = new Repository(goodsList);
         int choice;
         do {
             try {
@@ -28,7 +31,7 @@ public class CommodityManagement {
                         myRepository.repositoryManagement();
                         break;
                     case 2:
-                        Order order = new Order(myRepository);
+                        Order order = new Order(goodsList);
                         order.makeNewOrder();
                         break;
                     case 3:
