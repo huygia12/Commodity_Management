@@ -14,6 +14,7 @@ public class Order {
     Scanner sc = new Scanner(System.in);
     List<Goods> myGoodsList = new ArrayList<>();
     List<Goods> orderGoodsList = new ArrayList<>();
+    UsefulFunctions uf = new UsefulFunctions();
     String invoiceDate = LocalDateTime.now().format(DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm:ss"));
 
     public Order() {
@@ -45,12 +46,74 @@ public class Order {
 
     //funtion 1
     private void addToOrder() {
-        //undeveloped
-    }
+        Goods searchGoods = uf.searchGoods(myGoodsList);
+        String input;
+        Goods orderGoods = new Goods();
+        Shipment orderShipment = new Shipment();
+        if (searchGoods == null) {
+            return;
+        }
+        Shipment searchShipment = uf.searchShipments(searchGoods);
+        sc.nextLine();
+        if (searchShipment == null) {
+            return;
+        }
+        while (true) {
+            System.out.print("Input product quantity or type BACK to get back: ");
+            input = sc.nextLine();
+            if (input.equalsIgnoreCase("back")) {
+                break;
+            } else {
+                try {
+                    int quantity = Integer.parseInt(input);
+                    if (quantity < 0) {
+                        System.out.println(
+                                "Product quantity must be a positive number !");
+                        continue;
+                    } else if (quantity > searchShipment.getQuantity()) {
+                        System.out.println(
+                                "Warning: Does not have enough required quantity !");
+                        continue;
+                    } else if (quantity == 0) {
+                        break;
+                    }
+                    orderGoods.setGoodsID(searchGoods.getGoodsID());
+                    orderGoods.setGoodsName(searchGoods.getGoodsName());
+                    orderGoods.setListPrice(searchGoods.getListPrice());
+                    orderShipment.setShipmentID(searchShipment.getShipmentID());
+                    orderShipment.setQuantity(quantity);
+                    boolean compare = false;
+                    for (Goods orderGoods1 : orderGoodsList) {
+                        if (orderGoods1.getGoodsID().equals(searchGoods.getGoodsID())) {
+                            orderGoods1.getShipments().remove(0);
+                            orderGoods1.getShipments().add(orderShipment);
+                            compare = true;
+                            break;
+                        }
+                    }
+                    if (compare == true) {
+                        showBill();
+                        break;
+                    }
+                    orderGoods.getShipments().add(orderShipment);
+                    orderGoodsList.add(orderGoods);
+                    showBill();
+                    break;
+                } catch (NumberFormatException nfe) {
+                    if ("".equals(input)) {
+                        System.out.println("Input is required!");
+                    } else {
+                        System.out.println("Wrong input!");
+                    }
+                }
+            }
+        }
 
+    }
     //function 2
+
     private void deleteFromOrder() {
-        //undeveloped
+        
     }
 
     //funtion 3
@@ -61,7 +124,7 @@ public class Order {
 
     public void showBill() {
         System.out.println("----------------------");
-        System.out.println("|      YOUR BILL     |");
+        System.out.println("|      RECEIPT     |");
         System.out.println("----------------------");
         System.out.println("Date: " + invoiceDate);
         System.out.println("");
@@ -78,21 +141,25 @@ public class Order {
         System.out.println("");
         System.out.println("Total payment: " + totalPayment());
         System.out.println("Discount: " + discount + "%");
+        System.out.println("----------------------");
         System.out.println("Total after discount: " + totalAfterDiscount());
         System.out.println("----------------------");
+        System.out.println("");
     }
 
     public void makeNewOrder() {
         int choice;
         do {
             try {
-                System.out.println("----------------------");
-                System.out.println("| MAKE A NEW ORDER    |");
-                System.out.println("----------------------");
-                System.out.println("| 1. Add to order     |");
-                System.out.println("| 2. Delete from order|");
-                System.out.println("| 3. Pay              |");
-                System.out.println("----------------------");
+                System.out.println("-----------------------");
+                System.out.println("|   MAKE A NEW ORDER   |");
+                System.out.println("-----------------------");
+                System.out.println("| 1. Add to order      |");
+                System.out.println("| 2. Delete from order |");
+                System.out.println("| 3. Pay               |");
+                System.out.println("| 4. Back              |");
+                System.out.println("-----------------------");
+                System.out.print("Option => ");
                 choice = sc.nextInt();
                 switch (choice) {
                     case 1:
@@ -104,14 +171,16 @@ public class Order {
                     case 3:
                         pay();
                         break;
+                    case 4:
+                        break;
                     default:
-                        System.out.println("Wrong input! Please type form 1->3!");
+                        System.out.println("Wrong input! Please type form 1->4!");
                         break;
                 }
             } catch (InputMismatchException ime) {
                 System.out.println("Wrong input!");
                 choice = -1;
             }
-        } while (choice != 3);
+        } while (choice != 4);
     }
 }
