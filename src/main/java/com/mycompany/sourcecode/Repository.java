@@ -306,6 +306,294 @@ public class Repository {
         }
 
     }
+    
+    private void changeGoodsInfor() {
+        Goods searchGoods = searchGoods();
+        int choice;
+        String inputString;
+        if (searchGoods == null) {
+            return;
+        }
+        Goods temp = new Goods(searchGoods.getGoodsName(), searchGoods.getProvider(),
+                searchGoods.getListPrice());
+        do {
+            try {
+                menuOfChangeGoodsInfor();
+                choice = sc.nextInt();
+                sc.nextLine();
+                switch (choice) {
+                    case 1:
+                        while (true) {
+                            System.out.print("Input new Goods Name or type BACK to get back: ");
+                            inputString = sc.nextLine();
+                            if (inputString.equalsIgnoreCase("back")) {
+                                break;
+                            } else if ("".equals(inputString)) {
+                                System.out.println("Input is required!");
+                            } else {
+                                temp.setGoodsName(inputString);
+                                break;
+                            }
+                        }
+                        break;
+                    case 2:
+                        Boolean completed = false;
+                        while (!completed) {
+                            System.out.print("Input new Goods ListPrice or type BACK to get back: ");
+                            inputString = sc.nextLine();
+                            if (inputString.equalsIgnoreCase("back")) {
+                                break;
+                            } else {
+                                try {
+                                    int listPrice = Integer.parseInt(inputString);
+                                    if (listPrice <= 0) {
+                                        System.out.println("List price must be a positive number!");
+                                        continue;
+                                    }
+                                    temp.setListPrice(listPrice);
+                                    completed = true;
+                                } catch (NumberFormatException nfe) {
+                                    if ("".equals(inputString)) {
+                                        System.out.println("Input is required!");
+                                    } else {
+                                        System.out.println("Wrong input!");
+                                    }
+                                }
+                            }
+                        }
+                        break;
+                    case 3:
+                        while (true) {
+                            System.out.print("Input new goods manufacturer or type BACK to get back: ");
+                            inputString = sc.nextLine();
+                            if (inputString.equalsIgnoreCase("back")) {
+                                break;
+                            } else if ("".equals(inputString)) {
+                                System.out.println("Input is required!");
+                            } else {
+                                temp.setProvider(inputString);
+                                break;
+                            }
+                        }
+                        break;
+                    case 4:
+                        List<Goods> bucket = new ArrayList<>();
+                        for (Goods checkGoodsList : goodsList) {
+                            if (checkGoodsList != searchGoods) {
+                                if (checkGoodsList.getGoodsName().equalsIgnoreCase(temp.getGoodsName())
+                                        && checkGoodsList.getProvider()
+                                                .equalsIgnoreCase(temp.getProvider())) {
+                                    bucket.add(checkGoodsList);
+                                }
+                            }
+                        }
+                        if (!bucket.isEmpty()) {
+                            System.out.print(
+                                    "Cannot implement your changes cause it conflicts with these goods information!");
+                            showGoodsList(bucket);
+                        } else {
+                            searchGoods.setGoodsName(temp.getGoodsName());
+                            searchGoods.setProvider(temp.getProvider());
+                            searchGoods.setListPrice(temp.getListPrice());
+                            System.out.println("Changes succeeded...");
+                        }
+                        System.out.println("Back...");
+                        break;
+                    default:
+                        System.out.println("Wrong input, Please type from 1->4!");
+                }
+            } catch (InputMismatchException ime) {
+                System.out.println("Wrong input!");
+                choice = -1;
+                sc.next();
+            }
+        } while (choice != 4);
+    }
+
+    private void changeShipmentInfor() {
+        Goods searchGoods = searchGoods();
+        int choice;
+        String inputString;
+        if (searchGoods == null) {
+            return;
+        }
+        Shipment searchShipment = searchShipments(searchGoods);
+        if (searchShipment == null) {
+            return;
+        }
+        Shipment temp = new Shipment(searchShipment.getQuantity(),
+                searchShipment.getImportPrice(), searchShipment.getNsx(), searchShipment.getHsd());
+        do {
+            try {
+                menuOfChangShipmentsInfor();
+                choice = sc.nextInt();
+                sc.nextLine();
+                switch (choice) {
+                    case 1:
+                        boolean completed = false;
+                        while (!completed) {
+                            System.out
+                                    .print("Input new Shipment ImportPrice or type BACK to get back: ");
+                            inputString = sc.nextLine();
+                            if (inputString.equalsIgnoreCase("back")) {
+                                break;
+                            } else {
+                                try {
+                                    int importPrice = Integer.parseInt(inputString);
+                                    if (importPrice < 0) {
+                                        System.out.println("Import price must be a positive number!");
+                                        continue;
+                                    }
+                                    temp.setImportPrice(importPrice);
+                                    completed = true;
+                                } catch (NumberFormatException nfe) {
+                                    if ("".equals(inputString)) {
+                                        System.out.println("Input is required!");
+                                    } else {
+                                        System.out.println("Wrong input!");
+                                    }
+                                }
+                            }
+                        }
+                        break;
+                    case 2:
+                        while (true) {
+                            System.out.print("Input new production date or type BACK to get back: ");
+                            inputString = sc.nextLine();
+                            if (inputString.equalsIgnoreCase("back")) {
+                                break;
+                            } else {
+                                try {
+                                    LocalDate nsx = LocalDate.parse(inputString,
+                                            DateTimeFormatter.ofPattern(inputDatePattern));
+                                    if(nsx.isAfter(temp.getHsd())){
+                                        System.out.println("Invalid Date,must be equal or less than expiration date!");
+                                        continue;
+                                    }
+                                    temp.setNsx(nsx);
+                                    break;
+                                } catch (DateTimeException dte) {
+                                    System.out.println("Wrong input!");
+                                }
+                            }
+                        }
+                        break;
+                    case 3:
+                        while (true) {
+                            System.out.print("Input new expiration date or type BACK to get back: ");
+                            inputString = sc.nextLine();
+                            if (inputString.equalsIgnoreCase("back")) {
+                                break;
+                            } else {
+                                try {
+                                    LocalDate hsd = LocalDate.parse(inputString,
+                                            DateTimeFormatter.ofPattern(inputDatePattern));
+                                    if (hsd.isBefore(temp.getNsx())) {
+                                        System.out.println(
+                                                "Invalid Date, must be equal or greater than production date!");
+                                        continue;
+                                    }
+                                    temp.setHsd(hsd);
+                                    break;
+                                } catch (DateTimeException dte) {
+                                    System.out.println("Wrong input!");
+                                }
+                            }
+                        }
+                        break;
+                    case 4:
+                        while (true) {
+                            System.out.print("Input product quantity or type Back to get back: ");
+                            inputString = sc.nextLine();
+                            if (inputString.equalsIgnoreCase("back")) {
+                                break;
+                            } else {
+                                try {
+                                    int quantity = Integer.parseInt(inputString);
+                                    if (quantity < 0) {
+                                        System.out.println(
+                                                "Shipment quantity must be a positive number!");
+                                        continue;
+                                    } else if (quantity == 0) {
+                                        System.out.println(
+                                                "Your changes make quantity equal 0, keep your changes?");
+                                        System.out.println(
+                                                "(Y: automatically delete shipment / N: retype the quantity)=>Y/N: ");
+                                        String yesNo = sc.nextLine();
+                                        if (yesNo.equalsIgnoreCase("y")) {
+                                            searchGoods.getShipments().remove(searchShipment);
+                                            System.out.println("Delete succeed...");
+                                            for (Shipment shipment : searchGoods.getShipments()) {
+                                                shipment.setShipmentID(String.format("%06d",
+                                                        searchGoods.getShipments().indexOf(shipment)));
+                                            }
+                                        } else if (yesNo.equalsIgnoreCase("n")) {
+                                            continue;
+                                        } else {
+                                            System.out.println("Wrong input!");
+                                            continue;
+                                        }
+                                    }
+                                    temp.setQuantity(quantity);
+                                    break;
+                                } catch (NumberFormatException nfe) {
+                                    if ("".equals(inputString)) {
+                                        System.out.println("Input is required!");
+                                    } else {
+                                        System.out.println("Wrong input!");
+                                    }
+                                }
+                            }
+                        }
+                        break;
+                    case 5:
+                        int shipmentIndex = shipmentCompare(temp, searchGoods);
+                        if (shipmentIndex != -1 && shipmentIndex != searchGoods.getShipments()
+                                .indexOf(searchShipment)) {
+                            Shipment duplicateShipment = searchGoods.getShipments().get(shipmentIndex);
+                            while (true) {
+                                System.out.println(
+                                        "This shipment already exists, keep your changes?");
+                                System.out
+                                        .print("(Y:add to the existing one / N:abort)=>Y/N: ");
+                                String yesNo = sc.nextLine();
+                                if (yesNo.equalsIgnoreCase("y")) {
+                                    int sum = temp.getQuantity() + duplicateShipment.getQuantity();
+                                    searchGoods.getShipments().get(shipmentIndex).setQuantity(sum);
+                                    searchGoods.getShipments().remove(searchShipment);
+                                    for (Shipment shipment : searchGoods.getShipments()) {
+                                        shipment.setShipmentID(String.format("%06d",
+                                                searchGoods.getShipments().indexOf(shipment)));
+                                    }
+                                    System.out.println("Add succceed...");
+                                    break;
+                                } else if (yesNo.equalsIgnoreCase("n")) {
+                                    System.out.println("Aborting...");
+                                    break;
+                                } else {
+                                    System.out.println("Wrong input!");
+                                }
+                            }
+                        } else if (shipmentIndex == -1) {
+                            searchShipment.setHsd(temp.getHsd());
+                            searchShipment.setNsx(temp.getNsx());
+                            searchShipment.setImportPrice(temp.getImportPrice());
+                            searchShipment.setQuantity(temp.getQuantity());
+                            System.out.println("Changes succeeded...");
+                        } else {
+                            System.out.println("Back...");
+                        }
+                        break;
+                    default:
+                        System.out.println("Wrong input, Please type from 1->5!");
+                }
+            } catch (InputMismatchException ime) {
+                System.out.println("Wrong input!");
+                choice = -1;
+                sc.next();
+            }
+        } while (choice != 5);
+    }
 
     private void changeGoodsInfor() {
         Goods searchGoods = uf.searchGoods(goodsList);
