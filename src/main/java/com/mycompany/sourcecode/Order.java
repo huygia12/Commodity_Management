@@ -72,8 +72,8 @@ public class Order {
             Goods goods = orderGoodsList.get(i);
 
             int totalQuantity = goods.getTotalQuantity();
-            int totalPrice = totalQuantity * goods.getListPrice();
-            System.out.format("%-25s %-10d %-15d\n", goods.getGoodsName(), totalQuantity, totalPrice);
+            long totalPrice = totalQuantity * goods.getListPrice();
+            System.out.format("%-25s %-10s %-15s\n", goods.getGoodsName(), totalQuantity, totalPrice);
         }
         System.out.println("");
         System.out.println("Total payment: " + totalPayment());

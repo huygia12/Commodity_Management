@@ -1,4 +1,5 @@
 com\mycompany\sourcecode\Goods.class
+com\mycompany\sourcecode\UsefulFunctions.class
 com\mycompany\sourcecode\CommodityManagement.class
 com\mycompany\sourcecode\Shipment.class
 com\mycompany\sourcecode\Order.class
