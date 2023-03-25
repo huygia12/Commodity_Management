@@ -105,6 +105,13 @@ public class Repository {
                         continue;
                     } else {
                         good.setProvider(input);
+                        for (Goods goods : goodsList) {
+                            if (goods.getGoodsName().equalsIgnoreCase(good.getGoodsName()) && goods.getProvider().equalsIgnoreCase(good.getProvider())) {
+                                System.out.println("Same product detected!");
+                                System.out.println("Aborting...");
+                                return;
+                            }
+                        }
                     }
                     int matched = uf.goodsCompare(good, goodsList);
                     if (matched == 1) {
