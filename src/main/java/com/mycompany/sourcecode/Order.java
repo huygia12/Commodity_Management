@@ -10,6 +10,7 @@ import java.util.Scanner;
 public class Order {
 
     private String orderID = null;
+    private int customerMoney;
     private int discount;
     Scanner sc = new Scanner(System.in);
     List<Goods> myGoodsList = new ArrayList<>();
@@ -35,12 +36,26 @@ public class Order {
         return this.orderID;
     }
 
-    private int totalPayment() {
-        return 0;
+    public int getCustomerMoney() {
+        return customerMoney;
     }
 
-    private int totalAfterDiscount() {
-        return 0;
+    public void setCustomerMoney(int customerMoney) {
+        this.customerMoney = customerMoney;
+    }
+
+    private int totalPayment() {
+        int totalPayment = 0;
+        for (int i = 0; i < orderGoodsList.size(); i++) {
+            Goods goods = orderGoodsList.get(i);
+            totalPayment += goods.getListPrice() * goods.getTotalQuantity();
+        }
+        return totalPayment;
+    }
+
+    private int totalAfterDiscount(int totalPayment) {
+        int totalAfterDiscount = totalPayment - (totalPayment * discount / 100);
+        return totalAfterDiscount;
     }
 
     //funtion 1
@@ -52,34 +67,75 @@ public class Order {
     private void deleteFromOrder() {
         //undeveloped
     }
+    //function 3
 
-    //funtion 3
     private void pay() {
-        //undeveloped
+        Scanner scanner = new Scanner(System.in);
+        int totalPayment = totalPayment();
+        int totalAfterDiscount = totalAfterDiscount(totalPayment);
+        while (true) {
+            try {
+                System.out.println("Please enter the discount percentage (must be a positive number): ");
+                // //Phương thức Math.min trả về giá trị nhỏ hơn trong hai số chỉ định
+                discount = Math.min(100, scanner.nextInt());
+
+                if (discount < 0) {
+                    System.out.println("Discount percentage must be a positive number. Please try again.");
+                    continue;
+                }
+
+                break;
+            } catch (InputMismatchException e) {
+                System.out.println("Invalid input. Discount percentage must be a positive number. Please try again.");
+                scanner.next();
+            }
+        }
+
+        while (true) {
+            try {
+                System.out.println("Please enter the amount of money you give: ");
+                customerMoney = scanner.nextInt();
+
+                if (customerMoney < 0) {
+                    System.out.println("Payment amount must be a positive number. Please try again.");
+                    continue;
+                }
+
+                break;
+            } catch (InputMismatchException e) {
+                System.out.println("Invalid input. Payment amount must be a positive number. Please try again.");
+                scanner.next();
+            }
+        }
+
+        if (customerMoney < totalAfterDiscount) {
+            System.out.println("Insufficient payment. Please pay more.");
+        } else {
+            int change = customerMoney - totalAfterDiscount;
+            showBill(totalPayment, totalAfterDiscount, change);
+        }
     }
     //function 4
 
-    public void showBill() {
-        System.out.println("----------------------");
-        System.out.println("|      YOUR BILL     |");
+    private void showBill(int totalPayment, int totalAfterDiscount, int change) {
+        System.out.println("-------------- YOUR BILL ---------------");
         System.out.println("----------------------");
         System.out.println("Date: " + invoiceDate);
         System.out.println("");
-        System.out.println("Order items:");
         System.out.format("%-25s %-10s %-15s\n", "Name", "Quantity", "Price");
         System.out.format("%-25s %-10s %-15s\n", "-------------------------", "----------", "---------------");
         for (int i = 0; i < orderGoodsList.size(); i++) {
             Goods goods = orderGoodsList.get(i);
-
-            int totalQuantity = goods.getTotalQuantity();
+            long totalQuantity = goods.getTotalQuantity();
             long totalPrice = totalQuantity * goods.getListPrice();
-            System.out.format("%-25s %-10s %-15s\n", goods.getGoodsName(), totalQuantity, totalPrice);
+            System.out.format("%-25s %-10d %-15d\n", goods.getGoodsName(), totalQuantity, totalPrice);
         }
-        System.out.println("");
-        System.out.println("Total payment: " + totalPayment());
+        System.out.println("Total payment: " + totalPayment);
         System.out.println("Discount: " + discount + "%");
-        System.out.println("Total after discount: " + totalAfterDiscount());
-        System.out.println("----------------------");
+        System.out.println("Total after discount: " + totalAfterDiscount);
+        System.out.println("Customer payment: " + customerMoney);
+        System.out.println("Change: " + change);
+        System.out.println("----------------------------------------");
     }
 
     public void makeNewOrder() {
