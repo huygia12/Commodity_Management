@@ -15,7 +15,7 @@ public class Goods {
     private String goodsName;
     private String goodsID = null;
     private String provider;
-    private int listPrice;
+    private long listPrice;
     private int totalQuantity = 0;
     private List<Shipment> shipments = new ArrayList<>();
 
@@ -26,7 +26,7 @@ public class Goods {
         this.totalQuantity = totalQuantity;
     }
 
-    public Goods(String goodsName, String provider, int listPrice) {
+    public Goods(String goodsName, String provider, long listPrice) {
         this.goodsName = goodsName;
         this.provider = provider;
         this.listPrice = listPrice;
@@ -68,11 +68,11 @@ public class Goods {
         this.provider = provider.trim();
     }
 
-    public int getListPrice() {
+    public long getListPrice() {
         return listPrice;
     }
 
-    public void setListPrice(int listPrice) {
+    public void setListPrice(long listPrice) {
         this.listPrice = listPrice;
     }
 
