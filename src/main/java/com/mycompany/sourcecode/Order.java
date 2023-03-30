@@ -107,11 +107,15 @@ public class Order {
                         }
                     }
                     if (compare == true) {
+                        // Giảm số lượng hàng trong lô hàng sau khi thêm vào đơn hàng
+                        searchShipment.reduceQuantity(quantity);
                         showOrder();
                         break;
                     }
                     orderGoods.getShipments().add(orderShipment);
                     orderGoodsList.add(orderGoods);
+                    // Giảm số lượng hàng trong lô hàng sau khi thêm vào đơn hàng
+                    searchShipment.reduceQuantity(quantity);
                     showOrder();
                     break;
                 } catch (NumberFormatException nfe) {
@@ -123,19 +127,17 @@ public class Order {
                 }
             }
         }
-
     }
-    //function 2
 
+    //function 2
     private void deleteFromOrder() {
-        
+
     }
     //function 3
 
     private void pay() {
         Scanner scanner = new Scanner(System.in);
-        int totalPayment = totalPayment();
-        int totalAfterDiscount = totalAfterDiscount(totalPayment);
+
         while (true) {
             try {
                 System.out.println("Please enter the discount percentage (must be a positive number): ");
@@ -153,7 +155,10 @@ public class Order {
                 scanner.next();
             }
         }
+        int totalPayment = totalPayment();
+        int totalAfterDiscount = totalAfterDiscount(totalPayment);
 
+        int change = 0;
         while (true) {
             try {
                 System.out.println("Please enter the amount of money you give: ");
@@ -162,41 +167,52 @@ public class Order {
                 if (customerMoney < 0) {
                     System.out.println("Payment amount must be a positive number. Please try again.");
                     continue;
+                } else if (customerMoney < totalAfterDiscount) {
+                    System.out.println("Insufficient payment. Please pay more.");
+                    continue;
+                } else {
+                    change = customerMoney - totalAfterDiscount;
+                    showBill(totalPayment, totalAfterDiscount, change);
+                    break;
                 }
-
-                break;
             } catch (InputMismatchException e) {
                 System.out.println("Invalid input. Payment amount must be a positive number. Please try again.");
                 scanner.next();
             }
         }
 
-        if (customerMoney < totalAfterDiscount) {
-            System.out.println("Insufficient payment. Please pay more.");
-        } else {
-            int change = customerMoney - totalAfterDiscount;
-            showBill(totalPayment, totalAfterDiscount, change);
-        }
     }
+
     //function 4
-    
     private void showOrder() {
-        
+        System.out.println("-------------------- YOUR ORDER --------------------");
+        System.out.println("------------------------------------------------------");
+        System.out.format("%-25s %-10s %-15s %-15s\n", "Name", "Quantity", "Price", "Total");
+        System.out.format("%-25s %-10s %-15s %-15s\n", "-------------------------", "----------", "---------------", "---------------");
+        for (int i = 0; i < orderGoodsList.size(); i++) {
+            Goods goods = orderGoodsList.get(i);
+            long totalQuantity = goods.getTotalQuantity();
+            long price = goods.getListPrice();
+            long totalPrice = totalQuantity * price;
+            System.out.format("%-25s %-10d %-15d %-15d\n", goods.getGoodsName(), totalQuantity, price, totalPrice);
+        }
+        System.out.println("------------------------------------------------------");
     }
 
-
+    //function 5
     private void showBill(int totalPayment, int totalAfterDiscount, int change) {
         System.out.println("-------------- YOUR BILL ---------------");
         System.out.println("----------------------");
         System.out.println("Date: " + invoiceDate);
         System.out.println("");
-        System.out.format("%-25s %-10s %-15s\n", "Name", "Quantity", "Price");
-        System.out.format("%-25s %-10s %-15s\n", "-------------------------", "----------", "---------------");
+        System.out.format("%-25s %-10s %-15s %-15s\n", "Name", "Quantity", "Price", "Total");
+        System.out.format("%-25s %-10s %-15s %-15s\n", "-------------------------", "----------", "---------------", "---------------");
         for (int i = 0; i < orderGoodsList.size(); i++) {
             Goods goods = orderGoodsList.get(i);
             long totalQuantity = goods.getTotalQuantity();
-            long totalPrice = totalQuantity * goods.getListPrice();
-            System.out.format("%-25s %-10d %-15d\n", goods.getGoodsName(), totalQuantity, totalPrice);
+            long price = goods.getListPrice();
+            long totalPrice = totalQuantity * price;
+            System.out.format("%-25s %-10d %-15d %-15d\n", goods.getGoodsName(), totalQuantity, price, totalPrice);
         }
         System.out.println("Total payment: " + totalPayment);
         System.out.println("Discount: " + discount + "%");
@@ -210,14 +226,14 @@ public class Order {
         int choice;
         do {
             try {
-                System.out.println("-----------------------");
+                System.out.println("\n********************************");
                 System.out.println("|   MAKE A NEW ORDER   |");
                 System.out.println("-----------------------");
                 System.out.println("| 1. Add to order      |");
                 System.out.println("| 2. Delete from order |");
                 System.out.println("| 3. Pay               |");
                 System.out.println("| 4. Back              |");
-                System.out.println("-----------------------");
+                System.out.println("********************************");
                 System.out.print("Option => ");
                 choice = sc.nextInt();
                 switch (choice) {
