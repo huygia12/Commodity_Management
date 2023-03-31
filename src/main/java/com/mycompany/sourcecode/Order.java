@@ -60,6 +60,89 @@ public class Order {
     }
 
     //funtion 1
+    private void DecreaseQuantity(Goods goods, Shipment shipment) {
+        String input;
+        int value = 1;
+        while (true) {
+            System.out.print("Enter the quantity you want to increase or type BACK to get back: ");
+            input = sc.nextLine();
+            if (input.equalsIgnoreCase("back")) {
+                return;
+            } else {
+                try {
+                    value = Integer.parseInt(input);
+                    if (value < 0) {
+                        System.out.println(
+                                "Product quantity must be a positive number !");
+                        continue;
+                    } else if ((shipment.getQuantity() - value) <= 0) {
+                        System.out.println(
+                                "Your changes make quantity equal 0, keep your changes?");
+                        System.out.println(
+                                "(Y: automatically delete from your order / N: retype the quantity)=>Y/N: ");
+                        String yesNo = sc.nextLine();
+                        if (yesNo.equalsIgnoreCase("y")) {
+                            goods.getShipments().remove(shipment);
+                            System.out.println("Delete succeed...");
+                        } else if (yesNo.equalsIgnoreCase("n")) {
+                            continue;
+                        } else {
+                            System.out.println("Wrong input!");
+                            continue;
+                        }
+
+                        continue;
+                    } else if (value == 0) {
+                        break;
+                    }
+                } catch (NumberFormatException nfe) {
+                    if ("".equals(input)) {
+                        System.out.println("Input is required!");
+                    } else {
+                        System.out.println("Wrong input!");
+                    }
+                }
+            }
+            int quantity = shipment.getQuantity();
+            shipment.setQuantity(quantity - value);
+        }
+    }
+
+    private void IncreaseQuantity(Shipment searchShipment, Shipment shipment) {
+        String input;
+        int value = 1;
+        while (true) {
+            System.out.print("Enter the quantity you want to increase or type BACK to get back: ");
+            input = sc.nextLine();
+            if (input.equalsIgnoreCase("back")) {
+                return;
+            } else {
+                try {
+                    value = Integer.parseInt(input);
+                    if (value < 0) {
+                        System.out.println(
+                                "Product quantity must be a positive number !");
+                        continue;
+                    } else if ((shipment.getQuantity() + value) > searchShipment.getQuantity()) {
+                        System.out.println(
+                                "Warning: Does not have enough required quantity !");
+                        continue;
+                    } else if (value == 0) {
+                        break;
+                    }
+                } catch (NumberFormatException nfe) {
+                    if ("".equals(input)) {
+                        System.out.println("Input is required!");
+                    } else {
+                        System.out.println("Wrong input!");
+                    }
+                }
+            }
+            int quantity = shipment.getQuantity();
+            shipment.setQuantity(quantity + value);
+        }
+    }
+
     private void addToOrder() {
         Goods searchGoods = uf.searchGoods(myGoodsList);
         String input;
@@ -73,56 +156,77 @@ public class Order {
         if (searchShipment == null) {
             return;
         }
-        while (true) {
-            System.out.print("Input product quantity or type BACK to get back: ");
-            input = sc.nextLine();
-            if (input.equalsIgnoreCase("back")) {
-                break;
-            } else {
-                try {
-                    int quantity = Integer.parseInt(input);
-                    if (quantity < 0) {
-                        System.out.println(
-                                "Product quantity must be a positive number !");
-                        continue;
-                    } else if (quantity > searchShipment.getQuantity()) {
-                        System.out.println(
-                                "Warning: Does not have enough required quantity !");
-                        continue;
-                    } else if (quantity == 0) {
-                        break;
-                    }
-                    orderGoods.setGoodsID(searchGoods.getGoodsID());
-                    orderGoods.setGoodsName(searchGoods.getGoodsName());
-                    orderGoods.setListPrice(searchGoods.getListPrice());
-                    orderShipment.setShipmentID(searchShipment.getShipmentID());
-                    orderShipment.setQuantity(quantity);
-                    boolean compare = false;
-                    for (Goods orderGoods1 : orderGoodsList) {
-                        if (orderGoods1.getGoodsID().equals(searchGoods.getGoodsID())) {
-                            orderGoods1.getShipments().remove(0);
-                            orderGoods1.getShipments().add(orderShipment);
-                            compare = true;
-                            break;
-                        }
-                    }
-                    if (compare == true) {
-                        // Giảm số lượng hàng trong lô hàng sau khi thêm vào đơn hàng
-                        searchShipment.reduceQuantity(quantity);
-                        showOrder();
-                        break;
-                    }
-                    orderGoods.getShipments().add(orderShipment);
-                    orderGoodsList.add(orderGoods);
-                    // Giảm số lượng hàng trong lô hàng sau khi thêm vào đơn hàng
-                    searchShipment.reduceQuantity(quantity);
-                    showOrder();
-                    break;
-                } catch (NumberFormatException nfe) {
-                    if ("".equals(input)) {
-                        System.out.println("Input is required!");
+        for (Goods orderGoods1 : orderGoodsList) {
+            if (orderGoods1.getGoodsID().equals(searchGoods.getGoodsID())) {
+                for (Shipment orderShipments1 : orderGoods.getShipments()) {
+                    if (orderShipments1.getShipmentID().equals(searchShipment.getShipmentID())) {
+                        System.out.println("This product shipment has been already exist. You choose?");
+                        int choice;
+                        do {
+                            try {
+                                System.out.println("-----------------------------------");
+                                System.out.println("| 1. Increase shipment's quantity |");
+                                System.out.println("| 2. Decrease shipment's quantity |");
+                                System.out.println("| 3. Exit                         |");
+                                System.out.println("-----------------------------------");
+                                System.out.print("Option => ");
+                                choice = sc.nextInt();
+                                switch (choice) {
+                                    case 1:
+                                        IncreaseQuantity(searchShipment, orderShipment);
+                                        break;
+                                    case 2:
+                                        DecreaseQuantity(orderGoods, orderShipment);
+                                        break;
+                                    case 3:
+                                        return;
+                                    default:
+                                        System.out.println("Wrong input! Please type form 1->3!");
+                                        break;
+                                }
+                            } catch (InputMismatchException ime) {
+                                System.out.println("Wrong input!");
+                                choice = -1;
+                            }
+                        } while (choice != 3);
                     } else {
-                        System.out.println("Wrong input!");
+                        while (true) {
+                            System.out.print("Input product quantity or type BACK to get back: ");
+                            input = sc.nextLine();
+                            if (input.equalsIgnoreCase("back")) {
+                                break;
+                            } else {
+                                try {
+                                    int quantity = Integer.parseInt(input);
+                                    if (quantity < 0) {
+                                        System.out.println(
+                                                "Product quantity must be a positive number !");
+                                        continue;
+                                    } else if (quantity > searchShipment.getQuantity()) {
+                                        System.out.println(
+                                                "Warning: Does not have enough required quantity !");
+                                        continue;
+                                    } else if (quantity == 0) {
+                                        break;
+                                    }
+                                    orderGoods.setGoodsID(searchGoods.getGoodsID());
+                                    orderGoods.setGoodsName(searchGoods.getGoodsName());
+                                    orderGoods.setListPrice(searchGoods.getListPrice());
+                                    orderShipment.setShipmentID(searchShipment.getShipmentID());
+                                    orderShipment.setQuantity(quantity);
+                                    orderGoods.getShipments().add(orderShipment);
+                                    orderGoodsList.add(orderGoods);
+                                    showOrder();
+                                    break;
+                                } catch (NumberFormatException ne) {
+                                    if ("".equals(input)) {
+                                        System.out.println("Input is required!");
+                                    } else {
+                                        System.out.println("Wrong input!");
+                                    }
+                                }
+                            }
+                        }
                     }
                 }
             }
