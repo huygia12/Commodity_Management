@@ -21,6 +21,10 @@ public class Goods {
 
     public Goods() {
     }
+    
+    public Goods(int totalQuantity) {
+        this.totalQuantity = totalQuantity;
+    }
 
     public Goods(String goodsName, String provider, long listPrice) {
         this.goodsName = goodsName.trim();

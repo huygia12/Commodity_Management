@@ -11,6 +11,7 @@ import java.time.LocalDate;
  * @author s1rja
  */
 class Shipment {
+
     private int quantity;
     private long importPrice;
     private String shipmentID = null;
@@ -20,7 +21,7 @@ class Shipment {
     public Shipment() {
     }
 
-    public Shipment(int quantity, long importPrice, LocalDate nsx, LocalDate hsd){
+    public Shipment(int quantity, long importPrice, LocalDate nsx, LocalDate hsd) {
         this.quantity = quantity;
         this.importPrice = importPrice;
         this.nsx = nsx;
@@ -66,5 +67,9 @@ class Shipment {
     public void setShipmentID(String shipmentID) {
         this.shipmentID = shipmentID;
     }
-    
+
+    public void reduceQuantity(int quantity) {
+        this.quantity -= quantity;
+    }
+
 }
