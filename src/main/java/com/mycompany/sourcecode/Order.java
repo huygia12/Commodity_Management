@@ -67,8 +67,8 @@ public class Order {
     private void deleteFromOrder() {
         //undeveloped
     }
+    
     //function 3
-
     private void pay() {
         Scanner scanner = new Scanner(System.in);
         int totalPayment = totalPayment();
@@ -138,17 +138,24 @@ public class Order {
         System.out.println("----------------------------------------");
     }
 
+    public void orderMenu() {
+        System.out.println("----------------------");
+        System.out.println("| MAKE A NEW ORDER    |");
+        System.out.println("----------------------");
+        System.out.println("| 1. Add to order     |");
+        System.out.println("| 2. Delete from order|");
+        System.out.println("| 3. Pay              |");
+        System.out.println("----------------------");
+        System.out.println("Option=> ");
+    }
+
     public void makeNewOrder() {
         int choice;
+        UsefulFunctions uf = new UsefulFunctions();
+        uf.showGoodsList(myGoodsList);
         do {
             try {
-                System.out.println("----------------------");
-                System.out.println("| MAKE A NEW ORDER    |");
-                System.out.println("----------------------");
-                System.out.println("| 1. Add to order     |");
-                System.out.println("| 2. Delete from order|");
-                System.out.println("| 3. Pay              |");
-                System.out.println("----------------------");
+                orderMenu();
                 choice = sc.nextInt();
                 switch (choice) {
                     case 1:

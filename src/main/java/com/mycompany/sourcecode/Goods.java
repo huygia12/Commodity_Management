@@ -23,8 +23,8 @@ public class Goods {
     }
 
     public Goods(String goodsName, String provider, long listPrice) {
-        this.goodsName = goodsName;
-        this.provider = provider;
+        this.goodsName = goodsName.trim();
+        this.provider = provider.trim();
         this.listPrice = listPrice;
     }
 
