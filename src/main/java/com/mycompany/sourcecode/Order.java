@@ -283,36 +283,52 @@ public class Order {
         }
         int totalPayment = totalPayment();
         int totalAfterDiscount = totalAfterDiscount(totalPayment);
-        boolean inputMoney = true; // khởi tạo biến boolean cho việc nhập tiền
+        boolean inputMoney = true;
+        boolean backToDiscount = false; // Thêm biến để theo dõi việc quay lại nhập giảm giá
         while (inputMoney) {
             try {
-                System.out.println("Please enter the amount of money you give, or type BACK to go back, or type EXIT to exit payment process: ");
+                if (!backToDiscount) {
+                    System.out.println("Please enter the amount of money you give, or type BACK to go back, or type EXIT to exit payment process: ");
+                } else {
+                    System.out.println("Please enter the discount percentage (must be a positive number), or type BACK to go back: ");
+                }
                 String input = scanner.nextLine();
                 if (input.equalsIgnoreCase("BACK")) {
-                    setDiscount(0);
-                    continue;
+                    if (backToDiscount) {
+                        backToDiscount = false; // Nếu thấy muốn quay lại nhập giảm giá thì sẽ quay lại chỗ xử lý giảm giá
+                    } else {
+                        backToDiscount = true; // Nếu không thì sẽ quay lại chỗ xử lý giảm giá
+                        continue;
+                    }
                 } else if (input.equalsIgnoreCase("EXIT")) {
-                    inputMoney = false; // Đặt biến để thoát vòng lặp và quay lại Menu
+                    inputMoney = false;
                 } else {
-                    customerMoney = Integer.parseInt(input);
-                    if (customerMoney < 0) {
-                        System.out.println("Payment amount must be a positive number. Please try again.");
-                        continue;
+                    if (!backToDiscount) {
+                        customerMoney = Integer.parseInt(input);
+                        if (customerMoney < 0) {
+                            System.out.println("Payment amount must be a positive number. Please try again.");
+                            continue;
+                        }
+                        if (customerMoney < totalAfterDiscount) {
+                            System.out.println("Insufficient payment. Please pay more.");
+                            continue;
+                        }
+                        int change = customerMoney - totalAfterDiscount;
+                        showBill(totalPayment, totalAfterDiscount, change);
+                        orderGoodsList.clear();
+                        inputMoney = false;
+                    } else {
+                        backToDiscount = false; // Khi nhập giảm giá xong thì sẽ không còn quay lại trong trường hợp này.
+                        discount = Math.min(100, Integer.parseInt(input));
+                        if (discount < 0) {
+                            System.out.println("Discount percentage must be a positive number. Please try again.");
+                            continue;
+                        }
+                        System.out.println("Discount applied successfully!");
                     }
-                    if (customerMoney < totalAfterDiscount) {
-                        System.out.println("Insufficient payment. Please pay more.");
-                        continue;
-                    }
-                    // Hiển thị hóa đơn và trừ số lượng hàng
-                    int change = customerMoney - totalAfterDiscount;
-                    showBill(totalPayment, totalAfterDiscount, change);
-                    orderGoodsList.clear();
-                    inputMoney = false; // Đặt biến để thoát vòng lặp và quay lại Menu
-                    orderGoodsList.clear();
-                    break;
                 }
             } catch (NumberFormatException e) {
-                System.out.println("Invalid input. Payment amount must be a positive number. Please try again.");
+                System.out.println("Invalid input. Please try again.");
             }
         }
 
@@ -333,7 +349,7 @@ public class Order {
             System.out.format("%-25s %-10d %-15d %-15d\n", goods.getGoodsName(), totalQuantity, price, totalPrice);
         }
         int totalPayment = totalPayment();
-        System.out.println(" " );
+        System.out.println(" ");
         System.out.println("Total payment: " + totalPayment);
         System.out.println("------------------------------------------------------");
     }
