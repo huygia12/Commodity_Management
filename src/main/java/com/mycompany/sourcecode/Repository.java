@@ -174,9 +174,9 @@ public class Repository {
             switch (n) {
                 case 1:
                     boolean completed = false;
+                    sc.nextLine();
                     while (!completed) {
                         System.out.print("Input product quantity or type EXIT to exit: ");
-                        sc.nextLine();
                         input = sc.nextLine();
                         if (input.equalsIgnoreCase("exit")) {
                             return;
