@@ -151,7 +151,7 @@ public class Order {
                 break;
             }
         }
-        if(!check_goods){
+        if (!check_goods) {
             return -1;
         }
         for (Shipment shipment : searchGoods.getShipments()) {
@@ -234,6 +234,8 @@ public class Order {
                         orderShipment.setQuantity(quantity);
                         orderGoods.getShipments().add(orderShipment);
                         orderGoodsList.add(orderGoods);
+                        // Giảm số lượng hàng trong lô hàng sau khi thêm vào đơn hàng
+                        searchShipment.reduceQuantity(quantity);
                         showOrder();
                         break;
                     } catch (NumberFormatException ne) {
@@ -255,54 +257,68 @@ public class Order {
 
     //function 3
     private void pay() {
+        if (orderGoodsList.isEmpty()) {
+            System.out.println("Your order list is empty!");
+            return;
+        }
+
         Scanner scanner = new Scanner(System.in);
 
         while (true) {
             try {
-                System.out.print("Please enter the discount percentage (must be a positive number): ");
-                // //Phương thức Math.min trả về giá trị nhỏ hơn trong hai số chỉ định
-                discount = Math.min(100, scanner.nextInt());
-
+                System.out.println("Please enter the discount percentage (must be a positive number), or type BACK to go back: ");
+                String input = scanner.nextLine();
+                if (input.equalsIgnoreCase("BACK")) {
+                    return;
+                }
+                discount = Math.min(100, Integer.parseInt(input));
                 if (discount < 0) {
                     System.out.println("Discount percentage must be a positive number. Please try again.");
                     continue;
                 }
-
                 break;
-            } catch (InputMismatchException e) {
+            } catch (NumberFormatException e) {
                 System.out.println("Invalid input. Discount percentage must be a positive number. Please try again.");
-                scanner.next();
             }
         }
         int totalPayment = totalPayment();
         int totalAfterDiscount = totalAfterDiscount(totalPayment);
-
-        int change = 0;
-        while (true) {
+        boolean inputMoney = true; // khởi tạo biến boolean cho việc nhập tiền
+        while (inputMoney) {
             try {
-                System.out.print("Please enter the amount of money you give: ");
-                customerMoney = scanner.nextInt();
-
-                if (customerMoney < 0) {
-                    System.out.println("Payment amount must be a positive number. Please try again.");
+                System.out.println("Please enter the amount of money you give, or type BACK to go back, or type EXIT to exit payment process: ");
+                String input = scanner.nextLine();
+                if (input.equalsIgnoreCase("BACK")) {
+                    setDiscount(0);
                     continue;
-                } else if (customerMoney < totalAfterDiscount) {
-                    System.out.println("Insufficient payment. Please pay more.");
-                    continue;
+                } else if (input.equalsIgnoreCase("EXIT")) {
+                    inputMoney = false; // Đặt biến để thoát vòng lặp và quay lại Menu
                 } else {
-                    change = customerMoney - totalAfterDiscount;
+                    customerMoney = Integer.parseInt(input);
+                    if (customerMoney < 0) {
+                        System.out.println("Payment amount must be a positive number. Please try again.");
+                        continue;
+                    }
+                    if (customerMoney < totalAfterDiscount) {
+                        System.out.println("Insufficient payment. Please pay more.");
+                        continue;
+                    }
+                    // Hiển thị hóa đơn và trừ số lượng hàng
+                    int change = customerMoney - totalAfterDiscount;
                     showBill(totalPayment, totalAfterDiscount, change);
+                    orderGoodsList.clear();
+                    inputMoney = false; // Đặt biến để thoát vòng lặp và quay lại Menu
+                    orderGoodsList.clear();
                     break;
                 }
-            } catch (InputMismatchException e) {
+            } catch (NumberFormatException e) {
                 System.out.println("Invalid input. Payment amount must be a positive number. Please try again.");
-                scanner.next();
             }
         }
 
     }
-
     //function 4
+
     private void showOrder() {
         System.out.println("");
         System.out.println("-------------------- YOUR ORDER --------------------");
@@ -316,6 +332,9 @@ public class Order {
             long totalPrice = totalQuantity * price;
             System.out.format("%-25s %-10d %-15d %-15d\n", goods.getGoodsName(), totalQuantity, price, totalPrice);
         }
+        int totalPayment = totalPayment();
+        System.out.println(" " );
+        System.out.println("Total payment: " + totalPayment);
         System.out.println("------------------------------------------------------");
     }
 
