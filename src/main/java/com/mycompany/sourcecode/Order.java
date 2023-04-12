@@ -60,7 +60,11 @@ public class Order {
     }
 
     //funtion 1
-    private void DecreaseQuantity(Goods goods, Shipment shipment) {
+    private void DecreaseQuantity(Goods goods, Shipment tmp) {
+        if (tmp.getQuantity() == 0) {
+            System.out.println("Can not decrease quantity");
+            return;
+        }
         String input;
         int value = 1;
         while (true) {
@@ -71,30 +75,19 @@ public class Order {
             } else {
                 try {
                     value = Integer.parseInt(input);
-                    if (value < 0) {
+                    if (value <= 0) {
                         System.out.println(
                                 "Product quantity must be a positive number !");
                         continue;
-                    } else if ((shipment.getQuantity() - value) <= 0) {
+                    } else if (value >= tmp.getQuantity()) {
                         System.out.println(
-                                "Your changes make quantity equal 0, keep your changes?");
-                        System.out.println(
-                                "(Y: automatically delete from your order / N: retype the quantity)=>Y/N: ");
-                        String yesNo = sc.nextLine();
-                        if (yesNo.equalsIgnoreCase("y")) {
-                            goods.getShipments().remove(shipment);
-                            System.out.println("Delete succeed...");
-                        } else if (yesNo.equalsIgnoreCase("n")) {
-                            continue;
-                        } else {
-                            System.out.println("Wrong input!");
-                            continue;
-                        }
-
-                        continue;
-                    } else if (value == 0) {
-                        break;
+                                "Your changes make quantity equal 0");
+                        tmp.setQuantity(0);
+                        return;
                     }
+                    int quantity = tmp.getQuantity();
+                    tmp.setQuantity(quantity - value);
+                    return;
                 } catch (NumberFormatException nfe) {
                     if ("".equals(input)) {
                         System.out.println("Input is required!");
@@ -103,12 +96,15 @@ public class Order {
                     }
                 }
             }
-            int quantity = shipment.getQuantity();
-            shipment.setQuantity(quantity - value);
+            
         }
     }
 
-    private void IncreaseQuantity(Shipment searchShipment, Shipment shipment) {
+    private void IncreaseQuantity(Shipment tmp, int shipmentQuantity) {
+        if (tmp.getQuantity() == shipmentQuantity) {
+            System.out.println("Can not increase quantity");
+            return;
+        }
         String input;
         int value = 1;
         while (true) {
@@ -119,17 +115,18 @@ public class Order {
             } else {
                 try {
                     value = Integer.parseInt(input);
-                    if (value < 0) {
+                    if (value <= 0) {
                         System.out.println(
                                 "Product quantity must be a positive number !");
                         continue;
-                    } else if ((shipment.getQuantity() + value) > searchShipment.getQuantity()) {
+                    } else if ((tmp.getQuantity() + value) > shipmentQuantity) {
                         System.out.println(
                                 "Warning: Does not have enough required quantity !");
                         continue;
-                    } else if (value == 0) {
-                        break;
                     }
+                    int quantity = tmp.getQuantity();
+                    tmp.setQuantity(quantity + value);
+                    return;
                 } catch (NumberFormatException nfe) {
                     if ("".equals(input)) {
                         System.out.println("Input is required!");
@@ -138,35 +135,37 @@ public class Order {
                     }
                 }
             }
-            int quantity = shipment.getQuantity();
-            shipment.setQuantity(quantity + value);
         }
     }
 
-    private int checkExistingOrderShipment(Goods searchGoods, Shipment searchShipment) {
-        boolean check_goods = false;
+    private Goods checkExistingOrderGoods(Goods searchGoods) {
         for (Goods goods : orderGoodsList) {
             if (goods.getGoodsID().equals(searchGoods.getGoodsID())) {
-                check_goods = true;
-                break;
+                return goods;
             }
         }
-        if (!check_goods) {
-            return -1;
-        }
-        for (Shipment shipment : searchGoods.getShipments()) {
-            if (shipment.getShipmentID().equals(searchShipment.getShipmentID())) {
-                return 1;
+        return null;
+    }
+
+    private boolean checkExistingOrderShipment(Goods searchGoods, Shipment searchShipment) {
+        Goods existingGoodsInOrder = checkExistingOrderGoods(searchGoods);
+        if (existingGoodsInOrder != null) {
+            for (Shipment shipment : existingGoodsInOrder.getShipments()) {
+                if (shipment.getShipmentID().equals(searchShipment.getShipmentID())) {
+                    return true;
+                }
             }
         }
-        return -1;
+        return false;
     }
 
     private void addToOrder() {
-        Goods searchGoods = uf.searchGoods(myGoodsList);
-        String input;
+
         Goods orderGoods = new Goods();
         Shipment orderShipment = new Shipment();
+
+        Goods searchGoods = uf.searchGoods(myGoodsList);
+        String input;
         if (searchGoods == null) {
             return;
         }
@@ -175,84 +174,139 @@ public class Order {
         if (searchShipment == null) {
             return;
         }
-        int checkExistingOrderShipment = checkExistingOrderShipment(searchGoods, searchShipment);
-        if (checkExistingOrderShipment == 1) {
-            System.out.println("This product shipment has been already exist. You choose?");
-            int choice;
-            do {
+        boolean checkExistingOrderShipment = checkExistingOrderShipment(searchGoods, searchShipment);
+        if (checkExistingOrderShipment) {
+            System.out.println("This product shipment has been already exist");
+            return;
+        }
+
+        while (true) {
+            System.out.print("Input product quantity or type BACK to get back: ");
+            input = sc.nextLine();
+            if (input.equalsIgnoreCase("back")) {
+                break;
+            } else {
                 try {
-                    System.out.println("-----------------------------------");
-                    System.out.println("| 1. Increase shipment's quantity |");
-                    System.out.println("| 2. Decrease shipment's quantity |");
-                    System.out.println("| 3. Exit                         |");
-                    System.out.println("-----------------------------------");
-                    System.out.print("Option => ");
-                    choice = sc.nextInt();
-                    sc.nextLine();
-                    switch (choice) {
-                        case 1:
-                            IncreaseQuantity(searchShipment, orderShipment);
-                            break;
-                        case 2:
-                            DecreaseQuantity(orderGoods, orderShipment);
-                            break;
-                        case 3:
-                            return;
-                        default:
-                            System.out.println("Wrong input! Please type form 1->3!");
-                            break;
+                    int quantity = Integer.parseInt(input);
+                    if (quantity < 0) {
+                        System.out.println(
+                                "Product quantity must be a positive number !");
+                        continue;
+                    } else if (quantity > searchShipment.getQuantity()) {
+                        System.out.println(
+                                "Warning: Does not have enough required quantity !");
+                        continue;
+                    } else if (quantity == 0) {
+                        break;
                     }
-                } catch (InputMismatchException ime) {
-                    System.out.println("Wrong input!");
-                    choice = -1;
-                }
-            } while (choice != 3);
-        } else {
-            while (true) {
-                System.out.print("Input product quantity or type BACK to get back: ");
-                input = sc.nextLine();
-                if (input.equalsIgnoreCase("back")) {
-                    break;
-                } else {
-                    try {
-                        int quantity = Integer.parseInt(input);
-                        if (quantity < 0) {
-                            System.out.println(
-                                    "Product quantity must be a positive number !");
-                            continue;
-                        } else if (quantity > searchShipment.getQuantity()) {
-                            System.out.println(
-                                    "Warning: Does not have enough required quantity !");
-                            continue;
-                        } else if (quantity == 0) {
-                            break;
-                        }
+                    Goods existingGoodsInOrder = checkExistingOrderGoods(searchGoods);
+                    orderShipment.setImportPrice(searchShipment.getImportPrice());
+                    orderShipment.setNsx(searchShipment.getNsx());
+                    orderShipment.setHsd(searchShipment.getHsd());
+                    orderShipment.setShipmentID(searchShipment.getShipmentID());
+                    orderShipment.setQuantity(quantity);
+                    if (existingGoodsInOrder == null) {
                         orderGoods.setGoodsID(searchGoods.getGoodsID());
                         orderGoods.setGoodsName(searchGoods.getGoodsName());
                         orderGoods.setListPrice(searchGoods.getListPrice());
-                        orderShipment.setShipmentID(searchShipment.getShipmentID());
-                        orderShipment.setQuantity(quantity);
-                        orderGoods.getShipments().add(orderShipment);
+                        orderGoods.setProvider(searchGoods.getProvider());
                         orderGoodsList.add(orderGoods);
-                        // Giảm số lượng hàng trong lô hàng sau khi thêm vào đơn hàng
-                        searchShipment.reduceQuantity(quantity);
-                        showOrder();
-                        break;
-                    } catch (NumberFormatException ne) {
-                        if ("".equals(input)) {
-                            System.out.println("Input is required!");
-                        } else {
-                            System.out.println("Wrong input!");
-                        }
+                        orderGoods.getShipments().add(orderShipment);
+                    } else {
+                        existingGoodsInOrder.getShipments().add(orderShipment);
+                    }
+                    showOrder(orderGoodsList);
+                    break;
+                } catch (NumberFormatException ne) {
+                    if ("".equals(input)) {
+                        System.out.println("Input is required!");
+                    } else {
+                        System.out.println("Wrong input!");
                     }
                 }
             }
         }
     }
 
-    //function 2
-    private void deleteFromOrder() {
+    private void editOrderMenu() {
+        System.out.println("");
+        System.out.println("------------------------------");
+        System.out.println("|      CHOOSE FUNCTION       |");
+        System.out.println("------------------------------");
+        System.out.println("| 1. Incerase Quantity       |");
+        System.out.println("| 2. Decrease Quantity       |");
+        System.out.println("| 3. Delete from order       |");
+        System.out.println("| 4. Back                    |");
+        System.out.println("------------------------------");
+        System.out.print("Option=> ");
+    }
 
+    private void editOrder() {
+        int choice;
+        if (orderGoodsList.isEmpty()) {
+            System.out.println("You haven't add any product !");
+            return;
+        } else {
+            uf.showGoodsList(orderGoodsList);
+        }
+        Goods searchOrderGoods = uf.searchGoods(orderGoodsList);
+        if (searchOrderGoods == null) {
+            return;
+        }
+        Shipment searchOrderShipment = uf.searchShipments(searchOrderGoods);
+        if (searchOrderShipment == null) {
+            return;
+        }
+
+        Shipment temp = new Shipment(searchOrderShipment.getQuantity(), searchOrderShipment.getImportPrice(),
+                searchOrderShipment.getNsx(), searchOrderShipment.getHsd());
+
+        int tempQuantity = 0;
+        for (Goods goods : myGoodsList) {
+            if (goods.getGoodsID().equals(searchOrderGoods.getGoodsID())) {
+                for (Shipment Shipment1 : goods.getShipments()) {
+                    if (Shipment1.getShipmentID().equals(searchOrderShipment.getShipmentID())) {
+                        tempQuantity = Shipment1.getQuantity();
+                    }
+                }
+            }
+        }
+        do {
+            try {
+                editOrderMenu();
+                choice = sc.nextInt();
+                sc.nextLine();
+                switch (choice) {
+                    case 1:
+                        IncreaseQuantity(temp, tempQuantity);
+                        break;
+                    case 2:
+                        DecreaseQuantity(searchOrderGoods, temp);
+                        break;
+                    case 3:
+                        deleteFromOrder(searchOrderGoods, searchOrderShipment);
+                        showOrder(orderGoodsList);
+                        return;
+                    case 4:
+                        searchOrderShipment.setQuantity(temp.getQuantity());
+                        System.out.println("Editted succeed !");
+                        showOrder(orderGoodsList);
+                        return;
+                    default:
+                        System.out.println("Wrong input! Please type form 1->4!");
+                        break;
+                }
+            } catch (InputMismatchException ime) {
+                System.out.println("Wrong input!");
+                choice = -1;
+            }
+        } while (choice != 4);
+    }
+
+    //function 2
+    private void deleteFromOrder(Goods goods, Shipment shipment) {
+        goods.getShipments().remove(shipment);
+        System.out.println("Deleted succeed !");
     }
 
     //function 3
@@ -335,14 +389,14 @@ public class Order {
     }
     //function 4
 
-    private void showOrder() {
+    private void showOrder(List<Goods> list) {
         System.out.println("");
         System.out.println("-------------------- YOUR ORDER --------------------");
         System.out.println("------------------------------------------------------");
         System.out.format("%-25s %-10s %-15s %-15s\n", "Name", "Quantity", "Price", "Total");
         System.out.format("%-25s %-10s %-15s %-15s\n", "-------------------------", "----------", "---------------", "---------------");
-        for (int i = 0; i < orderGoodsList.size(); i++) {
-            Goods goods = orderGoodsList.get(i);
+        for (int i = 0; i < list.size(); i++) {
+            Goods goods = list.get(i);
             long totalQuantity = goods.getTotalQuantity();
             long price = goods.getListPrice();
             long totalPrice = totalQuantity * price;
@@ -380,14 +434,14 @@ public class Order {
 
     public void orderMenu() {
         System.out.println("");
-        System.out.println("-----------------------");
-        System.out.println("|  MAKE A NEW ORDER   |");
-        System.out.println("----------------------");
-        System.out.println("| 1. Add to order     |");
-        System.out.println("| 2. Delete from order|");
-        System.out.println("| 3. Pay              |");
-        System.out.println("| 4. Back             |");
-        System.out.println("----------------------");
+        System.out.println("--------------------------");
+        System.out.println("|    MAKE A NEW ORDER    |");
+        System.out.println("--------------------------");
+        System.out.println("| 1. Add to order        |");
+        System.out.println("| 2. Edit Current Order  |");
+        System.out.println("| 3. Pay                 |");
+        System.out.println("| 4. Back                |");
+        System.out.println("--------------------------");
         System.out.print("Option=> ");
     }
 
@@ -404,7 +458,7 @@ public class Order {
                         addToOrder();
                         break;
                     case 2:
-                        deleteFromOrder();
+                        editOrder();
                         break;
                     case 3:
                         pay();
