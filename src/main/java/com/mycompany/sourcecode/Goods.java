@@ -12,6 +12,7 @@ import java.util.List;
  * @author s1rja
  */
 public class Goods {
+
     private String goodsName;
     private String goodsID = null;
     private String provider;
@@ -21,7 +22,7 @@ public class Goods {
 
     public Goods() {
     }
-    
+
     public Goods(int totalQuantity) {
         this.totalQuantity = totalQuantity;
     }
@@ -36,12 +37,8 @@ public class Goods {
         return this.shipments;
     }
 
-    public void setShipment(Shipment shipment) {
-        for (Shipment shipment1 : shipments) {
-            if (shipment1 == null) {
-                shipment1 = shipment;
-            }
-        }
+    public void setShipment(List<Shipment> shipments) {
+        this.shipments = shipments;
     }
 
     public String getGoodsName() {
@@ -82,5 +79,48 @@ public class Goods {
             this.totalQuantity += shipments.get(i).getQuantity();
         }
         return this.totalQuantity;
+    }
+
+    
+    public Goods cloneGoods() {
+        Goods cloneGoods = new Goods();
+        cloneGoods.setGoodsID(this.getGoodsID());
+        cloneGoods.setGoodsName(this.getGoodsName());
+        cloneGoods.setListPrice(this.getListPrice());
+        cloneGoods.setProvider(this.getProvider());
+        for (Shipment shipment : this.getShipments()) {
+            cloneGoods.shipments.add(shipment.cloneShipment());
+        }
+        return cloneGoods;
+    }
+
+    public int checkIfDuplicateShipmentExisted(Shipment shipment) {
+        // return -1 if shipments in goods not contain duplicate shipment(duplicate in importPrice, hsd and nsx)
+        // != -1 if shipments in goods contain shipment and is the index of shipment in
+        // goods'sshipments
+        for (Shipment tmpShipment : this.getShipments()) {
+            if (tmpShipment.getImportPrice() == shipment.getImportPrice()
+                    && tmpShipment.getHsd().isEqual(shipment.getHsd())
+                    && tmpShipment.getNsx().isEqual(shipment.getNsx())) {
+                return this.getShipments().indexOf(tmpShipment);
+            }
+        }
+        return -1;
+    }
+
+    public boolean checkIfTwoGoodsIsDuplicate(Goods anotherGoods) {
+        // return true if Goods is duplicate in goodsName and goodsProvider with 'anotherGoods', otherwise it returns false
+        return this.getGoodsName().equalsIgnoreCase(anotherGoods.getGoodsName())
+                && this.getProvider().equalsIgnoreCase(anotherGoods.getProvider());
+    }
+    
+    public Shipment findShipmentWithID(String id){
+        // return shipment with the given id
+        for (Shipment tmpShipment : this.shipments) {
+            if(tmpShipment.getShipmentID().equals(id)){
+                return tmpShipment;
+            }
+        }
+        return null;
     }
 }

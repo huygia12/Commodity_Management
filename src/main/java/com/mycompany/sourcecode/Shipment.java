@@ -5,6 +5,7 @@
 package com.mycompany.sourcecode;
 
 import java.time.LocalDate;
+import java.util.Scanner;
 
 /**
  *
@@ -71,5 +72,37 @@ class Shipment {
     public void reduceQuantity(int quantity) {
         this.quantity -= quantity;
     }
-
+    
+    public Shipment cloneShipment(){
+        Shipment cloneShipment = new Shipment();
+        cloneShipment.setShipmentID(this.getShipmentID());
+        cloneShipment.setImportPrice(this.getImportPrice());
+        cloneShipment.setQuantity(this.getQuantity());
+        cloneShipment.setHsd(this.getHsd());
+        cloneShipment.setNsx(this.getNsx());
+        return cloneShipment;
+    }
+    
+    public boolean gainQuantityDecision(int quantity) {
+        // give the user to make a decision between gain the shipmentQuantity one or abort changes
+        Scanner sc = new Scanner(System.in);
+        while (true) {
+            System.out.println(
+                    "This shipment already exists, do you want to keep your changes?");
+            System.out
+                    .print("(Y:add to the existing one / N:abort change)=>Y/N: ");
+            String yesNo = sc.nextLine();
+            if (yesNo.equalsIgnoreCase("y")) {
+                int sumQuantity = this.getQuantity() + quantity;
+                this.setQuantity(sumQuantity);
+                System.out.println("Add succceed...");
+                return true;
+            } else if (yesNo.equalsIgnoreCase("n")) {
+                System.out.println("Aborting...");
+                return false;
+            } else {
+                System.out.println("Wrong input!");
+            }
+        }
+    }
 }

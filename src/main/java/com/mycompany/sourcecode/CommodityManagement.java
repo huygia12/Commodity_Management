@@ -19,20 +19,26 @@ public class CommodityManagement {
 
     public static void main(String[] args) {
         Scanner sc = new Scanner(System.in);
-        List<Goods> goodsList = new ArrayList<>();
-        Repository myRepository = new Repository(goodsList);
+        List<Goods> myGoodsList = new ArrayList<>();
+        List<Order> myOrderHistory = new ArrayList<>();
+        Repository myRepository = new Repository(myGoodsList);
+        //UsefulFunctions uf = new UsefulFunctions();
         int choice;
         do {
             try {
                 menuOfMainFunction();
                 choice = sc.nextInt();
+                //uf.clearScreen();
+                //sc.nextLine();
                 switch (choice) {
                     case 1:
                         myRepository.repositoryManagement();
+                        //uf.clearScreen();
                         break;
                     case 2:
-                        Order order = new Order(goodsList);
+                        Order order = new Order(myGoodsList);
                         order.makeNewOrder();
+                        myOrderHistory.add(order);
                         break;
                     case 3:
                         //undeveloped
