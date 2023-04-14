@@ -37,9 +37,6 @@ public class UsefulFunctions {
             pressbot.keyPress(76); // Holds L key.
             pressbot.keyRelease(17); // Releases CTRL key.
             pressbot.keyRelease(76); // Releases L key.
-            sc.nextLine();
-            pressbot.keyPress(13); // Holds Enter key.
-            pressbot.keyRelease(13);
         } catch (AWTException ex) {
             Logger.getLogger(Logger.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -96,7 +93,7 @@ public class UsefulFunctions {
         return -1;
     }
 
-    public boolean noInputCase(String str) {
+    public boolean checkIfNoInput(String str) {
         if ("".equalsIgnoreCase(str)) {
             System.out.println("Input is required!");
             return true;
@@ -104,7 +101,7 @@ public class UsefulFunctions {
         return false;
     }
 
-    public boolean backCase(String str) {
+    public boolean goBack(String str) {
         return "back".equalsIgnoreCase(str);
     }
 
@@ -144,7 +141,7 @@ public class UsefulFunctions {
         }
     }
 
-    public String dateFormat(LocalDate date, String formatPattern) {
+    public String formatDate(LocalDate date, String formatPattern) {
         return date.format(DateTimeFormatter.ofPattern(formatPattern));
     }
 
@@ -190,8 +187,8 @@ public class UsefulFunctions {
             if (!goods.getShipments().isEmpty()) {
                 // If shipments already existed, fill them in the conlumns
                 Shipment shipment = goods.getShipments().get(0);
-                String productionDateString = dateFormat(shipment.getNsx(), OUTPUT_DATE_PATTERN);
-                String expirationDateString = dateFormat(shipment.getHsd(), OUTPUT_DATE_PATTERN);
+                String productionDateString = formatDate(shipment.getNsx(), OUTPUT_DATE_PATTERN);
+                String expirationDateString = formatDate(shipment.getHsd(), OUTPUT_DATE_PATTERN);
                 System.out.printf(" %-11s | %-15s | %-15s | %-"
                         + String.format(importPriceMaxSize + "s")
                         + " | %-" + String.format(quantityMaxSize + "s")
@@ -202,8 +199,8 @@ public class UsefulFunctions {
                 // If existed more than 1 shipment, use for-loop to print all the others
                 for (int i = 1; i < goods.getShipments().size(); i++) {
                     shipment = goods.getShipments().get(i);
-                    productionDateString = dateFormat(shipment.getNsx(), OUTPUT_DATE_PATTERN);
-                    expirationDateString = dateFormat(shipment.getHsd(), OUTPUT_DATE_PATTERN);
+                    productionDateString = formatDate(shipment.getNsx(), OUTPUT_DATE_PATTERN);
+                    expirationDateString = formatDate(shipment.getHsd(), OUTPUT_DATE_PATTERN);
                     int spaceInGoodsColumns = nameMaxSize + providerMaxSize + listPriceMaxSize + totalQuantityMaxSize + 20;
                     System.out.printf("| %-" + String.format(spaceInGoodsColumns + "s")
                             + " | %-11s | %-15s | %-15s"
@@ -236,7 +233,7 @@ public class UsefulFunctions {
             try {
                 System.out.print("Input productID to search(Type name for suggestion) or Back to go back: ");
                 inputStr = sc.nextLine();
-                if (backCase(inputStr)) {
+                if (goBack(inputStr)) {
                     break;
                 }
                 int searchingKey = Integer.parseInt(inputStr);
@@ -277,7 +274,7 @@ public class UsefulFunctions {
             showGoodsList(bucket);
             System.out.print("Input shipment ID or type BACK to go back: ");
             String inputStr = sc.nextLine();
-            if (backCase(inputStr)) {
+            if (goBack(inputStr)) {
                 System.out.println("Back...");
                 return null;
             } else {

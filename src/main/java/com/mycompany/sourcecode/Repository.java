@@ -8,6 +8,8 @@ import java.time.DateTimeException;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.InputMismatchException;
 import java.util.List;
 import java.util.Scanner;
@@ -44,7 +46,7 @@ public class Repository {
         System.out.print("Option => ");
     }
 
-    private void menuOfDeleteFunction() {
+    private void menuOfFunctionDelete() {
         System.out.println("\n********************************");
         System.out.println("* 1. Delete a goods            *");
         System.out.println("* 2. Delete a shipment         *");
@@ -53,7 +55,7 @@ public class Repository {
         System.out.print("Option => ");
     }
 
-    private void menuOfChangeInfor() {
+    private void menuOfFunctionChangeInfor() {
         System.out.println("\n****************************************");
         System.out.println("* 1. Change goods Informations         *");
         System.out.println("* 2. Change shipment Information       *");
@@ -62,7 +64,7 @@ public class Repository {
         System.out.print("Option => ");
     }
 
-    private void menuOfChangeGoodsInfor() {
+    private void menuOfFunctionChangeGoodsInfor() {
         System.out.println("\n***************************************");
         System.out.println("* 1. Change product Name              *");
         System.out.println("* 2. Change goods List price          *");
@@ -72,7 +74,7 @@ public class Repository {
         System.out.print("Option => ");
     }
 
-    private void menuOfChangShipmentsInfor() {
+    private void menuOfFunctionChangShipmentsInfor() {
         System.out.println("\n***************************************");
         System.out.println("* 1. Change shipment Import Price     *");
         System.out.println("* 2. Change shipment Production Date  *");
@@ -83,7 +85,7 @@ public class Repository {
         System.out.print("Option => ");
     }
 
-    private void menuOfFilterOptions() {
+    private void menuOfFunctionFilter() {
         System.out.println("\n*****************************************************");
         System.out.println("* 1. All Goods from the same manufacturer           *");
         System.out.println("* 2. Top 10 least quantity goodss in stock          *");
@@ -98,11 +100,13 @@ public class Repository {
     // Input
     private int typeName(Goods goods) {
         while (true) {
-            System.out.print("Input goods name or type Exit to exit: ");
+            System.out.print("Input goods name or type Exit/Back to exit/back: ");
             String inputStr = sc.nextLine();
             if (uf.exitCase(inputStr)) {
                 return 0;
-            } else if (uf.noInputCase(inputStr)) {
+            } else if (uf.goBack(inputStr)) {
+                return -1;
+            } else if (uf.checkIfNoInput(inputStr)) {
             } else {
                 goods.setGoodsName(inputStr);
                 return 1;
@@ -116,9 +120,9 @@ public class Repository {
             String inputStr = sc.nextLine();
             if (uf.exitCase(inputStr)) {
                 return 0;
-            } else if (uf.backCase(inputStr)) {
+            } else if (uf.goBack(inputStr)) {
                 return -1;
-            } else if (uf.noInputCase(inputStr)) {
+            } else if (uf.checkIfNoInput(inputStr)) {
             } else if (uf.checkIfDuplicateGoodsExisted(myGoodsList, goods) != -1) {
             } else {
                 goods.setProvider(inputStr);
@@ -133,9 +137,9 @@ public class Repository {
             String inputStr = sc.nextLine();
             if (uf.exitCase(inputStr)) {
                 return 0;
-            } else if (uf.backCase(inputStr)) {
+            } else if (uf.goBack(inputStr)) {
                 return -1;
-            } else if (uf.noInputCase(inputStr)) {
+            } else if (uf.checkIfNoInput(inputStr)) {
             } else {
                 try {
                     int listPrice = Integer.parseInt(inputStr);
@@ -153,11 +157,13 @@ public class Repository {
 
     private int typeQuantity(Shipment shipment) {
         while (true) {
-            System.out.print("Input goods quantity or type Exit to exit: ");
+            System.out.print("Input goods quantity or type Exit/BACK to exit/back: ");
             String inputStr = sc.nextLine();
-            if (uf.backCase(inputStr)) {
+            if (uf.goBack(inputStr)) {
                 return 0;
-            } else if (uf.noInputCase(inputStr)) {
+            } else if (uf.goBack(inputStr)) {
+                return -1;
+            } else if (uf.checkIfNoInput(inputStr)) {
             } else {
                 try {
                     int quantity = Integer.parseInt(inputStr);
@@ -179,9 +185,9 @@ public class Repository {
             String inputStr = sc.nextLine();
             if (uf.exitCase(inputStr)) {
                 return 0;
-            } else if (uf.backCase(inputStr)) {
+            } else if (uf.goBack(inputStr)) {
                 return -1;
-            } else if (uf.noInputCase(inputStr)) {
+            } else if (uf.checkIfNoInput(inputStr)) {
             } else {
                 try {
                     int importPrice = Integer.parseInt(inputStr);
@@ -202,7 +208,7 @@ public class Repository {
             String inputStr = sc.nextLine();
             if (uf.exitCase(inputStr)) {
                 return 0;
-            } else if (uf.backCase(inputStr)) {
+            } else if (uf.goBack(inputStr)) {
                 return -1;
             } else {
                 try {
@@ -233,14 +239,14 @@ public class Repository {
             String inputStr = sc.nextLine();
             if (uf.exitCase(inputStr)) {
                 return 0;
-            } else if (uf.backCase(inputStr)) {
+            } else if (uf.goBack(inputStr)) {
                 return -1;
             } else {
                 try {
                     LocalDate hsd = LocalDate.parse(inputStr, DateTimeFormatter
                             .ofPattern(INPUT_DATE_PATTERN));
                     if (hsd.isBefore(shipment.getNsx())) {
-                        System.out.println("Invalid Date, must be equal or greater than production date!");
+                        System.out.println("Invalid Date, expiration date cannot be before production date!");
                     } else {
                         shipment.setHsd(hsd);
                         return 1;
@@ -253,7 +259,7 @@ public class Repository {
     }
 
     // Function 1
-    private void addNewGoodsFunction() {
+    private void addNewGoods() {
         Goods newGoods = new Goods();
         int n = 1;
         int nextProcess;
@@ -262,6 +268,8 @@ public class Repository {
                 case 1:
                     nextProcess = typeName(newGoods);
                     if (nextProcess == 0) {
+                        return;
+                    } else if (nextProcess == -1) {
                         return;
                     }
                 case 2:
@@ -289,7 +297,7 @@ public class Repository {
     }
 
     // Function 2
-    private void importGoodsFunction() {
+    private void importGoods() {
         Goods searchGoods = uf.searchGoods(myGoodsList);
         if (searchGoods == null) {
             return;
@@ -302,6 +310,8 @@ public class Repository {
                 case 1:
                     nextProcess = typeQuantity(newShipment);
                     if (nextProcess == 0) {
+                        return;
+                    } else if (nextProcess == -1) {
                         return;
                     }
                 case 2:
@@ -372,7 +382,7 @@ public class Repository {
         Goods draftGoods = searchGoods.cloneGoods();
         String choice;
         do {
-            menuOfChangeGoodsInfor();
+            menuOfFunctionChangeGoodsInfor();
             choice = sc.nextLine();
             switch (choice) {
                 case "1":
@@ -447,7 +457,7 @@ public class Repository {
         String choice;
         Shipment draftShipment = searchShipment.cloneShipment();
         do {
-            menuOfChangShipmentsInfor();
+            menuOfFunctionChangShipmentsInfor();
             choice = sc.nextLine();
             switch (choice) {
                 case "1":
@@ -482,12 +492,12 @@ public class Repository {
     }
 
     // Function 3
-    private void editInforFunction() {
+    private void editGoodsAndShipmentInfor() {
         String choice;
         Goods searchGoods = null;
         do {
-            menuOfChangeInfor();
-            choice = sc.nextLine();
+            menuOfFunctionChangeInfor();
+            choice = sc.nextLine().trim();
             switch (choice) {
                 case "1":
                     searchGoods = uf.searchGoods(myGoodsList);
@@ -514,15 +524,15 @@ public class Repository {
                     System.out.println("Wrong input, Please type from 1->3!");
                     break;
             }
-        } while (choice.equals("3"));
+        } while (!choice.equals("3"));
     }
 
     // Function 4
-    private int deleteOption() {
+    private int decideOptionToDelete() {
         // return option: 1-delete goods | 2-delete shipment | 3-back
         int input;
         do {
-            menuOfDeleteFunction();
+            menuOfFunctionDelete();
             try {
                 input = sc.nextInt();
             } catch (InputMismatchException ime) {
@@ -557,8 +567,8 @@ public class Repository {
         }
     }
 
-    private void deleteFunction() {
-        int input = deleteOption();
+    private void deleteGoodsAndShipment() {
+        int input = decideOptionToDelete();
         Goods searchGoods = null;
         switch (input) {
             case 1:
@@ -593,7 +603,7 @@ public class Repository {
         return maxSize;
     }
 
-    private boolean checkExistingManufac(List<String> listOfManufac, String manufac) {
+    private boolean checkIfManufacExisted(List<String> listOfManufac, String manufac) {
         for (String tmpStr : listOfManufac) {
             if (tmpStr.equalsIgnoreCase(manufac)) {
                 return true;
@@ -602,21 +612,22 @@ public class Repository {
         return false;
     }
 
-    private List<String> makeExistingManufacList(List<String> listOfManufac) {
-        for (Goods goods : myGoodsList) {
-            String tmpManufac = goods.getProvider();
-            if (!checkExistingManufac(listOfManufac, tmpManufac)) {
-                listOfManufac.add(tmpManufac);
+    private List<String> listExistingManufac(List<Goods> goodsList) {
+        List<String> listOfManufac = new ArrayList<>();
+        for (Goods goods : goodsList) {
+            String tmp = goods.getProvider();
+            if (!checkIfManufacExisted(listOfManufac, tmp)) {
+                listOfManufac.add(tmp);
             }
         }
         return listOfManufac;
     }
 
-    private List<String> printManufacList(List<String> listOfManufac) {
-        listOfManufac = makeExistingManufacList(listOfManufac);
+    private void printManufacList() {
+        List<String> listOfManufac = listExistingManufac(myGoodsList);
         if (listOfManufac == null) {
             System.out.println("No product found in your repository!");
-            return null;
+            return;
         }
         String title = "ManufacturerList";
         int maxSize = title.length() + 20;
@@ -630,13 +641,12 @@ public class Repository {
         }
         System.out.println("| " + (listOfManufac.size() + 1) + ". Back" + String.format("%" + (maxSize - 7) + "s", " |"));
         System.out.println("|" + "-".repeat(maxSize) + "|");
-        return listOfManufac;
     }
 
-    private void showGoodsWithSameManufacturer() {
+    private void listGoodsWithSameManufacturer() {
         List<Goods> filterList = new ArrayList<>();
-
-        List<String> listOfManufac = printManufacList(new ArrayList<>());
+        printManufacList();
+        List<String> listOfManufac = listExistingManufac(myGoodsList);
         if (listOfManufac == null) {
             return;
         }
@@ -665,7 +675,7 @@ public class Repository {
     }
 
     // Function 6.2
-    private void showTopLeastQuantity() {
+    private void listTopLeastQuantity() {
         List<Goods> filterList = new ArrayList<>();
 
         myGoodsList.sort(new quantityCoparator()
@@ -676,7 +686,7 @@ public class Repository {
     }
 
     // Function 6.3
-    private void showTopLargestQuantity() {
+    private void listTopLargestQuantity() {
         List<Goods> filterList = new ArrayList<>();
 
         myGoodsList.sort(new quantityCoparator().reversed()
@@ -686,8 +696,36 @@ public class Repository {
         uf.showGoodsList(myGoodsList);
     }
 
+    // Function 6.4
+    private boolean checkIfProducDateExisted(List<LocalDate> listOfProducDate, LocalDate producDate) {
+        for (LocalDate tmp : listOfProducDate) {
+            if (tmp.isEqual(producDate)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    private List<LocalDate> listAllProductionDate(List<Goods> goodsList) {
+        List<LocalDate> listOfProducDate = new ArrayList<>();
+        for (Goods tmpGoods : goodsList) {
+            for (Shipment tmpShipment : tmpGoods.getShipments()) {
+                if (!checkIfProducDateExisted(listOfProducDate, tmpShipment.getNsx())) {
+                    listOfProducDate.add(tmpShipment.getNsx());
+                }
+            }
+        }
+        Collections.sort(listOfProducDate, (LocalDate date1, LocalDate date2) -> (-1) * date1.compareTo(date2));
+        return listOfProducDate;
+    }
+
+    private void listTopRecentlyProducDate() {
+        List<LocalDate> listOfProducDate = listAllProductionDate(myGoodsList);
+        List<Goods> bucket = new ArrayList<>();
+    }
+
     // Function 6.5
-    private void showAllExpired() {
+    private void listAllExpired() {
         List<Goods> filterList = new ArrayList<>();
         LocalDate currentDate = LocalDate.now();
         for (Goods goods : myGoodsList) {
@@ -709,95 +747,83 @@ public class Repository {
     }
 
     // Function 6
-    private void filterFunction() {
+    private void makeListByRequirement() {
         if (uf.checkIfListEmpty(myGoodsList)) {
             return;
         }
-        int choice;
+        String choice;
         do {
-            try {
-                menuOfFilterOptions();
-                choice = sc.nextInt();
-                //uf.clearScreen();
-                switch (choice) {
-                    case 1:
-                        showGoodsWithSameManufacturer();
-                        //uf.typeAnyKeyToContinue();
-                        //uf.clearScreen();
-                        break;
-                    case 2:
-                        showTopLeastQuantity();
-                        break;
-                    case 3:
-                        showTopLargestQuantity();
-                        break;
-                    case 4:
-
-                    case 5:
-                        showAllExpired();
-                        break;
-                    case 6:
-                        break;
-                    default:
-                        System.out.println("Wrong input, Please type from 1->6!");
-                }
-            } catch (InputMismatchException ime) {
-                System.out.println("Wrong input!");
-                choice = -1;
-                sc.next();
+            menuOfFunctionFilter();
+            choice = sc.nextLine().trim();
+            //uf.clearScreen();
+            switch (choice) {
+                case "1":
+                    listGoodsWithSameManufacturer();
+                    //uf.typeAnyKeyToContinue();
+                    //uf.clearScreen();
+                    break;
+                case "2":
+                    listTopLeastQuantity();
+                    break;
+                case "3":
+                    listTopLargestQuantity();
+                    break;
+                case "4":
+                    listTopRecentlyProducDate();
+                    break;
+                case "5":
+                    listAllExpired();
+                    break;
+                case "6":
+                    break;
+                default:
+                    System.out.println("Wrong input, Please type from 1->6!");
             }
-        } while (choice != 6);
+        } while (!choice.equals("6"));
     }
 
     // Main
     public void repositoryManagement() {
-        int choice;
+        String choice;
         do {
-            try {
-                menuOfRepoManagement();
-                choice = sc.nextInt();
-                //uf.clearScreen();
-                sc.nextLine();
-                switch (choice) {
-                    case 1:
-                        addNewGoodsFunction();
-                        //uf.clearScreen();
-                        //sc.nextLine();
-                        break;
-                    case 2:
-                        importGoodsFunction();
-                        //uf.clearScreen();
-                        break;
-                    case 3:
-                        editInforFunction();
-                        //uf.clearScreen();
-                        break;
-                    case 4:
-                        deleteFunction();
-                        //uf.clearScreen();
-                        break;
-                    case 5:
-                        myGoodsList.sort(new nameComparator().thenComparing(new manufacturerComparator()));
-                        uf.showGoodsList(myGoodsList);
-                        //uf.typeAnyKeyToContinue();
-                        //uf.clearScreen();
-                        break;
-                    case 6:
-                        filterFunction();
-                        //uf.clearScreen();
-                        break;
-                    case 7:
-                        System.out.println("Back...");
-                        break;
-                    default:
-                        System.out.println("Wrong input, Please type from 1->7!");
-                        break;
-                }
-            } catch (InputMismatchException ime) {
-                System.out.println("Wrong input!");
-                choice = -1;
-                sc.next();
+            menuOfRepoManagement();
+            choice = sc.nextLine().trim();
+            //uf.clearScreen();
+            switch (choice) {
+                case "1":
+                    addNewGoods();
+                    //uf.clearScreen();
+                    //sc.nextLine();
+                    break;
+                case "2":
+                    importGoods();
+                    //uf.clearScreen();
+                    break;
+                case "3":
+                    editGoodsAndShipmentInfor();
+                    //uf.clearScreen();
+                    break;
+                case "4":
+                    deleteGoodsAndShipment();
+                    //uf.clearScreen();
+                    break;
+                case "5":
+                    myGoodsList.sort(new nameComparator().thenComparing(new manufacturerComparator()));
+                    uf.showGoodsList(myGoodsList);
+                    //uf.typeAnyKeyToContinue();
+                    //uf.clearScreen();
+                    break;
+                case "6":
+                    makeListByRequirement();
+                    //uf.clearScreen();
+                    break;
+                case "7":
+                    System.out.println("Back...");
+                    break;
+                default:
+                    System.out.println("Wrong input, Please type from 1->7!");
+                    break;
             }
-        } while (choice != 7);
+        } while (!choice.equals("7"));
     }
 }

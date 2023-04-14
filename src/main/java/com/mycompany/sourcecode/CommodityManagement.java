@@ -1,3 +1,7 @@
+/*
+ * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
+ * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
+ */
 package com.mycompany.sourcecode;
 
 import java.util.ArrayList;
@@ -5,7 +9,13 @@ import java.util.InputMismatchException;
 import java.util.List;
 import java.util.Scanner;
 
+/**
+ *
+ * @author FPTSHOP
+ */
 public class CommodityManagement {
+
+    static Scanner sc = new Scanner(System.in);
 
     public static void menuOfMainFunction() {
         System.out.println("\n********************************");
@@ -18,44 +28,37 @@ public class CommodityManagement {
     }
 
     public static void main(String[] args) {
-        Scanner sc = new Scanner(System.in);
         List<Goods> myGoodsList = new ArrayList<>();
         List<Order> myOrderHistory = new ArrayList<>();
         Repository myRepository = new Repository(myGoodsList);
         //UsefulFunctions uf = new UsefulFunctions();
-        int choice;
+        String choice;
         do {
-            try {
-                menuOfMainFunction();
-                choice = sc.nextInt();
-                //uf.clearScreen();
-                //sc.nextLine();
-                switch (choice) {
-                    case 1:
-                        myRepository.repositoryManagement();
-                        //uf.clearScreen();
-                        break;
-                    case 2:
-                        Order order = new Order(myGoodsList);
-                        order.makeNewOrder();
-                        myOrderHistory.add(order);
-                        break;
-                    case 3:
-                        //undeveloped
-                        break;
-                    case 4:
-                        System.out.println("Exiting...");
-                        break;
-                    default:
-                        System.out.println("Wrong input, Please type from 1->4!");
-                        break;
-                }
-            } catch (InputMismatchException ime) {
-                System.out.println("Wrong input!");
-                choice = -1;
-                sc.next();
+            menuOfMainFunction();
+            choice = sc.nextLine().trim();
+            //uf.clearScreen();
+            //sc.nextLine();
+            switch (choice) {
+                case "1":
+                    myRepository.repositoryManagement();
+                    //uf.clearScreen();
+                    break;
+                case "2":
+                    Order order = new Order(myGoodsList);
+                    order.makeNewOrder();
+                    myOrderHistory.add(order);
+                    break;
+                case "3":
+                    //undeveloped
+                    break;
+                case "4":
+                    System.out.println("Exiting...");
+                    break;
+                default:
+                    System.out.println("Wrong input, Please type from 1->4!");
+                    break;
             }
-        } while (choice != 4);
-        sc.close();
+
+        } while (!choice.equals("4"));
     }
 }
