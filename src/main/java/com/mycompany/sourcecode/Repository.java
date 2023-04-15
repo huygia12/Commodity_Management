@@ -85,7 +85,7 @@ public class Repository {
         System.out.print("Option => ");
     }
 
-    private void menuOfFunctionFilter() {
+    private void menuOfMakeListByRequirement() {
         System.out.println("\n*****************************************************");
         System.out.println("* 1. All Goods from the same manufacturer           *");
         System.out.println("* 2. Top 10 least quantity goodss in stock          *");
@@ -589,6 +589,13 @@ public class Repository {
         }
     }
 
+    // Function 5
+    private void printOutAllCurrentGoods() {
+        //myGoodsList is sorted by name, then is by manufacture
+        myGoodsList.sort(new nameComparator().thenComparing(new manufacturerComparator()));
+        uf.showGoodsList(myGoodsList);
+    }
+
     // Function 6.1
     private int sizeOfManufacColumn(int maxSize, List<String> listOfManufac) {
         for (String tmpStr : listOfManufac) {
@@ -697,31 +704,42 @@ public class Repository {
     }
 
     // Function 6.4
-    private boolean checkIfProducDateExisted(List<LocalDate> listOfProducDate, LocalDate producDate) {
-        for (LocalDate tmp : listOfProducDate) {
-            if (tmp.isEqual(producDate)) {
-                return true;
-            }
-        }
-        return false;
+    private void sortShipmentByProducDate(Goods goods) {
+        Collections.sort(goods.getShipments(), (Shipment shipment1, Shipment shipment2)
+                -> (-1) * shipment1.getNsx().compareTo(shipment2.getNsx()));
     }
 
-    private List<LocalDate> listAllProductionDate(List<Goods> goodsList) {
-        List<LocalDate> listOfProducDate = new ArrayList<>();
-        for (Goods tmpGoods : goodsList) {
-            for (Shipment tmpShipment : tmpGoods.getShipments()) {
-                if (!checkIfProducDateExisted(listOfProducDate, tmpShipment.getNsx())) {
-                    listOfProducDate.add(tmpShipment.getNsx());
-                }
+    private List<Goods> listGoodsLatestProducDate() {
+        // Make a list of goods with their latest production date
+        //(only one shipment with latest production date exists in goods.getShipments())
+        // Eliminate all goods with no shipment
+        List<Goods> filterList = new ArrayList<>();
+        for (Goods goods : myGoodsList) {
+            if (!goods.getShipments().isEmpty()) {
+                sortShipmentByProducDate(goods);
+                Goods tmpGoods = goods.cloneGoods();
+                tmpGoods.getShipments().clear();
+                tmpGoods.getShipments().add(goods.getShipments().get(0));
+                filterList.add(tmpGoods);
             }
         }
-        Collections.sort(listOfProducDate, (LocalDate date1, LocalDate date2) -> (-1) * date1.compareTo(date2));
-        return listOfProducDate;
+        return filterList;
     }
 
     private void listTopRecentlyProducDate() {
-        List<LocalDate> listOfProducDate = listAllProductionDate(myGoodsList);
-        List<Goods> bucket = new ArrayList<>();
+        List<Goods> filterList = listGoodsLatestProducDate();
+        // Because Goods now only contains 1 shipment, we sort bucket by productionDate
+        Collections.sort(filterList, (Goods goods1, Goods goods2)
+                -> (-1)*goods1.getShipments().get(0).getNsx()
+                        .compareTo(goods2.getShipments().get(0).getNsx()));
+        //If bucket contains less than 10 goods, list them all
+        // otherwise, we only take 10 goods with latest Production Date to print out
+        int size = filterList.size();
+        if (size <= 10) {
+            uf.showGoodsList(filterList);
+        } else {
+            uf.showGoodsList(filterList.subList(0, 9));
+        }
     }
 
     // Function 6.5
@@ -733,12 +751,8 @@ public class Repository {
                     .stream()
                     .filter(shipment -> shipment.getHsd().isAfter(currentDate))
                     .toList();
-            if (tmpShipmentList != null) {
-                Goods tmpGoods = new Goods();
-                tmpGoods.setGoodsID(goods.getGoodsID());
-                tmpGoods.setGoodsName(goods.getGoodsName());
-                tmpGoods.setProvider(goods.getProvider());
-                tmpGoods.setListPrice(goods.getListPrice());
+            if (!tmpShipmentList.isEmpty()) {
+                Goods tmpGoods = goods.cloneGoods();
                 tmpGoods.setShipment(tmpShipmentList);
                 filterList.add(tmpGoods);
             }
@@ -753,7 +767,7 @@ public class Repository {
         }
         String choice;
         do {
-            menuOfFunctionFilter();
+            menuOfMakeListByRequirement();
             choice = sc.nextLine().trim();
             //uf.clearScreen();
             switch (choice) {
@@ -808,8 +822,7 @@ public class Repository {
                     //uf.clearScreen();
                     break;
                 case "5":
-                    myGoodsList.sort(new nameComparator().thenComparing(new manufacturerComparator()));
-                    uf.showGoodsList(myGoodsList);
+                    printOutAllCurrentGoods();
                     //uf.typeAnyKeyToContinue();
                     //uf.clearScreen();
                     break;
