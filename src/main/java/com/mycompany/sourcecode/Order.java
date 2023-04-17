@@ -378,7 +378,7 @@ public class Order {
                             System.out.println("Insufficient payment. Please pay more.");
                             continue;
                         }
-                        // Cập nhật số lượng lô hàng trong myGoodsList  
+                        // Cập nhật số lại lượng lô hàng trong myGoodsList  
                         for (Goods g : draftOrder) {
                             for (Shipment s : g.getShipments()) {
                                 for (Goods g2 : myGoodsList) {
