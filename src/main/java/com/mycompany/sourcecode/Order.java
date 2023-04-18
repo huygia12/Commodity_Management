@@ -173,7 +173,7 @@ public class Order {
             }
         }
     }
-    
+
     //Function 2
     private void editOrder() {
         int choice;
@@ -236,7 +236,7 @@ public class Order {
             }
         } while (choice != 4);
     }
-    
+
     //Function 2.1
     private void IncreaseQuantity(Shipment tmp, int shipmentQuantity) {
         if (tmp.getQuantity() == shipmentQuantity) {
@@ -275,7 +275,7 @@ public class Order {
             }
         }
     }
-    
+
     //Function 2.2
     private void DecreaseQuantity(Goods goods, Shipment tmp) {
         if (tmp.getQuantity() == 0) {
@@ -315,13 +315,13 @@ public class Order {
             }
         }
     }
-      
+
     //Function 2.3
     private void deleteFromOrder(Goods goods, Shipment shipment) {
         goods.getShipments().remove(shipment);
         System.out.println("Deleted succeed !");
     }
-    
+
     //Function 3
     private void payOrder() {
         if (draftOrder.isEmpty()) {
@@ -353,9 +353,9 @@ public class Order {
         while (inputMoney) {
             try {
                 if (!backToDiscount) {
-                    System.out.println("Please enter the amount of money you give, or type BACK to go back, or type EXIT to exit payment process: ");
+                    System.out.print("Please enter the amount of money you give, or type BACK to go back, or type EXIT to exit payment process: ");
                 } else {
-                    System.out.println("Please enter the discount percentage (must be a positive number), or type BACK to go back: ");
+                    System.out.print("Please enter the discount percentage (must be a positive number), or type BACK to go back: ");
                 }
                 String input = scanner.nextLine();
                 if (input.equalsIgnoreCase("BACK")) {
@@ -378,8 +378,26 @@ public class Order {
                             System.out.println("Insufficient payment. Please pay more.");
                             continue;
                         }
+                        // Cập nhật số lại lượng lô hàng trong myGoodsList  
+                        for (Goods g : draftOrder) {
+                            for (Shipment s : g.getShipments()) {
+                                for (Goods g2 : myGoodsList) {
+                                    // Tìm đối tượng Goods tương ứng trong myGoodsList
+                                    if (g.getGoodsID().equals(g2.getGoodsID())) {
+                                        for (Shipment s2 : g2.getShipments()) {
+                                            // Tìm đối tượng Lô hàng tương ứng trong myGoodsList
+                                            if (s.getShipmentID().equals(s2.getShipmentID())) {
+                                                s2.setQuantity(s2.getQuantity() - s.getQuantity());
+                                            }
+                                        }
+                                        
+                                    }
+                                }
+                            }
+                        }
                         int change = customerMoney - totalAfterDiscount;
                         showBill(totalPayment, totalAfterDiscount, change);
+
                         draftOrder.clear();
                         inputMoney = false;
                     } else {
@@ -391,12 +409,7 @@ public class Order {
                         }
                         System.out.println("Discount applied successfully!");
                     }
-                    // Hiển thị hóa đơn và trừ số lượng hàng
-                    int change = customerMoney - totalAfterDiscount;
-                    showBill(totalPayment, totalAfterDiscount, change);
-                    inputMoney = false; // Đặt biến để thoát vòng lặp và quay lại Menu
-                    draftOrder.clear();
-                    break;
+
                 }
             } catch (NumberFormatException e) {
                 System.out.println("Invalid input. Please try again.");
@@ -445,7 +458,7 @@ public class Order {
         System.out.println("Change: " + change);
         System.out.println("----------------------------------------");
     }
-    
+
     public void makeNewOrder() {
 
         int choice;
