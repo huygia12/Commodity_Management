@@ -2,7 +2,7 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
-package com.mycompany.sourcecode;
+package Controllers;
 
 import java.time.LocalDate;
 import java.util.Scanner;
@@ -29,6 +29,15 @@ class Shipment {
         this.hsd = hsd;
     }
 
+    public Shipment(int quantity, long importPrice, LocalDate nsx, LocalDate hsd, String id) {
+        this.quantity = quantity;
+        this.importPrice = importPrice;
+        this.nsx = nsx;
+        this.hsd = hsd;
+        this.shipmentID = id;
+    }
+
+    
     public LocalDate getNsx() {
         return nsx;
     }

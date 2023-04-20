@@ -2,10 +2,11 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
-package com.mycompany.sourcecode;
+package Controllers;
 
 import java.awt.AWTException;
 import java.awt.Robot;
+import java.time.DateTimeException;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
@@ -22,6 +23,7 @@ public class UsefulFunctions {
 
     Scanner sc = new Scanner(System.in);
     final String OUTPUT_DATE_PATTERN = "dd/MM/yyyy";
+    final String INPUT_DATE_PATTERN = "d/M/y";
     final LocalDate CURRENT_DATE = LocalDate.now();
     int nameMaxSize;
     int providerMaxSize;
@@ -47,7 +49,7 @@ public class UsefulFunctions {
         sc.nextLine();
     }
 
-    public Goods findGoodsWithID(String id, List<Goods> goodsList) {
+    public Goods containGoods(String id, List<Goods> goodsList) {
         for (Goods tmpGoods : goodsList) {
             if (tmpGoods.getGoodsID().equals(id)) {
                 return tmpGoods;
@@ -56,11 +58,10 @@ public class UsefulFunctions {
         return null;
     }
 
-    public boolean checkIfShipmentExisted(String id, List<Shipment> shipmentList) {
-        for (Shipment shipment : shipmentList) {
-            if (shipment.getShipmentID().equals(id)) {
-                return true;
-            }
+    public boolean checkIfNotEnouQuan(int inputQuantity, int deafaultQuantity) {
+        if (inputQuantity > deafaultQuantity) {
+            System.out.println("Doesn't have enough quantity!");
+            return true;
         }
         return false;
     }
@@ -74,14 +75,22 @@ public class UsefulFunctions {
     }
 
     public boolean checkIfNumPositive(int num) {
-        if (num <= 0) {
-            System.out.println("Must be a positive number!");
+        if (num < 0) {
+            System.out.println("This number cannot take a negative value!");
             return false;
         }
         return true;
     }
 
-    public int checkIfDuplicateGoodsExisted(List<Goods> goodsList, Goods checkingGoods) {
+    public boolean checkIfNumIsZero(int num){
+        if(num == 0){
+            System.out.println("This number cannot be zero!");
+            return true;
+        }
+        return false;
+    }
+    
+    public int checkIfDuplicateGoods(List<Goods> goodsList, Goods checkingGoods) {
         // return index of the first dupicate goods in list, otherwise -1 will be returned
         for (Goods goods : goodsList) {
             if (goods.checkIfTwoGoodsIsDuplicate(checkingGoods)) {
@@ -101,15 +110,179 @@ public class UsefulFunctions {
         return false;
     }
 
-    public boolean goBack(String str) {
+    public int typeInQuan(Shipment shipment) {
+        while (true) {
+            System.out.print("Type in quantity or type EXIT/BACK to exit/back: ");
+            String inputStr = sc.nextLine();
+            if (exitCase(inputStr)) {
+                return 0;
+            } else if (backCase(inputStr)) {
+                return -1;
+            } else if (checkIfNoInput(inputStr)) {
+            } else {
+                try {
+                    int quantity = Integer.parseInt(inputStr);
+                    if (!checkIfNumPositive(quantity)) {
+                        continue;
+                    }
+                    shipment.setQuantity(quantity);
+                    return 1;
+                } catch (NumberFormatException nfe) {
+                    wrInput();
+                }
+            }
+        }
+    }
+
+    public int typeInManufac(Goods goods, List<Goods> goodsList) {
+        while (true) {
+            System.out.print("Type in manufacturer or type EXIT/BACK to go exit/back: ");
+            String inputStr = sc.nextLine();
+            if (exitCase(inputStr)) {
+                return 0;
+            } else if (backCase(inputStr)) {
+                return -1;
+            } else if (checkIfNoInput(inputStr)) {
+            } else if (checkIfDuplicateGoods(goodsList, goods) != -1) {
+            } else {
+                goods.setProvider(inputStr);
+                return 1;
+            }
+        }
+    }
+
+    public int typeInName(Goods goods) {
+        while (true) {
+            System.out.print("Type in name or type EXIT/BACK to exit/back: ");
+            String inputStr = sc.nextLine();
+            if (exitCase(inputStr)) {
+                return 0;
+            } else if (backCase(inputStr)) {
+                return -1;
+            } else if (checkIfNoInput(inputStr)) {
+            } else {
+                goods.setGoodsName(inputStr);
+                return 1;
+            }
+        }
+    }
+
+    public int typeInListPrice(Goods goods) {
+        while (true) {
+            System.out.print("Type in listed price or type EXIT/BACK to go exit/back: ");
+            String inputStr = sc.nextLine();
+            if (exitCase(inputStr)) {
+                return 0;
+            } else if (backCase(inputStr)) {
+                return -1;
+            } else if (checkIfNoInput(inputStr)) {
+            } else {
+                try {
+                    int listPrice = Integer.parseInt(inputStr);
+                    if (!checkIfNumPositive(listPrice)) {
+                        continue;
+                    }
+                    goods.setListPrice(listPrice);
+                    return 1;
+                } catch (NumberFormatException nfe) {
+                    wrInput();
+                }
+            }
+        }
+    }
+
+    public int typeInImportPrice(Shipment shipment) {
+        while (true) {
+            System.out.print("Input goods import price or type EXIT/BACK to go exit/back: ");
+            String inputStr = sc.nextLine();
+            if (exitCase(inputStr)) {
+                return 0;
+            } else if (backCase(inputStr)) {
+                return -1;
+            } else if (checkIfNoInput(inputStr)) {
+            } else {
+                try {
+                    int importPrice = Integer.parseInt(inputStr);
+                    if (checkIfNumPositive(importPrice)) {
+                        shipment.setImportPrice(importPrice);
+                        return 1;
+                    }
+                } catch (NumberFormatException nfe) {
+                    wrInput();
+                }
+            }
+        }
+    }
+
+    public int typeInProDate(Shipment shipment) {
+        while (true) {
+            System.out.print("Input production date or type EXIT/BACK to go exit/back: ");
+            String inputStr = sc.nextLine();
+            if (exitCase(inputStr)) {
+                return 0;
+            } else if (backCase(inputStr)) {
+                return -1;
+            } else {
+                try {
+                    LocalDate nsx = LocalDate.parse(inputStr, DateTimeFormatter
+                            .ofPattern(INPUT_DATE_PATTERN));
+                    if (nsx.isAfter(CURRENT_DATE)) {
+                        System.out.println("Invalid Date, production date cannot be after current date!");
+                    } else {
+                        if (shipment.getHsd() != null) {
+                            if (nsx.isAfter(shipment.getHsd())) {
+                                System.out.println("Invalid Date, production date cannot be after expiration date!");
+                                continue;
+                            }
+                        }
+                        shipment.setNsx(nsx);
+                        return 1;
+                    }
+                } catch (DateTimeException dte) {
+                    wrInput();
+                }
+            }
+        }
+    }
+
+    public int typeInEpirDate(Shipment shipment) {
+        while (true) {
+            System.out.print("Input expiration Date or type EXIT/BACK to go exit/back: ");
+            String inputStr = sc.nextLine();
+            if (exitCase(inputStr)) {
+                return 0;
+            } else if (backCase(inputStr)) {
+                return -1;
+            } else {
+                try {
+                    LocalDate hsd = LocalDate.parse(inputStr, DateTimeFormatter
+                            .ofPattern(INPUT_DATE_PATTERN));
+                    if (hsd.isBefore(shipment.getNsx())) {
+                        System.out.println("Invalid Date, expiration date cannot be before production date!");
+                    } else {
+                        shipment.setHsd(hsd);
+                        return 1;
+                    }
+                } catch (DateTimeException dte) {
+                    wrInput();
+                }
+            }
+        }
+    }
+
+    public boolean backCase(String str) {
         return "back".equalsIgnoreCase(str);
+    }
+
+    public void wrInput() {
+        System.out.println("Invalid input! Please try again.");
     }
 
     public boolean exitCase(String str) {
         return "exit".equalsIgnoreCase(str);
     }
 
-    public void computeSizeOfEachColumn(List<Goods> goodsList) {
+    public void computeSizeEachColumn(List<Goods> goodsList) {
         // duyet tu dau den cuoi mang de lay MAX_SIZE cua giatri input tung attributes
         nameMaxSize = "Name".length();
         providerMaxSize = "Provider".length();
@@ -150,7 +323,7 @@ public class UsefulFunctions {
             return;
         }
         System.out.println();
-        computeSizeOfEachColumn(goodsList);
+        computeSizeEachColumn(goodsList);
         int totalColumnsSize = nameMaxSize
                 + providerMaxSize
                 + listPriceMaxSize
@@ -233,11 +406,11 @@ public class UsefulFunctions {
             try {
                 System.out.print("Input productID to search(Type name for suggestion) or Back to go back: ");
                 inputStr = sc.nextLine();
-                if (goBack(inputStr)) {
+                if (backCase(inputStr)) {
                     break;
                 }
                 int searchingKey = Integer.parseInt(inputStr);
-                searchingGoods = findGoodsWithID(inputStr, goodsList);
+                searchingGoods = containGoods(inputStr, goodsList);
                 if (searchingGoods == null) {
                     System.out.println("Your input ID doesnt exist.");
                     continue;
@@ -274,7 +447,7 @@ public class UsefulFunctions {
             showGoodsList(bucket);
             System.out.print("Input shipment ID or type BACK to go back: ");
             String inputStr = sc.nextLine();
-            if (goBack(inputStr)) {
+            if (backCase(inputStr)) {
                 System.out.println("Back...");
                 return null;
             } else {

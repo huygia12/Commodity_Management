@@ -2,7 +2,7 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
-package com.mycompany.sourcecode;
+package Controllers;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -14,7 +14,7 @@ import java.util.List;
 public class Goods {
 
     private String goodsName;
-    private String goodsID = null;
+    private String goodsID;
     private String provider;
     private long listPrice;
     private int totalQuantity = 0;
@@ -23,14 +23,17 @@ public class Goods {
     public Goods() {
     }
 
-    public Goods(int totalQuantity) {
-        this.totalQuantity = totalQuantity;
-    }
-
     public Goods(String goodsName, String provider, long listPrice) {
         this.goodsName = goodsName.trim();
         this.provider = provider.trim();
         this.listPrice = listPrice;
+    }
+
+    public Goods(String goodsName, String provider, long listPrice, String goodsID) {
+        this.goodsName = goodsName;
+        this.provider = provider;
+        this.listPrice = listPrice;
+        this.goodsID = goodsID;
     }
 
     public List<Shipment> getShipments() {
@@ -81,7 +84,6 @@ public class Goods {
         return this.totalQuantity;
     }
 
-    
     public Goods cloneGoods() {
         Goods cloneGoods = new Goods();
         cloneGoods.setGoodsID(this.getGoodsID());
@@ -113,11 +115,11 @@ public class Goods {
         return this.getGoodsName().equalsIgnoreCase(anotherGoods.getGoodsName())
                 && this.getProvider().equalsIgnoreCase(anotherGoods.getProvider());
     }
-    
-    public Shipment findShipmentWithID(String id){
+
+    public Shipment containShipment(String id) {
         // return shipment with the given id
         for (Shipment tmpShipment : this.shipments) {
-            if(tmpShipment.getShipmentID().equals(id)){
+            if (tmpShipment.getShipmentID().equals(id)) {
                 return tmpShipment;
             }
         }
