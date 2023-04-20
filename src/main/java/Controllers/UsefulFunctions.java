@@ -404,7 +404,7 @@ public class UsefulFunctions {
         Goods searchingGoods = null;
         do {
             try {
-                System.out.print("Input productID to search(Type name for suggestion) or Back to go back: ");
+                System.out.print("Input productID to search(Type name for suggestion) or BACK to go back: ");
                 inputStr = sc.nextLine();
                 if (backCase(inputStr)) {
                     break;

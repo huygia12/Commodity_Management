@@ -207,7 +207,9 @@ public class Repository {
             System.out.println("Aborting...");
         } else if (!searchGoods.checkIfTwoGoodsIsDuplicate(draftGoods)
                 || searchGoods.getListPrice() != draftGoods.getListPrice()) {
-            searchGoods = draftGoods.cloneGoods();
+            searchGoods.setProvider(draftGoods.getProvider());
+            searchGoods.setGoodsName(draftGoods.getGoodsName());
+            searchGoods.setListPrice(draftGoods.getListPrice());
             System.out.println("Changes succeeded...");
         } else {
             System.out.println("Back...");
@@ -262,7 +264,10 @@ public class Repository {
                 }
             }
         } else if (shipmentIndex == -1) {
-            searchShipment = draftShipment.cloneShipment();
+            searchShipment.setHsd(draftShipment.getHsd());
+            searchShipment.setNsx(draftShipment.getNsx());
+            searchShipment.setImportPrice(draftShipment.getImportPrice());
+            searchShipment.setQuantity(draftShipment.getQuantity());
             System.out.println("Changes succeeded...");
         } else {
             System.out.println("Back...");
@@ -409,22 +414,27 @@ public class Repository {
     private void delGoodsAShipment() {
         int input = delOption();
         Goods searchGoods = null;
-        switch (input) {
-            case 1:
-                searchGoods = uf.searchGoods(myGoodsList);
-                delGoods(searchGoods);
-                break;
-            case 2:
-                searchGoods = uf.searchGoods(myGoodsList);
-                if (searchGoods == null) {
+        while (true) {
+            switch (input) {
+                case 1:
+                    searchGoods = uf.searchGoods(myGoodsList);
+                    if (searchGoods != null) {
+                        delGoods(searchGoods);
+                    }
+                    break;
+                case 2:
+                    searchGoods = uf.searchGoods(myGoodsList);
+                    if (searchGoods != null) {
+                        Shipment searchShipment = uf.searchShipments(searchGoods);
+                        if (searchShipment != null) {
+                            delShipment(searchShipment, searchGoods);
+                        }
+                    }
+                    break;
+                case 3:
+                    System.out.println("Back...");
                     return;
-                }
-                Shipment searchShipment = uf.searchShipments(searchGoods);
-                delShipment(searchShipment, searchGoods);
-                break;
-            case 3:
-                System.out.println("Back...");
-                break;
+            }
         }
     }
 

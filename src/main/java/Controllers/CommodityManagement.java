@@ -28,7 +28,8 @@ public class CommodityManagement {
         System.out.println("* 1. Repository Management     *");
         System.out.println("* 2. Make New Order            *");
         System.out.println("* 3. Current Revenue Overview  *");
-        System.out.println("* 4. Exit                      *");
+        System.out.println("* 4. Settings                  *");
+        System.out.println("* 5. Exit                      *");
         System.out.println("********************************");
         System.out.print("Option => ");
     }
@@ -67,13 +68,17 @@ public class CommodityManagement {
                         Order order = new Order(readOnlyGoodsList,
                                 String.format("%06d", myOrderHistory.size()));
                         List<Goods> orderGoodsList = order.makeNewOrder();
-                        myOrderHistory.add(order);
-                        reloadGoodsList(orderGoodsList);
+                        if (orderGoodsList != null) {
+                            myOrderHistory.add(order);
+                            reloadGoodsList(orderGoodsList);
+                        }
                         break;
                     case 3:
                         //undeveloped
                         break;
                     case 4:
+                        
+                    case 5:
                         System.out.println("Exiting...");
                         break;
                     default:
@@ -85,7 +90,7 @@ public class CommodityManagement {
                 choice = -1;
                 sc.next();
             }
-        } while (choice != 4);
+        } while (choice != 5);
     }
 
     static void add() {

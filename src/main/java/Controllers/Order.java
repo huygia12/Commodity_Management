@@ -9,6 +9,7 @@ import java.util.Scanner;
 import java.util.stream.Collectors;
 
 public class Order {
+
     private final List<Goods> curOrder = new ArrayList<>();
     private String orderID;
     private int cusMoney;
@@ -271,7 +272,7 @@ public class Order {
 
     private int typeInDcountPctage() {
         while (true) {
-            System.out.print("Please enter the discount percentage (must be a positive number), or type BACK to go back: ");
+            System.out.print("Please enter the discount percentage (must be a positive number), or type EXIT/BACK to go exit/back: ");
             String input = sc.nextLine();
             if (uf.backCase(input)) {
                 return -1;
@@ -321,9 +322,9 @@ public class Order {
     }
 
     //Function 3
-    private void payOrder() {
+    private boolean payOrder() {
         if (uf.checkIfListEmpty(this.curOrder)) {
-            return;
+            return false;
         }
         int n = 1;
         int nextProcess;
@@ -331,14 +332,14 @@ public class Order {
             if (n == 1) {
                 nextProcess = typeInDcountPctage();
                 if (nextProcess == 0 || nextProcess == -1) {
-                    return;
+                    return false;
                 }
                 n++;
             }
             if (n == 2) {
                 nextProcess = typeInGivenMoney();
                 if (nextProcess == 0) {
-                    return;
+                    return false;
                 } else if (nextProcess == -1) {
                     n = 1;
                     continue;
@@ -352,6 +353,7 @@ public class Order {
             // update myGoodsList after payment completed
             n = 3;
         }
+        return true;
     }
 
     private void showDraftOrder(List<Goods> draftOrder) {
@@ -404,10 +406,10 @@ public class Order {
         for (Goods draftGoods : draftGoodsList) {
             draftGoods.setShipment(draftGoods.getShipments()
                     .stream()
-                    .filter(x->x.getHsd().isAfter(uf.CURRENT_DATE))
+                    .filter(x -> x.getHsd().isAfter(uf.CURRENT_DATE))
                     .collect(Collectors.toList()));
         }
-        
+
         int choice;
         do {
             try {
@@ -422,8 +424,11 @@ public class Order {
                         editOrder();
                         break;
                     case 3:
-                        payOrder();
-                        return curOrder;
+                        if (payOrder()) {
+                            return curOrder;
+                        } else {
+                            break;
+                        }
                     case 4:
                         break;
                     default:
@@ -431,7 +436,7 @@ public class Order {
                         break;
                 }
             } catch (InputMismatchException ime) {
-                System.out.println("Wrong input!");
+                uf.wrInput();
                 choice = -1;
                 sc.next();
             }
