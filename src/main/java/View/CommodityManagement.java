@@ -4,7 +4,11 @@
  */
 package View;
 
-import Models.*;
+import Models.Shipment;
+import Models.Order;
+import Models.GoodsList;
+import Models.Goods;
+import Models.Repository;
 import Controllers.OrderController;
 import Controllers.RepositoryController;
 import java.awt.AWTException;

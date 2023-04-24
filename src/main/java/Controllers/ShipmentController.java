@@ -13,14 +13,13 @@ import View.ShipmentView;
  */
 public class ShipmentController {
 
+    final private ShipmentView shipmentView = new ShipmentView();
     private Shipment shipment;
-    private ShipmentView shipmentView;
 
     public ShipmentController() {
     }
 
-    public ShipmentController(Shipment shipment, ShipmentView view) {
-        this.shipmentView = view;
+    public ShipmentController(Shipment shipment) {
         this.shipment = shipment;
     }
 
@@ -35,10 +34,6 @@ public class ShipmentController {
 
     public ShipmentView getView() {
         return shipmentView;
-    }
-
-    public void setView(ShipmentView view) {
-        this.shipmentView = view;
     }
     
 }

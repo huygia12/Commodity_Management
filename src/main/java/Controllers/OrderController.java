@@ -15,7 +15,6 @@ import java.math.BigInteger;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.InputMismatchException;
-import java.util.List;
 import java.util.Scanner;
 import java.util.stream.*;
 
@@ -46,6 +45,9 @@ public class OrderController {
         this.order = order;
     }
     
+    public OrderView getOrderView(){
+        return this.view;
+    }
     
     private void makeDraftGoodsList(){
         draftGoodsList.setGoodsList(repoGoodsList.getGoodsList()

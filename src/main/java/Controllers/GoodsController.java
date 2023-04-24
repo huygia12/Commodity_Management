@@ -13,15 +13,14 @@ import View.GoodsView;
  */
 public class GoodsController {
 
+    final private GoodsView goodsView = new GoodsView();
     private Goods goodsModel;
-    private GoodsView goodsView;
 
     public GoodsController() {
     }
 
-    public GoodsController(Goods goods, GoodsView view) {
+    public GoodsController(Goods goods) {
         this.goodsModel = goods;
-        this.goodsView = view;
     }
 
     
@@ -35,10 +34,6 @@ public class GoodsController {
 
     public GoodsView getView() {
         return goodsView;
-    }
-
-    public void setView(GoodsView view) {
-        this.goodsView = view;
     }
     
 }

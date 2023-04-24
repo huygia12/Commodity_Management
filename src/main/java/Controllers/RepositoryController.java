@@ -4,9 +4,12 @@
  */
 package Controllers;
 
+import View.ShipmentView;
+import View.GoodsView;
+import View.Cautions;
+import View.RepositoryView;
 import Models.Goods;
 import Models.GoodsList;
-import View.*;
 import Models.Repository;
 import Models.Shipment;
 import java.time.LocalDate;
@@ -41,6 +44,10 @@ public class RepositoryController {
         this.repository = repository;
     }
 
+    public RepositoryView getRepositoryView(){
+        return this.view;
+    }
+    
     // Function 3
     private void editGoodsAndShipmentInfor(GoodsView goodsView, ShipmentView shipView) {
         String choice;
