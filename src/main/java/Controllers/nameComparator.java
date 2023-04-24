@@ -4,6 +4,7 @@
  */
 package Controllers;
 
+import Models.Goods;
 import java.util.Comparator;
 
 /**

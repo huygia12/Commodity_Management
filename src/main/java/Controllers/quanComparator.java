@@ -4,15 +4,16 @@
  */
 package Controllers;
 
+import Models.Goods;
 import java.util.Comparator;
 
 /**
  *
  * @author FPTSHOP
  */
-public class quantityCoparator implements Comparator<Goods>{
+public class quanComparator implements Comparator<Goods>{
     @Override
     public int compare(Goods o1, Goods o2){
-        return Integer.compare(o1.getTotalQuantity(), o2.getTotalQuantity());
+        return o1.getTotalQuantity().compareTo(o2.getTotalQuantity());
     }
 }

@@ -11,4 +11,14 @@
         <maven.compiler.target>19</maven.compiler.target>
         <exec.mainClass>com.mycompany.sourcecode.SourceCode</exec.mainClass>
     </properties>
+    
+    <dependencies>
+        <!-- https://mvnrepository.com/artifact/com.opencsv/opencsv -->
+        <dependency>
+            <groupId>com.opencsv</groupId>
+            <artifactId>opencsv</artifactId>
+            <version>5.7.1</version>
+        </dependency>
+
+    </dependencies>
 </project>
