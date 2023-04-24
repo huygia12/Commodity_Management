@@ -25,7 +25,7 @@ import java.util.Scanner;
  * @author FPTSHOP
  */
 public class RepositoryController {
-    
+
     private final RepositoryView view = new RepositoryView();
     final LocalDate CURRENT_DATE = LocalDate.now();
     final Scanner sc = new Scanner(System.in);
@@ -44,10 +44,10 @@ public class RepositoryController {
         this.repository = repository;
     }
 
-    public RepositoryView getRepositoryView(){
+    public RepositoryView getRepositoryView() {
         return this.view;
     }
-    
+
     // Function 3
     private void editGoodsAndShipmentInfor(GoodsView goodsView, ShipmentView shipView) {
         String choice;
@@ -86,9 +86,9 @@ public class RepositoryController {
 
     // Function 4
     private void delGoodsAShipment() {
-        int input = this.view.typeDelOption();
         Goods searchGoods = null;
         while (true) {
+            int input = this.view.typeDelOption();
             switch (input) {
                 case 1:
                     searchGoods = this.repository.searchGoods();
@@ -114,7 +114,7 @@ public class RepositoryController {
 
     // Function 5
     private void printCurGoodsList() {
-        
+
         //goodsList se sap xeo theo thu tu uu tien: name -> manufacture
         this.getRepository()
                 .getGoodsList()
@@ -136,6 +136,7 @@ public class RepositoryController {
             switch (choice) {
                 case "1":
                     printSameManufacGoodsList();
+                    sc.nextLine();
                     //uf.typeAnyKeyToContinue();
                     //uf.clearScreen();
                     break;

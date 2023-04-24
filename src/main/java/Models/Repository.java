@@ -125,16 +125,12 @@ public class Repository extends GoodsList {
         }
     }
 
-    public boolean delGoodsInRepo(Goods goods, GoodsList goodsList) {
-        if (goods != null) {
-            goodsList.getGoodsList().remove(goods);
-            for (Goods tmpGoods : goodsList.getGoodsList()) {
-                tmpGoods.setID(String.format("%06d", goodsList.getGoodsList().indexOf(tmpGoods)));
-            }
-            return true;
-            //System.out.println("Delete succeed...");
+    public void delGoodsInRepo(Goods goods, GoodsList goodsList) {
+        goodsList.getGoodsList().remove(goods);
+        for (Goods tmpGoods : goodsList.getGoodsList()) {
+            tmpGoods.setID(String.format("%06d", goodsList.getGoodsList().indexOf(tmpGoods)));
         }
-        return false;
+        System.out.println("Delete succeed...");
     }
 
     private void finishEditGoods(Goods searchGoods, Goods draftGoods, GoodsList goodsList) {
@@ -200,20 +196,16 @@ public class Repository extends GoodsList {
         } while (choice != 4);
     }
 
-    public boolean delShipInRepo(Shipment shipment, Goods goods) {
+    public void delShipInRepo(Shipment shipment, Goods goods) {
         // tra ve true neu xoa thanh cong, false neu shipment 
-        if (shipment != null && goods != null) {
-            goods.getShipments().remove(shipment);
-            for (Shipment tmpShipment : goods.getShipments()) {
-                tmpShipment.setID(String.format("%06d", goods.getShipments().indexOf(tmpShipment)));
-            }
-            if (goods.getShipments().isEmpty()) {
-                delGoodsInRepo(goods, this);
-            }
-            return true;
-            //System.out.println("Delete succeed...");
+        goods.getShipments().remove(shipment);
+        for (Shipment tmpShipment : goods.getShipments()) {
+            tmpShipment.setID(String.format("%06d", goods.getShipments().indexOf(tmpShipment)));
         }
-        return false;
+        if (goods.getShipments().isEmpty()) {
+            delGoodsInRepo(goods, this);
+        }
+        System.out.println("Delete succeed...");
     }
 
     private void finishEditShip(Goods searchGoods, Shipment searchShipment, Shipment draftShipment, ShipmentView shipView) {

@@ -15,6 +15,7 @@ import java.util.Scanner;
  * @author s1rja
  */
 public class Goods {
+
     final Cautions ctions = new Cautions();
     final Scanner sc = new Scanner(System.in);
     private String goodsName;
@@ -40,7 +41,6 @@ public class Goods {
         this.id = goodsID;
     }
 
-    
     public List<Shipment> getShipments() {
         return this.shipments;
     }
@@ -88,8 +88,7 @@ public class Goods {
         }
         return this.totalQuantity;
     }
-    
-    
+
     public Goods cloneGoods() {
         // tra ve 1 goods duoc cpy cac thuoc tinh cua goods goi ham cloneGoods() nay
         Goods cloneGoods = new Goods();
@@ -135,7 +134,7 @@ public class Goods {
     public Shipment searchShipment() {
         // tim kiem shipment trong goods goi den method seachShipment() nay
         GoodsList bucket = new GoodsList(new ArrayList<>());
-        if (ctions.checkIfListEmpty(bucket.getGoodsList())) {
+        if (ctions.checkIfListEmpty(this.getShipments())) {
             return null;
         }
         bucket.getGoodsList().add(this);
@@ -146,6 +145,7 @@ public class Goods {
             if ("back".equalsIgnoreCase(inputStr)) {
                 System.out.println("Back...");
                 return null;
+            } else if (ctions.checkIfNoInput(inputStr)) {
             } else {
                 for (Shipment shipment : this.getShipments()) {
                     if (inputStr.equals(shipment.getID())) {
@@ -156,5 +156,5 @@ public class Goods {
             }
         } while (true);
     }
-    
+
 }

@@ -185,7 +185,7 @@ public class GoodsList {
                 System.out.print("Input productID to search(Type name for suggestion or press 'Enter' to see the whole List) or BACK to go back: ");
                 inputStr = sc.nextLine();
                 if ("back".equalsIgnoreCase(inputStr)) {
-                    break;
+                    return null;
                 }
                 int searchingKey = Integer.parseInt(inputStr);
                 searchingGoods = containGoods(inputStr);
