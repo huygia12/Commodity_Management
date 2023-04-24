@@ -106,7 +106,7 @@ public class RepositoryView {
         // in ra danh sach cac manufacture hien tai(khong in trung lap)
         Set<String> listOfManufac = new HashSet<>();
         for (Goods goods : repoCtr.getRepository().getGoodsList()) {
-            listOfManufac.add(goods.getProvider());
+            listOfManufac.add(goods.getManufacture());
         }
         if (listOfManufac.isEmpty()) {
             System.out.println("Notthing found in your repository!");

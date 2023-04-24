@@ -19,7 +19,7 @@ public class Goods {
     final Scanner sc = new Scanner(System.in);
     private String goodsName;
     private String id;
-    private String provider;
+    private String manufacture;
     private BigInteger listPrice;
     private BigInteger totalQuantity = BigInteger.ZERO;
     private List<Shipment> shipments = new ArrayList<>();
@@ -27,15 +27,15 @@ public class Goods {
     public Goods() {
     }
 
-    public Goods(String goodsName, String provider, BigInteger listPrice) {
+    public Goods(String goodsName, String manufac, BigInteger listPrice) {
         this.goodsName = goodsName.trim();
-        this.provider = provider.trim();
+        this.manufacture = manufac.trim();
         this.listPrice = listPrice;
     }
 
-    public Goods(String goodsName, String provider, BigInteger listPrice, String goodsID) {
+    public Goods(String goodsName, String manufac, BigInteger listPrice, String goodsID) {
         this.goodsName = goodsName;
-        this.provider = provider;
+        this.manufacture = manufac;
         this.listPrice = listPrice;
         this.id = goodsID;
     }
@@ -65,12 +65,12 @@ public class Goods {
         this.id = goodsID;
     }
 
-    public String getProvider() {
-        return provider;
+    public String getManufacture() {
+        return manufacture;
     }
 
-    public void setProvider(String provider) {
-        this.provider = provider.trim();
+    public void setManufacture(String provider) {
+        this.manufacture = provider.trim();
     }
 
     public BigInteger getListPrice() {
@@ -96,7 +96,7 @@ public class Goods {
         cloneGoods.setID(this.getID());
         cloneGoods.setGoodsName(this.getGoodsName());
         cloneGoods.setListPrice(this.getListPrice());
-        cloneGoods.setProvider(this.getProvider());
+        cloneGoods.setManufacture(this.getManufacture());
         for (Shipment shipment : this.getShipments()) {
             cloneGoods.getShipments().add(shipment.cloneShipment());
         }
@@ -106,7 +106,7 @@ public class Goods {
     public boolean twoGoodsIsDup(Goods anotherGoods) {
         // tra ve true neu goods voi anotherGoods co cung name va manufacture, nguoc lai, tra ve true
         return this.getGoodsName().equalsIgnoreCase(anotherGoods.getGoodsName())
-                && this.getProvider().equalsIgnoreCase(anotherGoods.getProvider());
+                && this.getManufacture().equalsIgnoreCase(anotherGoods.getManufacture());
     }
 
     public int indexOfDupShip(Shipment chekingShipment) {

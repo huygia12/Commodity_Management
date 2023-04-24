@@ -4,8 +4,6 @@
  */
 package Models;
 
-import Controllers.GoodsController;
-import Controllers.ShipmentController;
 import View.Cautions;
 import View.GoodsView;
 import View.RepositoryView;
@@ -19,42 +17,43 @@ import java.util.List;
  *
  * @author s1rja
  */
-public class Repository extends GoodsList{
+public class Repository extends GoodsList {
+
     Cautions ctions = new Cautions();
-    
+
     public Repository(List<Goods> repoGoodsList) {
         super(repoGoodsList);
     }
-    
-    
-    public void addGoodsToList() {
-        GoodsController goodsCtr = new GoodsController();
+
+    public void addGoodsToList(GoodsView goodsView) {
+        Goods newGoods = new Goods();
         int n = 1;
         int nextProcess;
         while (n != 3) {
             switch (n) {
                 case 1:
-                    nextProcess = goodsCtr
-                            .getView()
-                            .typeInName(goodsCtr.getGoods());
+                    nextProcess = goodsView
+                            .typeInName(newGoods);
                     if (nextProcess == 0) {
                         return;
                     } else if (nextProcess == -1) {
                         return;
                     }
                 case 2:
-                    nextProcess = goodsCtr
-                            .getView()
-                            .typeInManufac(goodsCtr.getGoods(), this);
+                    nextProcess = goodsView
+                            .typeInManufac(newGoods, this);
                     if (nextProcess == 0) {
                         return;
                     } else if (nextProcess == -1) {
                         break;
+                    } else if (this.indexOfDupGoods(newGoods) != -1) {
+                        System.out.println("Same goods detected!");
+                        System.out.println("Aborting...");
+                        return;
                     }
                 case 3:
-                    nextProcess = goodsCtr
-                            .getView()
-                            .typeInListPrice(goodsCtr.getGoods());
+                    nextProcess = goodsView
+                            .typeInListPrice(newGoods);
                     switch (nextProcess) {
                         case 0:
                             return;
@@ -66,14 +65,12 @@ public class Repository extends GoodsList{
                     }
             }
         }
-        this.getGoodsList().add(goodsCtr.getGoods());
-        goodsCtr.getGoods().setID(String.format("%06d", this.getGoodsList().indexOf(goodsCtr.getGoods())));
+        newGoods.setID(String.format("%06d", this.getGoodsList().size()));
+        this.getGoodsList().add(newGoods);
     }
 
-    
     public void importGoods(ShipmentView shipView) {
         Goods searchGoods = this.searchGoods();
-        ShipmentController shipmentCtr = new ShipmentController();
         if (searchGoods == null) {
             return;
         }
@@ -83,23 +80,21 @@ public class Repository extends GoodsList{
         while (n != 4) {
             switch (n) {
                 case 1:
-                    nextProcess = shipmentCtr.getView().typeInQuan(newShipment);
+                    nextProcess = shipView.typeInQuan(newShipment);
                     if (nextProcess == 0) {
                         return;
                     } else if (nextProcess == -1) {
                         return;
-                    } else if (ctions.checkIfBigIntPositive(newShipment.getQuantity())) {
-                        break;
                     }
                 case 2:
-                    nextProcess = shipmentCtr.getView().typeInImportPrice(newShipment);
+                    nextProcess = shipView.typeInImportPrice(newShipment);
                     if (nextProcess == 0) {
                         return;
                     } else if (nextProcess == -1) {
                         break;
                     }
                 case 3:
-                    nextProcess = shipmentCtr.getView().typeInProDate(newShipment);
+                    nextProcess = shipView.typeInProDate(newShipment);
                     if (nextProcess == 0) {
                         return;
                     } else if (nextProcess == -1) {
@@ -107,7 +102,7 @@ public class Repository extends GoodsList{
                         break;
                     }
                 case 4:
-                    nextProcess = shipmentCtr.getView().typeInEpirDate(newShipment);
+                    nextProcess = shipView.typeInEpirDate(newShipment);
                     switch (nextProcess) {
                         case 0:
                             return;
@@ -119,7 +114,7 @@ public class Repository extends GoodsList{
                     }
             }
         }
-        // check if shipment already exists
+        // kiem tra neu shipment nay da ton tai 
         int shipmentIndex = searchGoods.indexOfDupShip(newShipment);
         if (shipmentIndex != -1) {
             Shipment dupShipment = searchGoods.getShipments().get(shipmentIndex);
@@ -130,7 +125,6 @@ public class Repository extends GoodsList{
         }
     }
 
-    
     public boolean delGoodsInRepo(Goods goods, GoodsList goodsList) {
         if (goods != null) {
             goodsList.getGoodsList().remove(goods);
@@ -142,7 +136,7 @@ public class Repository extends GoodsList{
         }
         return false;
     }
-    
+
     private void finishEditGoods(Goods searchGoods, Goods draftGoods, GoodsList goodsList) {
         GoodsList bucket = new GoodsList(new ArrayList<>(goodsList.getGoodsList()
                 .stream()
@@ -153,12 +147,12 @@ public class Repository extends GoodsList{
         }
         if (!bucket.getGoodsList().isEmpty()) {
             System.out.print(
-                    "Cannot implement your changes cause it make duplicate value with these Goods attributes value!");
+                    "Cannot implement your changes cause it make duplicate value with these existed Goods value!");
             bucket.showGoodsList();
             System.out.println("Aborting...");
         } else if (!searchGoods.twoGoodsIsDup(draftGoods)
                 || searchGoods.getListPrice() != draftGoods.getListPrice()) {
-            searchGoods.setProvider(draftGoods.getProvider());
+            searchGoods.setManufacture(draftGoods.getManufacture());
             searchGoods.setGoodsName(draftGoods.getGoodsName());
             searchGoods.setListPrice(draftGoods.getListPrice());
             System.out.println("Changes succeeded...");
@@ -169,7 +163,7 @@ public class Repository extends GoodsList{
 
     public void editGoods(Goods searchGoods, GoodsList goodsList, GoodsView goodsView, RepositoryView repoView) {
         Goods draftGoods = searchGoods.cloneGoods();
-        
+
         int choice;
         do {
             try {
@@ -205,8 +199,7 @@ public class Repository extends GoodsList{
             }
         } while (choice != 4);
     }
-    
-    
+
     public boolean delShipInRepo(Shipment shipment, Goods goods) {
         // tra ve true neu xoa thanh cong, false neu shipment 
         if (shipment != null && goods != null) {
@@ -222,7 +215,7 @@ public class Repository extends GoodsList{
         }
         return false;
     }
-    
+
     private void finishEditShip(Goods searchGoods, Shipment searchShipment, Shipment draftShipment, ShipmentView shipView) {
         int shipmentIndex = searchGoods.indexOfDupShip(draftShipment);
         if (shipmentIndex != -1 && shipmentIndex != searchGoods.getShipments()

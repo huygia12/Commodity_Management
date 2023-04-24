@@ -14,6 +14,6 @@ import java.util.Comparator;
 public class manufacComparator implements Comparator<Goods>{
     @Override
     public int compare(Goods o1, Goods o2){
-        return o1.getProvider().compareToIgnoreCase(o2.getProvider());
+        return o1.getManufacture().compareToIgnoreCase(o2.getManufacture());
     }
 }

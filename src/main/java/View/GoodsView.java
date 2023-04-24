@@ -26,12 +26,9 @@ public class GoodsView {
                 return 0;
             } else if ("back".equalsIgnoreCase(inputStr)) {
                 return -1;
-            } else if ("".equalsIgnoreCase(inputStr)) {
-            } else if (goodsList.indexOfDupGoods(goods) != -1) {
-                System.out.println("Same goods detected!");
-                System.out.println("Aborting...");
-            } else {
-                goods.setProvider(inputStr);
+            } else if (ctions.checkIfNoInput(inputStr)) {
+            }else {
+                goods.setManufacture(inputStr);
                 return 1;
             }
         }

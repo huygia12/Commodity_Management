@@ -59,10 +59,11 @@ public class ShipmentView {
             } else {
                 try {
                     BigInteger importPrice = new BigInteger(inputStr);
-                    if (ctions.checkIfBigIntPositive(importPrice)) {
-                        shipment.setImportPrice(importPrice);
-                        return 1;
+                    if (!ctions.checkIfBigIntPositive(importPrice)) {
+                        continue;
                     }
+                    shipment.setImportPrice(importPrice);
+                        return 1;
                 } catch (NumberFormatException nfe) {
                     ctions.wrInput();
                 }

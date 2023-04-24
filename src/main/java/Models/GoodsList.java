@@ -86,7 +86,7 @@ public class GoodsList {
                     + " | %-" + String.format(totalQuantityMaxSize + "s") + " |",
                     goods.getID(),
                     goods.getGoodsName(),
-                    goods.getProvider(),
+                    goods.getManufacture(),
                     goods.getListPrice(),
                     goods.getTotalQuantity());
             if (!goods.getShipments().isEmpty()) {
@@ -138,8 +138,8 @@ public class GoodsList {
             if (goods.getGoodsName().length() > nameMaxSize) {
                 nameMaxSize = goods.getGoodsName().length();
             }
-            if (goods.getProvider().length() > providerMaxSize) {
-                providerMaxSize = goods.getProvider().length();
+            if (goods.getManufacture().length() > providerMaxSize) {
+                providerMaxSize = goods.getManufacture().length();
             }
             if (goods.getListPrice().toString().length() > listPriceMaxSize) {
                 listPriceMaxSize = goods.getListPrice().toString().length();

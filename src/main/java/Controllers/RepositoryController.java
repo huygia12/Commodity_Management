@@ -178,7 +178,7 @@ public class RepositoryController {
                     filterList.setGoodsList(new ArrayList<>(this.repository
                             .getGoodsList()
                             .stream()
-                            .filter(x -> x.getProvider().equalsIgnoreCase(tmpStr))
+                            .filter(x -> x.getManufacture().equalsIgnoreCase(tmpStr))
                             .toList()));
                     filterList.showGoodsList();
                     break;
@@ -293,7 +293,7 @@ public class RepositoryController {
                 //uf.clearScreen();
                 switch (choice) {
                     case 1:
-                        this.repository.addGoodsToList();
+                        this.repository.addGoodsToList(goodsView);
                         //uf.clearScreen();
                         //sc.nextLine();
                         break;
