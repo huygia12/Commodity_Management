@@ -5,7 +5,6 @@
 package View;
 
 import Models.Goods;
-import Models.GoodsList;
 import Models.Order;
 import java.math.BigInteger;
 import java.time.LocalDateTime;

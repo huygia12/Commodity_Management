@@ -21,7 +21,7 @@ public class Goods {
     private String goodsName;
     private String id;
     private String manufacture;
-    private BigInteger listPrice;
+    private BigInteger listPrice = BigInteger.ZERO;
     private BigInteger totalQuantity = BigInteger.ZERO;
     private List<Shipment> shipments = new ArrayList<>();
 
@@ -74,6 +74,9 @@ public class Goods {
     }
 
     public BigInteger getListPrice() {
+        if(this.listPrice == null){
+            this.listPrice = BigInteger.ZERO;
+        }
         return listPrice;
     }
 
@@ -85,6 +88,9 @@ public class Goods {
         this.totalQuantity = BigInteger.ZERO;
         for (int i = 0; i < shipments.size(); i++) {
             this.totalQuantity = this.totalQuantity.add(shipments.get(i).getQuantity());
+        }
+        if(this.totalQuantity == null){
+            this.totalQuantity = BigInteger.ZERO;
         }
         return this.totalQuantity;
     }

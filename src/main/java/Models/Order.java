@@ -10,9 +10,9 @@ import java.util.stream.*;
 public class Order extends GoodsList{
     final Cautions ctions = new Cautions();
     private String ID;
-    private BigInteger cusMoney;
+    private BigInteger cusMoney = BigInteger.ZERO;
     private int discount;
-    private BigInteger totalPayment;
+    private BigInteger totalPayment = BigInteger.ZERO;
     
     public Order (List<Goods> currentOrder, String ID) {
         super(currentOrder);
@@ -40,7 +40,10 @@ public class Order extends GoodsList{
     }
 
     public BigInteger getCusMoney() {
-        return cusMoney;
+        if(this.cusMoney == null){
+            this.cusMoney = BigInteger.ZERO;
+        }
+        return this.cusMoney;
     }
 
     public void setCusMoney(BigInteger customerMoney) {
@@ -48,7 +51,10 @@ public class Order extends GoodsList{
     }
 
     public BigInteger getTotalPayment() {
-        return totalPayment;
+        if(this.totalPayment == null){
+            this.totalPayment = BigInteger.ZERO;
+        }
+        return this.totalPayment;
     }
 
     public void setTotalPayment(BigInteger totalPayment) {
@@ -56,7 +62,11 @@ public class Order extends GoodsList{
     }
     
     public BigInteger getTotalAfterDis(){
-        return this.getTotalPayment().multiply(BigInteger.valueOf(1-this.discount/100));
+        BigInteger result = this.getTotalPayment().multiply(BigInteger.valueOf(1-this.discount/100));
+        if(result == null){
+            result = BigInteger.ZERO;
+        }
+        return result;
     }
     
     //Function 1
@@ -77,12 +87,12 @@ public class Order extends GoodsList{
         }
         // Type in the quantity of searchGoods want to buy
         while (true) {
-            int nextProcess = shipView.typeInQuan(searchShipment);
+            int nextProcess = shipView.typeInQuan(orderShipment);
             if (nextProcess == -1 || nextProcess == 0) {
                 return;
             } else if (orderShipment.getQuantity().compareTo(searchShipment.getQuantity())>0){
                 orderShipment.setQuantity(BigInteger.ZERO);
-            } else if (ctions.checkIfBigIntPositive(orderShipment.getQuantity())) {
+            } else if (!ctions.checkIfBigIntPositive(orderShipment.getQuantity())) {
                 orderShipment.setQuantity(BigInteger.ZERO);
             } else {
                 break;
