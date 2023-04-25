@@ -4,7 +4,7 @@
  */
 package View;
 
-import java.math.BigInteger;
+import java.math.BigDecimal;
 import java.util.List;
 
 /**
@@ -29,8 +29,8 @@ public class Cautions {
         return false;
     }
 
-    public boolean checkIfBigIntPositive(BigInteger num) {
-        if (num.compareTo(BigInteger.ZERO) < 0) {
+    public boolean checkIfBigIntPositive(BigDecimal num) {
+        if (num.compareTo(BigDecimal.ZERO) < 0) {
             System.out.println("This number cannot take a negative value!");
             return false;
         }

@@ -6,7 +6,7 @@ package View;
 
 import Models.Goods;
 import Models.Order;
-import java.math.BigInteger;
+import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.Scanner;
@@ -82,11 +82,11 @@ public class OrderView {
             } else if (ctions.checkIfNoInput(input)) {
             } else {
                 try {
-                    order.setCusMoney(new BigInteger(input));
+                    order.setCusMoney(new BigDecimal(input));
                     if (!ctions.checkIfBigIntPositive(order.getCusMoney())) {
-                        order.setCusMoney(BigInteger.ZERO);
+                        order.setCusMoney(BigDecimal.ZERO);
                     } else if (order.getCusMoney().compareTo(order.getTotalAfterDis())<0) {
-                        order.setCusMoney(BigInteger.ZERO);
+                        order.setCusMoney(BigDecimal.ZERO);
                         System.out.println("Insufficient payment! Please pay more.");
                     } else {
                         return 1;
@@ -107,19 +107,19 @@ public class OrderView {
         System.out.format("%-25s %-10s %-15s %-15s\n", "-------------------------", "----------", "---------------", "---------------");
         for (int i = 0; i < order.getGoodsList().size(); i++) {
             Goods goods = order.getGoodsList().get(i);
-            BigInteger totalQuantity = goods.getTotalQuantity();
-            BigInteger price = goods.getListPrice();
-            BigInteger totalPrice = totalQuantity.multiply(price);
+            BigDecimal totalQuantity = goods.getTotalQuantity();
+            BigDecimal price = goods.getListPrice();
+            BigDecimal totalPrice = totalQuantity.multiply(price);
             System.out.format("%-25s %-10s %-15s %-15s\n", goods.getGoodsName(), totalQuantity+"", price+"", totalPrice+"");
         }
-        BigInteger totalPayment = order.getTotalPayment();
+        BigDecimal totalPayment = order.getTotalPayment();
         System.out.println(" ");
         System.out.println("Total payment: " + totalPayment);
         System.out.println("--------------------------------------------------------------------");
     }
 
     public void showBill(Order order) {
-        BigInteger change = order.getCusMoney().subtract(order.getTotalAfterDis());
+        BigDecimal change = order.getCusMoney().subtract(order.getTotalAfterDis());
         System.out.println("");
         System.out.println("-------------- YOUR BILL ---------------");
         System.out.println("----------------------");
@@ -129,10 +129,10 @@ public class OrderView {
         System.out.format("%-25s %-10s %-15s %-15s\n", "-------------------------", "----------", "---------------", "---------------");
         for (int i = 0; i < order.getGoodsList().size(); i++) {
             Goods goods = order.getGoodsList().get(i);
-            BigInteger totalQuantity = goods.getTotalQuantity();
-            BigInteger price = goods.getListPrice();
-            BigInteger totalPrice = totalQuantity.multiply(price);
-            System.out.format("%-25s %-10d %-15d %-15d\n", goods.getGoodsName(), totalQuantity, price, totalPrice);
+            BigDecimal totalQuantity = goods.getTotalQuantity();
+            BigDecimal price = goods.getListPrice();
+            BigDecimal totalPrice = totalQuantity.multiply(price);
+            System.out.format("%-25s %-10s %-15s %-15s\n", goods.getGoodsName(), totalQuantity, price, totalPrice);
         }
         System.out.println("Total payment: " + order.getTotalPayment());
         System.out.println("Discount: " + order.getDiscount() + "%");

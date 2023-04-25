@@ -11,7 +11,7 @@ import Models.Shipment;
 import View.Cautions;
 import View.OrderView;
 import View.ShipmentView;
-import java.math.BigInteger;
+import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.InputMismatchException;
@@ -74,7 +74,7 @@ public class OrderController {
             Goods repoGoods = this.repoGoodsList.containGoods(orderGoods.getID());
             for (Shipment orderShipment : orderGoods.getShipments()) {
                 Shipment repoShipment = repoGoods.containShipment(orderShipment.getID());
-                BigInteger quanBefore = repoShipment.getQuantity();
+                BigDecimal quanBefore = repoShipment.getQuantity();
                 repoShipment.setQuantity(quanBefore.subtract(orderShipment.getQuantity()));
             }
         }

@@ -8,7 +8,7 @@ import View.Cautions;
 import View.GoodsView;
 import View.RepositoryView;
 import View.ShipmentView;
-import java.math.BigInteger;
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.InputMismatchException;
 import java.util.List;
@@ -235,7 +235,7 @@ public class Repository extends GoodsList {
     }
 
     private boolean quanBecomeZero(Goods searchGoods, Shipment searchShipment, Shipment draftShipment) {
-        while (draftShipment.getQuantity().compareTo(BigInteger.ZERO) == 0) {
+        while (draftShipment.getQuantity().compareTo(BigDecimal.ZERO) == 0) {
             System.out.println(
                     "Your changes make quantity equal 0 and  this shipment will be deleted, keep your changes?");
             System.out.print(

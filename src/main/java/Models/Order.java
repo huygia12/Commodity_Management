@@ -3,14 +3,14 @@ package Models;
 import View.Cautions;
 import View.OrderView;
 import View.ShipmentView;
-import java.math.BigInteger;
+import java.math.BigDecimal;
 import java.util.List;
 import java.util.stream.*;
 
 public class Order extends GoodsList{
     final Cautions ctions = new Cautions();
     private String ID;
-    private BigInteger cusMoney = BigInteger.ZERO;
+    private BigDecimal cusMoney = BigDecimal.ZERO;
     private int discount;
     
     public Order (List<Goods> currentOrder, String ID) {
@@ -38,29 +38,29 @@ public class Order extends GoodsList{
         return this.ID;
     }
 
-    public BigInteger getCusMoney() {
+    public BigDecimal getCusMoney() {
         if(this.cusMoney == null){
-            this.cusMoney = BigInteger.ZERO;
+            this.cusMoney = BigDecimal.ZERO;
         }
         return this.cusMoney;
     }
 
-    public void setCusMoney(BigInteger customerMoney) {
+    public void setCusMoney(BigDecimal customerMoney) {
         this.cusMoney = customerMoney;
     }
 
-    public BigInteger getTotalPayment() {
-        BigInteger result = BigInteger.ZERO;
+    public BigDecimal getTotalPayment() {
+        BigDecimal result = BigDecimal.ZERO;
         for (Goods goods : this.getGoodsList()) {
             result = result.add(goods.getListPrice().multiply(goods.getTotalQuantity()));
         }
         return result;
     }
 
-    public BigInteger getTotalAfterDis(){
-        BigInteger result = this.getTotalPayment().multiply(BigInteger.valueOf(1-this.discount/100));
+    public BigDecimal getTotalAfterDis(){
+        BigDecimal result = BigDecimal.valueOf(1.0-(discount*1.0)/100).multiply(this.getTotalPayment());
         if(result == null){
-            result = BigInteger.ZERO;
+            result = BigDecimal.ZERO;
         }
         return result;
     }
@@ -77,7 +77,7 @@ public class Order extends GoodsList{
         if (searchShipment == null) {
             return;
         }
-        if (searchShipment.getQuantity().compareTo(BigInteger.ZERO) == 0) {
+        if (searchShipment.getQuantity().compareTo(BigDecimal.ZERO) == 0) {
             System.out.println("Doesn't have enough quantity!");
             return;
         }
@@ -87,14 +87,14 @@ public class Order extends GoodsList{
             if (nextProcess == -1 || nextProcess == 0) {
                 return;
             } else if (orderShipment.getQuantity().compareTo(searchShipment.getQuantity())>0){
-                orderShipment.setQuantity(BigInteger.ZERO);
+                orderShipment.setQuantity(BigDecimal.ZERO);
             } else if (!ctions.checkIfBigIntPositive(orderShipment.getQuantity())) {
-                orderShipment.setQuantity(BigInteger.ZERO);
+                orderShipment.setQuantity(BigDecimal.ZERO);
             } else {
                 break;
             }
         }
-        BigInteger inputQuantity = orderShipment.getQuantity();
+        BigDecimal inputQuantity = orderShipment.getQuantity();
         // Check if order already had this goods or not
         Goods existedOrderGoods = this.containGoods(searchGoods.getID());
         orderShipment = searchShipment.cloneShipment();
@@ -119,7 +119,7 @@ public class Order extends GoodsList{
             }
         }
         // sau khi them goods vao order, giam so luong goods do torng draftGoodsList
-        BigInteger quantityBefore = searchShipment.getQuantity();
+        BigDecimal quantityBefore = searchShipment.getQuantity();
         searchShipment.setQuantity(quantityBefore.subtract(inputQuantity));
         orderView.showDraftOrder(this);
     }
@@ -143,7 +143,7 @@ public class Order extends GoodsList{
         Shipment editShipment = draftOrder.containGoods(searchOrderGoods.getID())
                 .containShipment(searchOrderShipment.getID());
         // take the rest quantity of searchShipment in repository goodsList
-        BigInteger remainQuan = draftGoodsList.containGoods(searchOrderGoods.getID())
+        BigDecimal remainQuan = draftGoodsList.containGoods(searchOrderGoods.getID())
                 .containShipment(searchOrderShipment.getID())
                 .getQuantity();
         do {
@@ -163,7 +163,7 @@ public class Order extends GoodsList{
                     orderView.showDraftOrder(this);
                     return;
                 case "4":
-                    if (editShipment.getQuantity().compareTo(BigInteger.ZERO) == 0) {
+                    if (editShipment.getQuantity().compareTo(BigDecimal.ZERO) == 0) {
                         System.out.println(
                                 "Your changes make quantity become 0 and will be automatically removed from order!");
                         deleteFromOrder(repoGoodsList, draftGoodsList, searchOrderGoods, searchOrderShipment);
@@ -184,21 +184,21 @@ public class Order extends GoodsList{
         } while (!choice.equals("4"));
     }
     
-    private BigInteger IncrQuanInOrder(Shipment cloneShipment, ShipmentView shipView, BigInteger remainQuan) {
+    private BigDecimal IncrQuanInOrder(Shipment cloneShipment, ShipmentView shipView, BigDecimal remainQuan) {
         // tra ve so luong duoc tang len neu thuc hien thanh cong, BigInteger.Zero neu remainQuan == 0 hoac user nhap back/exit
-        if (remainQuan.equals(BigInteger.ZERO)) {
+        if (remainQuan.equals(BigDecimal.ZERO)) {
             System.out.println("Can not increase quantity!");
-            return BigInteger.ZERO;
+            return BigDecimal.ZERO;
         }
-        BigInteger quanBefore = cloneShipment.getQuantity();
+        BigDecimal quanBefore = cloneShipment.getQuantity();
         while (true) {
             int nextProcess = shipView.typeInQuan(cloneShipment);
-            BigInteger quanIncrease = cloneShipment.getQuantity();
+            BigDecimal quanIncrease = cloneShipment.getQuantity();
             if (nextProcess == -1 || nextProcess == 0) {
-                return BigInteger.ZERO;
+                return BigDecimal.ZERO;
             } else if (quanIncrease.compareTo(remainQuan)>0) {
                 System.out.println("Doesn't have enough quantity!");
-                cloneShipment.setQuantity(BigInteger.ZERO);
+                cloneShipment.setQuantity(BigDecimal.ZERO);
             } else {
                 cloneShipment.setQuantity(quanBefore.add(quanIncrease));
                 return quanIncrease;
@@ -206,19 +206,19 @@ public class Order extends GoodsList{
         }
     }
 
-    private BigInteger DecrQuanInOrder(Shipment cloneShipment, ShipmentView shipView) {
+    private BigDecimal DecrQuanInOrder(Shipment cloneShipment, ShipmentView shipView) {
         // tra ve so luong duoc giam neu thuc hien thanh cong, BigInteger.Zero neu remainQuan == 0 hoac user nhap back/exit
-        if (cloneShipment.getQuantity().compareTo(BigInteger.ZERO) == 0) {
+        if (cloneShipment.getQuantity().compareTo(BigDecimal.ZERO) == 0) {
             System.out.println("Can not decrease Quantity!");
-            return BigInteger.ZERO;
+            return BigDecimal.ZERO;
         }
-        BigInteger quanBefore = cloneShipment.getQuantity();
+        BigDecimal quanBefore = cloneShipment.getQuantity();
         int nextProcess =shipView.typeInQuan(cloneShipment);
-        BigInteger quanDecrease = cloneShipment.getQuantity();
+        BigDecimal quanDecrease = cloneShipment.getQuantity();
         if (nextProcess == -1 || nextProcess == 0) {
-            return BigInteger.ZERO;
+            return BigDecimal.ZERO;
         } else if (quanDecrease.compareTo(quanBefore)>=0) {
-            cloneShipment.setQuantity(BigInteger.ZERO);
+            cloneShipment.setQuantity(BigDecimal.ZERO);
             return quanBefore;
         } else {
             cloneShipment.setQuantity(quanBefore.subtract(quanDecrease));
@@ -233,7 +233,7 @@ public class Order extends GoodsList{
         }
         System.out.println("Deleted succeed !");
         // return the origin quantity after delete shipment
-        BigInteger originQuan = repoGoodsList.containGoods(orderGoods.getID())
+        BigDecimal originQuan = repoGoodsList.containGoods(orderGoods.getID())
                 .containShipment(orderShipment.getID())
                 .getQuantity();
         draftGoodsList.containGoods(orderGoods.getID())

@@ -5,7 +5,7 @@
 package Models;
 
 import View.Cautions;
-import java.math.BigInteger;
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
@@ -21,20 +21,20 @@ public class Goods {
     private String goodsName;
     private String id;
     private String manufacture;
-    private BigInteger listPrice = BigInteger.ZERO;
-    private BigInteger totalQuantity = BigInteger.ZERO;
+    private BigDecimal listPrice = BigDecimal.ZERO;
+    private BigDecimal totalQuantity = BigDecimal.ZERO;
     private List<Shipment> shipments = new ArrayList<>();
 
     public Goods() {
     }
 
-    public Goods(String goodsName, String manufac, BigInteger listPrice) {
+    public Goods(String goodsName, String manufac, BigDecimal listPrice) {
         this.goodsName = goodsName.trim();
         this.manufacture = manufac.trim();
         this.listPrice = listPrice;
     }
 
-    public Goods(String goodsName, String manufac, BigInteger listPrice, String goodsID) {
+    public Goods(String goodsName, String manufac, BigDecimal listPrice, String goodsID) {
         this.goodsName = goodsName;
         this.manufacture = manufac;
         this.listPrice = listPrice;
@@ -73,24 +73,24 @@ public class Goods {
         this.manufacture = provider.trim();
     }
 
-    public BigInteger getListPrice() {
+    public BigDecimal getListPrice() {
         if(this.listPrice == null){
-            this.listPrice = BigInteger.ZERO;
+            this.listPrice = BigDecimal.ZERO;
         }
         return listPrice;
     }
 
-    public void setListPrice(BigInteger listPrice) {
+    public void setListPrice(BigDecimal listPrice) {
         this.listPrice = listPrice;
     }
 
-    public BigInteger getTotalQuantity() {
-        this.totalQuantity = BigInteger.ZERO;
+    public BigDecimal getTotalQuantity() {
+        this.totalQuantity = BigDecimal.ZERO;
         for (int i = 0; i < shipments.size(); i++) {
             this.totalQuantity = this.totalQuantity.add(shipments.get(i).getQuantity());
         }
         if(this.totalQuantity == null){
-            this.totalQuantity = BigInteger.ZERO;
+            this.totalQuantity = BigDecimal.ZERO;
         }
         return this.totalQuantity;
     }

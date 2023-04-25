@@ -4,7 +4,7 @@
  */
 package Models;
 
-import java.math.BigInteger;
+import java.math.BigDecimal;
 import java.time.LocalDate;
 
 /**
@@ -13,8 +13,8 @@ import java.time.LocalDate;
  */
 public class Shipment {
 
-    private BigInteger quantity = BigInteger.ZERO;
-    private BigInteger importPrice = BigInteger.ZERO;
+    private BigDecimal quantity = BigDecimal.ZERO;
+    private BigDecimal importPrice = BigDecimal.ZERO;
     private String id = null;
     private LocalDate nsx = null;
     private LocalDate hsd = null;
@@ -22,14 +22,14 @@ public class Shipment {
     public Shipment() {
     }
 
-    public Shipment(BigInteger quantity, BigInteger importPrice, LocalDate nsx, LocalDate hsd) {
+    public Shipment(BigDecimal quantity, BigDecimal importPrice, LocalDate nsx, LocalDate hsd) {
         this.quantity = quantity;
         this.importPrice = importPrice;
         this.nsx = nsx;
         this.hsd = hsd;
     }
 
-    public Shipment(BigInteger quantity, BigInteger importPrice, LocalDate nsx, LocalDate hsd, String id) {
+    public Shipment(BigDecimal quantity, BigDecimal importPrice, LocalDate nsx, LocalDate hsd, String id) {
         this.quantity = quantity;
         this.importPrice = importPrice;
         this.nsx = nsx;
@@ -54,19 +54,19 @@ public class Shipment {
         this.hsd = hsd;
     }
 
-    public BigInteger getQuantity() {
+    public BigDecimal getQuantity() {
         return quantity;
     }
 
-    public void setQuantity(BigInteger quantity) {
+    public void setQuantity(BigDecimal quantity) {
         this.quantity = quantity;
     }
 
-    public BigInteger getImportPrice() {
+    public BigDecimal getImportPrice() {
         return importPrice;
     }
 
-    public void setImportPrice(BigInteger importPrice) {
+    public void setImportPrice(BigDecimal importPrice) {
         this.importPrice = importPrice;
     }
 

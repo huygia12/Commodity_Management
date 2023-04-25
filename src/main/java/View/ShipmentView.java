@@ -5,7 +5,7 @@
 package View;
 
 import Models.Shipment;
-import java.math.BigInteger;
+import java.math.BigDecimal;
 import java.time.DateTimeException;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
@@ -34,7 +34,7 @@ public class ShipmentView {
             } else if (ctions.checkIfNoInput(inputStr)) {
             } else {
                 try {
-                    BigInteger quantity = new BigInteger(inputStr);
+                    BigDecimal quantity = new BigDecimal(inputStr);
                     if (!ctions.checkIfBigIntPositive(quantity)) {
                         continue;
                     }
@@ -58,7 +58,7 @@ public class ShipmentView {
             } else if (ctions.checkIfNoInput(inputStr)) {
             } else {
                 try {
-                    BigInteger importPrice = new BigInteger(inputStr);
+                    BigDecimal importPrice = new BigDecimal(inputStr);
                     if (!ctions.checkIfBigIntPositive(importPrice)) {
                         continue;
                     }
@@ -127,7 +127,7 @@ public class ShipmentView {
         }
     }
     
-    public boolean gainQuanDecision(BigInteger quantity, Shipment shipment) {
+    public boolean gainQuanDecision(BigDecimal quantity, Shipment shipment) {
         // give the user to make a decision between gain the shipmentQuantity one or abort changes
         while (true) {
             System.out.println(
@@ -136,7 +136,7 @@ public class ShipmentView {
                     .print("(Y:add to the existing one / N:abort change)=>Y/N: ");
             String yesNo = sc.nextLine();
             if (yesNo.equalsIgnoreCase("y")) {
-                BigInteger sumQuantity = shipment.getQuantity().add(quantity);
+                BigDecimal sumQuantity = shipment.getQuantity().add(quantity);
                 shipment.setQuantity(sumQuantity);
                 System.out.println("Add succceed...");
                 return true;

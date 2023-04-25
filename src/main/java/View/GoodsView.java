@@ -6,7 +6,7 @@ package View;
 
 import Models.Goods;
 import Models.GoodsList;
-import java.math.BigInteger;
+import java.math.BigDecimal;
 import java.util.Scanner;
 
 /**
@@ -61,7 +61,7 @@ public class GoodsView {
             } else if (ctions.checkIfNoInput(inputStr)) {
             } else {
                 try {
-                    BigInteger listPrice = new BigInteger(inputStr);
+                    BigDecimal listPrice = new BigDecimal(inputStr);
                     if (!ctions.checkIfBigIntPositive(listPrice)) {
                         continue;
                     }
