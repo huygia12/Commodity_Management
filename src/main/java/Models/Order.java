@@ -12,7 +12,6 @@ public class Order extends GoodsList{
     private String ID;
     private BigInteger cusMoney = BigInteger.ZERO;
     private int discount;
-    private BigInteger totalPayment = BigInteger.ZERO;
     
     public Order (List<Goods> currentOrder, String ID) {
         super(currentOrder);
@@ -51,16 +50,13 @@ public class Order extends GoodsList{
     }
 
     public BigInteger getTotalPayment() {
-        if(this.totalPayment == null){
-            this.totalPayment = BigInteger.ZERO;
+        BigInteger result = BigInteger.ZERO;
+        for (Goods goods : this.getGoodsList()) {
+            result = result.add(goods.getListPrice().multiply(goods.getTotalQuantity()));
         }
-        return this.totalPayment;
+        return result;
     }
 
-    public void setTotalPayment(BigInteger totalPayment) {
-        this.totalPayment = totalPayment;
-    }
-    
     public BigInteger getTotalAfterDis(){
         BigInteger result = this.getTotalPayment().multiply(BigInteger.valueOf(1-this.discount/100));
         if(result == null){

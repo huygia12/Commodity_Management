@@ -13,8 +13,8 @@ import java.time.LocalDate;
  */
 public class Shipment {
 
-    private BigInteger quantity;
-    private BigInteger importPrice;
+    private BigInteger quantity = BigInteger.ZERO;
+    private BigInteger importPrice = BigInteger.ZERO;
     private String id = null;
     private LocalDate nsx = null;
     private LocalDate hsd = null;

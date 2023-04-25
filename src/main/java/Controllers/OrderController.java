@@ -62,10 +62,10 @@ public class OrderController {
                     .collect(Collectors.toList()));
         }
         // draftGoodsList chi duoc phep chua Goods van con shipment
-        draftGoodsList.getGoodsList()
+        draftGoodsList.setGoodsList(draftGoodsList.getGoodsList()
                 .stream()
                 .filter(x -> !x.getShipments().isEmpty())
-                .collect(Collectors.toList());
+                .collect(Collectors.toList()));
     }
     
     private void updateQuanAfterPay(){
@@ -102,6 +102,7 @@ public class OrderController {
                         if (this.order.payOrder(view)) {
                             completed = true;
                         }
+                        break;
                     case 4:
                         break;
                     default:
@@ -113,7 +114,7 @@ public class OrderController {
                 choice = -1;
                 sc.next();
             }
-        } while (choice != 4);
+        } while (choice != 4 && !completed);
         if(completed){
             updateQuanAfterPay();
         }
