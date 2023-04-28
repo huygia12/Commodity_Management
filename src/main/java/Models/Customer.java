@@ -10,6 +10,9 @@ package Models;
  */
 public class Customer extends AbstractHuman {
 
+    public Customer(){
+    }
+    
     public Customer(String firstName, String lastName, String address, int age, String phoneNumber, Gender gender) {
         this.firstName = firstName;
         this.lastName = lastName;
