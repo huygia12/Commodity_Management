@@ -15,6 +15,7 @@ import java.util.ArrayList;
 import java.util.InputMismatchException;
 import java.util.List;
 import java.util.Scanner;
+import java.util.Stack;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -25,14 +26,14 @@ import java.util.logging.Logger;
 public class CommodityManagement {
     static Cautions ctions = new Cautions();
     static final List<Goods> myGoodsList = new ArrayList<>();
-    static final List<Order> myOrderHistory = new ArrayList<>();
+    static final Shift detailPerDay = new Shift(new Stack<ImportedGoods>(), new Stack<Order>());
     static Scanner sc = new Scanner(System.in);
 
     public static void menuOfMainFunction() {
         System.out.println("\n********************************");
         System.out.println("* 1. Repository Management     *");
         System.out.println("* 2. Make New Order            *");
-        System.out.println("* 3. Current Revenue Overview  *");
+        System.out.println("* 3. Statistics                *");
         System.out.println("* 4. Settings                  *");
         System.out.println("* 5. Exit                      *");
         System.out.println("********************************");
@@ -51,13 +52,14 @@ public class CommodityManagement {
                 sc.nextLine();
                 switch (choice) {
                     case 1:
-                        repoCtr.repositoryManagement();
+                        repoCtr.repositoryManagement(detailPerDay.getShipmentHistory());
                         break;
                     case 2:
-                        Order newOrder = new Order(new ArrayList<>(), String.format("%06d", myOrderHistory.size()));
+                        Order newOrder = new Order(new ArrayList<>(), String.format("%06d", 
+                                detailPerDay.getOrderHistory().size()));
                         OrderController orderCtr = new OrderController(newOrder, repoGoodsList);
                         if (orderCtr.makeNewOrder()) {
-                            myOrderHistory.add(newOrder);
+                            detailPerDay.getOrderHistory().add(newOrder);
                         }
                         break;
                     case 3:

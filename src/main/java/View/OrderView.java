@@ -7,8 +7,7 @@ package View;
 import Models.Goods;
 import Models.Order;
 import java.math.BigDecimal;
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
+import java.util.InputMismatchException;
 import java.util.Scanner;
 
 /**
@@ -16,9 +15,9 @@ import java.util.Scanner;
  * @author FPTSHOP
  */
 public class OrderView {
+
     final Scanner sc = new Scanner(System.in);
     final Cautions ctions = new Cautions();
-    final String INVOICE_DATE = LocalDateTime.now().format(DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm:ss"));
 
     public void orderMenu() {
         System.out.println("");
@@ -46,7 +45,6 @@ public class OrderView {
         System.out.print("Option=> ");
     }
 
-    
     public int typeInDcountPctage(Order order) {
         while (true) {
             System.out.print("Please enter the discount percentage (must be a positive number), or type EXIT/BACK to go exit/back: ");
@@ -85,7 +83,7 @@ public class OrderView {
                     order.setCusMoney(new BigDecimal(input));
                     if (!ctions.checkIfBigIntPositive(order.getCusMoney())) {
                         order.setCusMoney(BigDecimal.ZERO);
-                    } else if (order.getCusMoney().compareTo(order.getTotalAfterDis())<0) {
+                    } else if (order.getCusMoney().compareTo(order.getTotalAfterDis()) < 0) {
                         order.setCusMoney(BigDecimal.ZERO);
                         System.out.println("Insufficient payment! Please pay more.");
                     } else {
@@ -98,7 +96,33 @@ public class OrderView {
         }
     }
 
-    
+    public int typeOfPayment(Order order) {
+        while (true) {
+            try {
+                System.out.print("""
+                                 1: Cash Payment  2: Wire Transfer Payment 
+                                 3: Back          4: Exit
+                                 Please choose one payment options => """);
+                int choice = sc.nextInt();
+                switch (choice) {
+                    case 3:
+                        return -1;
+                    case 4:
+                        return 0;
+                    case 1, 2:
+                        order.setPaymentOptions(choice);
+                        return 1;
+                    default:
+                        System.out.println("Wrong input! Please choose from 1->4");
+                        break;
+                }
+            } catch (InputMismatchException ime) {
+                System.out.println("Wrong input!");
+                sc.next();
+            }
+        }
+    }
+
     public void showDraftOrder(Order order) {
         System.out.println("");
         System.out.println("-------------------------- YOUR ORDER ------------------------------");
@@ -110,7 +134,7 @@ public class OrderView {
             BigDecimal totalQuantity = goods.getTotalQuantity();
             BigDecimal price = goods.getListPrice();
             BigDecimal totalPrice = totalQuantity.multiply(price);
-            System.out.format("%-25s %-10s %-15s %-15s\n", goods.getGoodsName(), totalQuantity+"", price+"", totalPrice+"");
+            System.out.format("%-25s %-10s %-15s %-15s\n", goods.getGoodsName(), totalQuantity + "", price + "", totalPrice + "");
         }
         BigDecimal totalPayment = order.getTotalPayment();
         System.out.println(" ");
@@ -123,7 +147,7 @@ public class OrderView {
         System.out.println("");
         System.out.println("-------------- YOUR BILL ---------------");
         System.out.println("----------------------");
-        System.out.println("Date: " + this.INVOICE_DATE);
+        System.out.println("Date: " + order.getInVoiceDateTime());
         System.out.println("");
         System.out.format("%-25s %-10s %-15s %-15s\n", "Name", "Quantity", "Price", "Total");
         System.out.format("%-25s %-10s %-15s %-15s\n", "-------------------------", "----------", "---------------", "---------------");
@@ -138,6 +162,7 @@ public class OrderView {
         System.out.println("Discount: " + order.getDiscount() + "%");
         System.out.println("Total after discount: " + order.getTotalAfterDis());
         System.out.println("Customer payment: " + order.getCusMoney());
+        System.out.println("Payment Option: "+ order.getPaymentOptions());
         System.out.println("Change: " + change);
         System.out.println("----------------------------------------");
     }

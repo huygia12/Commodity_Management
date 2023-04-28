@@ -6,22 +6,33 @@ import View.ShipmentView;
 import java.math.BigDecimal;
 import java.util.List;
 import java.util.stream.*;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 
-public class Order extends GoodsList{
+public class Order extends GoodsList {
+
+    final String INVOICE_DATE;
     final Cautions ctions = new Cautions();
     private String ID;
     private BigDecimal cusMoney = BigDecimal.ZERO;
     private int discount;
-    
-    public Order (List<Goods> currentOrder, String ID) {
+    private String paymentOptions;
+
+    public Order(List<Goods> currentOrder, String ID) {
         super(currentOrder);
         this.ID = ID;
+        this.INVOICE_DATE = LocalDateTime
+                .now()
+                .format(DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm:ss"));
     }
-    
-    private Order(List<Goods> currentOrder){
+
+    private Order(List<Goods> currentOrder) {
         super(currentOrder);
+        this.INVOICE_DATE = LocalDateTime
+                .now()
+                .format(DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm:ss"));
     }
-    
+
     public void setDiscount(int discount) {
         this.discount = discount;
     }
@@ -38,8 +49,24 @@ public class Order extends GoodsList{
         return this.ID;
     }
 
+    public String getInVoiceDateTime(){
+        return this.INVOICE_DATE;
+    }
+
+    public String getPaymentOptions() {
+        return this.paymentOptions;
+    }
+
+    public void setPaymentOptions(int option) {
+        if( option == 1){
+            this.paymentOptions = "Cash Payment";
+        }else{
+            this.paymentOptions = "Wire Transfer Paymnet";
+        }
+    }
+    
     public BigDecimal getCusMoney() {
-        if(this.cusMoney == null){
+        if (this.cusMoney == null) {
             this.cusMoney = BigDecimal.ZERO;
         }
         return this.cusMoney;
@@ -57,12 +84,16 @@ public class Order extends GoodsList{
         return result;
     }
 
-    public BigDecimal getTotalAfterDis(){
-        BigDecimal result = BigDecimal.valueOf(1.0-(discount*1.0)/100).multiply(this.getTotalPayment());
-        if(result == null){
+    public BigDecimal getTotalAfterDis() {
+        BigDecimal result = BigDecimal.valueOf(1.0 - (discount * 1.0) / 100).multiply(this.getTotalPayment());
+        if (result == null) {
             result = BigDecimal.ZERO;
         }
         return result;
+    }
+
+    public BigDecimal getDiscountMoney(){
+        
     }
     
     //Function 1
@@ -86,7 +117,7 @@ public class Order extends GoodsList{
             int nextProcess = shipView.typeInQuan(orderShipment);
             if (nextProcess == -1 || nextProcess == 0) {
                 return;
-            } else if (orderShipment.getQuantity().compareTo(searchShipment.getQuantity())>0){
+            } else if (orderShipment.getQuantity().compareTo(searchShipment.getQuantity()) > 0) {
                 orderShipment.setQuantity(BigDecimal.ZERO);
             } else if (!ctions.checkIfBigIntPositive(orderShipment.getQuantity())) {
                 orderShipment.setQuantity(BigDecimal.ZERO);
@@ -123,7 +154,7 @@ public class Order extends GoodsList{
         searchShipment.setQuantity(quantityBefore.subtract(inputQuantity));
         orderView.showDraftOrder(this);
     }
-     
+
     //Funtion 2
     public void editOrder(GoodsList repoGoodsList, GoodsList draftGoodsList, ShipmentView shipView, OrderView orderView) {
         String choice;
@@ -155,7 +186,7 @@ public class Order extends GoodsList{
                     orderView.showDraftOrder(draftOrder);
                     break;
                 case "2":
-                    remainQuan = remainQuan.add( DecrQuanInOrder(editShipment, shipView));
+                    remainQuan = remainQuan.add(DecrQuanInOrder(editShipment, shipView));
                     orderView.showDraftOrder(draftOrder);
                     break;
                 case "3":
@@ -183,7 +214,7 @@ public class Order extends GoodsList{
             }
         } while (!choice.equals("4"));
     }
-    
+
     private BigDecimal IncrQuanInOrder(Shipment cloneShipment, ShipmentView shipView, BigDecimal remainQuan) {
         // tra ve so luong duoc tang len neu thuc hien thanh cong, BigInteger.Zero neu remainQuan == 0 hoac user nhap back/exit
         if (remainQuan.equals(BigDecimal.ZERO)) {
@@ -196,7 +227,7 @@ public class Order extends GoodsList{
             BigDecimal quanIncrease = cloneShipment.getQuantity();
             if (nextProcess == -1 || nextProcess == 0) {
                 return BigDecimal.ZERO;
-            } else if (quanIncrease.compareTo(remainQuan)>0) {
+            } else if (quanIncrease.compareTo(remainQuan) > 0) {
                 System.out.println("Doesn't have enough quantity!");
                 cloneShipment.setQuantity(BigDecimal.ZERO);
             } else {
@@ -213,11 +244,11 @@ public class Order extends GoodsList{
             return BigDecimal.ZERO;
         }
         BigDecimal quanBefore = cloneShipment.getQuantity();
-        int nextProcess =shipView.typeInQuan(cloneShipment);
+        int nextProcess = shipView.typeInQuan(cloneShipment);
         BigDecimal quanDecrease = cloneShipment.getQuantity();
         if (nextProcess == -1 || nextProcess == 0) {
             return BigDecimal.ZERO;
-        } else if (quanDecrease.compareTo(quanBefore)>=0) {
+        } else if (quanDecrease.compareTo(quanBefore) >= 0) {
             cloneShipment.setQuantity(BigDecimal.ZERO);
             return quanBefore;
         } else {
@@ -226,7 +257,7 @@ public class Order extends GoodsList{
         }
     }
 
-    private void deleteFromOrder(GoodsList repoGoodsList,GoodsList draftGoodsList, Goods orderGoods, Shipment orderShipment) {
+    private void deleteFromOrder(GoodsList repoGoodsList, GoodsList draftGoodsList, Goods orderGoods, Shipment orderShipment) {
         orderGoods.getShipments().remove(orderShipment);
         if (orderGoods.getShipments().isEmpty()) {
             this.getGoodsList().remove(orderGoods);
@@ -240,7 +271,7 @@ public class Order extends GoodsList{
                 .containShipment(orderShipment.getID())
                 .setQuantity(originQuan);
     }
-   
+
     //Funtion 3
     public boolean payOrder(OrderView orderView) {
         // tra ve true neu pay thanh cong, false neu list khong co gi hoac user nhap exit
@@ -265,6 +296,9 @@ public class Order extends GoodsList{
                     n = 1;
                     continue;
                 }
+                n++;
+            }if(n == 3){
+                
             }
             // make a payment and show bill
             orderView.showBill(this);

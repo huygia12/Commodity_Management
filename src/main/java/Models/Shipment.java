@@ -37,7 +37,6 @@ public class Shipment {
         this.id = id;
     }
 
-    
     public LocalDate getNsx() {
         return nsx;
     }
@@ -77,9 +76,8 @@ public class Shipment {
     public void setID(String shipmentID) {
         this.id = shipmentID;
     }
-    
-    
-    public Shipment cloneShipment (){
+
+    public Shipment cloneShipment() {
         Shipment cloneShipment = new Shipment();
         cloneShipment.setID(this.getID());
         cloneShipment.setImportPrice(this.getImportPrice());
@@ -89,4 +87,8 @@ public class Shipment {
         return cloneShipment;
     }
 
+    public void gainQuantity(BigDecimal quantity) {
+        BigDecimal sumQuantity = this.getQuantity().add(quantity);
+        this.setQuantity(sumQuantity);
+    }
 }

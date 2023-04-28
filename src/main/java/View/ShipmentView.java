@@ -125,9 +125,9 @@ public class ShipmentView {
                 }
             }
         }
-    }
-    
-    public boolean gainQuanDecision(BigDecimal quantity, Shipment shipment) {
+    }  
+
+    public boolean gainQuanDecision() {
         // give the user to make a decision between gain the shipmentQuantity one or abort changes
         while (true) {
             System.out.println(
@@ -136,8 +136,6 @@ public class ShipmentView {
                     .print("(Y:add to the existing one / N:abort change)=>Y/N: ");
             String yesNo = sc.nextLine();
             if (yesNo.equalsIgnoreCase("y")) {
-                BigDecimal sumQuantity = shipment.getQuantity().add(quantity);
-                shipment.setQuantity(sumQuantity);
                 System.out.println("Add succceed...");
                 return true;
             } else if (yesNo.equalsIgnoreCase("n")) {

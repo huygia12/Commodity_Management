@@ -16,6 +16,7 @@ import java.util.Comparator;
 import java.util.InputMismatchException;
 import java.util.List;
 import java.util.Scanner;
+import java.util.Stack;
 
 /**
  *
@@ -115,7 +116,7 @@ public class RepositoryController {
         //goodsList se sap xeo theo thu tu uu tien: name -> manufacture
         this.getRepository()
                 .getGoodsList()
-                .sort(new nameComparator().thenComparing(new manufacComparator()));
+                .sort(new NameComparator().thenComparing(new ManufacComparator()));
         this.repository.showGoodsList();
     }
 
@@ -192,9 +193,9 @@ public class RepositoryController {
     // Function 6.2
     private void printTopLeastQuan() {
         this.repository.getGoodsList()
-                .sort(new quanComparator()
-                        .thenComparing(new nameComparator())
-                        .thenComparing(new manufacComparator()));
+                .sort(new QuanComparator()
+                        .thenComparing(new NameComparator())
+                        .thenComparing(new ManufacComparator()));
         GoodsList filterList = new GoodsList(this.repository.getGoodsList()
                 .stream()
                 .limit(10).toList());
@@ -204,9 +205,9 @@ public class RepositoryController {
     // Function 6.3
     private void printTopLargestQuan() {
         this.repository.getGoodsList()
-                .sort(new quanComparator().reversed()
-                        .thenComparing(new nameComparator())
-                        .thenComparing(new manufacComparator()));
+                .sort(new QuanComparator().reversed()
+                        .thenComparing(new NameComparator())
+                        .thenComparing(new ManufacComparator()));
         GoodsList filterList = new GoodsList(this.repository.getGoodsList()
                 .stream()
                 .limit(10)
@@ -246,7 +247,7 @@ public class RepositoryController {
                 return (-1) * goods1.getShipments().get(0).getNsx()
                         .compareTo(goods2.getShipments().get(0).getNsx());
             }
-        }.thenComparing(new nameComparator()));
+        }.thenComparing(new NameComparator()));
         //If bucket contains less than 10 goods, list them all
         // otherwise, we only take 10 goods with latest Production Date to print out
         int size = filterList.getGoodsList().size();
@@ -268,7 +269,7 @@ public class RepositoryController {
                     .toList();
             if (!tmpShipmentList.isEmpty()) {
                 Goods tmpGoods = goods.cloneGoods();
-                tmpGoods.setShipment(tmpShipmentList);
+                tmpGoods.setShipments(tmpShipmentList);
                 filterList.getGoodsList().add(tmpGoods);
             }
         }
@@ -279,9 +280,9 @@ public class RepositoryController {
         }
     }
 
-    public void repositoryManagement() {
-        ShipmentView shipView = new ShipmentView();
-        GoodsView goodsView = new GoodsView();
+    public void repositoryManagement(Stack<Goods> importGoodsHis)   {
+        ShipmentController shipCtr = new ShipmentController();
+        GoodsController goodsCtr = new GoodsController();
         int choice;
         do {
             try {
@@ -291,16 +292,19 @@ public class RepositoryController {
                 //uf.clearScreen();
                 switch (choice) {
                     case 1:
-                        this.repository.addGoodsToList(goodsView);
+                        this.repository.addGoodsToList(goodsCtr.getView());
                         //uf.clearScreen();
                         //sc.nextLine();
                         break;
                     case 2:
-                        this.repository.importGoods(shipView);
+                        ImportedGoods newImportGoods = this.repository.importGoods(shipCtr.getView());
+                        if(newImportGoods!=null){
+                            importGoodsHis.add(newImportGoods);
+                        }
                         //uf.clearScreen();
                         break;
                     case 3:
-                        editGoodsAndShipmentInfor(goodsView, shipView);
+                        editGoodsAndShipmentInfor(goodsCtr.getView(), shipCtr.getView());
                         //uf.clearScreen();
                         break;
                     case 4:

@@ -56,7 +56,7 @@ public class OrderController {
                 .collect(Collectors.toList()));
         // draftGoodsList chi duoc phep chua nhung Shipment con hsd
         for (Goods draftGoods : draftGoodsList.getGoodsList()) {
-            draftGoods.setShipment(draftGoods.getShipments()
+            draftGoods.setShipments(draftGoods.getShipments()
                     .stream()
                     .filter(x -> x.getHsd().isAfter(this.CURRENT_DATE))
                     .collect(Collectors.toList()));

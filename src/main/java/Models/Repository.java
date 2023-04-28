@@ -69,34 +69,34 @@ public class Repository extends GoodsList {
         this.getGoodsList().add(newGoods);
     }
 
-    public void importGoods(ShipmentView shipView) {
+    public ImportedGoods importGoods(ShipmentView shipView) {
         Goods searchGoods = this.searchGoods();
         if (searchGoods == null) {
-            return;
+            return null;
         }
         int n = 1;
         int nextProcess;
         Shipment newShipment = new Shipment();
+        ImportedGoods newImportedGoods = new ImportedGoods(searchGoods);
+        newImportedGoods.getShipments().clear();
         while (n != 4) {
             switch (n) {
                 case 1:
                     nextProcess = shipView.typeInQuan(newShipment);
-                    if (nextProcess == 0) {
-                        return;
-                    } else if (nextProcess == -1) {
-                        return;
-                    }
+                    if (nextProcess == 0 || nextProcess == -1) {
+                        return null;
+                    } 
                 case 2:
                     nextProcess = shipView.typeInImportPrice(newShipment);
                     if (nextProcess == 0) {
-                        return;
+                        return null;
                     } else if (nextProcess == -1) {
                         break;
                     }
                 case 3:
                     nextProcess = shipView.typeInProDate(newShipment);
                     if (nextProcess == 0) {
-                        return;
+                        return null;
                     } else if (nextProcess == -1) {
                         n = 2;
                         break;
@@ -105,7 +105,7 @@ public class Repository extends GoodsList {
                     nextProcess = shipView.typeInEpirDate(newShipment);
                     switch (nextProcess) {
                         case 0:
-                            return;
+                            return null;
                         case -1:
                             n = 3;
                             break;
@@ -117,12 +117,19 @@ public class Repository extends GoodsList {
         // kiem tra neu shipment nay da ton tai 
         int shipmentIndex = searchGoods.indexOfDupShip(newShipment);
         if (shipmentIndex != -1) {
+            // neu shipment da ton tai
             Shipment dupShipment = searchGoods.getShipments().get(shipmentIndex);
-            shipView.gainQuanDecision(newShipment.getQuantity(), dupShipment);
+            if(shipView.gainQuanDecision()){
+                dupShipment.gainQuantity(newShipment.getQuantity());
+                newShipment.setID(dupShipment.getID());                
+            }
         } else {
+            // neu Shipment nay la moi
             newShipment.setID(String.format("%06d", searchGoods.getShipments().size()));
             searchGoods.getShipments().add(newShipment);
         }
+        newImportedGoods.getShipments().add(newShipment);
+        return newImportedGoods;
     }
 
     public void delGoodsInRepo(Goods goods, GoodsList goodsList) {
@@ -212,12 +219,14 @@ public class Repository extends GoodsList {
         int shipmentIndex = searchGoods.indexOfDupShip(draftShipment);
         if (shipmentIndex != -1 && shipmentIndex != searchGoods.getShipments()
                 .indexOf(searchShipment)) {
-            //If changes make duplicate shipments exist, make decision to add to existing one or not
+            //Neu thay doi tao ra 1 shipment da ton tai, user chon xem co them so luong vao cai da ton tai roi hay khong
             Shipment duplicateShipment = searchGoods.getShipments().get(shipmentIndex);
-            if (shipView.gainQuanDecision(draftShipment.getQuantity(), duplicateShipment)) {
-                // If user decided to add to the existing one, then remove the edited shipment 
-                // and reset the id of shipment'sList in searchGoods
+            if (shipView.gainQuanDecision()) {
+                // Neu user chon them vao cai da ton tai thi tang so luong 
+                duplicateShipment.gainQuantity(draftShipment.getQuantity());
+                // xoa shipment hien dang chinh sua
                 searchGoods.getShipments().remove(searchShipment);
+                // reset lai ID cua cac shipment
                 for (Shipment shipment : searchGoods.getShipments()) {
                     shipment.setID(String.format("%06d",
                             searchGoods.getShipments().indexOf(shipment)));

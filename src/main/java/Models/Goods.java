@@ -45,7 +45,7 @@ public class Goods {
         return this.shipments;
     }
 
-    public void setShipment(List<Shipment> shipments) {
+    public void setShipments(List<Shipment> shipments) {
         this.shipments = shipments;
     }
 
