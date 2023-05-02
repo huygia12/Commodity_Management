@@ -7,6 +7,7 @@ package View;
 import Models.*;
 import Controllers.OrderController;
 import Controllers.RepositoryController;
+import Controllers.ShiftController;
 import java.awt.AWTException;
 import java.awt.Robot;
 import java.math.BigDecimal;
@@ -15,7 +16,6 @@ import java.util.ArrayList;
 import java.util.InputMismatchException;
 import java.util.List;
 import java.util.Scanner;
-import java.util.Stack;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -24,18 +24,20 @@ import java.util.logging.Logger;
  * @author FPTSHOP
  */
 public class CommodityManagement {
+
     static Cautions ctions = new Cautions();
     static final List<Goods> myGoodsList = new ArrayList<>();
-    static final Shift detailPerDay = new Shift(new Stack<ImportedGoods>(), new Stack<Order>());
+    static final ShiftController shiftCtr = new ShiftController(new Shift());
     static Scanner sc = new Scanner(System.in);
 
     public static void menuOfMainFunction() {
         System.out.println("\n********************************");
         System.out.println("* 1. Repository Management     *");
         System.out.println("* 2. Make New Order            *");
-        System.out.println("* 3. Statistics                *");
-        System.out.println("* 4. Settings                  *");
-        System.out.println("* 5. Exit                      *");
+        System.out.println("* 3. Current Shift             *");
+        System.out.println("* 4. History research          *");
+        System.out.println("* 5. Settings                  *");
+        System.out.println("* 6. Exit                      *");
         System.out.println("********************************");
         System.out.print("Option => ");
     }
@@ -52,14 +54,18 @@ public class CommodityManagement {
                 sc.nextLine();
                 switch (choice) {
                     case 1:
-                        repoCtr.repositoryManagement(detailPerDay.getShipmentHistory());
+                        repoCtr.repositoryManagement(shiftCtr.getShift());
                         break;
                     case 2:
-                        Order newOrder = new Order(new ArrayList<>(), String.format("%06d", 
-                                detailPerDay.getOrderHistory().size()));
+                        Order newOrder = new Order(new ArrayList<>(),
+                                String.format("%06d", shiftCtr.getShift()
+                                        .getOrderHisPerShift()
+                                        .size()));
                         OrderController orderCtr = new OrderController(newOrder, repoGoodsList);
                         if (orderCtr.makeNewOrder()) {
-                            detailPerDay.getOrderHistory().add(newOrder);
+                            shiftCtr.getShift()
+                                    .getOrderHisPerShift()
+                                    .add(newOrder);
                         }
                         break;
                     case 3:
@@ -69,10 +75,13 @@ public class CommodityManagement {
                         //undeveloped
                         break;
                     case 5:
+                        //undeveloped
+                        break;
+                    case 6:
                         System.out.println("Exiting...");
                         break;
                     default:
-                        System.out.println("Wrong input, Please type from 1->4!");
+                        System.out.println("Wrong input, Please type from 1->6!");
                         break;
                 }
             } catch (InputMismatchException ime) {
@@ -80,7 +89,7 @@ public class CommodityManagement {
                 choice = -1;
                 sc.next();
             }
-        } while (choice != 5);
+        } while (choice != 6);
     }
 
     static void insertInformation() {

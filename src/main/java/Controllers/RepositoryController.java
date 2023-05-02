@@ -30,6 +30,9 @@ public class RepositoryController {
     final Cautions ctions = new Cautions();
     private Repository repository;
 
+    public RepositoryController() {
+    }
+
     public RepositoryController(Repository repository) {
         this.repository = repository;
     }
@@ -280,7 +283,7 @@ public class RepositoryController {
         }
     }
 
-    public void repositoryManagement(Stack<Goods> importGoodsHis)   {
+    public void repositoryManagement(Shift shift)   {
         ShipmentController shipCtr = new ShipmentController();
         GoodsController goodsCtr = new GoodsController();
         int choice;
@@ -299,7 +302,7 @@ public class RepositoryController {
                     case 2:
                         ImportedGoods newImportGoods = this.repository.importGoods(shipCtr.getView());
                         if(newImportGoods!=null){
-                            importGoodsHis.add(newImportGoods);
+                            shift.getShipmentHistory().add(newImportGoods);
                         }
                         //uf.clearScreen();
                         break;

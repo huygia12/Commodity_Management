@@ -93,7 +93,7 @@ public class Order extends GoodsList {
     }
 
     public BigDecimal getDiscountMoney(){
-        
+        return this.getTotalPayment().subtract(this.getTotalAfterDis());
     }
     
     //Function 1

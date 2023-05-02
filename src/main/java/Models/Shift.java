@@ -7,6 +7,7 @@ package Models;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.List;
 import java.util.Stack;
 
 /**
@@ -14,49 +15,98 @@ import java.util.Stack;
  * @author FPTSHOP
  */
 public class Shift {
-    private Stack<Order> orderHistoryPerDay = new Stack<>();
-    private Stack<ImportedGoods> importGoodsHistory = new Stack<>();
+    private Stack<Order> orderHisPerShift;
+    private Stack<ImportedGoods> importGoodsHis;
     private String date;
-    private String startTime;
-    private String endTime;
+    private String startTime = null;
+    private String endTime = null;
     private String ID;
     private BigDecimal openingBalance;
     private BigDecimal transportFee;
     private int VAT;
+    private List<Employee> employee;
     
     
     public Shift(){}
     
     public Shift(Stack<ImportedGoods> shipmentHistory, Stack<Order> orderHistory) {
-        this.orderHistoryPerDay = orderHistory;
-        this.importGoodsHistory = shipmentHistory;
+        this.orderHisPerShift = orderHistory;
+        this.importGoodsHis = shipmentHistory;
         this.date = LocalDateTime.now()
                 .format(DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm:ss"));
     }
 
-    public Stack<Order> getOrderHistory() {
-        return orderHistoryPerDay;
-    }
-
-    public void setOrderHistory(Stack<Order> orderHistory) {
-        this.orderHistoryPerDay = orderHistory;
-    }
-
-    public Stack<ImportedGoods> getShipmentHistory() {
-        return importGoodsHistory;
-    }
-
-    public void setShipmentHistory(Stack<ImportedGoods> shipmentHistory) {
-        this.importGoodsHistory = shipmentHistory;
-    }
-    
     public String getDate(){
         return this.date;
     }
+
+    public Stack<Order> getOrderHisPerShift() {
+        return orderHisPerShift;
+    }
+
+    public Stack<ImportedGoods> getImportGoodsHis() {
+        return importGoodsHis;
+    }
+
+    public String getStartTime() {
+        return startTime;
+    }
+
+    public void setStartTime(String startTime) {
+        this.startTime = startTime;
+    }
+
+    public String getEndTime() {
+        return endTime;
+    }
+
+    public void setEndTime(String endTime) {
+        this.endTime = endTime;
+    }
+
+    public String getID() {
+        return ID;
+    }
+
+    public void setID(String ID) {
+        this.ID = ID;
+    }
+
+    public BigDecimal getOpeningBalance() {
+        return openingBalance;
+    }
+
+    public void setOpeningBalance(BigDecimal openingBalance) {
+        this.openingBalance = openingBalance;
+    }
+
+    public BigDecimal getTransportFee() {
+        return transportFee;
+    }
+
+    public void setTransportFee(BigDecimal transportFee) {
+        this.transportFee = transportFee;
+    }
+
+    public int getVAT() {
+        return VAT;
+    }
+
+    public void setVAT(int VAT) {
+        this.VAT = VAT;
+    }
+
+    public List<Employee> getEmployee() {
+        return employee;
+    }
+
+    public void setEmployee(List<Employee> employee) {
+        this.employee = employee;
+    }
+
     
-    
-    public boolean orderInSameDay (Order newOrder){
-        LocalDateTime date1 = LocalDateTime.parse(this.orderHistoryPerDay.peek().getInVoiceDateTime(), 
+    public boolean orderOnSameDay (Order newOrder){
+        LocalDateTime date1 = LocalDateTime.parse(this.orderHisPerShift.peek().getInVoiceDateTime(), 
                 DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm:ss"));
         LocalDateTime date2 = LocalDateTime.parse(newOrder.getInVoiceDateTime(), 
                 DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm:ss"));
@@ -65,13 +115,18 @@ public class Shift {
                 && date1.getYear() == date2.getYear();
     }
     
-    public boolean importGoodsSameDay(ImportedGoods newImportGoods){
-        LocalDateTime date1 = LocalDateTime.parse(this.importGoodsHistory.peek().getImportDateTime(), 
+    public boolean importGoodsOnSameDay(ImportedGoods newImportGoods){
+        LocalDateTime date1 = LocalDateTime.parse(this.importGoodsHis.peek().getImportDateTime(), 
                 DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm:ss"));
         LocalDateTime date2 = LocalDateTime.parse(newImportGoods.getImportDateTime(), 
                 DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm:ss"));
         return date1.getDayOfMonth() == date2.getDayOfMonth() 
                 && date1.getMonth() == date2.getMonth() 
                 && date1.getYear() == date2.getYear();
+    }
+    
+    
+    public void openShift(){
+        
     }
 }

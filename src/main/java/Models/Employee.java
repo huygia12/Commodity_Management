@@ -4,8 +4,6 @@
  */
 package Models;
 
-import Builder.EmployeeBuilder;
-
 /**
  *
  * @author s1rja
@@ -15,6 +13,9 @@ public class Employee extends AbstractHuman {
     private int salary;
     private String CCCD;
 
+    public Employee(){
+    }
+    
     public Employee(String firstName, String lastName, Gender gender, int age, String phoneNumber, String CCCD, int salary, String address) {
         this.firstName = firstName;
         this.lastName = lastName;
@@ -57,6 +58,37 @@ public class Employee extends AbstractHuman {
     public Gender getGender() {
         return gender;
     }
-    
-    
+
+    public void setSalary(int salary) {
+        this.salary = salary;
+    }
+
+    public void setCCCD(String CCCD) {
+        this.CCCD = CCCD;
+    }
+
+    public void setFirstName(String firstName) {
+        this.firstName = firstName;
+    }
+
+    public void setLastName(String lastName) {
+        this.lastName = lastName;
+    }
+
+    public void setPhoneNumber(String phoneNumber) {
+        this.phoneNumber = phoneNumber;
+    }
+
+    public void setAddress(String address) {
+        this.address = address;
+    }
+
+    public void setAge(int age) {
+        this.age = age;
+    }
+
+    public void setGender(Gender gender) {
+        this.gender = gender;
+    }
+
 }
