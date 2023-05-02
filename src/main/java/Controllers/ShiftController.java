@@ -51,7 +51,7 @@ public class ShiftController {
                 sc.nextLine();
                 switch (choice) {
                     case 1:
-                        this.shift.openShift();
+                        this.shift.openShift(this.view);
                         break;
                     case 2:
                         break;

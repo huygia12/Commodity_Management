@@ -4,6 +4,7 @@
  */
 package Models;
 
+import Builder.EmployeeBuilder;
 import View.Cautions;
 import View.GoodsView;
 import View.RepositoryView;
@@ -307,5 +308,5 @@ public class Repository extends GoodsList {
             }
         } while (choice != 5);
     }
-
+    
 }

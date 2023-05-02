@@ -16,6 +16,10 @@ public class ShiftView {
         System.out.println("Shift not open yet!");
     }
     
+    public void shiftNotEndCaution(){
+        System.out.println("Current shift not over yet!!");
+    }
+    
     public void menuOfEditShift(){
         System.out.println("""
                            *************************************

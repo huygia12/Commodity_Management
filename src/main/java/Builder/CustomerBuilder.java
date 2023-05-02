@@ -20,18 +20,16 @@ public class CustomerBuilder implements HumanBuilder {
     private int age;
     private Gender gender;
     
+    public CustomerBuilder(String lastName) {
+        this.lastName = lastName;
+    }
+    
     @Override
     public CustomerBuilder withFirstName(String firstName) {
         this.firstName = firstName;
         return this;
     }
-
-    @Override
-    public CustomerBuilder withLastName(String lastName) {
-        this.lastName = lastName;
-        return this;
-    }
-
+    
     @Override
     public CustomerBuilder withPhoneNumber(String phoneNumber) {
         this.phoneNumber = phoneNumber;

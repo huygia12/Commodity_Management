@@ -302,7 +302,7 @@ public class RepositoryController {
                     case 2:
                         ImportedGoods newImportGoods = this.repository.importGoods(shipCtr.getView());
                         if(newImportGoods!=null){
-                            shift.getShipmentHistory().add(newImportGoods);
+                            shift.getImportGoodsHis().add(newImportGoods);
                         }
                         //uf.clearScreen();
                         break;

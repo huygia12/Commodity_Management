@@ -4,6 +4,7 @@
  */
 package Models;
 
+import View.ShiftView;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
@@ -126,7 +127,16 @@ public class Shift {
     }
     
     
-    public void openShift(){
-        
+    public void openShift(ShiftView shiftView){
+        if(this.endTime == null){
+            shiftView.shiftNotEndCaution();
+            return;
+        }
+        int n = 1;
+        switch(n){
+            case 1:
+            case 2:
+                
+        }
     }
 }
