@@ -22,6 +22,10 @@ public class EmployeeBuilder implements HumanBuilder {
     private int salary;
     private String CCCD;
     
+    public EmployeeBuilder(String lastName) {
+        this.lastName = lastName;
+    }
+    
     public EmployeeBuilder withSalary (int salary) {
         this.salary = salary;
         return this;
@@ -30,12 +34,6 @@ public class EmployeeBuilder implements HumanBuilder {
     @Override
     public EmployeeBuilder withFirstName(String firstName) {
         this.firstName = firstName;
-        return this;
-    }
-
-    @Override
-    public EmployeeBuilder withLastName(String lastName) {
-        this.lastName = lastName;
         return this;
     }
 

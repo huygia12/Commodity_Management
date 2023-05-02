@@ -14,8 +14,6 @@ public interface HumanBuilder {
     
     public <T extends HumanBuilder> T withFirstName(String firstName);
     
-    public <T extends HumanBuilder> T withLastName (String lastName);
-    
     public <T extends HumanBuilder> T withPhoneNumber (String phoneNumber);
     
     public <T extends HumanBuilder> T withAddress (String address);
