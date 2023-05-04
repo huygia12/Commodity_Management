@@ -55,7 +55,7 @@ public class CustomerBuilder implements HumanBuilder {
     }
     
     public Customer build() {
-        return new Customer(firstName, lastName, address, age, phoneNumber, gender);
+        return new Customer(firstName, lastName, phoneNumber, address, age, gender);
     }
     
 }

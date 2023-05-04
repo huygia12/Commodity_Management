@@ -4,6 +4,9 @@
  */
 package Controllers;
 
+import comparator.QuanComparator;
+import comparator.NameComparator;
+import comparator.ManufacComparator;
 import View.ShipmentView;
 import View.GoodsView;
 import View.Cautions;
@@ -16,7 +19,6 @@ import java.util.Comparator;
 import java.util.InputMismatchException;
 import java.util.List;
 import java.util.Scanner;
-import java.util.Stack;
 
 /**
  *
@@ -301,6 +303,7 @@ public class RepositoryController {
                         break;
                     case 2:
                         ImportedGoods newImportGoods = this.repository.importGoods(shipCtr.getView());
+                        // sau moi lan nhap hang thi add newImportGoods vao ImportGoodsHistory cua shift hien tai
                         if(newImportGoods!=null){
                             shift.getImportGoodsHis().add(newImportGoods);
                         }

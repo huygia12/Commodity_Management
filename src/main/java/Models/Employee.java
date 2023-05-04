@@ -4,91 +4,71 @@
  */
 package Models;
 
+import java.math.BigDecimal;
+
 /**
  *
  * @author s1rja
  */
 public class Employee extends AbstractHuman {
-    
-    private int salary;
+
+    private BigDecimal salaryPerDay;
     private String CCCD;
 
-    public Employee(){
-    }
-    
-    public Employee(String firstName, String lastName, Gender gender, int age, String phoneNumber, String CCCD, int salary, String address) {
-        this.firstName = firstName;
-        this.lastName = lastName;
-        this.address = address;
-        this.gender = gender;
-        this.age = age;
-        this.phoneNumber = phoneNumber;
-        this.CCCD = CCCD;
-        this.salary = salary;
+    public Employee() {
     }
 
-    public int getSalary() {
-        return salary;
+    public Employee(BigDecimal salaryPerDay, String CCCD,String firstName, String lastName, String phoneNumber, String address, int age, Gender gender) {
+        this.address = address;
+        this.age = age;
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.phoneNumber = phoneNumber;
+        this.gender = gender;
+        this.salaryPerDay = salaryPerDay;
+        this.CCCD = CCCD;
+    }
+
+    
+    public BigDecimal getSalaryPerDay() {
+        return salaryPerDay;
     }
 
     public String getCCCD() {
         return CCCD;
     }
 
-    public String getFirstName() {
-        return firstName;
-    }
-
-    public String getLastName() {
-        return lastName;
-    }
-
-    public String getPhoneNumber() {
-        return phoneNumber;
-    }
-
-    public String getAddress() {
-        return address;
-    }
-
-    public int getAge() {
-        return age;
-    }
-
-    public Gender getGender() {
-        return gender;
-    }
-
-    public void setSalary(int salary) {
-        this.salary = salary;
+    public void setSalaryPerDay(BigDecimal salary) {
+        this.salaryPerDay = salary;
     }
 
     public void setCCCD(String CCCD) {
-        this.CCCD = CCCD;
+        this.CCCD = CCCD.trim();
     }
 
-    public void setFirstName(String firstName) {
-        this.firstName = firstName;
+    
+    
+    public Employee cloneEmployee() {
+        Employee e = new Employee();
+        e.setAddress(this.getAddress());
+        e.setAge(this.getAge());
+        e.setCCCD(this.getCCCD());
+        e.setFirstName(this.getFirstName());
+        e.setLastName(this.getLastName());
+        e.setPhoneNumber(this.getPhoneNumber());
+        e.setSalaryPerDay(this.getSalaryPerDay());
+        e.setGender(this.getGender());
+        return e;
     }
-
-    public void setLastName(String lastName) {
-        this.lastName = lastName;
+    
+    public boolean equals(Employee anotherEmployee) {
+        return this.CCCD.equalsIgnoreCase(anotherEmployee.CCCD)
+                && this.address.equalsIgnoreCase(anotherEmployee.address)
+                && (this.age == anotherEmployee.age)
+                && this.gender.equals(anotherEmployee.gender)
+                && this.getFirstName().equalsIgnoreCase(anotherEmployee.getFirstName())
+                && this.getLastName().equalsIgnoreCase(anotherEmployee.getLastName())
+                && this.getPhoneNumber().equalsIgnoreCase(anotherEmployee.getPhoneNumber())
+                && (this.getSalaryPerDay().compareTo(anotherEmployee.getSalaryPerDay()) == 0);
     }
-
-    public void setPhoneNumber(String phoneNumber) {
-        this.phoneNumber = phoneNumber;
-    }
-
-    public void setAddress(String address) {
-        this.address = address;
-    }
-
-    public void setAge(int age) {
-        this.age = age;
-    }
-
-    public void setGender(Gender gender) {
-        this.gender = gender;
-    }
-
 }

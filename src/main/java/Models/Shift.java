@@ -8,7 +8,6 @@ import View.ShiftView;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
-import java.util.List;
 import java.util.Stack;
 
 /**
@@ -16,29 +15,28 @@ import java.util.Stack;
  * @author FPTSHOP
  */
 public class Shift {
+
     private Stack<Order> orderHisPerShift;
     private Stack<ImportedGoods> importGoodsHis;
-    private String date;
-    private String startTime = null;
-    private String endTime = null;
+    private String startDateTime = null;
+    private String endDateTime = null;
     private String ID;
     private BigDecimal openingBalance;
-    private BigDecimal transportFee;
-    private int VAT;
-    private List<Employee> employee;
-    
-    
-    public Shift(){}
-    
-    public Shift(Stack<ImportedGoods> shipmentHistory, Stack<Order> orderHistory) {
-        this.orderHisPerShift = orderHistory;
-        this.importGoodsHis = shipmentHistory;
-        this.date = LocalDateTime.now()
-                .format(DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm:ss"));
+    private BigDecimal shippingFee;
+    private EmployeeList employeeList;
+    private Employee cashier;
+
+    public Shift() {
     }
 
-    public String getDate(){
-        return this.date;
+    public Shift(Stack<Order> orderHisPerShift, Stack<ImportedGoods> importGoodsHis, BigDecimal openingBalance, EmployeeList employeeList, Employee cashier) {
+        this.orderHisPerShift = orderHisPerShift;
+        this.importGoodsHis = importGoodsHis;
+        this.openingBalance = openingBalance;
+        this.employeeList = employeeList;
+        this.cashier = cashier;
+        this.startDateTime = LocalDateTime.now()
+                .format(DateTimeFormatter.ofPattern("HH:mm:ss dd/MM/yyyy"));
     }
 
     public Stack<Order> getOrderHisPerShift() {
@@ -50,19 +48,21 @@ public class Shift {
     }
 
     public String getStartTime() {
-        return startTime;
+        return startDateTime;
     }
 
-    public void setStartTime(String startTime) {
-        this.startTime = startTime;
+    public void setStartTime() {
+        this.startDateTime = LocalDateTime.now()
+                .format(DateTimeFormatter.ofPattern("HH:mm:ss"));
     }
 
     public String getEndTime() {
-        return endTime;
+        return endDateTime;
     }
 
     public void setEndTime(String endTime) {
-        this.endTime = endTime;
+        this.endDateTime = LocalDateTime.now()
+                .format(DateTimeFormatter.ofPattern("HH:mm:ss"));
     }
 
     public String getID() {
@@ -82,61 +82,79 @@ public class Shift {
     }
 
     public BigDecimal getTransportFee() {
-        return transportFee;
+        return shippingFee;
     }
 
     public void setTransportFee(BigDecimal transportFee) {
-        this.transportFee = transportFee;
+        this.shippingFee = transportFee;
     }
 
-    public int getVAT() {
-        return VAT;
+    public EmployeeList getEmployeeList() {
+        return employeeList;
     }
 
-    public void setVAT(int VAT) {
-        this.VAT = VAT;
+    public void setEmployeeList(EmployeeList employeeList) {
+        this.employeeList = employeeList;
     }
 
-    public List<Employee> getEmployee() {
-        return employee;
+    public Employee getCashier() {
+        return cashier;
     }
 
-    public void setEmployee(List<Employee> employee) {
-        this.employee = employee;
+    public void setCashier(Employee cashier) {
+        this.cashier = cashier;
     }
 
-    
-    public boolean orderOnSameDay (Order newOrder){
-        LocalDateTime date1 = LocalDateTime.parse(this.orderHisPerShift.peek().getInVoiceDateTime(), 
+    public boolean orderOnSameDay(Order newOrder) {
+        LocalDateTime date1 = LocalDateTime.parse(this.orderHisPerShift.peek().getInVoiceDateTime(),
                 DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm:ss"));
-        LocalDateTime date2 = LocalDateTime.parse(newOrder.getInVoiceDateTime(), 
+        LocalDateTime date2 = LocalDateTime.parse(newOrder.getInVoiceDateTime(),
                 DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm:ss"));
-        return date1.getDayOfMonth() == date2.getDayOfMonth() 
-                && date1.getMonth() == date2.getMonth() 
+        return date1.getDayOfMonth() == date2.getDayOfMonth()
+                && date1.getMonth() == date2.getMonth()
                 && date1.getYear() == date2.getYear();
     }
-    
-    public boolean importGoodsOnSameDay(ImportedGoods newImportGoods){
-        LocalDateTime date1 = LocalDateTime.parse(this.importGoodsHis.peek().getImportDateTime(), 
+
+    public boolean importGoodsOnSameDay(ImportedGoods newImportGoods) {
+        LocalDateTime date1 = LocalDateTime.parse(this.importGoodsHis.peek().getImportDateTime(),
                 DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm:ss"));
-        LocalDateTime date2 = LocalDateTime.parse(newImportGoods.getImportDateTime(), 
+        LocalDateTime date2 = LocalDateTime.parse(newImportGoods.getImportDateTime(),
                 DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm:ss"));
-        return date1.getDayOfMonth() == date2.getDayOfMonth() 
-                && date1.getMonth() == date2.getMonth() 
+        return date1.getDayOfMonth() == date2.getDayOfMonth()
+                && date1.getMonth() == date2.getMonth()
                 && date1.getYear() == date2.getYear();
     }
+
     
-    
-    public void openShift(ShiftView shiftView){
-        if(this.endTime == null){
+    public void openShift(ShiftView shiftView, EmployeeList originEmployeeList) {
+        if (this.endDateTime == null) {
             shiftView.shiftNotEndCaution();
             return;
         }
         int n = 1;
-        switch(n){
-            case 1:
-            case 2:
-                
+        int nextProcess;
+        while (n != 3) {
+            switch (n) {
+                case 1:
+                    nextProcess = shiftView.typeInOpeningBalance(this);
+                    if (nextProcess == 0 || nextProcess == -1) {
+                        return;
+                    }
+                    break;
+                case 2:
+                    nextProcess = shiftView.typeInEmployeeList(this, originEmployeeList);
+                    if (nextProcess == 0) {
+                        return;
+                    } else if (nextProcess == -1) {
+                        break;
+                    }
+                    break;
+                case 3:
+                    nextProcess = shiftView.typeInCashier(this);
+                    break;
+            }
         }
     }
+    
+    
 }

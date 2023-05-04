@@ -4,6 +4,8 @@
  */
 package View;
 
+import Controllers.CustomerCardListController;
+import Controllers.EmployeeListController;
 import Models.*;
 import Controllers.OrderController;
 import Controllers.RepositoryController;
@@ -24,20 +26,23 @@ import java.util.logging.Logger;
  * @author FPTSHOP
  */
 public class CommodityManagement {
-
+    static Scanner sc = new Scanner(System.in);
     static Cautions ctions = new Cautions();
     static final List<Goods> myGoodsList = new ArrayList<>();
     static final ShiftController shiftCtr = new ShiftController(new Shift());
-    static Scanner sc = new Scanner(System.in);
-
+    static final EmployeeListController employeeListCtr = new EmployeeListController(new EmployeeList(new ArrayList<>()));
+    static final CustomerCardListController customerCardListCtr = new CustomerCardListController(new CustomerCardList(new ArrayList<>())); 
+    
     public static void menuOfMainFunction() {
         System.out.println("\n********************************");
         System.out.println("* 1. Repository Management     *");
         System.out.println("* 2. Make New Order            *");
         System.out.println("* 3. Current Shift             *");
-        System.out.println("* 4. History research          *");
-        System.out.println("* 5. Settings                  *");
-        System.out.println("* 6. Exit                      *");
+        System.out.println("* 4. Commodity History         *");
+        System.out.println("* 5. Employee Management       *");
+        System.out.println("* 6. Customer card Management  *");
+        System.out.println("* 7. Settings                  *");
+        System.out.println("* 8. Exit                      *");
         System.out.println("********************************");
         System.out.print("Option => ");
     }
@@ -75,9 +80,15 @@ public class CommodityManagement {
                         //undeveloped
                         break;
                     case 5:
-                        //undeveloped
+                        employeeListCtr.employeeListManagement();
                         break;
                     case 6:
+                        customerCardListCtr.customerCardListManagement();
+                        break;
+                    case 7:
+                        //undeveloped
+                        break;
+                    case 8:
                         System.out.println("Exiting...");
                         break;
                     default:
@@ -89,7 +100,7 @@ public class CommodityManagement {
                 choice = -1;
                 sc.next();
             }
-        } while (choice != 6);
+        } while (choice != 8);
     }
 
     static void insertInformation() {
@@ -157,6 +168,12 @@ public class CommodityManagement {
         myGoodsList.get(15).getShipments().add(new Shipment(new BigDecimal("23"), new BigDecimal("6500"), LocalDate.of(2023, 3, 13), LocalDate.of(2023, 10, 14), "000000"));
         myGoodsList.get(15).getShipments().add(new Shipment(new BigDecimal("27"), new BigDecimal("6500"), LocalDate.of(2023, 3, 15), LocalDate.of(2023, 10, 16), "000001"));
         myGoodsList.get(15).getShipments().add(new Shipment(new BigDecimal("11"), new BigDecimal("6500"), LocalDate.of(2023, 3, 17), LocalDate.of(2023, 10, 18), "000002"));
+        employeeListCtr.getEmployeeList().getList().add(new Employee(new BigDecimal("22000"), "2223666611", "Nguyen Gia", "Huy", "0705737293", "so10-Ngo2-YenPhuc-PhucLa-HaDong", 19, Gender.MALE));
+        employeeListCtr.getEmployeeList().getList().add(new Employee(new BigDecimal("23000"), "3553646623", "Vu Hung", "Tung", "0905737293", "AeonMall HaDong", 16, Gender.MALE));
+        employeeListCtr.getEmployeeList().getList().add(new Employee(new BigDecimal("22000"), "7337593977", "Dao Van", "Tuyen", "0805737293", "220-TrieuKhuc-TanTrieu-ThanhTri", 20, Gender.MALE));
+        employeeListCtr.getEmployeeList().getList().add(new Employee(new BigDecimal("25000"), "3957577777", "Nguyen Thao", "Chi", "0505737293", "141-ChienThang-TanTrieu", 20, Gender.FEMALE));
+        employeeListCtr.getEmployeeList().getList().add(new Employee(new BigDecimal("20000"), "2727495500", "Tran Luu", "Dung", "0903737293", "Vinhome Riverside", 19, Gender.OTHER));
+        
     }
 
     public void clearScreen() {

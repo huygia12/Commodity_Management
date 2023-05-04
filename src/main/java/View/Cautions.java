@@ -29,7 +29,7 @@ public class Cautions {
         return false;
     }
 
-    public boolean checkIfBigIntPositive(BigDecimal num) {
+    public boolean checkIfBigDecimalNegative(BigDecimal num) {
         if (num.compareTo(BigDecimal.ZERO) < 0) {
             System.out.println("This number cannot take a negative value!");
             return false;
@@ -37,12 +37,38 @@ public class Cautions {
         return true;
     }
     
-    public boolean checkIfIntPositive(int num){
-        if (num < 0) {
-            System.out.println("This number cannot take a negative value!");
+    public boolean checkIfANumberSequence(String str){
+        try{
+            long number = Integer.parseInt(str);
+            return true;
+        }catch(NumberFormatException nfe){
+            System.out.println("This input must be a number sequence!");
+            return false;
+        }
+    }
+    
+    public boolean checkIfBigDecimalEqualZero(BigDecimal num) {
+        if (num.compareTo(BigDecimal.ZERO) == 0) {
+            System.out.println("This number cannot equal zero!");
             return false;
         }
         return true;
+    }
+    
+    public boolean checkIfIntNegative(int num){
+        if (num < 0) {
+            System.out.println("This number cannot take a negative value!");
+            return true;
+        }
+        return false;
+    }
+    
+    public boolean checkIfIntEqualZero(int num){
+        if (num == 0) {
+            System.out.println("This number cannot equal zero!");
+            return true;
+        }
+        return false;
     }
     
     public void wrInput() {

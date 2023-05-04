@@ -62,7 +62,7 @@ public class GoodsView {
             } else {
                 try {
                     BigDecimal listPrice = new BigDecimal(inputStr);
-                    if (!ctions.checkIfBigIntPositive(listPrice)) {
+                    if (!ctions.checkIfBigDecimalNegative(listPrice)) {
                         continue;
                     }
                     goods.setListPrice(listPrice);

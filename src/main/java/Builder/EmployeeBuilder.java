@@ -6,6 +6,7 @@ package Builder;
 
 import Models.Employee;
 import Models.Gender;
+import java.math.BigDecimal;
 
 /**
  *
@@ -19,15 +20,15 @@ public class EmployeeBuilder implements HumanBuilder {
     private String address;
     private int age;
     private Gender gender;
-    private int salary;
+    private BigDecimal salaryPerDay;
     private String CCCD;
     
     public EmployeeBuilder(String lastName) {
         this.lastName = lastName;
     }
     
-    public EmployeeBuilder withSalary (int salary) {
-        this.salary = salary;
+    public EmployeeBuilder withSalary (BigDecimal salary) {
+        this.salaryPerDay = salary;
         return this;
     }
 
@@ -67,6 +68,6 @@ public class EmployeeBuilder implements HumanBuilder {
     }
     
     public Employee build () {
-        return new Employee(firstName, lastName, gender, age, phoneNumber, CCCD, salary, address);
+        return new Employee(salaryPerDay, CCCD, firstName, lastName, phoneNumber, address, age, gender);
     }
 }

@@ -119,7 +119,7 @@ public class Order extends GoodsList {
                 return;
             } else if (orderShipment.getQuantity().compareTo(searchShipment.getQuantity()) > 0) {
                 orderShipment.setQuantity(BigDecimal.ZERO);
-            } else if (!ctions.checkIfBigIntPositive(orderShipment.getQuantity())) {
+            } else if (!ctions.checkIfBigDecimalNegative(orderShipment.getQuantity())) {
                 orderShipment.setQuantity(BigDecimal.ZERO);
             } else {
                 break;

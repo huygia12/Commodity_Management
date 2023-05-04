@@ -25,6 +25,8 @@ public class GoodsList {
     private int quantityMaxSize;
     private List<Goods> myGoodsList;
 
+    public GoodsList() {}
+
     public GoodsList(List<Goods> goodsList) {
         this.myGoodsList = goodsList;
     }
@@ -197,9 +199,9 @@ public class GoodsList {
             } catch (NumberFormatException nfe) {
                 // name suggestions for users
                 GoodsList bucket = new GoodsList(new ArrayList<>());
+                String inputToLowerCase = inputStr.toLowerCase();
                 for (Goods tmpGoods : this.myGoodsList) {
                     String nameToLowerCase = tmpGoods.getGoodsName().toLowerCase();
-                    String inputToLowerCase = inputStr.toLowerCase();
                     if (nameToLowerCase.contains(inputToLowerCase)) {
                         bucket.getGoodsList().add(tmpGoods);
                     }
