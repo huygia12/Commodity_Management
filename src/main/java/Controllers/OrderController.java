@@ -4,10 +4,12 @@
  */
 package Controllers;
 
+import Models.CustomerCardList;
 import Models.Order;
 import Models.Goods;
 import Models.GoodsList;
 import Models.Shipment;
+import Models.Store;
 import View.Cautions;
 import View.OrderView;
 import View.ShipmentView;
@@ -32,9 +34,11 @@ public class OrderController {
     private final OrderView view = new OrderView();
     private Order order;
 
-    public OrderController(Order order, GoodsList repoGoodsList) {
+    public OrderController() {
+    }
+    
+    public OrderController(Order order) {
         this.order = order;
-        this.repoGoodsList = repoGoodsList;
     }
 
     public Order getOrder() {
@@ -80,7 +84,9 @@ public class OrderController {
         }
     }
     
-    public boolean makeNewOrder() {
+    public boolean makeNewOrder(GoodsList repoGoodsList, CustomerCardList customerCardList, Store myStore) {
+        this.repoGoodsList = repoGoodsList;
+        this.order.setTax(myStore.getVAT());
         // tao mot ban cpy cua repositoryGoodsList la draftGoodsList
         makeDraftGoodsList();
         ShipmentView shipView = new ShipmentView();
@@ -99,7 +105,7 @@ public class OrderController {
                         this.order.editOrder(repoGoodsList, draftGoodsList, shipView, view);
                         break;
                     case 3:
-                        if (this.order.payOrder(view)) {
+                        if (this.order.payOrder(view,customerCardList, myStore)) {
                             completed = true;
                         }
                         break;

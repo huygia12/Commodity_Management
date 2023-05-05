@@ -174,7 +174,7 @@ public class EmployeeList extends AbstractHumanList<Employee> {
                     System.out.println("Back...");
                     break;
             }
-        } while (choice.equals("9"));
+        } while (!choice.equals("9"));
     }
 
     public void deleteEmpployee(Employee employee) {

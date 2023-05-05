@@ -9,12 +9,14 @@ import Controllers.EmployeeListController;
 import Models.*;
 import Controllers.OrderController;
 import Controllers.RepositoryController;
+import Controllers.SettingsController;
 import Controllers.ShiftController;
 import java.awt.AWTException;
 import java.awt.Robot;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.InputMismatchException;
 import java.util.List;
 import java.util.Scanner;
@@ -26,12 +28,18 @@ import java.util.logging.Logger;
  * @author FPTSHOP
  */
 public class CommodityManagement {
+
     static Scanner sc = new Scanner(System.in);
     static Cautions ctions = new Cautions();
     static final List<Goods> myGoodsList = new ArrayList<>();
+    static final IDGenerator idGenerator = new IDGenerator(new HashMap<>(), 6);
+    static final GoodsList repoGoodsList = new GoodsList(myGoodsList);
     static final ShiftController shiftCtr = new ShiftController(new Shift());
     static final EmployeeListController employeeListCtr = new EmployeeListController(new EmployeeList(new ArrayList<>()));
-    static final CustomerCardListController customerCardListCtr = new CustomerCardListController(new CustomerCardList(new ArrayList<>())); 
+    static final CustomerCardListController customerCardListCtr = new CustomerCardListController(new CustomerCardList(new ArrayList<>()));
+    static final SettingsController settingsCtr = new SettingsController(new Store());
+    static final RepositoryController repoCtr = new RepositoryController(new Repository(myGoodsList));
+    
     
     public static void menuOfMainFunction() {
         System.out.println("\n********************************");
@@ -48,8 +56,6 @@ public class CommodityManagement {
     }
 
     public static void main(String[] args) {
-        GoodsList repoGoodsList = new GoodsList(myGoodsList);
-        RepositoryController repoCtr = new RepositoryController(new Repository(myGoodsList));
         int choice;
         insertInformation();
         do {
@@ -59,22 +65,21 @@ public class CommodityManagement {
                 sc.nextLine();
                 switch (choice) {
                     case 1:
-                        repoCtr.repositoryManagement(shiftCtr.getShift());
+                        repoCtr.repositoryManagement(shiftCtr.getShift(), idGenerator);
                         break;
                     case 2:
-                        Order newOrder = new Order(new ArrayList<>(),
-                                String.format("%06d", shiftCtr.getShift()
-                                        .getOrderHisPerShift()
-                                        .size()));
-                        OrderController orderCtr = new OrderController(newOrder, repoGoodsList);
-                        if (orderCtr.makeNewOrder()) {
+                        Order newOrder = new Order(idGenerator.generateID(Order.class.getName()));
+                        OrderController orderCtr = new OrderController(newOrder);
+                        if (orderCtr.makeNewOrder(repoGoodsList, 
+                                customerCardListCtr.getCustomerCardList(), 
+                                settingsCtr.getMyStore())) {
                             shiftCtr.getShift()
                                     .getOrderHisPerShift()
                                     .add(newOrder);
                         }
                         break;
                     case 3:
-                        //undeveloped
+                        shiftCtr.ShiftManagement(employeeListCtr.getEmployeeList(), settingsCtr.getMyStore());
                         break;
                     case 4:
                         //undeveloped
@@ -86,7 +91,7 @@ public class CommodityManagement {
                         customerCardListCtr.customerCardListManagement();
                         break;
                     case 7:
-                        //undeveloped
+                        settingsCtr.SettingsManagement();
                         break;
                     case 8:
                         System.out.println("Exiting...");
@@ -173,7 +178,7 @@ public class CommodityManagement {
         employeeListCtr.getEmployeeList().getList().add(new Employee(new BigDecimal("22000"), "7337593977", "Dao Van", "Tuyen", "0805737293", "220-TrieuKhuc-TanTrieu-ThanhTri", 20, Gender.MALE));
         employeeListCtr.getEmployeeList().getList().add(new Employee(new BigDecimal("25000"), "3957577777", "Nguyen Thao", "Chi", "0505737293", "141-ChienThang-TanTrieu", 20, Gender.FEMALE));
         employeeListCtr.getEmployeeList().getList().add(new Employee(new BigDecimal("20000"), "2727495500", "Tran Luu", "Dung", "0903737293", "Vinhome Riverside", 19, Gender.OTHER));
-        
+
     }
 
     public void clearScreen() {

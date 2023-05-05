@@ -19,13 +19,13 @@ import java.util.List;
  */
 public class Repository extends GoodsList {
 
-    Cautions ctions = new Cautions();
+    final Cautions ctions = new Cautions();
 
     public Repository(List<Goods> repoGoodsList) {
         super(repoGoodsList);
     }
 
-    public void addGoodsToList(GoodsView goodsView) {
+    public void addGoodsToList(GoodsView goodsView, IDGenerator idGenerator) {
         Goods newGoods = new Goods();
         int n = 1;
         int nextProcess;
@@ -65,11 +65,11 @@ public class Repository extends GoodsList {
                     }
             }
         }
-        newGoods.setID(String.format("%06d", this.getGoodsList().size()));
+        newGoods.setID(idGenerator.generateID(Goods.class.getName()));
         this.getGoodsList().add(newGoods);
     }
 
-    public ImportedGoods importGoods(ShipmentView shipView) {
+    public ImportedGoods importGoods(ShipmentView shipView, IDGenerator idGenerator) {
         Goods searchGoods = this.searchGoods();
         if (searchGoods == null) {
             return null;
@@ -125,7 +125,7 @@ public class Repository extends GoodsList {
             }
         } else {
             // neu Shipment nay la moi
-            newShipment.setID(String.format("%06d", searchGoods.getShipments().size()));
+            newShipment.setID(idGenerator.generateID(Shipment.class.getName()));
             searchGoods.getShipments().add(newShipment);
         }
         newImportedGoods.getShipments().add(newShipment);
@@ -134,9 +134,6 @@ public class Repository extends GoodsList {
 
     public void delGoodsInRepo(Goods goods, GoodsList goodsList) {
         goodsList.getGoodsList().remove(goods);
-        for (Goods tmpGoods : goodsList.getGoodsList()) {
-            tmpGoods.setID(String.format("%06d", goodsList.getGoodsList().indexOf(tmpGoods)));
-        }
         System.out.println("Delete succeed...");
     }
 
@@ -203,12 +200,10 @@ public class Repository extends GoodsList {
         } while (choice != 4);
     }
 
+    
     public void delShipInRepo(Shipment shipment, Goods goods) {
         // tra ve true neu xoa thanh cong, false neu shipment 
         goods.getShipments().remove(shipment);
-        for (Shipment tmpShipment : goods.getShipments()) {
-            tmpShipment.setID(String.format("%06d", goods.getShipments().indexOf(tmpShipment)));
-        }
         if (goods.getShipments().isEmpty()) {
             delGoodsInRepo(goods, this);
         }
@@ -226,11 +221,6 @@ public class Repository extends GoodsList {
                 duplicateShipment.gainQuantity(draftShipment.getQuantity());
                 // xoa shipment hien dang chinh sua
                 searchGoods.getShipments().remove(searchShipment);
-                // reset lai ID cua cac shipment
-                for (Shipment shipment : searchGoods.getShipments()) {
-                    shipment.setID(String.format("%06d",
-                            searchGoods.getShipments().indexOf(shipment)));
-                }
             }
         } else if (shipmentIndex == -1) {
             searchShipment.setHsd(draftShipment.getHsd());

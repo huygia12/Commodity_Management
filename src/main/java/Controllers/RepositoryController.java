@@ -285,7 +285,7 @@ public class RepositoryController {
         }
     }
 
-    public void repositoryManagement(Shift shift)   {
+    public void repositoryManagement(Shift shift, IDGenerator idGenerator)   {
         ShipmentController shipCtr = new ShipmentController();
         GoodsController goodsCtr = new GoodsController();
         int choice;
@@ -297,12 +297,12 @@ public class RepositoryController {
                 //uf.clearScreen();
                 switch (choice) {
                     case 1:
-                        this.repository.addGoodsToList(goodsCtr.getView());
+                        this.repository.addGoodsToList(goodsCtr.getView(), idGenerator);
                         //uf.clearScreen();
                         //sc.nextLine();
                         break;
                     case 2:
-                        ImportedGoods newImportGoods = this.repository.importGoods(shipCtr.getView());
+                        ImportedGoods newImportGoods = this.repository.importGoods(shipCtr.getView(), idGenerator);
                         // sau moi lan nhap hang thi add newImportGoods vao ImportGoodsHistory cua shift hien tai
                         if(newImportGoods!=null){
                             shift.getImportGoodsHis().add(newImportGoods);

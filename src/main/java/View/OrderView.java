@@ -4,8 +4,11 @@
  */
 package View;
 
+import Models.CustomerCard;
+import Models.CustomerCardList;
 import Models.Goods;
 import Models.Order;
+import Models.Store;
 import java.math.BigDecimal;
 import java.util.InputMismatchException;
 import java.util.Scanner;
@@ -45,6 +48,7 @@ public class OrderView {
         System.out.print("Option=> ");
     }
 
+    
     public int typeInDcountPctage(Order order) {
         while (true) {
             System.out.print("Please enter the discount percentage (must be a positive number), or type EXIT/BACK to go exit/back: ");
@@ -83,7 +87,7 @@ public class OrderView {
                     order.setCusMoney(new BigDecimal(input));
                     if (!ctions.checkIfBigDecimalNegative(order.getCusMoney())) {
                         order.setCusMoney(BigDecimal.ZERO);
-                    } else if (order.getCusMoney().compareTo(order.getTotalAfterDis()) < 0) {
+                    } else if (order.getCusMoney().compareTo(order.getTotal()) < 0) {
                         order.setCusMoney(BigDecimal.ZERO);
                         System.out.println("Insufficient payment! Please pay more.");
                     } else {
@@ -122,7 +126,26 @@ public class OrderView {
             }
         }
     }
+    
+    public int typeInCustomerID(CustomerCardList customerCardList, Order order){
+        while(true){
+            System.out.print("Please enter the customer ID(for member-only), or type EXIT/BACK/ENTER to exit/back/skip : ");
+            String input = sc.nextLine();
+            CustomerCard customerCard = customerCardList.findCustomerCardWithID(input);
+            if ("back".equalsIgnoreCase(input)) {
+                return -1;
+            } else if ("exit".equalsIgnoreCase(input)) {
+                return 0;
+            } else if (customerCard == null) {
+                System.out.println("This member ID doesnt exist!");
+            } else {
+                order.setCustomerCard(customerCard);
+                return 1;
+            }
+        }
+    }
 
+    
     public void showDraftOrder(Order order) {
         System.out.println("");
         System.out.println("-------------------------- YOUR ORDER ------------------------------");
@@ -136,17 +159,25 @@ public class OrderView {
             BigDecimal totalPrice = totalQuantity.multiply(price);
             System.out.format("%-25s %-10s %-15s %-15s\n", goods.getGoodsName(), totalQuantity + "", price + "", totalPrice + "");
         }
-        BigDecimal totalPayment = order.getTotalPayment();
+        BigDecimal totalPayment = order.getSubTotal();
         System.out.println(" ");
         System.out.println("Total payment: " + totalPayment);
         System.out.println("--------------------------------------------------------------------");
     }
 
-    public void showBill(Order order) {
-        BigDecimal change = order.getCusMoney().subtract(order.getTotalAfterDis());
+    public void showBill(Order order, Store myStore) {
+        String customerID = "";
+        if(order.getCustomerCard() != null){
+            customerID = order.getCustomerCard().getID();
+        }
+        BigDecimal change = order.getCusMoney().subtract(order.getTotal());
         System.out.println("");
         System.out.println("-------------- YOUR BILL ---------------");
-        System.out.println("----------------------");
+        System.out.println("----------------------------------------");
+        System.out.println("Store Name: "+myStore.getName());
+        System.out.println("Email: "+myStore.getEmail());
+        System.out.println("Address: "+myStore.getAddress());
+        System.out.println("Phone Number: "+myStore.getPhoneNumber());
         System.out.println("Date: " + order.getInVoiceDateTime());
         System.out.println("");
         System.out.format("%-25s %-10s %-15s %-15s\n", "Name", "Quantity", "Price", "Total");
@@ -158,11 +189,13 @@ public class OrderView {
             BigDecimal totalPrice = totalQuantity.multiply(price);
             System.out.format("%-25s %-10s %-15s %-15s\n", goods.getGoodsName(), totalQuantity, price, totalPrice);
         }
-        System.out.println("Total payment: " + order.getTotalPayment());
-        System.out.println("Discount: " + order.getDiscount() + "%");
-        System.out.println("Total after discount: " + order.getTotalAfterDis());
+        System.out.println("SubTotal: " + order.getSubTotal());
+        System.out.printf("Discount Amount(Discount=%s): %s\n",order.getDiscount() + "%", order.getDiscountMoney());
+        System.out.printf("Tax(VAT=%s): %s\n",myStore.getVAT()+"%", order.getTaxFee());
+        System.out.println("Total: " + order.getTotal());
         System.out.println("Customer payment: " + order.getCusMoney());
         System.out.println("Payment Option: "+ order.getPaymentOptions());
+        System.out.println("Member ID: "+ customerID);
         System.out.println("Change: " + change);
         System.out.println("----------------------------------------");
     }

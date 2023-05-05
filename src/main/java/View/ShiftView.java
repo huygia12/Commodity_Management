@@ -8,9 +8,6 @@ import Models.Employee;
 import Models.EmployeeList;
 import Models.Shift;
 import java.math.BigDecimal;
-import java.time.DateTimeException;
-import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
 import java.util.Scanner;
 
 /**
@@ -20,10 +17,7 @@ import java.util.Scanner;
 public class ShiftView {
 
     final Scanner sc = new Scanner(System.in);
-    Cautions ctions = new Cautions();
-
-    public ShiftView() {
-    }
+    final Cautions ctions = new Cautions();
 
     public void shiftNotOpenCaution() {
         System.out.println("Shift not open yet!");
@@ -35,17 +29,27 @@ public class ShiftView {
 
     public void menuOfEditShift() {
         System.out.print("""
-                           *************************************
-                           * 1. Open shift                     *
-                           * 2. Set Shipping fee               *
-                           * 3. Change employees of this shift *
-                           * 4. Change this shift open balance *
-                           * 5. End shift                      *
-                           *************************************
-                           Options => 
-                           """);
+                           \n****************************************
+                           * 1. Open shift                        *
+                           * 2. Set Shipping fee                  *
+                           * 3. Change employees of this shift    *
+                           * 4. Change this shift openningbalance *
+                           * 5. End shift                         *
+                           ****************************************
+                           Options => """);
     }
 
+    public void menuOfModifyEmployeeListOfThisShift(){
+        System.out.print("""
+                           \n***********************************************
+                           * 1. Add employee                             *
+                           * 2. Remove employee                          *
+                           * 3. Reset and retype employees of this Shift *
+                           * 4. Back                                     *
+                           ***********************************************
+                           Options => """);
+    }
+    
     public int typeInOpeningBalance(Shift shift) {
         while (true) {
             System.out.print("Type in openning balance or type EXIT/BACK to exit/back: ");
@@ -72,11 +76,9 @@ public class ShiftView {
 
     public int typeInShippingFee(Shift shift) {
         while (true) {
-            System.out.print("Type in Shipping Fee or type EXIT/BACK to exit/back: ");
+            System.out.print("Type in Shipping Fee or type BACK to back: ");
             String inputStr = sc.nextLine();
-            if ("exit".equalsIgnoreCase(inputStr)) {
-                return 0;
-            } else if ("back".equalsIgnoreCase(inputStr)) {
+            if ("back".equalsIgnoreCase(inputStr)) {
                 return -1;
             } else if (ctions.checkIfNoInput(inputStr)) {
             } else {
@@ -94,30 +96,33 @@ public class ShiftView {
         }
     }
     
-    public int typeInEmployeeList(Shift shift, EmployeeList originEmployeeList) {
+    public int typeInEmployeesOfThisShift(Shift shift, EmployeeList employeeList) {
         Employee e;
         do {
-            e = originEmployeeList.searchEmployee();
+            e = employeeList.searchEmployee();
             if (e != null) {
-                shift.getEmployeeList().getList().add(e);
+                shift.getEmployeeOfThisShift().getList().add(e);
             }
         } while (e == null);
         while (true) {
             System.out.print("Type EXIT/BACK/Done to exit/back/done of adding employees: ");
             String inputStr = sc.nextLine();
             if ("exit".equalsIgnoreCase(inputStr)) {
+                shift.getEmployeeOfThisShift().getList().clear();
                 return 0;
             } else if ("back".equalsIgnoreCase(inputStr)) {
+                shift.getEmployeeOfThisShift().getList().clear();
                 return -1;
             } else if ("done".equalsIgnoreCase(inputStr)) {
                 return 1;
             }
+            ctions.wrInput();
         }
     }
     
     public int typeInCashier(Shift shift) {
         while (true) {
-            Employee e = shift.getEmployeeList().searchEmployee();
+            Employee e = shift.getEmployeeOfThisShift().searchEmployee();
             if (e == null) {
                 return -1;
             } else {

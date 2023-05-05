@@ -4,7 +4,9 @@
  */
 package Controllers;
 
+import Models.EmployeeList;
 import Models.Shift;
+import Models.Store;
 import View.Cautions;
 import View.ShiftView;
 import java.util.InputMismatchException;
@@ -39,8 +41,8 @@ public class ShiftController {
         this.shift = shift;
     }
     
-    public void ShiftManagement(){
-        if(this.shift.getStartTime() == null){
+    public void ShiftManagement(EmployeeList employeeList, Store myStore){
+        if(this.shift.getOpenTime() == null){
             this.view.shiftNotOpenCaution();
         }
         int choice;
@@ -51,15 +53,19 @@ public class ShiftController {
                 sc.nextLine();
                 switch (choice) {
                     case 1:
-                        this.shift.openShift(this.view);
+                        this.shift.openShift(this.view, employeeList);
                         break;
                     case 2:
+                        this.view.typeInShippingFee(this.shift);
                         break;
                     case 3:
+                        this.shift.modifyEmployeeOfThisShift(view, employeeList);
                         break;
                     case 4:
+                        this.view.typeInOpeningBalance(this.shift);
                         break;
                     case 5:
+                        this.shift.endShift(this.view, myStore);
                         break;
                     default:
                         System.out.println("Wrong input, Please type from 1->5!");

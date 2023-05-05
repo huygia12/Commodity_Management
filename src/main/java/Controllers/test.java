@@ -4,9 +4,11 @@
  */
 package Controllers;
 
-import Builder.EmployeeBuilder;
-import Models.Employee;
-import Models.Gender;
+import Models.Store;
+
+
+
+
 
 /**
  *
@@ -14,7 +16,11 @@ import Models.Gender;
  */
 public class test {
     public static void main(String[] args) {
-        int i = 2000000000;
-        System.out.println(i);
+        testSetting();
+    }
+    
+    public static void testSetting(){
+        SettingsController s = new SettingsController(new Store());
+        s.SettingsManagement();
     }
 }

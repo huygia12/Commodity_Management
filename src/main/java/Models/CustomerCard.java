@@ -14,15 +14,16 @@ public class CustomerCard {
 
     private String ID;
     private long point;
-    private Customer customer;
+    private Customer customer = new Customer();
+
 
     public CustomerCard() {
     }
 
-    public CustomerCard(Customer customer) {
-        this.customer = customer;
+    public CustomerCard(String ID) {
+        this.ID = ID;
     }
-
+    
     public String getID() {
         return ID;
     }
@@ -48,26 +49,25 @@ public class CustomerCard {
     }
 
     public CustomerCard generateCard(CustomerView customerView, CustomerCardList customerCardList) {
-        Customer newCustomer = new Customer();
-        CustomerCard newCustomerCard = new CustomerCard(newCustomer);
+        CustomerCard newCustomerCard = new CustomerCard();
         int n = 1;
         int nextProcess;
         while (n != 6) {
             switch (n) {
                 case 1:
-                    nextProcess = customerView.typeInFirstName(newCustomer);
+                    nextProcess = customerView.typeInFirstName(newCustomerCard.getCustomer());
                     if (nextProcess == 0 || nextProcess == -1) {
                         return null;
                     }
                 case 2:
-                    nextProcess = customerView.typeInLastName(newCustomer);
+                    nextProcess = customerView.typeInLastName(newCustomerCard.getCustomer());
                     if (nextProcess == 0) {
                         return null;
                     } else if (nextProcess == -1) {
                         break;
                     }
                 case 3:
-                    nextProcess = customerView.typeInAge(newCustomer);
+                    nextProcess = customerView.typeInAge(newCustomerCard.getCustomer());
                     if (nextProcess == 0) {
                         return null;
                     } else if (nextProcess == -1) {
@@ -75,20 +75,20 @@ public class CustomerCard {
                         break;
                     }
                 case 4:
-                    nextProcess = customerView.typeInPhoneNumber(newCustomer);
+                    nextProcess = customerView.typeInPhoneNumber(newCustomerCard.getCustomer());
                     if (nextProcess == 0) {
                         return null;
                     } else if (nextProcess == -1) {
                         n = 3;
                         break;
-                    } else if (customerCardList.phoneNumAlreadyExisted(newCustomer
+                    } else if (customerCardList.phoneNumAlreadyExisted(newCustomerCard.getCustomer()
                             .getPhoneNumber()) != null) {
                         n =4;
                         System.out.println("This phone number already existed.");
                         break;
                     }
                 case 5:
-                    nextProcess = customerView.typeInGender(newCustomer);
+                    nextProcess = customerView.typeInGender(newCustomerCard.getCustomer());
                     if (nextProcess == 0) {
                         return null;
                     } else if (nextProcess == -1) {
@@ -96,7 +96,7 @@ public class CustomerCard {
                         break;
                     }
                 case 6:
-                    nextProcess = customerView.typeInAndress(newCustomer);
+                    nextProcess = customerView.typeInAndress(newCustomerCard.getCustomer());
                     if (nextProcess == 0) {
                         return null;
                     } else if (nextProcess == -1) {

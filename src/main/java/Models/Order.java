@@ -4,10 +4,10 @@ import View.Cautions;
 import View.OrderView;
 import View.ShipmentView;
 import java.math.BigDecimal;
-import java.util.List;
 import java.util.stream.*;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
 
 public class Order extends GoodsList {
 
@@ -16,18 +16,20 @@ public class Order extends GoodsList {
     private String ID;
     private BigDecimal cusMoney = BigDecimal.ZERO;
     private int discount;
-    private String paymentOptions;
+    private PaymentOptions paymentOptions;
+    private CustomerCard customerCard;
+    private BigDecimal tax = BigDecimal.ZERO;
 
-    public Order(List<Goods> currentOrder, String ID) {
-        super(currentOrder);
+    public Order(String ID) {
+        super(new ArrayList<>());
         this.ID = ID;
         this.INVOICE_DATE = LocalDateTime
                 .now()
                 .format(DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm:ss"));
     }
 
-    private Order(List<Goods> currentOrder) {
-        super(currentOrder);
+    public Order() {
+        super(new ArrayList<>());
         this.INVOICE_DATE = LocalDateTime
                 .now()
                 .format(DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm:ss"));
@@ -49,22 +51,22 @@ public class Order extends GoodsList {
         return this.ID;
     }
 
-    public String getInVoiceDateTime(){
+    public String getInVoiceDateTime() {
         return this.INVOICE_DATE;
     }
 
-    public String getPaymentOptions() {
+    public PaymentOptions getPaymentOptions() {
         return this.paymentOptions;
     }
 
     public void setPaymentOptions(int option) {
-        if( option == 1){
-            this.paymentOptions = "Cash Payment";
-        }else{
-            this.paymentOptions = "Wire Transfer Paymnet";
+        if (option == 1) {
+            this.paymentOptions = PaymentOptions.Cash_Payment;
+        } else {
+            this.paymentOptions = PaymentOptions.Wire_Transfer_Payment;
         }
     }
-    
+
     public BigDecimal getCusMoney() {
         if (this.cusMoney == null) {
             this.cusMoney = BigDecimal.ZERO;
@@ -76,7 +78,15 @@ public class Order extends GoodsList {
         this.cusMoney = customerMoney;
     }
 
-    public BigDecimal getTotalPayment() {
+    public BigDecimal getTax() {
+        return tax;
+    }
+
+    public void setTax(BigDecimal tax) {
+        this.tax = tax;
+    }
+
+    public BigDecimal getSubTotal() {
         BigDecimal result = BigDecimal.ZERO;
         for (Goods goods : this.getGoodsList()) {
             result = result.add(goods.getListPrice().multiply(goods.getTotalQuantity()));
@@ -84,18 +94,27 @@ public class Order extends GoodsList {
         return result;
     }
 
-    public BigDecimal getTotalAfterDis() {
-        BigDecimal result = BigDecimal.valueOf(1.0 - (discount * 1.0) / 100).multiply(this.getTotalPayment());
-        if (result == null) {
-            result = BigDecimal.ZERO;
-        }
-        return result;
+    public BigDecimal getTaxFee() {
+        return this.getSubTotal().multiply(this.tax.divide(new BigDecimal("100")));
     }
 
-    public BigDecimal getDiscountMoney(){
-        return this.getTotalPayment().subtract(this.getTotalAfterDis());
+    public BigDecimal getTotal() {
+        return this.getSubTotal().subtract(this.getDiscountMoney()).add(this.getTaxFee());
     }
-    
+
+    public BigDecimal getDiscountMoney() {
+        BigDecimal discountIntToDecimal = new BigDecimal(this.discount);
+        return this.getSubTotal().multiply(discountIntToDecimal.divide(new BigDecimal("100")));
+    }
+
+    public CustomerCard getCustomerCard() {
+        return customerCard;
+    }
+
+    public void setCustomerCard(CustomerCard customerCard) {
+        this.customerCard = customerCard;
+    }
+
     //Function 1
     public void addToOrder(GoodsList draftGoodsList, ShipmentView shipView, OrderView orderView) {
         Shipment orderShipment = new Shipment();
@@ -118,6 +137,7 @@ public class Order extends GoodsList {
             if (nextProcess == -1 || nextProcess == 0) {
                 return;
             } else if (orderShipment.getQuantity().compareTo(searchShipment.getQuantity()) > 0) {
+                System.out.println("Doesn't have enough quantity!");
                 orderShipment.setQuantity(BigDecimal.ZERO);
             } else if (!ctions.checkIfBigDecimalNegative(orderShipment.getQuantity())) {
                 orderShipment.setQuantity(BigDecimal.ZERO);
@@ -159,7 +179,8 @@ public class Order extends GoodsList {
     public void editOrder(GoodsList repoGoodsList, GoodsList draftGoodsList, ShipmentView shipView, OrderView orderView) {
         String choice;
         // Tao mot draftOrder cua curOrder de thao tac, sau khi edit xong moi thay doi vao curOrder
-        Order draftOrder = new Order(this.getGoodsList().stream()
+        Order draftOrder = new Order();
+        draftOrder.setGoodsList(this.getGoodsList().stream()
                 .map(x -> x.cloneGoods())
                 .collect(Collectors.toList()));
         // Search for goods and shipment want to edit
@@ -273,38 +294,47 @@ public class Order extends GoodsList {
     }
 
     //Funtion 3
-    public boolean payOrder(OrderView orderView) {
+    public boolean payOrder(OrderView orderView, CustomerCardList customerCardList, Store myStore) {
         // tra ve true neu pay thanh cong, false neu list khong co gi hoac user nhap exit
         if (ctions.checkIfListEmpty(this.getGoodsList())) {
             return false;
         }
         int n = 1;
         int nextProcess;
-        while (n != 3) {
-            if (n == 1) {
-                nextProcess = orderView.typeInDcountPctage(this);
-                if (nextProcess == 0 || nextProcess == -1) {
-                    return false;
-                }
-                n++;
+        while (n != 4) {
+            switch (n) {
+                case 1:
+                    nextProcess = orderView.typeInDcountPctage(this);
+                    if (nextProcess == 0 || nextProcess == -1) {
+                        return false;
+                    }
+                case 2:
+                    nextProcess = orderView.typeInCusMoney(this);
+                    if (nextProcess == 0) {
+                        return false;
+                    } else if (nextProcess == -1) {
+                        break;
+                    }
+                case 3:
+                    nextProcess = orderView.typeOfPayment(this);
+                    if (nextProcess == 0) {
+                        return false;
+                    } else if (nextProcess == -1) {
+                        n = 2;
+                        break;
+                    }
+                case 4:
+                    nextProcess = orderView.typeInCustomerID(customerCardList, this);
+                    if (nextProcess == 0) {
+                        return false;
+                    } else if (nextProcess == -1) {
+                        n = 3;
+                        break;
+                    }
+                    n = 4;
             }
-            if (n == 2) {
-                nextProcess = orderView.typeInCusMoney(this);
-                if (nextProcess == 0) {
-                    return false;
-                } else if (nextProcess == -1) {
-                    n = 1;
-                    continue;
-                }
-                n++;
-            }if(n == 3){
-                
-            }
-            // make a payment and show bill
-            orderView.showBill(this);
-            n = 3;
         }
+        orderView.showBill(this, myStore);
         return true;
     }
-
 }
