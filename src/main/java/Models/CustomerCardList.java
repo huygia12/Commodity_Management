@@ -18,7 +18,7 @@ public class CustomerCardList {
 
     final Scanner sc = new Scanner(System.in);
     private List<CustomerCard> cardList;
-     private int pointMaxSize;
+    private int pointMaxSize;
     private int IDMaxSize;
     private int firstNameMaxSize;
     private int lastNameMaxSize;
@@ -53,7 +53,9 @@ public class CustomerCardList {
 
     public void addNewCard(CustomerView customerView, IDGenerator idGenerator) {
         CustomerCard customerCard = new CustomerCard().generateCard(customerView, this, idGenerator);
-        this.cardList.add(customerCard);
+        if (customerCard != null) {
+            this.cardList.add(customerCard);
+        }
     }
 
     public void editCardInfor(CustomerCard customerCard, CustomerCardListView customerCardListView, CustomerView customerView) {

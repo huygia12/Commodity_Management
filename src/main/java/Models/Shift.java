@@ -169,7 +169,15 @@ public class Shift {
         }
         return result;
     }
-
+    
+    public BigDecimal getTotalPointDiscount(){
+        BigDecimal result = BigDecimal.ZERO;
+        for (Order order : orderHisPerShift) {
+            result = result.add(order.getPointDiscount());
+        }
+        return result;
+    }
+    
     public long getNumberOfOrder() {
         return orderHisPerShift.stream().count();
     }

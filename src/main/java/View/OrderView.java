@@ -8,8 +8,10 @@ import Models.CustomerCard;
 import Models.CustomerCardList;
 import Models.Goods;
 import Models.Order;
+import Models.PaymentOptions;
 import Models.Store;
 import java.math.BigDecimal;
+import java.math.BigInteger;
 import java.util.InputMismatchException;
 import java.util.Scanner;
 
@@ -48,10 +50,9 @@ public class OrderView {
         System.out.print("Option=> ");
     }
 
-    
     public int typeInDcountPctage(Order order) {
         while (true) {
-            System.out.print("Please enter the discount percentage (must be a positive number), or type EXIT/BACK to go exit/back: ");
+            System.out.print("Please enter the discount percentage (must be a positive number), \nor type EXIT/BACK to go exit/back: ");
             String input = sc.nextLine();
             if ("back".equalsIgnoreCase(input)) {
                 return -1;
@@ -75,7 +76,7 @@ public class OrderView {
 
     public int typeInCusMoney(Order order) {
         while (true) {
-            System.out.print("Please enter the amount of money customer give, or type EXIT/BACK to exit/back from payment : ");
+            System.out.print("Please enter the amount of money customer give, \nor type EXIT/BACK to exit/back from payment : ");
             String input = sc.nextLine();
             if ("back".equalsIgnoreCase(input)) {
                 return -1;
@@ -107,36 +108,36 @@ public class OrderView {
                                  1: Cash Payment  2: Wire Transfer Payment 
                                  3: Back          4: Exit
                                  Please choose one payment options => """);
-                int choice = sc.nextInt();
+                String choice = sc.nextLine();
                 switch (choice) {
-                    case 3:
+                    case "3":
                         return -1;
-                    case 4:
+                    case "4":
                         return 0;
-                    case 1, 2:
-                        order.setPaymentOptions(choice);
+                    case "1", "2":
+                        order.setPaymentOptions(Integer.parseInt(choice));
                         return 1;
                     default:
                         System.out.println("Wrong input! Please choose from 1->4");
                         break;
                 }
             } catch (InputMismatchException ime) {
-                System.out.println("Wrong input!");
+                ctions.wrInput();
                 sc.next();
             }
         }
     }
-    
-    public int typeInCustomerID(CustomerCardList customerCardList, Order order){
-        while(true){
-            System.out.print("Please enter the customer ID(for member-only), or type EXIT/BACK/ENTER to exit/back/skip : ");
+
+    public int typeInCustomerID(CustomerCardList customerCardList, Order order) {
+        while (true) {
+            System.out.print("Please enter the Member Card ID(for member-only), \nor type EXIT/BACK to exit/back(press ENTER to skip) : ");
             String input = sc.nextLine();
             CustomerCard customerCard = customerCardList.findCustomerCardWithID(input);
             if ("back".equalsIgnoreCase(input)) {
                 return -1;
             } else if ("exit".equalsIgnoreCase(input)) {
                 return 0;
-            } else if (customerCard == null) {
+            } else if (customerCard == null && !input.equals("")) {
                 System.out.println("This member ID doesnt exist!");
             } else {
                 order.setCustomerCard(customerCard);
@@ -145,7 +146,26 @@ public class OrderView {
         }
     }
 
-    
+    public int typeInPoint(Order order, CustomerCard customerCard) {
+        while (true) {
+            System.out.print("Please enter the point you want to use, or type EXIT/BACK to exit/back : ");
+            String input = sc.nextLine();
+            if ("back".equalsIgnoreCase(input)) {
+                return -1;
+            } else if ("exit".equalsIgnoreCase(input)) {
+                return 0;
+            } else {
+                try {
+                    BigInteger point = new BigInteger(input);
+                    order.setPointDiscount(customerCard.convertPointToMoney(point));
+                    return 1;
+                } catch (NumberFormatException nfe) {
+                    ctions.wrInput();
+                }
+            }
+        }
+    }
+
     public void showDraftOrder(Order order) {
         System.out.println("");
         System.out.println("-------------------------- YOUR ORDER ------------------------------");
@@ -167,17 +187,17 @@ public class OrderView {
 
     public void showBill(Order order, Store myStore) {
         String customerID = "";
-        if(order.getCustomerCard() != null){
+        if (order.getCustomerCard() != null) {
             customerID = order.getCustomerCard().getID();
         }
         BigDecimal change = order.getCusMoney().subtract(order.getTotal());
         System.out.println("");
         System.out.println("-------------- YOUR BILL ---------------");
         System.out.println("----------------------------------------");
-        System.out.println("Store Name: "+myStore.getName());
-        System.out.println("Email: "+myStore.getEmail());
-        System.out.println("Address: "+myStore.getAddress());
-        System.out.println("Phone Number: "+myStore.getPhoneNumber());
+        System.out.println("Store Name: " + myStore.getName());
+        System.out.println("Email: " + myStore.getEmail());
+        System.out.println("Address: " + myStore.getAddress());
+        System.out.println("Phone Number: " + myStore.getPhoneNumber());
         System.out.println("Date: " + order.getOrderDateTime());
         System.out.println("");
         System.out.format("%-25s %-10s %-15s %-15s\n", "Name", "Quantity", "Price", "Total");
@@ -189,14 +209,17 @@ public class OrderView {
             BigDecimal totalPrice = totalQuantity.multiply(price);
             System.out.format("%-25s %-10s %-15s %-15s\n", goods.getGoodsName(), totalQuantity, price, totalPrice);
         }
-        System.out.println("SubTotal: " + order.getSubTotal());
-        System.out.printf("Discount Amount(Discount=%s): %s\n",order.getDiscount() + "%", order.getDiscountMoney());
-        System.out.printf("Tax(VAT=%s): %s\n",myStore.getVAT()+"%", order.getTaxFee());
-        System.out.println("Total: " + order.getTotal());
-        System.out.println("Customer payment: " + order.getCusMoney());
-        System.out.println("Payment Option: "+ order.getPaymentOptions());
-        System.out.println("Member ID: "+ customerID);
-        System.out.println("Change: " + change);
+        System.out.printf("SubTotal: %.0f\n",  order.getSubTotal());
+        System.out.printf("Discount Amount(Discount=%s): %.0f\n", order.getDiscount() + "%", order.getDiscountMoney());
+        System.out.printf("Tax(VAT=%s): %.0f\n", myStore.getVAT() + "%", order.getTaxFee());
+        System.out.println("Payment Option: " + order.getPaymentOptions());
+        System.out.println("Member Card ID: " + customerID);
+        System.out.printf("Point Discount: %.0f\n",  order.getPointDiscount());
+        System.out.printf("Total: %.0f\n",  order.getTotal());
+        if (order.getPaymentOptions().equals(PaymentOptions.Cash_Payment)) {
+            System.out.printf("Customer payment: %.0f\n", order.getCusMoney());
+            System.out.printf("Change: %.0f\n", change);
+        }
         System.out.println("----------------------------------------");
     }
 

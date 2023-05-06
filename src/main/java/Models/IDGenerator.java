@@ -12,14 +12,12 @@ import java.util.Map;
  */
 public class IDGenerator {
     private Map<String, Integer> bucket;
-    private int numberOfSequence;
 
     public IDGenerator() {
     }
 
-    public IDGenerator(Map<String, Integer> bucket, int numberOfSequence) {
+    public IDGenerator(Map<String, Integer> bucket) {
         this.bucket = bucket;
-        this.numberOfSequence = numberOfSequence;
     }
     
     
@@ -27,21 +25,13 @@ public class IDGenerator {
         return bucket;
     }
 
-    public int getNumberOfSequence() {
-        return numberOfSequence;
-    }
-
-    public void setNumberOfSequence(int numberOfSequence) {
-        this.numberOfSequence = numberOfSequence;
-    }
-    
-    public String generateID(String key){
+    public String generateID(String key, int numberOfSequence){
         int value = 0;
         if(this.bucket.containsKey(key)){
             value = this.bucket.get(key);
             value++;
         }
         this.bucket.put(key, value);
-        return String.format("%0"+this.numberOfSequence+"d", value);
+        return String.format("%0"+numberOfSequence+"d", value);
     }
 }

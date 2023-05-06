@@ -19,6 +19,7 @@ public class Order extends GoodsList {
     private int discount;
     private PaymentOptions paymentOptions;
     private CustomerCard customerCard;
+    private BigDecimal pointDiscount = BigDecimal.ZERO;
 
     public Order(String ID, int VAT) {
         super(new ArrayList<>());
@@ -64,6 +65,14 @@ public class Order extends GoodsList {
         return this.paymentOptions;
     }
 
+    public BigDecimal getPointDiscount() {
+        return pointDiscount;
+    }
+
+    public void setPointDiscount(BigDecimal pointDiscount) {
+        this.pointDiscount = pointDiscount;
+    }
+
     public void setPaymentOptions(int option) {
         if (option == 1) {
             this.paymentOptions = PaymentOptions.Cash_Payment;
@@ -94,19 +103,20 @@ public class Order extends GoodsList {
 
     public BigDecimal getTaxFee() {
         // tong tien phi VAT cho ca hoa don
-        return this.getSubTotal().multiply(new BigDecimal(this.VAT*1.0/100));
+        return this.getSubTotal().multiply(new BigDecimal(this.VAT * 1.0 / 100));
     }
 
     public BigDecimal getTotal() {
         // Khoan tien can thanh toan khi da tru di discount va cong them VAT
         return this.getSubTotal()
                 .subtract(this.getDiscountMoney())
-                .add(this.getTaxFee());
+                .add(this.getTaxFee())
+                .subtract(this.pointDiscount);
     }
 
     public BigDecimal getDiscountMoney() {
         // tong tien giam gia 
-        return this.getSubTotal().multiply(new BigDecimal(this.discount*1.0/100));
+        return this.getSubTotal().multiply(new BigDecimal(this.discount * 1.0 / 100));
     }
 
     public CustomerCard getCustomerCard() {
@@ -303,7 +313,9 @@ public class Order extends GoodsList {
         }
         int n = 1;
         int nextProcess;
-        while (n != 4) {
+        while (n != -1) {
+            OUTER:
+            OUTER_1:
             switch (n) {
                 case 1:
                     nextProcess = orderView.typeInDcountPctage(this);
@@ -311,30 +323,55 @@ public class Order extends GoodsList {
                         return false;
                     }
                 case 2:
+                    nextProcess = orderView.typeOfPayment(this);
+                    switch (nextProcess) {
+                        case 0:
+                            return false;
+                        case -1:
+                            n = 2;
+                            break OUTER;
+                        default:
+                            if (this.paymentOptions.equals(PaymentOptions.Wire_Transfer_Payment)) {
+                                n = 4;
+                                break OUTER;
+                            }
+                            break;
+                    }
+                case 3:
                     nextProcess = orderView.typeInCusMoney(this);
                     if (nextProcess == 0) {
                         return false;
                     } else if (nextProcess == -1) {
                         break;
                     }
-                case 3:
-                    nextProcess = orderView.typeOfPayment(this);
-                    if (nextProcess == 0) {
-                        return false;
-                    } else if (nextProcess == -1) {
-                        n = 2;
-                        break;
-                    }
                 case 4:
                     nextProcess = orderView.typeInCustomerID(customerCardList, this);
+                    switch (nextProcess) {
+                        case 0:
+                            return false;
+                        case -1:
+                            n = 3;
+                            break OUTER_1;
+                        default:
+                            if (this.customerCard == null) {
+                                n = -1;
+                                break OUTER_1;
+                            }
+                            break;
+                    }
+                case 5:
+                    nextProcess = orderView.typeInPoint(this, this.customerCard);
                     if (nextProcess == 0) {
                         return false;
                     } else if (nextProcess == -1) {
-                        n = 3;
+                        n = 4;
                         break;
                     }
-                    n = 4;
+                    n = -1;
             }
+        }
+        if (this.customerCard != null) {
+            this.customerCard.gainPoint(this.getTotal());
         }
         orderView.showBill(this, myStore);
         return true;

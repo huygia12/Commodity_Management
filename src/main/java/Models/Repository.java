@@ -65,7 +65,7 @@ public class Repository extends GoodsList {
                     }
             }
         }
-        newGoods.setID(idGenerator.generateID(Goods.class.getName()));
+        newGoods.setID(idGenerator.generateID(Goods.class.getName(), 6));
         this.getGoodsList().add(newGoods);
     }
 
@@ -125,7 +125,7 @@ public class Repository extends GoodsList {
             }
         } else {
             // neu Shipment nay la moi
-            newShipment.setID(idGenerator.generateID(Shipment.class.getName()));
+            newShipment.setID(idGenerator.generateID(Shipment.class.getName(), 8));
             searchGoods.getShipments().add(newShipment);
         }
         newImportedGoods.getShipments().add(newShipment);

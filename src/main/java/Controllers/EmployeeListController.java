@@ -7,6 +7,7 @@ package Controllers;
 import Models.Employee;
 import Models.EmployeeList;
 import View.EmployeeListView;
+import java.util.ArrayList;
 import java.util.Scanner;
 
 /**
@@ -65,7 +66,7 @@ public class EmployeeListController {
                 case "4":
                     searchedEmployee = this.getEmployeeList().searchEmployee();
                     if (searchedEmployee != null) {
-                        EmployeeList tmp = new EmployeeList();
+                        EmployeeList tmp = new EmployeeList(new ArrayList<>());
                         tmp.getList().add(searchedEmployee);
                         tmp.showList();
                     }

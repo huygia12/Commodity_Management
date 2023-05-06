@@ -5,6 +5,7 @@
 package Controllers;
 
 import java.math.BigDecimal;
+import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -22,7 +23,8 @@ public class test {
     static  Map<String, Integer> staticalList = new HashMap<>();
     
     public static void main(String[] args) {
-        testSetting();
+        BigDecimal d = new BigDecimal("1532332.2353773646353535");
+        System.out.println(new BigInteger(d.toBigInteger()+""));
     }
     
     public static void testSetting(){

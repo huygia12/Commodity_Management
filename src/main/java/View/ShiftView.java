@@ -160,23 +160,24 @@ public class ShiftView {
             pw.println(String.format("%20s" + " | " + "%-20s", "Open time", shift.getOpenTime()));
             pw.println(String.format("%20s" + " | " + "%-20s", "Close time", shift.getEndTime()));
             pw.println(String.format("%20s" + " | " + "%-20s", "Cashier", shift.getCashier().getFirstName() + " " + shift.getCashier().getLastName()));
-            pw.println(String.format("%20s" + " | " + "%-20s", "Openning balance", shift.getOpeningBalance()));
-            pw.println(String.format("%20s" + " | " + "%-20s", "Gross revenue", shift.getGrossRevenue()));
-            pw.println(String.format("%20s" + " | " + "%-20s", "Total discount", shift.getTotalDiscountMoney()));
-            pw.println(String.format("%20s" + " | " + "%-20s", "VAT" + shift.getVAT() + "%", shift.getTotalVAT()));
-            pw.println(String.format("%20s" + " | " + "%-20s", "Shipping fee", shift.getTransportFee()));
-            pw.println(String.format("%20s" + " | " + "%-20s", "Net revenue", shift.getNetRevenue()));
+            pw.println(String.format("%20s" + " | " + "%-20.0f", "Openning balance", shift.getOpeningBalance()));
+            pw.println(String.format("%20s" + " | " + "%-20.0f", "Gross revenue", shift.getGrossRevenue()));
+            pw.println(String.format("%20s" + " | " + "%-20.0f", "Total direct discount", shift.getTotalDiscountMoney()));
+            pw.println(String.format("%20s" + " | " + "%-20.0f", "Total point discount", shift.getTotalPointDiscount()));
+            pw.println(String.format("%20s" + " | " + "%-20.0f", "VAT" + shift.getVAT() + "%", shift.getTotalVAT()));
+            pw.println(String.format("%20s" + " | " + "%-20.0f", "Shipping fee", shift.getTransportFee()));
+            pw.println(String.format("%20s" + " | " + "%-20.0f", "Net revenue", shift.getNetRevenue()));
             pw.println(String.format("%20s" + " | " + "%-20s", "Number of orders", shift.getNumberOfOrder()));
-            pw.println(String.format("%20s" + " | " + "%-20s", "Average per Order", shift.getAveragePerOrder()));
+            pw.println(String.format("%20s" + " | " + "%-20.0f", "Average per Order", shift.getAveragePerOrder()));
             pw.println(String.format("%5s", "OPTIONS PAYMENT:"));
-            pw.println(String.format("%20s" + " | " + "%-20s", "+Cash", shift.getTotalPaymentByCash()));
-            pw.println(String.format("%20s" + " | " + "%-20s", "+Wire transfer", shift.getTotalPaymentByWireTransfer()));
-            pw.println(String.format("%20s" + " | " + "%-20s", "+Current CashBox money", shift.getTotalPaymentByCash().add(shift.getOpeningBalance())));
+            pw.println(String.format("%20s" + " | " + "%-20.0f", "+Cash", shift.getTotalPaymentByCash()));
+            pw.println(String.format("%20s" + " | " + "%-20.0f", "+Wire transfer", shift.getTotalPaymentByWireTransfer()));
+            pw.println(String.format("%20s" + " | " + "%-20.0f", "+Current CashBox money", shift.getTotalPaymentByCash().add(shift.getOpeningBalance())));
             pw.println(String.format("%5s", "CONSUMPTIONS:"));
             pw.println(String.format("%-10s" + " | " + "%-10s"+ " | " + "%-10s"+ " | " + "%-10s", "Goods Name", "Quantity", "Revenue", "Ratio"));
             List<StaticalItems> staticalItemsList = new ArrayList<>(shift.getStaticalList().values());
-            staticalItemsList.stream().forEach(x->pw.println(String.format("%-10s" + " | " + "%-10s"+ " | " + "%-10s"+ " | " + "%-10s", 
-                    x.getName(), x.getQuantity(), x.getRevenue(), x.getRatio())));
+            staticalItemsList.stream().forEach(x->pw.println(String.format("%-10s" + " | " + "%-10.0f"+ " | " + "%-10.0f"+ " | " + "%-10.0f%s", 
+                    x.getName(), x.getQuantity(), x.getRevenue(), x.getRatio(), "%")));
         } catch (IOException ex) {
             Logger.getLogger(Shift.class.getName()).log(Level.SEVERE, null, ex);
         }
