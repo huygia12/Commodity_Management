@@ -5,6 +5,7 @@
 package View;
 
 import java.math.BigDecimal;
+import java.math.BigInteger;
 import java.util.List;
 
 /**
@@ -39,7 +40,7 @@ public class Cautions {
     
     public boolean checkIfANumberSequence(String str){
         try{
-            long number = Integer.parseInt(str);
+            BigInteger number = new BigInteger(str.trim());
             return true;
         }catch(NumberFormatException nfe){
             System.out.println("This input must be a number sequence!");

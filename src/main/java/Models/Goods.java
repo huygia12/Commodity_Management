@@ -35,10 +35,10 @@ public class Goods {
     }
 
     public Goods(String goodsName, String manufac, BigDecimal listPrice, String goodsID) {
-        this.goodsName = goodsName;
-        this.manufacture = manufac;
+        this.goodsName = goodsName.trim();
+        this.manufacture = manufac.trim();
         this.listPrice = listPrice;
-        this.id = goodsID;
+        this.id = goodsID.trim();
     }
 
     public List<Shipment> getShipments() {

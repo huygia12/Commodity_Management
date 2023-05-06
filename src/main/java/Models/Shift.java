@@ -5,19 +5,13 @@
 package Models;
 
 import View.ShiftView;
-import java.io.File;
-import java.io.IOException;
-import java.io.PrintWriter;
 import java.math.BigDecimal;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.StandardOpenOption;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Scanner;
 import java.util.Stack;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 /**
  *
@@ -25,28 +19,29 @@ import java.util.logging.Logger;
  */
 public class Shift {
 
-    private final String HOME = System.getProperty("user.dir");
-    private final String SEPARATOR = File.separator;
-    private final String FILE_PRINT = HOME + SEPARATOR + "output" + SEPARATOR + "shiftOverView.txt";
 
     final Scanner sc = new Scanner(System.in);
     private Stack<Order> orderHisPerShift = new Stack<>();
     private Stack<ImportedGoods> importGoodsHis = new Stack<>();
     private String openDateTime = null;
     private String endDateTime = null;
-    private String ID;
     private BigDecimal openingBalance = null;
     private BigDecimal shippingFee = null;
     private EmployeeList employeeOfThisShift;
     private Employee cashier;
-    private BigDecimal grossRevenue = BigDecimal.ZERO;
-    private BigDecimal netRevenue = BigDecimal.ZERO;
-    
+    private String ID;
+    private int VAT;
+
     public Shift() {
     }
 
-    public Shift(String ID) {
-        this.ID = ID;
+    public Shift(String ID, int VAT) {
+        this.ID = ID.trim();
+        this.VAT = VAT;
+    }
+
+    public int getVAT() {
+        return VAT;
     }
 
     public Stack<Order> getOrderHisPerShift() {
@@ -88,7 +83,7 @@ public class Shift {
     }
 
     public void setID(String ID) {
-        this.ID = ID;
+        this.ID = ID.trim();
     }
 
     public BigDecimal getOpeningBalance() {
@@ -124,35 +119,106 @@ public class Shift {
     }
 
     public BigDecimal getGrossRevenue() {
-        return grossRevenue;
+        BigDecimal result = BigDecimal.ZERO;
+        for (Order order : this.orderHisPerShift) {
+            result = result.add(order.getSubTotal());
+        }
+        return result;
     }
 
     public BigDecimal getNetRevenue() {
-        return netRevenue;
+        BigDecimal result = BigDecimal.ZERO;
+        for (Order order : this.orderHisPerShift) {
+            result = result.add(order.getTotal());
+        }
+        return result;
     }
 
-    public boolean orderOnSameDay(Order newOrder) {
-        LocalDateTime date1 = LocalDateTime.parse(this.orderHisPerShift.peek().getInVoiceDateTime(),
-                DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm:ss"));
-        LocalDateTime date2 = LocalDateTime.parse(newOrder.getInVoiceDateTime(),
-                DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm:ss"));
-        return date1.getDayOfMonth() == date2.getDayOfMonth()
-                && date1.getMonth() == date2.getMonth()
-                && date1.getYear() == date2.getYear();
+    public BigDecimal getTotalDiscountMoney() {
+        BigDecimal result = BigDecimal.ZERO;
+        for (Order order : orderHisPerShift) {
+            result = result.add(order.getDiscountMoney());
+        }
+        return result;
     }
 
-    public boolean importGoodsOnSameDay(ImportedGoods newImportGoods) {
-        LocalDateTime date1 = LocalDateTime.parse(this.importGoodsHis.peek().getImportDateTime(),
-                DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm:ss"));
-        LocalDateTime date2 = LocalDateTime.parse(newImportGoods.getImportDateTime(),
-                DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm:ss"));
-        return date1.getDayOfMonth() == date2.getDayOfMonth()
-                && date1.getMonth() == date2.getMonth()
-                && date1.getYear() == date2.getYear();
+    public BigDecimal getTotalPaymentByCash() {
+        BigDecimal result = BigDecimal.ZERO;
+        for (Order order : orderHisPerShift) {
+            if (order.getPaymentOptions().equals(PaymentOptions.Wire_Transfer_Payment)) {
+                result = result.add(order.getTotal());
+            }
+        }
+        return result;
+    }
+
+    public BigDecimal getTotalPaymentByWireTransfer() {
+        BigDecimal result = BigDecimal.ZERO;
+        for (Order order : orderHisPerShift) {
+            if (order.getPaymentOptions().equals(PaymentOptions.Wire_Transfer_Payment)) {
+                result = result.add(order.getTotal());
+            }
+        }
+        return result;
+    }
+
+    public BigDecimal getTotalVAT() {
+        BigDecimal result = BigDecimal.ZERO;
+        for (Order order : orderHisPerShift) {
+            result = result.add(order.getTaxFee());
+        }
+        return result;
+    }
+
+    public long getNumberOfOrder() {
+        return orderHisPerShift.stream().count();
+    }
+
+    public BigDecimal getAveragePerOrder() {
+        return this.getNetRevenue().divide(new BigDecimal(this.getNumberOfOrder()));
+    }
+
+    public BigDecimal getTotalGoodsQuanOfThisShift() {
+        BigDecimal result = BigDecimal.ZERO;
+        for (Order order : orderHisPerShift) {
+            for (Goods goods : order.getGoodsList()) {
+                result = result.add(goods.getTotalQuantity());
+            }
+        }
+        return result;
+    }
+
+    public Map<String, StaticalItems> getStaticalList() {
+        Map<String, StaticalItems> staticalList = new HashMap<>();
+        for (Order order : orderHisPerShift) {
+            for (Goods goods : order.getGoodsList()) {
+                StaticalItems newStaticalItems = new StaticalItems();
+                newStaticalItems.setName(goods.getGoodsName());
+                newStaticalItems.setQuantity(goods.getTotalQuantity());
+                newStaticalItems.setRevenue(goods.getListPrice()
+                        .multiply(goods.getTotalQuantity()
+                                .multiply(new BigDecimal(1.0 - order.getDiscount() * 1.0 / 100 + order.getVAT() * 1.0 / 100))));
+                if (staticalList.containsKey(goods.getID())) {
+                    BigDecimal quanBefore = staticalList.get(goods.getID()).getQuantity();
+                    BigDecimal revenueBefore = staticalList.get(goods.getID()).getRevenue();
+                    newStaticalItems.setQuantity(quanBefore.add(newStaticalItems.getQuantity()));
+                    newStaticalItems.setQuantity(revenueBefore.add(newStaticalItems.getRevenue()));
+                }
+                staticalList.put(goods.getID(), newStaticalItems);
+            }
+        }
+        BigDecimal totalQuan = this.getTotalGoodsQuanOfThisShift();
+        for (Map.Entry<String, StaticalItems> entry : staticalList.entrySet()) {
+            entry.getValue().setRatio(Double.parseDouble(entry
+                    .getValue()
+                    .getQuantity()
+                    .divide(totalQuan) + ""));
+        }
+        return staticalList;
     }
 
     public void openShift(ShiftView shiftView, EmployeeList employeeList) {
-        if (this.endDateTime == null) {
+        if (this.endDateTime != null) {
             shiftView.shiftNotEndCaution();
             return;
         }
@@ -217,19 +283,8 @@ public class Shift {
         } while (!choice.equalsIgnoreCase("4"));
     }
 
-    private void computeGrossRevenue(){
-        BigDecimal result = BigDecimal.ZERO;
-        for (Order order : this.orderHisPerShift) {
-            result = result.add(order.getDiscountMoney());
-        }
-    }
-    
-    private void computeNetRevenue(){
-        
-    }
-    
     public void endShift(ShiftView shiftView, Store myStore) {
-        if (this.openDateTime == null) {
+        if (this.openDateTime != null) {
             shiftView.shiftNotOpenCaution();
             return;
         }
@@ -237,34 +292,7 @@ public class Shift {
             shiftView.typeInShippingFee(this);
         }
         this.setEndTime();
-        printFileOfThisShiftOverView(myStore);
+        shiftView.printFileOfThisShiftOverView(myStore, this);
     }
 
-    public void printFileOfThisShiftOverView(Store myStore) {
-        Path outputPath = Path.of(FILE_PRINT);
-        try ( PrintWriter pw = new PrintWriter(Files.newBufferedWriter(outputPath,
-                StandardOpenOption.CREATE,
-                StandardOpenOption.WRITE,
-                StandardOpenOption.TRUNCATE_EXISTING))) {
-            pw.printf("%5s", "END-SHIFT-REPORT");
-            pw.println(String.format("%20s" + " | " + "%-20s", "STORE NAME", myStore.getName()));
-            pw.println("-".repeat(40));
-            pw.println(String.format("%20s" + " | " + "%-20s", "Open time", this.openDateTime));
-            pw.println(String.format("%20s" + " | " + "%-20s", "Close time", this.endDateTime));
-            pw.println(String.format("%20s" + " | " + "%-20s", "Cashier", this.cashier.getFirstName()+" "+this.cashier.getLastName()));
-            pw.println(String.format("%20s" + " | " + "%-20s", "Openning balance", this.openingBalance));
-            pw.println(String.format("%20s" + " | " + "%-20s", "Openning balance", this.openingBalance));
-            pw.println(String.format("%20s" + " | " + "%-20s", "Openning balance", this.openingBalance));
-            pw.println(String.format("%20s" + " | " + "%-20s", "Openning balance", this.openingBalance));
-            pw.println(String.format("%20s" + " | " + "%-20s", "Openning balance", this.openingBalance));
-            pw.println(String.format("%20s" + " | " + "%-20s", "Openning balance", this.openingBalance));
-            pw.println(String.format("%20s" + " | " + "%-20s", "Openning balance", this.openingBalance));
-            pw.println(String.format("%20s" + " | " + "%-20s", "Openning balance", this.openingBalance));
-            pw.println(String.format("%20s" + " | " + "%-20s", "Openning balance", this.openingBalance));
-            pw.println(String.format("%20s" + " | " + "%-20s", "Openning balance", this.openingBalance));
-
-        } catch (IOException ex) {
-            Logger.getLogger(Shift.class.getName()).log(Level.SEVERE, null, ex);
-        }
-    }
 }

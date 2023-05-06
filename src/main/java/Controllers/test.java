@@ -4,7 +4,11 @@
  */
 package Controllers;
 
-import Models.Store;
+import java.math.BigDecimal;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 
 
@@ -15,12 +19,21 @@ import Models.Store;
  * @author FPTSHOP
  */
 public class test {
+    static  Map<String, Integer> staticalList = new HashMap<>();
+    
     public static void main(String[] args) {
         testSetting();
     }
     
     public static void testSetting(){
-        SettingsController s = new SettingsController(new Store());
-        s.SettingsManagement();
+        staticalList.put("huy", 1);
+        staticalList.put("huy", 2);
+        staticalList.put("ha", 5);
+        
+        List<Integer> list = new ArrayList<>(staticalList.values());
+        for (Map.Entry<String, Integer> entry : staticalList.entrySet()) {
+            System.out.println(entry.getKey()+" : "+entry.getValue());
+        }
+        list.stream().forEach(x->System.out.print(x+" "));
     }
 }

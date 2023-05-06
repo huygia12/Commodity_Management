@@ -34,7 +34,7 @@ public class Shipment {
         this.importPrice = importPrice;
         this.nsx = nsx;
         this.hsd = hsd;
-        this.id = id;
+        this.id = id.trim();
     }
 
     public LocalDate getNsx() {

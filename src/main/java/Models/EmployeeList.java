@@ -6,6 +6,7 @@ package Models;
 
 import View.EmployeeListView;
 import View.EmployeeView;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 
@@ -205,7 +206,7 @@ public class EmployeeList extends AbstractHumanList<Employee> {
                             || inputStr.equalsIgnoreCase("exit")) {
                         return null;
                     }
-                    EmployeeList bucket = new EmployeeList();
+                    EmployeeList bucket = new EmployeeList(new ArrayList<>());
                     String inputStrToLowCase = inputStr.toLowerCase();
                     for (Employee e : this.getList()) {
                         String lastName = e.getLastName().toLowerCase();
@@ -236,6 +237,7 @@ public class EmployeeList extends AbstractHumanList<Employee> {
                 + lastNameMaxSize + phoneNumberMaxSize + addressMaxSize + 3 + 6;
         final int extraLengthOfBorder = 23;
         int borderLength = totalColSize + extraLengthOfBorder;
+        System.out.println("");
         System.out.println("|" + "-".repeat(borderLength) + "|");
         System.out.printf("| %-" + String.format(CCCDmaxSize + "s")
                 + " | %-" + String.format(firstNameMaxSize + "s")

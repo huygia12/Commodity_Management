@@ -5,7 +5,6 @@
 package Models;
 
 import View.SettingsView;
-import java.math.BigDecimal;
 import java.util.Scanner;
 
 /**
@@ -18,15 +17,15 @@ public class Store {
     private String name = "";
     private String email = "";
     private String address = "";
-    private BigDecimal VAT = BigDecimal.ZERO;
+    private int VAT = 0;
     private String phoneNumber = "";
 
-    public Store(String name, String email, String address, BigDecimal VAT, String phoneNumber) {
-        this.name = name;
-        this.email = email;
-        this.address = address;
+    public Store(String name, String email, String address, int VAT, String phoneNumber) {
+        this.name = name.trim();
+        this.email = email.trim();
+        this.address = address.trim();
         this.VAT = VAT;
-        this.phoneNumber = phoneNumber;
+        this.phoneNumber = phoneNumber.trim();
     }
 
     public Store() {
@@ -37,7 +36,7 @@ public class Store {
     }
 
     public void setName(String name) {
-        this.name = name;
+        this.name = name.trim();
     }
 
     public String getEmail() {
@@ -45,7 +44,7 @@ public class Store {
     }
 
     public void setEmail(String email) {
-        this.email = email;
+        this.email = email.trim();
     }
 
     public String getAddress() {
@@ -53,14 +52,14 @@ public class Store {
     }
 
     public void setAddress(String address) {
-        this.address = address;
+        this.address = address.trim();
     }
 
-    public BigDecimal getVAT() {
+    public int getVAT() {
         return VAT;
     }
 
-    public void setVAT(BigDecimal VAT) {
+    public void setVAT(int VAT) {
         this.VAT = VAT;
     }
 
@@ -69,7 +68,7 @@ public class Store {
     }
 
     public void setPhoneNumber(String phoneNumber) {
-        this.phoneNumber = phoneNumber;
+        this.phoneNumber = phoneNumber.trim();
     }
 
     public void showStoreInfor() {

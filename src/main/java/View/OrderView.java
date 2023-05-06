@@ -62,9 +62,9 @@ public class OrderView {
                 try {
                     order.setDiscount(Math.min(100, Integer.parseInt(input)));
                     if (ctions.checkIfIntNegative(order.getDiscount())) {
-                        return 1;
-                    } else {
                         order.setDiscount(0);
+                    } else {
+                        return 1;
                     }
                 } catch (NumberFormatException nfe) {
                     ctions.wrInput();
@@ -178,7 +178,7 @@ public class OrderView {
         System.out.println("Email: "+myStore.getEmail());
         System.out.println("Address: "+myStore.getAddress());
         System.out.println("Phone Number: "+myStore.getPhoneNumber());
-        System.out.println("Date: " + order.getInVoiceDateTime());
+        System.out.println("Date: " + order.getOrderDateTime());
         System.out.println("");
         System.out.format("%-25s %-10s %-15s %-15s\n", "Name", "Quantity", "Price", "Total");
         System.out.format("%-25s %-10s %-15s %-15s\n", "-------------------------", "----------", "---------------", "---------------");

@@ -86,7 +86,6 @@ public class OrderController {
     
     public boolean makeNewOrder(GoodsList repoGoodsList, CustomerCardList customerCardList, Store myStore) {
         this.repoGoodsList = repoGoodsList;
-        this.order.setTax(myStore.getVAT());
         // tao mot ban cpy cua repositoryGoodsList la draftGoodsList
         makeDraftGoodsList();
         ShipmentView shipView = new ShipmentView();

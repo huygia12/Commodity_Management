@@ -1,21 +1,35 @@
 /*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
+ * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change shift license
+ * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit shift template
  */
 package View;
 
 import Models.Employee;
 import Models.EmployeeList;
 import Models.Shift;
+import Models.StaticalItems;
+import Models.Store;
+import java.io.File;
+import java.io.IOException;
+import java.io.PrintWriter;
 import java.math.BigDecimal;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.StandardOpenOption;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Scanner;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  *
  * @author FPTSHOP
  */
 public class ShiftView {
-
+    private final String HOME = System.getProperty("user.dir");
+    private final String SEPARATOR = File.separator;
+    private final String FILE_PRINT = HOME + SEPARATOR + "output" + SEPARATOR + "shiftOverView.txt";
     final Scanner sc = new Scanner(System.in);
     final Cautions ctions = new Cautions();
 
@@ -32,9 +46,12 @@ public class ShiftView {
                            \n****************************************
                            * 1. Open shift                        *
                            * 2. Set Shipping fee                  *
-                           * 3. Change employees of this shift    *
-                           * 4. Change this shift openningbalance *
-                           * 5. End shift                         *
+                           * 3. Change employees of shift shift   *
+                           * 4. Change shift openningbalance      *
+                           * 5. Show order history                *
+                           * 6. Show import goods history         *
+                           * 7. Current shift over view           *
+                           * 8. End shift                         *
                            ****************************************
                            Options => """);
     }
@@ -44,7 +61,7 @@ public class ShiftView {
                            \n***********************************************
                            * 1. Add employee                             *
                            * 2. Remove employee                          *
-                           * 3. Reset and retype employees of this Shift *
+                           * 3. Reset and retype employees of shift Shift *
                            * 4. Back                                     *
                            ***********************************************
                            Options => """);
@@ -128,6 +145,40 @@ public class ShiftView {
             } else {
                 return 1;
             }
+        }
+    }
+    
+    public void printFileOfThisShiftOverView(Store myStore, Shift shift) {
+        Path outputPath = Path.of(FILE_PRINT);
+        try ( PrintWriter pw = new PrintWriter(Files.newBufferedWriter(outputPath,
+                StandardOpenOption.CREATE,
+                StandardOpenOption.WRITE,
+                StandardOpenOption.TRUNCATE_EXISTING))) {
+            pw.printf("%5s\n", "END-SHIFT-REPORT");
+            pw.println(String.format("%20s" + " | " + "%-20s", "STORE NAME", myStore.getName()));
+            pw.println("-".repeat(40));
+            pw.println(String.format("%20s" + " | " + "%-20s", "Open time", shift.getOpenTime()));
+            pw.println(String.format("%20s" + " | " + "%-20s", "Close time", shift.getEndTime()));
+            pw.println(String.format("%20s" + " | " + "%-20s", "Cashier", shift.getCashier().getFirstName() + " " + shift.getCashier().getLastName()));
+            pw.println(String.format("%20s" + " | " + "%-20s", "Openning balance", shift.getOpeningBalance()));
+            pw.println(String.format("%20s" + " | " + "%-20s", "Gross revenue", shift.getGrossRevenue()));
+            pw.println(String.format("%20s" + " | " + "%-20s", "Total discount", shift.getTotalDiscountMoney()));
+            pw.println(String.format("%20s" + " | " + "%-20s", "VAT" + shift.getVAT() + "%", shift.getTotalVAT()));
+            pw.println(String.format("%20s" + " | " + "%-20s", "Shipping fee", shift.getTransportFee()));
+            pw.println(String.format("%20s" + " | " + "%-20s", "Net revenue", shift.getNetRevenue()));
+            pw.println(String.format("%20s" + " | " + "%-20s", "Number of orders", shift.getNumberOfOrder()));
+            pw.println(String.format("%20s" + " | " + "%-20s", "Average per Order", shift.getAveragePerOrder()));
+            pw.println(String.format("%5s", "OPTIONS PAYMENT:"));
+            pw.println(String.format("%20s" + " | " + "%-20s", "+Cash", shift.getTotalPaymentByCash()));
+            pw.println(String.format("%20s" + " | " + "%-20s", "+Wire transfer", shift.getTotalPaymentByWireTransfer()));
+            pw.println(String.format("%20s" + " | " + "%-20s", "+Current CashBox money", shift.getTotalPaymentByCash().add(shift.getOpeningBalance())));
+            pw.println(String.format("%5s", "CONSUMPTIONS:"));
+            pw.println(String.format("%-10s" + " | " + "%-10s"+ " | " + "%-10s"+ " | " + "%-10s", "Goods Name", "Quantity", "Revenue", "Ratio"));
+            List<StaticalItems> staticalItemsList = new ArrayList<>(shift.getStaticalList().values());
+            staticalItemsList.stream().forEach(x->pw.println(String.format("%-10s" + " | " + "%-10s"+ " | " + "%-10s"+ " | " + "%-10s", 
+                    x.getName(), x.getQuantity(), x.getRevenue(), x.getRatio())));
+        } catch (IOException ex) {
+            Logger.getLogger(Shift.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
 }

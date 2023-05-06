@@ -6,7 +6,9 @@ package Controllers;
 
 import Models.CustomerCard;
 import Models.CustomerCardList;
+import Models.IDGenerator;
 import View.CustomerCardListView;
+import java.util.ArrayList;
 import java.util.Scanner;
 
 /**
@@ -34,7 +36,7 @@ public class CustomerCardListController {
         return this.view;
     }
     
-    public void customerCardListManagement() {
+    public void customerCardListManagement(IDGenerator idGenerator) {
         CustomerCardController customerCardCtr = new CustomerCardController();
         CustomerCard searchedcustomerCard;
         String choice;
@@ -43,7 +45,7 @@ public class CustomerCardListController {
             choice = sc.nextLine().trim();
             switch (choice) {
                 case "1":
-                    this.getCustomerCardList().addNewCard(customerCardCtr.getCustomerView());
+                    this.getCustomerCardList().addNewCard(customerCardCtr.getCustomerView(), idGenerator);
                     break;
                 case "2":
                     searchedcustomerCard = this.customerCardList.searchCustomerCard();
@@ -61,7 +63,7 @@ public class CustomerCardListController {
                 case "4":
                     searchedcustomerCard = this.customerCardList.searchCustomerCard();
                     if (searchedcustomerCard != null) {
-                        CustomerCardList tmp = new CustomerCardList();
+                        CustomerCardList tmp = new CustomerCardList(new ArrayList<>());
                         tmp.getList().add(searchedcustomerCard);
                         tmp.showList();
                     }

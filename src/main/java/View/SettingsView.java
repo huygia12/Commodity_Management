@@ -118,7 +118,7 @@ public class SettingsView {
                     if (!ctions.checkIfBigDecimalNegative(VAT)) {
                         continue;
                     }
-                    store.setVAT(new BigDecimal(Math.min(100, Integer.parseInt(inputStr))));
+                    store.setVAT(Math.min(100, Integer.parseInt(inputStr)));
                     return 1;
                 } catch (NumberFormatException nfe) {
                     ctions.wrInput();

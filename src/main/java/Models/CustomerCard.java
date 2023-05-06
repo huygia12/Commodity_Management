@@ -5,6 +5,7 @@
 package Models;
 
 import View.CustomerView;
+import java.math.BigInteger;
 
 /**
  *
@@ -13,15 +14,16 @@ import View.CustomerView;
 public class CustomerCard {
 
     private String ID;
-    private long point;
+    private BigInteger point = BigInteger.ZERO;
     private Customer customer = new Customer();
 
 
     public CustomerCard() {
     }
 
-    public CustomerCard(String ID) {
+    public CustomerCard(String ID, Customer customer) {
         this.ID = ID;
+        this.customer = customer;
     }
     
     public String getID() {
@@ -32,11 +34,11 @@ public class CustomerCard {
         this.ID = ID;
     }
 
-    public long getPoint() {
+    public BigInteger getPoint() {
         return point;
     }
 
-    public void setPoint(long point) {
+    public void setPoint(BigInteger point) {
         this.point = point;
     }
 
@@ -48,7 +50,7 @@ public class CustomerCard {
         this.customer = customer;
     }
 
-    public CustomerCard generateCard(CustomerView customerView, CustomerCardList customerCardList) {
+    public CustomerCard generateCard(CustomerView customerView, CustomerCardList customerCardList, IDGenerator idGenerator) {
         CustomerCard newCustomerCard = new CustomerCard();
         int n = 1;
         int nextProcess;
@@ -106,8 +108,7 @@ public class CustomerCard {
                     n = 6;
             }
         }
-        newCustomerCard.setPoint(0);
-        newCustomerCard.setID(String.format("%06d", customerCardList.getList().size()));
+        newCustomerCard.setID(idGenerator.generateID(CustomerCard.class.getName()));
         return newCustomerCard;
     }
     
@@ -119,4 +120,7 @@ public class CustomerCard {
         return customerCard;
     }
     
+    public void gainPoint(BigInteger totalPayment){
+        this.point = this.point.add(totalPayment.divide(new BigInteger("10000")));
+    }
 }

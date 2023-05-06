@@ -22,7 +22,7 @@ public abstract class AbstractHuman {
     }
 
     public void setFirstName(String firstName) {
-        this.firstName = firstName;
+        this.firstName = firstName.trim();
     }
 
     public String getLastName() {
@@ -30,7 +30,7 @@ public abstract class AbstractHuman {
     }
 
     public void setLastName(String lastName) {
-        this.lastName = lastName;
+        this.lastName = lastName.trim();
     }
 
     public String getPhoneNumber() {
@@ -38,7 +38,7 @@ public abstract class AbstractHuman {
     }
 
     public void setPhoneNumber(String phoneNumber) {
-        this.phoneNumber = phoneNumber;
+        this.phoneNumber = phoneNumber.trim();
     }
 
     public String getAddress() {
@@ -46,7 +46,7 @@ public abstract class AbstractHuman {
     }
 
     public void setAddress(String address) {
-        this.address = address;
+        this.address = address.trim();
     }
 
     public int getAge() {

@@ -14,11 +14,11 @@ public class Customer extends AbstractHuman {
     }
     
     public Customer(String firstName, String lastName, String phoneNumber, String address, int age, Gender gender) {
-        this.address = address;
+        this.address = address.trim();
         this.age = age;
-        this.firstName = firstName;
-        this.lastName = lastName;
-        this.phoneNumber = phoneNumber;
+        this.firstName = firstName.trim();
+        this.lastName = lastName.trim();
+        this.phoneNumber = phoneNumber.trim();
         this.gender = gender;
     }
     

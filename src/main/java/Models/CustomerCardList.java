@@ -6,6 +6,7 @@ package Models;
 
 import View.CustomerCardListView;
 import View.CustomerView;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 
@@ -50,8 +51,8 @@ public class CustomerCardList {
         return null;
     }
 
-    public void addNewCard(CustomerView customerView) {
-        CustomerCard customerCard = new CustomerCard().generateCard(customerView, this);
+    public void addNewCard(CustomerView customerView, IDGenerator idGenerator) {
+        CustomerCard customerCard = new CustomerCard().generateCard(customerView, this, idGenerator);
         this.cardList.add(customerCard);
     }
 
@@ -105,7 +106,7 @@ public class CustomerCardList {
                     System.out.println("Back...");
                     break;
             }
-        } while (choice.equals("9"));
+        } while (!choice.equals("7"));
     }
 
     public void deleteCustomerCard(CustomerCard customerCard) {
@@ -135,7 +136,7 @@ public class CustomerCardList {
                     if (inputStr.equalsIgnoreCase("back")) {
                         return null;
                     }
-                    CustomerCardList bucket = new CustomerCardList();
+                    CustomerCardList bucket = new CustomerCardList(new ArrayList<>());
                     String inputStrToLowCase = inputStr.toLowerCase();
                     for (CustomerCard tmp : this.getList()) {
                         String lastName = tmp.getCustomer().getLastName().toLowerCase();
@@ -193,14 +194,14 @@ public class CustomerCardList {
                 "Point");
         System.out.println("|" + "-".repeat(borderLength) + "|");
         for (CustomerCard customerCard : this.getList()) {
-            System.out.printf("| %-" + String.format(customerCard + "s")
+            System.out.printf("| %-" + String.format(IDMaxSize + "s")
                     + " | %-" + String.format(firstNameMaxSize + "s")
                     + " | %-" + String.format(lastNameMaxSize + "s")
                     + " | %-" + String.format(phoneNumberMaxSize + "s")
                     + " | %-" + String.format(3 + "s")
                     + " | %-" + String.format(6 + "s")
                     + " | %-" + String.format(addressMaxSize + "s")
-                    + " | %-" + String.format(customerCard + "s") + " |\n",
+                    + " | %-" + String.format(pointMaxSize + "s") + " |\n",
                     customerCard.getID(),
                     customerCard.getCustomer().getFirstName(),
                     customerCard.getCustomer().getLastName(),

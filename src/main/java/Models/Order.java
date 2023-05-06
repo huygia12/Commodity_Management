@@ -11,28 +11,33 @@ import java.util.ArrayList;
 
 public class Order extends GoodsList {
 
-    final String INVOICE_DATE;
+    private final String ORDER_DATE;
     final Cautions ctions = new Cautions();
     private String ID;
+    private int VAT;
     private BigDecimal cusMoney = BigDecimal.ZERO;
     private int discount;
     private PaymentOptions paymentOptions;
     private CustomerCard customerCard;
-    private BigDecimal tax = BigDecimal.ZERO;
 
-    public Order(String ID) {
+    public Order(String ID, int VAT) {
         super(new ArrayList<>());
-        this.ID = ID;
-        this.INVOICE_DATE = LocalDateTime
+        this.ID = ID.trim();
+        this.VAT = VAT;
+        this.ORDER_DATE = LocalDateTime
                 .now()
                 .format(DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm:ss"));
     }
 
     public Order() {
         super(new ArrayList<>());
-        this.INVOICE_DATE = LocalDateTime
+        this.ORDER_DATE = LocalDateTime
                 .now()
                 .format(DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm:ss"));
+    }
+
+    public int getVAT() {
+        return VAT;
     }
 
     public void setDiscount(int discount) {
@@ -44,15 +49,15 @@ public class Order extends GoodsList {
     }
 
     public void setID(String ID) {
-        this.ID = ID;
+        this.ID = ID.trim();
     }
 
     public String getID() {
         return this.ID;
     }
 
-    public String getInVoiceDateTime() {
-        return this.INVOICE_DATE;
+    public String getOrderDateTime() {
+        return this.ORDER_DATE;
     }
 
     public PaymentOptions getPaymentOptions() {
@@ -78,15 +83,8 @@ public class Order extends GoodsList {
         this.cusMoney = customerMoney;
     }
 
-    public BigDecimal getTax() {
-        return tax;
-    }
-
-    public void setTax(BigDecimal tax) {
-        this.tax = tax;
-    }
-
     public BigDecimal getSubTotal() {
+        // tong tien khi chua qua discount va VAT
         BigDecimal result = BigDecimal.ZERO;
         for (Goods goods : this.getGoodsList()) {
             result = result.add(goods.getListPrice().multiply(goods.getTotalQuantity()));
@@ -95,16 +93,20 @@ public class Order extends GoodsList {
     }
 
     public BigDecimal getTaxFee() {
-        return this.getSubTotal().multiply(this.tax.divide(new BigDecimal("100")));
+        // tong tien phi VAT cho ca hoa don
+        return this.getSubTotal().multiply(new BigDecimal(this.VAT*1.0/100));
     }
 
     public BigDecimal getTotal() {
-        return this.getSubTotal().subtract(this.getDiscountMoney()).add(this.getTaxFee());
+        // Khoan tien can thanh toan khi da tru di discount va cong them VAT
+        return this.getSubTotal()
+                .subtract(this.getDiscountMoney())
+                .add(this.getTaxFee());
     }
 
     public BigDecimal getDiscountMoney() {
-        BigDecimal discountIntToDecimal = new BigDecimal(this.discount);
-        return this.getSubTotal().multiply(discountIntToDecimal.divide(new BigDecimal("100")));
+        // tong tien giam gia 
+        return this.getSubTotal().multiply(new BigDecimal(this.discount*1.0/100));
     }
 
     public CustomerCard getCustomerCard() {
