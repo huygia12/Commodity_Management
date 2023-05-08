@@ -83,8 +83,16 @@ public class Goods {
     public void setListPrice(BigDecimal listPrice) {
         this.listPrice = listPrice;
     }
+    
+    public BigDecimal getTotalQuantity(){
+        return this.totalQuantity;
+    }
+    
+    public void setTotalQuantity(BigDecimal totalQuantity){
+        this.totalQuantity = totalQuantity;
+    }
 
-    public BigDecimal getTotalQuantity() {
+    public BigDecimal getTotalQuanByShipments() {
         this.totalQuantity = BigDecimal.ZERO;
         for (int i = 0; i < shipments.size(); i++) {
             this.totalQuantity = this.totalQuantity.add(shipments.get(i).getQuantity());

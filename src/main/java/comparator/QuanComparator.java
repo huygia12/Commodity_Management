@@ -14,6 +14,6 @@ import java.util.Comparator;
 public class QuanComparator implements Comparator<Goods>{
     @Override
     public int compare(Goods o1, Goods o2){
-        return o1.getTotalQuantity().compareTo(o2.getTotalQuantity());
+        return o1.getTotalQuanByShipments().compareTo(o2.getTotalQuanByShipments());
     }
 }

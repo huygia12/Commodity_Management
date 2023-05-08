@@ -41,7 +41,7 @@ public class ShiftView {
         System.out.println("Current shift not over yet!!");
     }
 
-    public void menuOfEditShift() {
+    public void menuOfShiftManagement() {
         System.out.print("""
                            \n****************************************
                            * 1. Open shift                        *
@@ -52,6 +52,7 @@ public class ShiftView {
                            * 6. Show import goods history         *
                            * 7. Current shift over view           *
                            * 8. End shift                         *
+                           * 9. Back                              *
                            ****************************************
                            Options => """);
     }

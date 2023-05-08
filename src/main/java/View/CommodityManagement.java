@@ -6,6 +6,7 @@ package View;
 
 import Controllers.CustomerCardListController;
 import Controllers.EmployeeListController;
+import Controllers.HistoryController;
 import Models.*;
 import Controllers.OrderController;
 import Controllers.RepositoryController;
@@ -39,7 +40,7 @@ public class CommodityManagement {
     static final CustomerCardListController customerCardListCtr = new CustomerCardListController(new CustomerCardList(new ArrayList<>()));
     static final SettingsController settingsCtr = new SettingsController(new Store());
     static final RepositoryController repoCtr = new RepositoryController(new Repository(myGoodsList));
-    
+    static final HistoryController hisCtr = new HistoryController(new History());
     
     public static void menuOfMainFunction() {
         System.out.println("\n********************************");
@@ -83,7 +84,7 @@ public class CommodityManagement {
                         shiftCtr.ShiftManagement(employeeListCtr.getEmployeeList(), settingsCtr.getMyStore());
                         break;
                     case 4:
-                        //undeveloped
+                        hisCtr.historyManagement();
                         break;
                     case 5:
                         employeeListCtr.employeeListManagement();

@@ -174,7 +174,7 @@ public class OrderView {
         System.out.format("%-25s %-10s %-15s %-15s\n", "-------------------------", "----------", "---------------", "---------------");
         for (int i = 0; i < order.getGoodsList().size(); i++) {
             Goods goods = order.getGoodsList().get(i);
-            BigDecimal totalQuantity = goods.getTotalQuantity();
+            BigDecimal totalQuantity = goods.getTotalQuanByShipments();
             BigDecimal price = goods.getListPrice();
             BigDecimal totalPrice = totalQuantity.multiply(price);
             System.out.format("%-25s %-10s %-15s %-15s\n", goods.getGoodsName(), totalQuantity + "", price + "", totalPrice + "");
@@ -204,7 +204,7 @@ public class OrderView {
         System.out.format("%-25s %-10s %-15s %-15s\n", "-------------------------", "----------", "---------------", "---------------");
         for (int i = 0; i < order.getGoodsList().size(); i++) {
             Goods goods = order.getGoodsList().get(i);
-            BigDecimal totalQuantity = goods.getTotalQuantity();
+            BigDecimal totalQuantity = goods.getTotalQuanByShipments();
             BigDecimal price = goods.getListPrice();
             BigDecimal totalPrice = totalQuantity.multiply(price);
             System.out.format("%-25s %-10s %-15s %-15s\n", goods.getGoodsName(), totalQuantity, price, totalPrice);

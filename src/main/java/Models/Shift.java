@@ -9,9 +9,10 @@ import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.HashMap;
+import java.util.List;
+import java.util.ArrayList;
 import java.util.Map;
 import java.util.Scanner;
-import java.util.Stack;
 
 /**
  *
@@ -21,8 +22,8 @@ public class Shift {
 
 
     final Scanner sc = new Scanner(System.in);
-    private Stack<Order> orderHisPerShift = new Stack<>();
-    private Stack<ImportedGoods> importGoodsHis = new Stack<>();
+    private List<Order> orderHisPerShift = new ArrayList<>();
+    private List<ImportedGoods> importGoodsHis = new ArrayList<>();
     private String openDateTime = null;
     private String endDateTime = null;
     private BigDecimal openingBalance = null;
@@ -44,19 +45,19 @@ public class Shift {
         return VAT;
     }
 
-    public Stack<Order> getOrderHisPerShift() {
+    public List<Order> getOrderHisPerShift() {
         return orderHisPerShift;
     }
 
-    public Stack<ImportedGoods> getImportGoodsHis() {
+    public List<ImportedGoods> getImportGoodsHis() {
         return importGoodsHis;
     }
 
-    public void setOrderHisPerShift(Stack<Order> orderHisPerShift) {
+    public void setOrderHisPerShift(List<Order> orderHisPerShift) {
         this.orderHisPerShift = orderHisPerShift;
     }
 
-    public void setImportGoodsHis(Stack<ImportedGoods> importGoodsHis) {
+    public void setImportGoodsHis(List<ImportedGoods> importGoodsHis) {
         this.importGoodsHis = importGoodsHis;
     }
 
@@ -190,7 +191,7 @@ public class Shift {
         BigDecimal result = BigDecimal.ZERO;
         for (Order order : orderHisPerShift) {
             for (Goods goods : order.getGoodsList()) {
-                result = result.add(goods.getTotalQuantity());
+                result = result.add(goods.getTotalQuanByShipments());
             }
         }
         return result;
@@ -202,9 +203,9 @@ public class Shift {
             for (Goods goods : order.getGoodsList()) {
                 StaticalItems newStaticalItems = new StaticalItems();
                 newStaticalItems.setName(goods.getGoodsName());
-                newStaticalItems.setQuantity(goods.getTotalQuantity());
+                newStaticalItems.setQuantity(goods.getTotalQuanByShipments());
                 newStaticalItems.setRevenue(goods.getListPrice()
-                        .multiply(goods.getTotalQuantity()
+                        .multiply(goods.getTotalQuanByShipments()
                                 .multiply(new BigDecimal(1.0 - order.getDiscount() * 1.0 / 100 + order.getVAT() * 1.0 / 100))));
                 if (staticalList.containsKey(goods.getID())) {
                     BigDecimal quanBefore = staticalList.get(goods.getID()).getQuantity();

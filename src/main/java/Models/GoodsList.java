@@ -23,7 +23,7 @@ public class GoodsList {
     private int totalQuantityMaxSize;
     private int importPriceMaxSize;
     private int quantityMaxSize;
-    private List<Goods> myGoodsList;
+    private List<Goods> myGoodsList = new ArrayList<>();
 
     public GoodsList() {}
 
@@ -90,7 +90,7 @@ public class GoodsList {
                     goods.getGoodsName(),
                     goods.getManufacture(),
                     goods.getListPrice(),
-                    goods.getTotalQuantity());
+                    goods.getTotalQuanByShipments());
             if (!goods.getShipments().isEmpty()) {
                 // Neu list shipment cua goods da ton tai it nhat 1 shipment, thuc hien in ra shipment do
                 Shipment shipment = goods.getShipments().get(0);
@@ -146,8 +146,8 @@ public class GoodsList {
             if (goods.getListPrice().toString().length() > listPriceMaxSize) {
                 listPriceMaxSize = goods.getListPrice().toString().length();
             }
-            if (goods.getTotalQuantity().toString().length() > totalQuantityMaxSize) {
-                totalQuantityMaxSize = goods.getTotalQuantity().toString().length();
+            if (goods.getTotalQuanByShipments().toString().length() > totalQuantityMaxSize) {
+                totalQuantityMaxSize = goods.getTotalQuanByShipments().toString().length();
             }
             for (Shipment shipment : goods.getShipments()) {
                 if (shipment.getImportPrice().toString().length() > importPriceMaxSize) {

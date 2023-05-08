@@ -6,6 +6,9 @@ package Controllers;
 
 import java.math.BigDecimal;
 import java.math.BigInteger;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -23,8 +26,10 @@ public class test {
     static  Map<String, Integer> staticalList = new HashMap<>();
     
     public static void main(String[] args) {
-        BigDecimal d = new BigDecimal("1532332.2353773646353535");
-        System.out.println(new BigInteger(d.toBigInteger()+""));
+        LocalDate test = LocalDate.parse("14/04/2024 12:12:12", 
+                DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm:ss"));
+        LocalDate test2 = LocalDate.now();
+        System.out.println(test.isAfter(test2));
     }
     
     public static void testSetting(){

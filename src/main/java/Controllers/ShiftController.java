@@ -9,7 +9,6 @@ import Models.Shift;
 import Models.Store;
 import View.Cautions;
 import View.ShiftView;
-import java.util.InputMismatchException;
 import java.util.Scanner;
 
 /**
@@ -17,14 +16,15 @@ import java.util.Scanner;
  * @author FPTSHOP
  */
 public class ShiftController {
+
     private final ShiftView view = new ShiftView();
     final Scanner sc = new Scanner(System.in);
     final Cautions ctions = new Cautions();
     private Shift shift;
-    
-    public ShiftController(){
+
+    public ShiftController() {
     }
-    
+
     public ShiftController(Shift shift) {
         this.shift = shift;
     }
@@ -40,42 +40,41 @@ public class ShiftController {
     public void setShift(Shift shift) {
         this.shift = shift;
     }
-    
-    public void ShiftManagement(EmployeeList employeeList, Store myStore){
-        if(this.shift.getOpenTime() == null){
-            this.view.shiftNotOpenCaution();
-        }
-        int choice;
+
+    public void ShiftManagement(EmployeeList employeeList, Store myStore) {
+        String choice;
         do {
-            try {
-                this.view.menuOfEditShift();
-                choice = sc.nextInt();
-                sc.nextLine();
-                switch (choice) {
-                    case 1:
-                        this.shift.openShift(this.view, employeeList);
-                        break;
-                    case 2:
-                        this.view.typeInShippingFee(this.shift);
-                        break;
-                    case 3:
-                        this.shift.modifyEmployeeOfThisShift(view, employeeList);
-                        break;
-                    case 4:
-                        this.view.typeInOpeningBalance(this.shift);
-                        break;
-                    case 5:
-                        this.shift.endShift(this.view, myStore);
-                        break;
-                    default:
-                        System.out.println("Wrong input, Please type from 1->5!");
-                        break;
-                }
-            } catch (InputMismatchException ime) {
-                ctions.wrInput();
-                choice = -1;
-                sc.next();
+            this.view.menuOfShiftManagement();
+            choice = sc.nextLine();
+            switch (choice) {
+                case "1":
+                    this.shift.openShift(this.view, employeeList);
+                    break;
+                case "2":
+                    this.view.typeInShippingFee(this.shift);
+                    break;
+                case "3":
+                    this.shift.modifyEmployeeOfThisShift(view, employeeList);
+                    break;
+                case "4":
+                    this.view.typeInOpeningBalance(this.shift);
+                    break;
+                case "5":
+                    break;
+                case "6":
+                    break;
+                case "7":
+                    break;
+                case "8":
+                    this.shift.endShift(this.view, myStore);
+                    break;
+                case "9":
+                    System.out.println("Back...");
+                    break;
+                default:
+                    System.out.println("Wrong input, Please type from 1->5!");
+                    break;
             }
-        } while (choice != 5);
-    }    
+        } while (!choice.equals("8") && !choice.equals("9"));
+    }
 }

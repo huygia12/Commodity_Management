@@ -18,9 +18,10 @@ View\HumanView.class
 Models\AbstractHumanList.class
 Models\AbstractHuman.class
 comparator\QuanComparator.class
+Models\StaticalItems.class
 Controllers\GoodsController.class
 View\OrderView.class
-View\Chi$1.class
+Models\History.class
 Controllers\SettingsController.class
 View\EmployeeListView.class
 Models\Unit.class
@@ -34,11 +35,9 @@ Models\Order.class
 View\CommodityManagement.class
 Models\Goods.class
 Controllers\EmployeeListController.class
-View\Chi$2.class
 Controllers\ShipmentController.class
 Models\Gender.class
 Models\PaymentOptions.class
-View\Chi.class
 View\GoodsView.class
 comparator\NameComparator.class
 View\RepositoryView.class
@@ -48,7 +47,6 @@ View\SettingsView.class
 Controllers\CustomerCardController.class
 Controllers\test.class
 Models\Repository.class
-View\Chi$3.class
 View\Cautions.class
 Models\Employee.class
 Controllers\EmployeeController.class

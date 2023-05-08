@@ -96,7 +96,7 @@ public class Order extends GoodsList {
         // tong tien khi chua qua discount va VAT
         BigDecimal result = BigDecimal.ZERO;
         for (Goods goods : this.getGoodsList()) {
-            result = result.add(goods.getListPrice().multiply(goods.getTotalQuantity()));
+            result = result.add(goods.getListPrice().multiply(goods.getTotalQuanByShipments()));
         }
         return result;
     }
