@@ -8,24 +8,28 @@ import View.Cautions;
 import View.GoodsView;
 import View.RepositoryView;
 import View.ShipmentView;
+import com.google.gson.annotations.Expose;
+import com.google.gson.annotations.SerializedName;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.InputMismatchException;
 import java.util.List;
+import java.util.Scanner;
 
 /**
  *
  * @author s1rja
  */
 public class Repository extends GoodsList<Goods>{
-
+    @SerializedName("ctions")
+    @Expose
     final Cautions ctions = new Cautions();
 
     public Repository(List<Goods> repoGoodsList) {
         super(repoGoodsList);
     }
 
-    public void addGoodsToList(GoodsView goodsView, IDGenerator idGenerator) {
+    public void addGoodsToList(GoodsView goodsView, IDGenerator idGenerator, Scanner sc) {
         Goods newGoods = new Goods();
         int n = 1;
         int nextProcess;
@@ -33,7 +37,7 @@ public class Repository extends GoodsList<Goods>{
             switch (n) {
                 case 1:
                     nextProcess = goodsView
-                            .typeInName(newGoods);
+                            .typeInName(newGoods, sc);
                     if (nextProcess == 0) {
                         return;
                     } else if (nextProcess == -1) {
@@ -41,7 +45,7 @@ public class Repository extends GoodsList<Goods>{
                     }
                 case 2:
                     nextProcess = goodsView
-                            .typeInManufac(newGoods, this);
+                            .typeInManufac(newGoods, this, sc);
                     if (nextProcess == 0) {
                         return;
                     } else if (nextProcess == -1) {
@@ -53,7 +57,7 @@ public class Repository extends GoodsList<Goods>{
                     }
                 case 3:
                     nextProcess = goodsView
-                            .typeInListPrice(newGoods);
+                            .typeInListPrice(newGoods, sc);
                     switch (nextProcess) {
                         case 0:
                             return;
@@ -69,8 +73,8 @@ public class Repository extends GoodsList<Goods>{
         this.getGoodsList().add(newGoods);
     }
 
-    public ImportedGoods importGoods(ShipmentView shipView, IDGenerator idGenerator) {
-        Goods searchGoods = this.searchGoods();
+    public ImportedGoods importGoods(ShipmentView shipView, IDGenerator idGenerator, Scanner sc) {
+        Goods searchGoods = this.searchGoods(sc);
         if (searchGoods == null) {
             return null;
         }
@@ -83,19 +87,19 @@ public class Repository extends GoodsList<Goods>{
         while (n != 4) {
             switch (n) {
                 case 1:
-                    nextProcess = shipView.typeInQuan(newShipment);
+                    nextProcess = shipView.typeInQuan(newShipment, sc);
                     if (nextProcess == 0 || nextProcess == -1) {
                         return null;
                     } 
                 case 2:
-                    nextProcess = shipView.typeInImportPrice(newShipment);
+                    nextProcess = shipView.typeInImportPrice(newShipment, sc);
                     if (nextProcess == 0) {
                         return null;
                     } else if (nextProcess == -1) {
                         break;
                     }
                 case 3:
-                    nextProcess = shipView.typeInProDate(newShipment);
+                    nextProcess = shipView.typeInProDate(newShipment, sc);
                     if (nextProcess == 0) {
                         return null;
                     } else if (nextProcess == -1) {
@@ -103,7 +107,7 @@ public class Repository extends GoodsList<Goods>{
                         break;
                     }
                 case 4:
-                    nextProcess = shipView.typeInEpirDate(newShipment);
+                    nextProcess = shipView.typeInEpirDate(newShipment, sc);
                     switch (nextProcess) {
                         case 0:
                             return null;
@@ -120,7 +124,7 @@ public class Repository extends GoodsList<Goods>{
         if (shipmentIndex != -1) {
             // neu shipment da ton tai
             Shipment dupShipment = searchGoods.getShipments().get(shipmentIndex);
-            if(shipView.gainQuanDecision()){
+            if(shipView.gainQuanDecision(sc)){
                 dupShipment.gainQuantity(newShipment.getQuantity());
                 newShipment.setID(dupShipment.getID());                
             }
@@ -162,7 +166,8 @@ public class Repository extends GoodsList<Goods>{
         }
     }
 
-    public void editGoods(Goods searchGoods, GoodsList<Goods> goodsList, GoodsView goodsView, RepositoryView repoView) {
+    public void editGoods(Goods searchGoods, GoodsList<Goods> goodsList, 
+            GoodsView goodsView, RepositoryView repoView, Scanner sc) {
         Goods draftGoods = searchGoods.cloneGoods();
 
         int choice;
@@ -173,17 +178,17 @@ public class Repository extends GoodsList<Goods>{
                 sc.nextLine();
                 switch (choice) {
                     case 1:
-                        if (goodsView.typeInName(draftGoods) == 0) {
+                        if (goodsView.typeInName(draftGoods, sc) == 0) {
                             return;
                         }
                         break;
                     case 2:
-                        if (goodsView.typeInListPrice(draftGoods) == 0) {
+                        if (goodsView.typeInListPrice(draftGoods, sc) == 0) {
                             return;
                         }
                         break;
                     case 3:
-                        if (goodsView.typeInManufac(draftGoods, goodsList) == 0) {
+                        if (goodsView.typeInManufac(draftGoods, goodsList, sc) == 0) {
                             return;
                         }
                         break;
@@ -211,13 +216,14 @@ public class Repository extends GoodsList<Goods>{
         System.out.println("Delete succeed...");
     }
 
-    private void finishEditShip(Goods searchGoods, Shipment searchShipment, Shipment draftShipment, ShipmentView shipView) {
+    private void finishEditShip(Goods searchGoods, Shipment searchShipment, 
+            Shipment draftShipment, ShipmentView shipView, Scanner sc) {
         int shipmentIndex = searchGoods.indexOfDupShip(draftShipment);
         if (shipmentIndex != -1 && shipmentIndex != searchGoods.getShipments()
                 .indexOf(searchShipment)) {
             //Neu thay doi tao ra 1 shipment da ton tai, user chon xem co them so luong vao cai da ton tai roi hay khong
             Shipment duplicateShipment = searchGoods.getShipments().get(shipmentIndex);
-            if (shipView.gainQuanDecision()) {
+            if (shipView.gainQuanDecision(sc)) {
                 // Neu user chon them vao cai da ton tai thi tang so luong 
                 duplicateShipment.gainQuantity(draftShipment.getQuantity());
                 // xoa shipment hien dang chinh sua
@@ -234,7 +240,7 @@ public class Repository extends GoodsList<Goods>{
         }
     }
 
-    private boolean quanBecomeZero(Goods searchGoods, Shipment searchShipment, Shipment draftShipment) {
+    private boolean quanBecomeZero(Goods searchGoods, Shipment searchShipment, Shipment draftShipment, Scanner sc) {
         while (draftShipment.getQuantity().compareTo(BigDecimal.ZERO) == 0) {
             System.out.println(
                     "Your changes make quantity equal 0 and  this shipment will be deleted, keep your changes?");
@@ -253,7 +259,8 @@ public class Repository extends GoodsList<Goods>{
         return false;
     }
 
-    public void editShip(Shipment shipment, Goods goods, ShipmentView shipView, RepositoryView repositoryView) {
+    public void editShip(Shipment shipment, Goods goods, ShipmentView shipView,
+            RepositoryView repositoryView, Scanner sc) {
         int choice;
         Shipment draftShipment = shipment.cloneShipment();
         do {
@@ -263,30 +270,30 @@ public class Repository extends GoodsList<Goods>{
                 sc.nextLine();
                 switch (choice) {
                     case 1:
-                        if (shipView.typeInImportPrice(draftShipment) == 0) {
+                        if (shipView.typeInImportPrice(draftShipment, sc) == 0) {
                             return;
                         }
                         break;
                     case 2:
-                        if (shipView.typeInProDate(draftShipment) == 0) {
+                        if (shipView.typeInProDate(draftShipment, sc) == 0) {
                             return;
                         }
                         break;
                     case 3:
-                        if (shipView.typeInEpirDate(draftShipment) == 0) {
+                        if (shipView.typeInEpirDate(draftShipment, sc) == 0) {
                             return;
                         }
                         break;
                     case 4:
-                        if (shipView.typeInQuan(draftShipment) == 0) {
+                        if (shipView.typeInQuan(draftShipment, sc) == 0) {
                             return;
                         }
                         break;
                     case 5:
-                        if (quanBecomeZero(goods, shipment, draftShipment)) {
+                        if (quanBecomeZero(goods, shipment, draftShipment, sc)) {
                             return;
                         }
-                        finishEditShip(goods, shipment, draftShipment, shipView);
+                        finishEditShip(goods, shipment, draftShipment, shipView, sc);
                         break;
                     default:
                         System.out.println("Wrong input, Please type from 1->5!");

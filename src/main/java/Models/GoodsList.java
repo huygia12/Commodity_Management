@@ -4,6 +4,8 @@
  */
 package Models;
 
+import com.google.gson.annotations.Expose;
+import com.google.gson.annotations.SerializedName;
 import java.util.ArrayList;
 import java.util.List;
 import java.time.LocalDate;
@@ -16,14 +18,29 @@ import java.util.Scanner;
  * @param <T>
  */
 public class GoodsList <T extends Goods>{
-    final Scanner sc = new Scanner(System.in);
+    @SerializedName("OUTPUT_DATE_PATTERN")
+    @Expose
     private final String OUTPUT_DATE_PATTERN = "dd/MM/yyyy";
+    @SerializedName("nameMaxSize")
+    @Expose
     private int nameMaxSize;
+    @SerializedName("providerMaxSize")
+    @Expose
     private int providerMaxSize;
+    @SerializedName("listPriceMaxSize")
+    @Expose
     private int listPriceMaxSize;
+    @SerializedName("totalQuantityMaxSize")
+    @Expose
     private int totalQuantityMaxSize;
+    @SerializedName("importPriceMaxSize")
+    @Expose
     private int importPriceMaxSize;
+    @SerializedName("quantityMaxSize")
+    @Expose
     private int quantityMaxSize;
+    @SerializedName("myGoodsList")
+    @Expose
     private List<T> myGoodsList = new ArrayList<>();
 
     public GoodsList() {}
@@ -174,7 +191,7 @@ public class GoodsList <T extends Goods>{
         return null;
     }
 
-    public T searchGoods() {
+    public T searchGoods(Scanner sc) {
         // tra ve null neu nguoi dung nhap 'back', nguoc lai, tra ve 1 goods duoc tim kiem
         if (this.getGoodsList().isEmpty()) {
             System.out.println("Cannot search in an empty List!");

@@ -27,9 +27,8 @@ import java.util.Scanner;
  * @author FPTSHOP
  */
 public class HistoryView {
-
+    
     final Cautions ctions = new Cautions();
-    final Scanner sc = new Scanner(System.in);
     final String DATE_FORMAT = "dd/MM/yyyy";
     private int orderIDMaxSize;
     private int orderDateTimeMaxSize;
@@ -513,7 +512,7 @@ public class HistoryView {
     }
 
     //
-    public CustomPair typeInFromToDate() {
+    public CustomPair typeInFromToDate(Scanner sc) {
         String inputStr;
         LocalDate fromDate = null, toDate = null;
         int n = 1;

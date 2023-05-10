@@ -15,10 +15,9 @@ import java.util.Scanner;
  */
 public class HumanView<T extends AbstractHuman> {
 
-    final Scanner sc = new Scanner(System.in);
     final Cautions ctions = new Cautions();
 
-    public int typeInFirstName(T human) {
+    public int typeInFirstName(T human, Scanner sc) {
         while (true) {
             System.out.print("Type in Fisrt Name or type EXIT/BACK to exit/back: ");
             String inputStr = sc.nextLine();
@@ -34,7 +33,7 @@ public class HumanView<T extends AbstractHuman> {
         }
     }
 
-    public int typeInLastName(T human) {
+    public int typeInLastName(T human, Scanner sc) {
         while (true) {
             System.out.print("Type in Last Name or type EXIT/BACK to exit/back: ");
             String inputStr = sc.nextLine();
@@ -50,7 +49,7 @@ public class HumanView<T extends AbstractHuman> {
         }
     }
 
-    public int typeInAndress(T human) {
+    public int typeInAndress(T human, Scanner sc) {
         while (true) {
             System.out.print("Type in Andress or type EXIT/BACK to exit/back: ");
             String inputStr = sc.nextLine();
@@ -66,7 +65,7 @@ public class HumanView<T extends AbstractHuman> {
         }
     }
 
-    public int typeInAge(T human) {
+    public int typeInAge(T human, Scanner sc) {
         while (true) {
             System.out.print("Type in Age or type EXIT/BACK to exit/back: ");
             String inputStr = sc.nextLine();
@@ -91,7 +90,7 @@ public class HumanView<T extends AbstractHuman> {
         }
     }
 
-    public int typeInPhoneNumber(T human) {
+    public int typeInPhoneNumber(T human, Scanner sc) {
         while (true) {
             System.out.print("Type in Phone Number or type EXIT/BACK to exit/back: ");
             String inputStr = sc.nextLine();
@@ -108,7 +107,7 @@ public class HumanView<T extends AbstractHuman> {
         }
     }
 
-    public int typeInGender(T human) {
+    public int typeInGender(T human, Scanner sc) {
         while (true) {
             System.out.print("Type in Gender or type EXIT/BACK to exit/back: ");
             String inputStr = sc.nextLine().trim().toLowerCase();

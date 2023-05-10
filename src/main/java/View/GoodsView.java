@@ -14,11 +14,9 @@ import java.util.Scanner;
  * @author FPTSHOP
  */
 public class GoodsView {
+    final Cautions ctions = new Cautions();
 
-    Cautions ctions = new Cautions();
-    Scanner sc = new Scanner(System.in);
-
-    public int typeInManufac(Goods goods, GoodsList goodsList) {
+    public int typeInManufac(Goods goods, GoodsList goodsList, Scanner sc) {
         while (true) {
             System.out.print("Type in manufacturer or type EXIT/BACK to go exit/back: ");
             String inputStr = sc.nextLine();
@@ -34,7 +32,7 @@ public class GoodsView {
         }
     }
 
-    public int typeInName(Goods goods) {
+    public int typeInName(Goods goods, Scanner sc) {
         while (true) {
             System.out.print("Type in name or type EXIT/BACK to exit/back: ");
             String inputStr = sc.nextLine();
@@ -50,7 +48,7 @@ public class GoodsView {
         }
     }
 
-    public int typeInListPrice(Goods goods) {
+    public int typeInListPrice(Goods goods, Scanner sc) {
         while (true) {
             System.out.print("Type in listed price or type EXIT/BACK to go exit/back: ");
             String inputStr = sc.nextLine();

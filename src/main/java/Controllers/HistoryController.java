@@ -14,6 +14,8 @@ import Models.Shift;
 import Models.SoldGoods;
 import View.Cautions;
 import View.HistoryView;
+import com.google.gson.annotations.Expose;
+import com.google.gson.annotations.SerializedName;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
@@ -28,10 +30,14 @@ import java.util.Set;
  * @author FPTSHOP
  */
 public class HistoryController {
-
+    @SerializedName("ctions")
+    @Expose
     final Cautions ctions = new Cautions();
-    final Scanner sc = new Scanner(System.in);
+    @SerializedName("view")
+    @Expose
     private final HistoryView view = new HistoryView();
+    @SerializedName("history")
+    @Expose
     private History history;
 
     public HistoryController(History history) {
@@ -112,9 +118,9 @@ public class HistoryController {
         return shiftList;
     }
 
-    private void statisticOfOrder() {
+    private void statisticOfOrder(Scanner sc) {
         this.view.showOrderHistory(this.history);
-        CustomPair<LocalDate, LocalDate> fromToDate = this.view.typeInFromToDate();
+        CustomPair<LocalDate, LocalDate> fromToDate = this.view.typeInFromToDate(sc);
         // Nhat tat ca order nam trong khoang fromToDate de cho vao shiftList
         List<Shift> shiftList = ordersBetweenFromToDate(fromToDate);
         // Hien thi cac thong tin co ban cua cac order do: orderID, shiftID, orderDateTime, orderTotal
@@ -181,9 +187,9 @@ public class HistoryController {
         return shiftList;
     }
 
-    private void statisticOfImportGoods() {
+    private void statisticOfImportGoods(Scanner sc) {
         this.view.showImportGoodsHistory(this.history);
-        CustomPair<LocalDate, LocalDate> fromToDate = this.view.typeInFromToDate();
+        CustomPair<LocalDate, LocalDate> fromToDate = this.view.typeInFromToDate(sc);
         List<Shift> shiftList = importGoodsBetweenFromToDate(fromToDate);
         this.view.showImportGoodsHistory(new History(shiftList));
         this.view.showImportGoodsHistory(makeHistoryImportGoodsList(shiftList));
@@ -207,15 +213,15 @@ public class HistoryController {
         return shiftList;
     }
 
-    private void statisticOfShiftGoods() {
-        CustomPair<LocalDate, LocalDate> fromToDate = this.view.typeInFromToDate();
+    private void statisticOfShiftGoods(Scanner sc) {
+        CustomPair<LocalDate, LocalDate> fromToDate = this.view.typeInFromToDate(sc);
         List<Shift> shiftList = shiftBetweenFromToDate(fromToDate);
         this.view.showShiftHistory(new History(shiftList));
     }
 
     //function 4
-    private void searchOrderInDetail(){
-        Order searchingOrder = this.history.searchOrder();
+    private void searchOrderInDetail(Scanner sc){
+        Order searchingOrder = this.history.searchOrder(sc);
         if(searchingOrder != null){
             this.view.showAnOrderInDetail(searchingOrder);
             GoodsList<Goods> orderGoodsList = new GoodsList(searchingOrder.getGoodsList());
@@ -223,21 +229,21 @@ public class HistoryController {
         }
     }
     
-    private void searchImportGoodsInDetail(){
-        ImportedGoods searchingImportGoods = this.history.searchImportGoods();
+    private void searchImportGoodsInDetail(Scanner sc){
+        ImportedGoods searchingImportGoods = this.history.searchImportGoods(sc);
         if(searchingImportGoods != null){
             this.view.showAnImpotedGoodsInDetail(searchingImportGoods);
         }
     }
     
-    private void searchShiftInDetail(){
-        Shift searchingShift = this.history.searchShift();
+    private void searchShiftInDetail(Scanner sc){
+        Shift searchingShift = this.history.searchShift(sc);
         if(searchingShift != null){
             this.view.showAnShiftInDetail(searchingShift);
         }
     }
     
-    public void historyManagement() {
+    public void historyManagement(Scanner sc) {
         if(history.getShiftHistory().isEmpty()){
             System.out.println("Nothing found in history!");
             return;
@@ -250,22 +256,22 @@ public class HistoryController {
                 sc.nextLine();
                 switch (choice) {
                     case 1:
-                        statisticOfOrder();
+                        statisticOfOrder(sc);
                         break;
                     case 2:
-                        statisticOfImportGoods();
+                        statisticOfImportGoods(sc);
                         break;
                     case 3:
-                        statisticOfShiftGoods();
+                        statisticOfShiftGoods(sc);
                         break;
                     case 4:
-                        searchOrderInDetail();
+                        searchOrderInDetail(sc);
                         break;
                     case 5:
-                        searchImportGoodsInDetail();
+                        searchImportGoodsInDetail(sc);
                         break;
                     case 6:
-                        searchShiftInDetail();
+                        searchShiftInDetail(sc);
                         break;
                     case 7:
                         System.out.println("Back...");

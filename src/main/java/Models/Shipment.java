@@ -4,6 +4,9 @@
  */
 package Models;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+import com.google.gson.annotations.Expose;
+import com.google.gson.annotations.SerializedName;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 
@@ -13,10 +16,18 @@ import java.time.LocalDate;
  */
 public class Shipment {
 
+    @SerializedName("quantity")
+    @Expose
     private BigDecimal quantity = BigDecimal.ZERO;
+    @SerializedName("importPrice")
+    @Expose
     private BigDecimal importPrice = BigDecimal.ZERO;
+    @SerializedName("id")
+    @Expose
     private String id = null;
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "d/M/y")
     private LocalDate nsx = null;
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "d/M/y")
     private LocalDate hsd = null;
 
     public Shipment() {

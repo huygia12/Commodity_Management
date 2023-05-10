@@ -12,6 +12,8 @@ import View.GoodsView;
 import View.Cautions;
 import View.RepositoryView;
 import Models.*;
+import com.google.gson.annotations.Expose;
+import com.google.gson.annotations.SerializedName;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -25,11 +27,17 @@ import java.util.Scanner;
  * @author FPTSHOP
  */
 public class RepositoryController {
-
+    @SerializedName("view")
+    @Expose
     private final RepositoryView view = new RepositoryView();
+    @SerializedName("CURRENT_DATE")
+    @Expose
     final LocalDate CURRENT_DATE = LocalDate.now();
-    final Scanner sc = new Scanner(System.in);
+    @SerializedName("ctions")
+    @Expose
     final Cautions ctions = new Cautions();
+    @SerializedName("repository")
+    @Expose
     private Repository repository;
 
     public RepositoryController() {
@@ -52,7 +60,7 @@ public class RepositoryController {
     }
 
     // Function 3
-    private void editGoodsAndShipmentInfor(GoodsView goodsView, ShipmentView shipView) {
+    private void editGoodsAndShipmentInfor(GoodsView goodsView, ShipmentView shipView, Scanner sc) {
         String choice;
         Goods searchGoods = null;
         do {
@@ -60,22 +68,22 @@ public class RepositoryController {
             choice = sc.nextLine().trim();
             switch (choice) {
                 case "1":
-                    searchGoods = this.getRepository().searchGoods();
+                    searchGoods = this.getRepository().searchGoods(sc);
                     if (searchGoods == null) {
                         return;
                     }
-                    this.repository.editGoods(searchGoods, this.getRepository(), goodsView, view);
+                    this.repository.editGoods(searchGoods, this.getRepository(), goodsView, view, sc);
                     break;
                 case "2":
-                    searchGoods = this.repository.searchGoods();
+                    searchGoods = this.repository.searchGoods(sc);
                     if (searchGoods == null) {
                         return;
                     }
-                    Shipment searchShipment = searchGoods.searchShipment();
+                    Shipment searchShipment = searchGoods.searchShipment(sc);
                     if (searchShipment == null) {
                         break;
                     }
-                    this.repository.editShip(searchShipment, searchGoods, shipView, view);
+                    this.repository.editShip(searchShipment, searchGoods, shipView, view, sc);
                     break;
                 case "3":
                     System.out.println("Back...");
@@ -88,21 +96,21 @@ public class RepositoryController {
     }
 
     // Function 4
-    private void delGoodsAShipment() {
+    private void delGoodsAShipment(Scanner sc) {
         Goods searchGoods = null;
         while (true) {
-            int input = this.view.typeDelOption();
+            int input = this.view.typeDelOption(sc);
             switch (input) {
                 case 1:
-                    searchGoods = this.repository.searchGoods();
+                    searchGoods = this.repository.searchGoods(sc);
                     if (searchGoods != null) {
                         this.repository.delGoodsInRepo(searchGoods, this.getRepository());
                     }
                     break;
                 case 2:
-                    searchGoods = this.repository.searchGoods();
+                    searchGoods = this.repository.searchGoods(sc);
                     if (searchGoods != null) {
-                        Shipment searchShipment = searchGoods.searchShipment();
+                        Shipment searchShipment = searchGoods.searchShipment(sc);
                         if (searchShipment != null) {
                             this.repository.delShipInRepo(searchShipment, searchGoods);
                         }
@@ -126,7 +134,7 @@ public class RepositoryController {
     }
 
     // Function 6
-    private void makeListByRequirement() {
+    private void makeListByRequirement(Scanner sc) {
         if (this.repository.getGoodsList().isEmpty()) {
             System.out.println("Notthing found in repository to make a filter!");
             return;
@@ -138,7 +146,7 @@ public class RepositoryController {
             //uf.clearScreen();
             switch (choice) {
                 case "1":
-                    printSameManufacGoodsList();
+                    printSameManufacGoodsList(sc);
                     sc.nextLine();
                     //uf.typeAnyKeyToContinue();
                     //uf.clearScreen();
@@ -164,7 +172,7 @@ public class RepositoryController {
     }
 
     // Function 6.1
-    private void printSameManufacGoodsList() {
+    private void printSameManufacGoodsList(Scanner sc) {
         GoodsList filterList = new GoodsList(new ArrayList<>());
         List<String> listOfManufac = new ArrayList<>(this.view.printManufacList(this));
         int choice;
@@ -285,7 +293,7 @@ public class RepositoryController {
         }
     }
 
-    public void repositoryManagement(Shift shift, IDGenerator idGenerator)   {
+    public void repositoryManagement(Shift shift, IDGenerator idGenerator, Scanner sc)   {
         ShipmentController shipCtr = new ShipmentController();
         GoodsController goodsCtr = new GoodsController();
         int choice;
@@ -297,12 +305,12 @@ public class RepositoryController {
                 //uf.clearScreen();
                 switch (choice) {
                     case 1:
-                        this.repository.addGoodsToList(goodsCtr.getView(), idGenerator);
+                        this.repository.addGoodsToList(goodsCtr.getView(), idGenerator, sc);
                         //uf.clearScreen();
                         //sc.nextLine();
                         break;
                     case 2:
-                        ImportedGoods newImportGoods = this.repository.importGoods(shipCtr.getView(), idGenerator);
+                        ImportedGoods newImportGoods = this.repository.importGoods(shipCtr.getView(), idGenerator, sc);
                         // sau moi lan nhap hang thi add newImportGoods vao ImportGoodsHistory cua shift hien tai
                         if(newImportGoods!=null){
                             shift.getImportGoodsHis()
@@ -312,11 +320,11 @@ public class RepositoryController {
                         //uf.clearScreen();
                         break;
                     case 3:
-                        editGoodsAndShipmentInfor(goodsCtr.getView(), shipCtr.getView());
+                        editGoodsAndShipmentInfor(goodsCtr.getView(), shipCtr.getView(), sc);
                         //uf.clearScreen();
                         break;
                     case 4:
-                        delGoodsAShipment();
+                        delGoodsAShipment(sc);
                         //uf.clearScreen();
                         break;
                     case 5:
@@ -325,7 +333,7 @@ public class RepositoryController {
                         //uf.clearScreen();
                         break;
                     case 6:
-                        makeListByRequirement();
+                        makeListByRequirement(sc);
                         //uf.clearScreen();
                         break;
                     case 7:

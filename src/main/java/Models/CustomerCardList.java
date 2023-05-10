@@ -6,6 +6,8 @@ package Models;
 
 import View.CustomerCardListView;
 import View.CustomerView;
+import com.google.gson.annotations.Expose;
+import com.google.gson.annotations.SerializedName;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
@@ -15,14 +17,26 @@ import java.util.Scanner;
  * @author FPTSHOP
  */
 public class CustomerCardList {
-
-    final Scanner sc = new Scanner(System.in);
+    @SerializedName("cardList")
+    @Expose
     private List<CustomerCard> cardList = new ArrayList<>();
+    @SerializedName("pointMaxSize")
+    @Expose
     private int pointMaxSize;
+    @SerializedName("IDMaxSize")
+    @Expose
     private int IDMaxSize;
+    @SerializedName("firstNameMaxSize")
+    @Expose
     private int firstNameMaxSize;
+    @SerializedName("lastNameMaxSize")
+    @Expose
     private int lastNameMaxSize;
+    @SerializedName("phoneNumberMaxSize")
+    @Expose
     private int phoneNumberMaxSize;
+    @SerializedName("addressMaxSize")
+    @Expose
     private int addressMaxSize;
 
     public CustomerCardList() {
@@ -51,14 +65,15 @@ public class CustomerCardList {
         return null;
     }
 
-    public void addNewCard(CustomerView customerView, IDGenerator idGenerator) {
-        CustomerCard customerCard = new CustomerCard().generateCard(customerView, this, idGenerator);
+    public void addNewCard(CustomerView customerView, IDGenerator idGenerator, Scanner sc) {
+        CustomerCard customerCard = new CustomerCard().generateCard(customerView, this, idGenerator, sc);
         if (customerCard != null) {
             this.cardList.add(customerCard);
         }
     }
 
-    public void editCardInfor(CustomerCard customerCard, CustomerCardListView customerCardListView, CustomerView customerView) {
+    public void editCardInfor(CustomerCard customerCard, CustomerCardListView customerCardListView, 
+            CustomerView customerView, Scanner sc) {
         CustomerCard cloneCustomerCard = customerCard.cloneCustomerCard();
         String choice;
         do {
@@ -66,18 +81,18 @@ public class CustomerCardList {
             choice = sc.nextLine().trim();
             switch (choice) {
                 case "1":
-                    if (customerView.typeInFirstName(cloneCustomerCard.getCustomer()) == 0) {
+                    if (customerView.typeInFirstName(cloneCustomerCard.getCustomer(), sc) == 0) {
                         return;
                     }
                     break;
                 case "2":
-                    if (customerView.typeInLastName(cloneCustomerCard.getCustomer()) == 0) {
+                    if (customerView.typeInLastName(cloneCustomerCard.getCustomer(), sc) == 0) {
                         return;
                     }
                     break;
                 case "3":
                     String tmp = cloneCustomerCard.getCustomer().getPhoneNumber();
-                    int nextProcess = customerView.typeInPhoneNumber(cloneCustomerCard.getCustomer());
+                    int nextProcess = customerView.typeInPhoneNumber(cloneCustomerCard.getCustomer(), sc);
                     if (nextProcess == 0) {
                         return;
                     } else if (this.phoneNumAlreadyExisted(cloneCustomerCard.getCustomer().getPhoneNumber()) != null) {
@@ -86,17 +101,17 @@ public class CustomerCardList {
                     }
                     break;
                 case "4":
-                    if (customerView.typeInAge(cloneCustomerCard.getCustomer()) == 0) {
+                    if (customerView.typeInAge(cloneCustomerCard.getCustomer(), sc) == 0) {
                         return;
                     }
                     break;
                 case "5":
-                    if (customerView.typeInGender(cloneCustomerCard.getCustomer()) == 0) {
+                    if (customerView.typeInGender(cloneCustomerCard.getCustomer(), sc) == 0) {
                         return;
                     }
                     break;
                 case "6":
-                    if (customerView.typeInAndress(cloneCustomerCard.getCustomer()) == 0) {
+                    if (customerView.typeInAndress(cloneCustomerCard.getCustomer(), sc) == 0) {
                         return;
                     }
                     break;
@@ -116,7 +131,7 @@ public class CustomerCardList {
         System.out.println("Delete succeed!");
     }
 
-    public CustomerCard searchCustomerCard() {
+    public CustomerCard searchCustomerCard(Scanner sc) {
         CustomerCard searchingCustomerCard = null;
         if (this.getList().isEmpty()) {
             System.out.println("Cannot search in an empty List!");

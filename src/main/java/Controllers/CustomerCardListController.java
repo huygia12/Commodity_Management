@@ -8,6 +8,8 @@ import Models.CustomerCard;
 import Models.CustomerCardList;
 import Models.IDGenerator;
 import View.CustomerCardListView;
+import com.google.gson.annotations.Expose;
+import com.google.gson.annotations.SerializedName;
 import java.util.ArrayList;
 import java.util.Scanner;
 
@@ -16,8 +18,11 @@ import java.util.Scanner;
  * @author FPTSHOP
  */
 public class CustomerCardListController {
-    final Scanner sc = new Scanner(System.in);
+    @SerializedName("customerCardList")
+    @Expose
     private CustomerCardList customerCardList;
+    @SerializedName("view")
+    @Expose
     private final CustomerCardListView view = new CustomerCardListView();
 
     public CustomerCardListController(CustomerCardList customerCardList) {
@@ -36,7 +41,7 @@ public class CustomerCardListController {
         return this.view;
     }
     
-    public void customerCardListManagement(IDGenerator idGenerator) {
+    public void customerCardListManagement(IDGenerator idGenerator, Scanner sc) {
         CustomerCardController customerCardCtr = new CustomerCardController();
         CustomerCard searchedcustomerCard;
         String choice;
@@ -45,23 +50,23 @@ public class CustomerCardListController {
             choice = sc.nextLine().trim();
             switch (choice) {
                 case "1":
-                    this.getCustomerCardList().addNewCard(customerCardCtr.getCustomerView(), idGenerator);
+                    this.getCustomerCardList().addNewCard(customerCardCtr.getCustomerView(), idGenerator, sc);
                     break;
                 case "2":
-                    searchedcustomerCard = this.customerCardList.searchCustomerCard();
+                    searchedcustomerCard = this.customerCardList.searchCustomerCard(sc);
                     if (searchedcustomerCard != null) {
-                        this.getCustomerCardList().editCardInfor(searchedcustomerCard
-                                , view, customerCardCtr.getCustomerView());
+                        this.getCustomerCardList().editCardInfor(searchedcustomerCard ,
+                                view, customerCardCtr.getCustomerView(), sc);
                     }
                     break;
                 case "3":
-                    searchedcustomerCard = this.customerCardList.searchCustomerCard();
+                    searchedcustomerCard = this.customerCardList.searchCustomerCard(sc);
                     if (searchedcustomerCard != null) {
                         this.customerCardList.deleteCustomerCard(searchedcustomerCard);
                     }
                     break;
                 case "4":
-                    searchedcustomerCard = this.customerCardList.searchCustomerCard();
+                    searchedcustomerCard = this.customerCardList.searchCustomerCard(sc);
                     if (searchedcustomerCard != null) {
                         CustomerCardList tmp = new CustomerCardList(new ArrayList<>());
                         tmp.getList().add(searchedcustomerCard);

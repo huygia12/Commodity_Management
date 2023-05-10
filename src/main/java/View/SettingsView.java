@@ -13,7 +13,6 @@ import java.util.Scanner;
  * @author FPTSHOP
  */
 public class SettingsView {
-    final Scanner sc = new Scanner(System.in);
     final Cautions ctions = new Cautions();
     public void menuOfSettings() {
         System.out.print("""
@@ -38,7 +37,7 @@ public class SettingsView {
                            Options => """);
     }
     
-    public int typeInStoreName(Store store) {
+    public int typeInStoreName(Store store, Scanner sc) {
         while (true) {
             System.out.print("Type in Store Name or type EXIT/BACK to exit/back: ");
             String inputStr = sc.nextLine();
@@ -54,7 +53,7 @@ public class SettingsView {
         }
     }
     
-    public int typeInEmail(Store store) {
+    public int typeInEmail(Store store, Scanner sc) {
         while (true) {
             System.out.print("Type in Email or type EXIT/BACK to exit/back: ");
             String inputStr = sc.nextLine();
@@ -70,7 +69,7 @@ public class SettingsView {
         }
     }
     
-    public int typeInPhoneNumber(Store store) {
+    public int typeInPhoneNumber(Store store, Scanner sc) {
         while (true) {
             System.out.print("Type in Phone Number or type EXIT/BACK to exit/back: ");
             String inputStr = sc.nextLine();
@@ -87,7 +86,7 @@ public class SettingsView {
         }
     }
     
-    public int typeInAndress(Store store) {
+    public int typeInAndress(Store store, Scanner sc) {
         while (true) {
             System.out.print("Type in Andress or type EXIT/BACK to exit/back: ");
             String inputStr = sc.nextLine();
@@ -103,7 +102,7 @@ public class SettingsView {
         }
     }
 
-    public int typeInVAT(Store store) {
+    public int typeInVAT(Store store, Scanner sc) {
         while (true) {
             System.out.print("Type in VAT or type EXIT/BACK to exit/back: ");
             String inputStr = sc.nextLine();

@@ -7,6 +7,7 @@ package View;
 import Models.Employee;
 import Models.EmployeeList;
 import java.math.BigDecimal;
+import java.util.Scanner;
 
 /**
  *
@@ -14,7 +15,7 @@ import java.math.BigDecimal;
  */
 public class EmployeeView extends HumanView<Employee> {
 
-    public int typeInSalaryPerDay(Employee e) {
+    public int typeInSalaryPerDay(Employee e, Scanner sc) {
         while (true) {
             System.out.print("Type in Salary per day or type EXIT/BACK to exit/back: ");
             String inputStr = sc.nextLine();
@@ -38,7 +39,7 @@ public class EmployeeView extends HumanView<Employee> {
         }
     }
 
-    public int typeInCCCD(Employee e, EmployeeList employeeList) {
+    public int typeInCCCD(Employee e, EmployeeList employeeList, Scanner sc) {
         while (true) {
             System.out.print("Type in CCCD or type EXIT/BACK to exit/back: ");
             String inputStr = sc.nextLine();

@@ -8,6 +8,8 @@ import Models.Employee;
 import Models.EmployeeList;
 import Models.Shift;
 import View.EmployeeListView;
+import com.google.gson.annotations.Expose;
+import com.google.gson.annotations.SerializedName;
 import java.util.ArrayList;
 import java.util.Scanner;
 
@@ -16,9 +18,11 @@ import java.util.Scanner;
  * @author FPTSHOP
  */
 public class EmployeeListController {
-
-    final Scanner sc = new Scanner(System.in);
+    @SerializedName("view")
+    @Expose
     private final EmployeeListView view = new EmployeeListView();
+    @SerializedName("employeeList")
+    @Expose
     private EmployeeList employeeList = new EmployeeList(new ArrayList<>());
 
     public EmployeeListController() {
@@ -40,7 +44,7 @@ public class EmployeeListController {
         return view;
     }
 
-    public void employeeListManagement(Shift currentShift) {
+    public void employeeListManagement(Shift currentShift, Scanner sc) {
         EmployeeController employeeCtr = new EmployeeController();
         Employee searchedEmployee;
         String choice;
@@ -50,16 +54,16 @@ public class EmployeeListController {
             switch (choice) {
                 case "1":
                     this.getEmployeeList()
-                            .addNewEmployee(employeeCtr.getView());
+                            .addNewEmployee(employeeCtr.getView(), sc);
                     break;
                 case "2":
-                    searchedEmployee = this.getEmployeeList().searchEmployee();
+                    searchedEmployee = this.getEmployeeList().searchEmployee(sc);
                     if (searchedEmployee != null) {
-                        this.getEmployeeList().editEmployeeInfor(searchedEmployee, view, employeeCtr.getView());
+                        this.getEmployeeList().editEmployeeInfor(searchedEmployee, view, employeeCtr.getView(), sc);
                     }
                     break;
                 case "3":
-                    Employee delEmployee = this.employeeList.searchEmployee();
+                    Employee delEmployee = this.employeeList.searchEmployee(sc);
                     if (delEmployee != null) {
                         if (currentShift != null) {
                             if (currentShift.getEmployeeOfThisShift()
@@ -72,7 +76,7 @@ public class EmployeeListController {
                     }
                     break;
                 case "4":
-                    searchedEmployee = this.getEmployeeList().searchEmployee();
+                    searchedEmployee = this.getEmployeeList().searchEmployee(sc);
                     if (searchedEmployee != null) {
                         EmployeeList tmp = new EmployeeList(new ArrayList<>());
                         tmp.getList().add(searchedEmployee);

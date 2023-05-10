@@ -7,6 +7,8 @@ package Controllers;
 import Models.Shift;
 import Models.Store;
 import View.SettingsView;
+import com.google.gson.annotations.Expose;
+import com.google.gson.annotations.SerializedName;
 import java.util.Scanner;
 
 /**
@@ -15,8 +17,11 @@ import java.util.Scanner;
  */
 public class SettingsController {
 
-    final Scanner sc = new Scanner(System.in);
+    @SerializedName("settingsView")
+    @Expose
     private final SettingsView settingsView = new SettingsView();
+    @SerializedName("myStore")
+    @Expose
     private Store myStore;
 
     public SettingsController() {
@@ -38,7 +43,7 @@ public class SettingsController {
         return this.settingsView;
     }
 
-    public void SettingsManagement(Shift currentShift) {
+    public void SettingsManagement(Shift currentShift, Scanner sc) {
         String choice;
         do {
             this.settingsView.menuOfSettings();
@@ -48,7 +53,7 @@ public class SettingsController {
                     this.myStore.showStoreInfor();
                     break;
                 case "2":
-                    this.myStore.setStoreInfor(settingsView, currentShift);
+                    this.myStore.setStoreInfor(settingsView, currentShift, sc);
                     break;
                 case "3":
                     break;

@@ -4,6 +4,9 @@
  */
 package Models;
 
+import com.google.gson.annotations.Expose;
+import com.google.gson.annotations.SerializedName;
+import java.util.HashMap;
 import java.util.Map;
 
 /**
@@ -11,7 +14,9 @@ import java.util.Map;
  * @author FPTSHOP
  */
 public class IDGenerator {
-    private Map<String, Integer> bucket;
+    @SerializedName("bucket")
+    @Expose
+    private Map<String, Integer> bucket = new HashMap<>();
 
     public IDGenerator() {
     }

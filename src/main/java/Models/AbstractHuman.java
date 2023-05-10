@@ -4,16 +4,31 @@
  */
 package Models;
 
+import com.google.gson.annotations.Expose;
+import com.google.gson.annotations.SerializedName;
+
 /**
  *
  * @author s1rja
  */
 public abstract class AbstractHuman {
+    @SerializedName("firstName")
+    @Expose
     protected String firstName;
+    @SerializedName("lastName")
+    @Expose
     protected String lastName;
+    @SerializedName("phoneNumber")
+    @Expose
     protected String phoneNumber;
+    @SerializedName("address")
+    @Expose
     protected String address;
+    @SerializedName("age")
+    @Expose
     protected int age;
+    @SerializedName("gender")
+    @Expose
     protected Gender gender;
     
     

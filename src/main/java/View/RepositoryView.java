@@ -15,7 +15,6 @@ import java.util.Set;
  * @author FPTSHOP
  */
 public class RepositoryView {
-    final Scanner sc = new Scanner(System.in);
     
     public void menuOfRepoManagement() {
         System.out.println("\n***********************************");
@@ -70,7 +69,7 @@ public class RepositoryView {
         System.out.print("Option => ");
     }
 
-    public int typeDelOption() {
+    public int typeDelOption(Scanner sc) {
         // Option duoc tra ve: 1-Xoa 1 goods | 2-Xoa 1 shipment | 3-back
         int input;
         do {

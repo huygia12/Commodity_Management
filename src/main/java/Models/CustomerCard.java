@@ -5,17 +5,25 @@
 package Models;
 
 import View.CustomerView;
+import com.google.gson.annotations.Expose;
+import com.google.gson.annotations.SerializedName;
 import java.math.BigDecimal;
 import java.math.BigInteger;
+import java.util.Scanner;
 
 /**
  *
  * @author FPTSHOP
  */
 public class CustomerCard {
-
+    @SerializedName("ID")
+    @Expose
     private String ID;
+    @SerializedName("point")
+    @Expose
     private BigInteger point = BigInteger.ZERO;
+    @SerializedName("customer")
+    @Expose
     private Customer customer = new Customer();
 
     public CustomerCard() {
@@ -50,19 +58,20 @@ public class CustomerCard {
         this.customer = customer;
     }
 
-    public CustomerCard generateCard(CustomerView customerView, CustomerCardList customerCardList, IDGenerator idGenerator) {
+    public CustomerCard generateCard(CustomerView customerView, CustomerCardList customerCardList, 
+            IDGenerator idGenerator, Scanner sc) {
         CustomerCard newCustomerCard = new CustomerCard();
         int n = 1;
         int nextProcess;
         while (n != 6) {
             switch (n) {
                 case 1:
-                    nextProcess = customerView.typeInFirstName(newCustomerCard.getCustomer());
+                    nextProcess = customerView.typeInFirstName(newCustomerCard.getCustomer(), sc);
                     if (nextProcess == 0 || nextProcess == -1) {
                         return null;
                     }
                 case 2:
-                    nextProcess = customerView.typeInLastName(newCustomerCard.getCustomer());
+                    nextProcess = customerView.typeInLastName(newCustomerCard.getCustomer(), sc);
                     if (nextProcess == 0) {
                         return null;
                     } else if (nextProcess == -1) {
@@ -70,7 +79,7 @@ public class CustomerCard {
                         break;
                     }
                 case 3:
-                    nextProcess = customerView.typeInAge(newCustomerCard.getCustomer());
+                    nextProcess = customerView.typeInAge(newCustomerCard.getCustomer(), sc);
                     if (nextProcess == 0) {
                         return null;
                     } else if (nextProcess == -1) {
@@ -78,7 +87,7 @@ public class CustomerCard {
                         break;
                     }
                 case 4:
-                    nextProcess = customerView.typeInPhoneNumber(newCustomerCard.getCustomer());
+                    nextProcess = customerView.typeInPhoneNumber(newCustomerCard.getCustomer(), sc);
                     if (nextProcess == 0) {
                         return null;
                     } else if (nextProcess == -1) {
@@ -91,7 +100,7 @@ public class CustomerCard {
                         break;
                     }
                 case 5:
-                    nextProcess = customerView.typeInGender(newCustomerCard.getCustomer());
+                    nextProcess = customerView.typeInGender(newCustomerCard.getCustomer(), sc);
                     if (nextProcess == 0) {
                         return null;
                     } else if (nextProcess == -1) {
@@ -99,7 +108,7 @@ public class CustomerCard {
                         break;
                     }
                 case 6:
-                    nextProcess = customerView.typeInAndress(newCustomerCard.getCustomer());
+                    nextProcess = customerView.typeInAndress(newCustomerCard.getCustomer(), sc);
                     if (nextProcess == 0) {
                         return null;
                     } else if (nextProcess == -1) {

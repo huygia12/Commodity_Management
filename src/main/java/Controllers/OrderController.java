@@ -15,6 +15,8 @@ import Models.Store;
 import View.Cautions;
 import View.OrderView;
 import View.ShipmentView;
+import com.google.gson.annotations.Expose;
+import com.google.gson.annotations.SerializedName;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -27,13 +29,23 @@ import java.util.stream.*;
  * @author FPTSHOP
  */
 public class OrderController {
-    
-    final Scanner sc = new Scanner(System.in);
+    @SerializedName("ctions")
+    @Expose
     final Cautions ctions = new Cautions();
+    @SerializedName("CURRENT_DATE")
+    @Expose
     final LocalDate CURRENT_DATE = LocalDate.now();
+    @SerializedName("draftGoodsList")
+    @Expose
     private final GoodsList<Goods> draftGoodsList = new GoodsList(new ArrayList<>());
+    @SerializedName("repoGoodsList")
+    @Expose
     private GoodsList<Goods> repoGoodsList = new GoodsList(new ArrayList<>());
+    @SerializedName("view")
+    @Expose
     private final OrderView view = new OrderView();
+    @SerializedName("order")
+    @Expose
     private Order order;
 
     public OrderController() {
@@ -86,7 +98,8 @@ public class OrderController {
         }
     }
     
-    public void makeNewOrder(GoodsList repoGoodsList, CustomerCardList customerCardList, Store myStore, Shift shift, IDGenerator idGenerator) {
+    public void makeNewOrder(GoodsList repoGoodsList, CustomerCardList customerCardList, 
+            Store myStore, Shift shift, IDGenerator idGenerator, Scanner sc) {
         this.setOrder(new Order(idGenerator.generateID(Order.class.getName(), 6),
                                 myStore.getVAT()));
         this.repoGoodsList = repoGoodsList;
@@ -102,13 +115,13 @@ public class OrderController {
                 sc.nextLine();
                 switch (choice) {
                     case 1:
-                        this.order.addToOrder(draftGoodsList, shipView, view);
+                        this.order.addToOrder(draftGoodsList, shipView, view, sc);
                         break;
                     case 2:
-                        this.order.editOrder(repoGoodsList, draftGoodsList, shipView, view);
+                        this.order.editOrder(repoGoodsList, draftGoodsList, shipView, view, sc);
                         break;
                     case 3:
-                        if (this.order.payOrder(view,customerCardList, myStore)) {
+                        if (this.order.payOrder(view,customerCardList, myStore, sc)) {
                             completed = true;
                         }
                         break;

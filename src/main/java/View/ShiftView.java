@@ -27,11 +27,9 @@ import java.util.logging.Logger;
  * @author FPTSHOP
  */
 public class ShiftView {
-
     private final String HOME = System.getProperty("user.dir");
     private final String SEPARATOR = File.separator;
     private final String FILE_PRINT = HOME + SEPARATOR + "output" + SEPARATOR + "shiftOverView.txt";
-    final Scanner sc = new Scanner(System.in);
     final Cautions ctions = new Cautions();
 
     public void shiftNotOpenCaution() {
@@ -42,7 +40,7 @@ public class ShiftView {
         System.out.println("Current shift not over yet!!");
     }
 
-    public boolean removeEmployeeCaution(Shift currentShift) {
+    public boolean removeEmployeeCaution(Shift currentShift, Scanner sc) {
         while (true) {
             System.out.println("This eliminates will also remove cashier of this shift, keep your change?");
             System.out.println("(If yes, you must choose another cashier of this shift)");
@@ -63,7 +61,7 @@ public class ShiftView {
                            * 1. Open shift                        *
                            * 2. Set Shipping fee                  *
                            * 3. Change employees of this shift    *
-                           * 4. Change shift openningbalance      *
+                           * 4. Change shift openning balance     *
                            * 5. Show order history                *
                            * 6. Show import goods history         *
                            * 7. Current shift over view           *
@@ -84,7 +82,7 @@ public class ShiftView {
                            Options => """);
     }
 
-    public int typeInOpeningBalance(Shift shift) {
+    public int typeInOpeningBalance(Shift shift, Scanner sc) {
         while (true) {
             System.out.print("Type in openning balance or type EXIT/BACK to exit/back: ");
             String inputStr = sc.nextLine();
@@ -108,7 +106,7 @@ public class ShiftView {
         }
     }
 
-    public int typeInShippingFee(Shift shift) {
+    public int typeInShippingFee(Shift shift, Scanner sc) {
         while (true) {
             System.out.print("Type in Shipping Fee or type BACK to back: ");
             String inputStr = sc.nextLine();
@@ -130,11 +128,11 @@ public class ShiftView {
         }
     }
 
-    public int typeInEmployeesOfThisShift(Shift shift, EmployeeList employeeList) {
+    public int typeInEmployeesOfThisShift(Shift shift, EmployeeList employeeList, Scanner sc) {
         Employee e;
         System.out.println("Choose employees of this shift by typing in their phonenumber:");
         do {
-            e = employeeList.searchEmployee();
+            e = employeeList.searchEmployee(sc);
             if (e != null) {
                 if (shift.getEmployeeOfThisShift().containEmployee(e.getCCCD()) != null) {
                     System.out.println("This employee already existed in this Shift!");
@@ -159,10 +157,10 @@ public class ShiftView {
         }
     }
 
-    public int typeInCashier(Shift shift, EmployeeList employeeList) {
+    public int typeInCashier(Shift shift, EmployeeList employeeList, Scanner sc) {
         while (true) {
             System.out.println("Choose Cashier of this shift by typing in her/his phonenumber or type BACK to go back:");
-            Employee e = employeeList.searchEmployee();
+            Employee e = employeeList.searchEmployee(sc);
             if (e == null) {
                 return -1;
             } else {

@@ -4,6 +4,8 @@
  */
 package Models;
 
+import com.google.gson.annotations.Expose;
+import com.google.gson.annotations.SerializedName;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
@@ -13,7 +15,11 @@ import java.time.format.DateTimeFormatter;
  * @author FPTSHOP
  */
 public class ImportedGoods extends Goods{
+    @SerializedName("importDateTime")
+    @Expose
     private String importDateTime;
+    @SerializedName("totalAmountImport")
+    @Expose
     private BigDecimal totalAmountImport = BigDecimal.ZERO;
 
     public ImportedGoods(){

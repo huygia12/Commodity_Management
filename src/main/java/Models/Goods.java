@@ -5,6 +5,8 @@
 package Models;
 
 import View.Cautions;
+import com.google.gson.annotations.Expose;
+import com.google.gson.annotations.SerializedName;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
@@ -15,14 +17,26 @@ import java.util.Scanner;
  * @author s1rja
  */
 public class Goods {
-
+    @SerializedName("ctions")
+    @Expose
     final Cautions ctions = new Cautions();
-    final Scanner sc = new Scanner(System.in);
+    @SerializedName("goodsName")
+    @Expose
     private String goodsName;
+    @SerializedName("id")
+    @Expose
     private String id;
+    @SerializedName("manufacture")
+    @Expose
     private String manufacture;
+    @SerializedName("listPrice")
+    @Expose
     private BigDecimal listPrice = BigDecimal.ZERO;
+    @SerializedName("totalQuantity")
+    @Expose
     private BigDecimal totalQuantity = BigDecimal.ZERO;
+    @SerializedName("shipments")
+    @Expose
     private List<Shipment> shipments = new ArrayList<>();
 
     public Goods() {
@@ -149,7 +163,7 @@ public class Goods {
         return null;
     }
 
-    public Shipment searchShipment() {
+    public Shipment searchShipment(Scanner sc) {
         // tim kiem shipment trong goods goi den method seachShipment() nay
         GoodsList bucket = new GoodsList(new ArrayList<>());
         if (ctions.checkIfListEmpty(this.getShipments())) {

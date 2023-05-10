@@ -3,22 +3,42 @@ package Models;
 import View.Cautions;
 import View.OrderView;
 import View.ShipmentView;
+import com.google.gson.annotations.Expose;
+import com.google.gson.annotations.SerializedName;
 import java.math.BigDecimal;
 import java.util.stream.*;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.Scanner;
 
 public class Order extends GoodsList<Goods>{
-
-    private final String ORDER_DATE;
+    @SerializedName("ctions")
+    @Expose
     final Cautions ctions = new Cautions();
+    @SerializedName("ORDER_DATE")
+    @Expose
+    private final String ORDER_DATE;
+    @SerializedName("ID")
+    @Expose
     private String ID;
+    @SerializedName("VAT")
+    @Expose
     private int VAT = 0;
+    @SerializedName("cusMoney")
+    @Expose
     private BigDecimal cusMoney = BigDecimal.ZERO;
+    @SerializedName("discount")
+    @Expose
     private int discount = 0;
+    @SerializedName("paymentOptions")
+    @Expose
     private PaymentOptions paymentOptions;
+    @SerializedName("customerCard")
+    @Expose
     private CustomerCard customerCard;
+    @SerializedName("pointDiscount")
+    @Expose
     private BigDecimal pointDiscount = BigDecimal.ZERO;
 
     public Order(String ID, int VAT) {
@@ -133,14 +153,14 @@ public class Order extends GoodsList<Goods>{
     }
 
     //Function 1
-    public void addToOrder(GoodsList draftGoodsList, ShipmentView shipView, OrderView orderView) {
+    public void addToOrder(GoodsList draftGoodsList, ShipmentView shipView, OrderView orderView, Scanner sc) {
         Shipment orderShipment = new Shipment();
-        Goods searchGoods = draftGoodsList.searchGoods();
+        Goods searchGoods = draftGoodsList.searchGoods(sc);
         // Tim kiem goods va shipment muon them vao order
         if (searchGoods == null) {
             return;
         }
-        Shipment searchShipment = searchGoods.searchShipment();
+        Shipment searchShipment = searchGoods.searchShipment(sc);
         if (searchShipment == null) {
             return;
         }
@@ -150,7 +170,7 @@ public class Order extends GoodsList<Goods>{
         }
         // Type in the quantity of searchGoods want to buy
         while (true) {
-            int nextProcess = shipView.typeInQuan(orderShipment);
+            int nextProcess = shipView.typeInQuan(orderShipment, sc);
             if (nextProcess == -1 || nextProcess == 0) {
                 return;
             } else if (orderShipment.getQuantity().compareTo(searchShipment.getQuantity()) > 0) {
@@ -193,7 +213,8 @@ public class Order extends GoodsList<Goods>{
     }
 
     //Funtion 2
-    public void editOrder(GoodsList repoGoodsList, GoodsList draftGoodsList, ShipmentView shipView, OrderView orderView) {
+    public void editOrder(GoodsList repoGoodsList, GoodsList draftGoodsList, 
+            ShipmentView shipView, OrderView orderView, Scanner sc) {
         String choice;
         // Tao mot draftOrder cua curOrder de thao tac, sau khi edit xong moi thay doi vao curOrder
         Order draftOrder = new Order();
@@ -201,11 +222,11 @@ public class Order extends GoodsList<Goods>{
                 .map(x -> x.cloneGoods())
                 .collect(Collectors.toList()));
         // Search for goods and shipment want to edit
-        Goods searchOrderGoods = this.searchGoods();
+        Goods searchOrderGoods = this.searchGoods(sc);
         if (searchOrderGoods == null) {
             return;
         }
-        Shipment searchOrderShipment = searchOrderGoods.searchShipment();
+        Shipment searchOrderShipment = searchOrderGoods.searchShipment(sc);
         if (searchOrderShipment == null) {
             return;
         }
@@ -220,11 +241,11 @@ public class Order extends GoodsList<Goods>{
             choice = sc.nextLine();
             switch (choice) {
                 case "1":
-                    remainQuan = remainQuan.subtract(IncrQuanInOrder(editShipment, shipView, remainQuan));
+                    remainQuan = remainQuan.subtract(IncrQuanInOrder(editShipment, shipView, remainQuan, sc));
                     orderView.showDraftOrder(draftOrder);
                     break;
                 case "2":
-                    remainQuan = remainQuan.add(DecrQuanInOrder(editShipment, shipView));
+                    remainQuan = remainQuan.add(DecrQuanInOrder(editShipment, shipView, sc));
                     orderView.showDraftOrder(draftOrder);
                     break;
                 case "3":
@@ -253,7 +274,7 @@ public class Order extends GoodsList<Goods>{
         } while (!choice.equals("4"));
     }
 
-    private BigDecimal IncrQuanInOrder(Shipment cloneShipment, ShipmentView shipView, BigDecimal remainQuan) {
+    private BigDecimal IncrQuanInOrder(Shipment cloneShipment, ShipmentView shipView, BigDecimal remainQuan, Scanner sc) {
         // tra ve so luong duoc tang len neu thuc hien thanh cong, BigInteger.Zero neu remainQuan == 0 hoac user nhap back/exit
         if (remainQuan.equals(BigDecimal.ZERO)) {
             System.out.println("Can not increase quantity!");
@@ -261,7 +282,7 @@ public class Order extends GoodsList<Goods>{
         }
         BigDecimal quanBefore = cloneShipment.getQuantity();
         while (true) {
-            int nextProcess = shipView.typeInQuan(cloneShipment);
+            int nextProcess = shipView.typeInQuan(cloneShipment, sc);
             BigDecimal quanIncrease = cloneShipment.getQuantity();
             if (nextProcess == -1 || nextProcess == 0) {
                 return BigDecimal.ZERO;
@@ -275,14 +296,14 @@ public class Order extends GoodsList<Goods>{
         }
     }
 
-    private BigDecimal DecrQuanInOrder(Shipment cloneShipment, ShipmentView shipView) {
+    private BigDecimal DecrQuanInOrder(Shipment cloneShipment, ShipmentView shipView, Scanner sc) {
         // tra ve so luong duoc giam neu thuc hien thanh cong, BigInteger.Zero neu remainQuan == 0 hoac user nhap back/exit
         if (cloneShipment.getQuantity().compareTo(BigDecimal.ZERO) == 0) {
             System.out.println("Can not decrease Quantity!");
             return BigDecimal.ZERO;
         }
         BigDecimal quanBefore = cloneShipment.getQuantity();
-        int nextProcess = shipView.typeInQuan(cloneShipment);
+        int nextProcess = shipView.typeInQuan(cloneShipment, sc);
         BigDecimal quanDecrease = cloneShipment.getQuantity();
         if (nextProcess == -1 || nextProcess == 0) {
             return BigDecimal.ZERO;
@@ -311,7 +332,7 @@ public class Order extends GoodsList<Goods>{
     }
 
     //Funtion 3
-    public boolean payOrder(OrderView orderView, CustomerCardList customerCardList, Store myStore) {
+    public boolean payOrder(OrderView orderView, CustomerCardList customerCardList, Store myStore, Scanner sc) {
         // tra ve true neu pay thanh cong, false neu list khong co gi hoac user nhap exit
         if (ctions.checkIfListEmpty(this.getGoodsList())) {
             return false;
@@ -323,12 +344,12 @@ public class Order extends GoodsList<Goods>{
             OUTER_1:
             switch (n) {
                 case 1:
-                    nextProcess = orderView.typeInDcountPctage(this);
+                    nextProcess = orderView.typeInDcountPctage(this, sc);
                     if (nextProcess == 0 || nextProcess == -1) {
                         return false;
                     }
                 case 2:
-                    nextProcess = orderView.typeOfPayment(this);
+                    nextProcess = orderView.typeOfPayment(this, sc);
                     switch (nextProcess) {
                         case 0:
                             return false;
@@ -343,14 +364,14 @@ public class Order extends GoodsList<Goods>{
                             break;
                     }
                 case 3:
-                    nextProcess = orderView.typeInCusMoney(this);
+                    nextProcess = orderView.typeInCusMoney(this, sc);
                     if (nextProcess == 0) {
                         return false;
                     } else if (nextProcess == -1) {
                         break;
                     }
                 case 4:
-                    nextProcess = orderView.typeInCustomerID(customerCardList, this);
+                    nextProcess = orderView.typeInCustomerID(customerCardList, this, sc);
                     switch (nextProcess) {
                         case 0:
                             return false;
@@ -365,7 +386,7 @@ public class Order extends GoodsList<Goods>{
                             break;
                     }
                 case 5:
-                    nextProcess = orderView.typeInPoint(this, this.customerCard);
+                    nextProcess = orderView.typeInPoint(this, this.customerCard, sc);
                     if (nextProcess == 0) {
                         return false;
                     } else if (nextProcess == -1) {
@@ -379,7 +400,7 @@ public class Order extends GoodsList<Goods>{
             this.customerCard.gainPoint(this.getTotal());
         }
         orderView.showBill(this, myStore);
-        if(orderView.makeDecisionToPrintOrder()){
+        if(orderView.makeDecisionToPrintOrder(sc)){
             orderView.printBillToFile(this, myStore);
         }
         return true;

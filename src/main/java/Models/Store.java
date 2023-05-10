@@ -5,6 +5,8 @@
 package Models;
 
 import View.SettingsView;
+import com.google.gson.annotations.Expose;
+import com.google.gson.annotations.SerializedName;
 import java.util.Scanner;
 
 /**
@@ -12,12 +14,20 @@ import java.util.Scanner;
  * @author FPTSHOP
  */
 public class Store {
-
-    final Scanner sc = new Scanner(System.in);
+    @SerializedName("name")
+    @Expose
     private String name = "";
+    @SerializedName("email")
+    @Expose
     private String email = "";
+    @SerializedName("address")
+    @Expose
     private String address = "";
+    @SerializedName("VAT")
+    @Expose
     private int VAT = 0;
+    @SerializedName("phoneNumber")
+    @Expose
     private String phoneNumber = "";
 
     public Store(String name, String email, String address, int VAT, String phoneNumber) {
@@ -82,29 +92,29 @@ public class Store {
         System.out.println("");
     }
 
-    public void setStoreInfor(SettingsView settingsView, Shift currentShift) {
+    public void setStoreInfor(SettingsView settingsView, Shift currentShift, Scanner sc) {
         String choice;
         do {
             settingsView.menuOfChangeStoreInfor();
-            choice = sc.nextLine();
+            choice = "";
             switch (choice) {
                 case "1":
-                    if (settingsView.typeInStoreName(this) == 0) {
+                    if (settingsView.typeInStoreName(this, sc) == 0) {
                         return;
                     }
                     break;
                 case "2":
-                    if (settingsView.typeInEmail(this) == 0) {
+                    if (settingsView.typeInEmail(this, sc) == 0) {
                         return;
                     }
                     break;
                 case "3":
-                    if (settingsView.typeInAndress(this) == 0) {
+                    if (settingsView.typeInAndress(this, sc) == 0) {
                         return;
                     }
                     break;
                 case "4":
-                    if (settingsView.typeInPhoneNumber(this) == 0) {
+                    if (settingsView.typeInPhoneNumber(this, sc) == 0) {
                         return;
                     }
                     break;
@@ -113,7 +123,7 @@ public class Store {
                         System.out.println("This current Shift is not over yet, change cannot be performed!");
                         break;
                     }
-                    if (settingsView.typeInVAT(this) == 0) {
+                    if (settingsView.typeInVAT(this, sc) == 0) {
                         return;
                     }
                     break;

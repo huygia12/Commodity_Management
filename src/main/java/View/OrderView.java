@@ -28,11 +28,9 @@ import java.util.logging.Logger;
  * @author FPTSHOP
  */
 public class OrderView {
-
     private final String HOME = System.getProperty("user.dir");
     private final String SEPARATOR = File.separator;
     private final String FILE_PRINT = HOME + SEPARATOR + "output" + SEPARATOR + "bill.txt";
-    final Scanner sc = new Scanner(System.in);
     final Cautions ctions = new Cautions();
 
     public void orderMenu() {
@@ -61,7 +59,7 @@ public class OrderView {
         System.out.print("Option=> ");
     }
 
-    public int typeInDcountPctage(Order order) {
+    public int typeInDcountPctage(Order order, Scanner sc) {
         while (true) {
             System.out.print("Please enter the discount percentage (must be a positive number), \nor type EXIT/BACK to go exit/back: ");
             String input = sc.nextLine();
@@ -85,7 +83,7 @@ public class OrderView {
         }
     }
 
-    public int typeInCusMoney(Order order) {
+    public int typeInCusMoney(Order order, Scanner sc) {
         while (true) {
             System.out.print("Please enter the amount of money customer give, \nor type EXIT/BACK to exit/back from payment : ");
             String input = sc.nextLine();
@@ -112,7 +110,7 @@ public class OrderView {
         }
     }
 
-    public int typeOfPayment(Order order) {
+    public int typeOfPayment(Order order, Scanner sc) {
         while (true) {
             try {
                 System.out.print("""
@@ -139,7 +137,7 @@ public class OrderView {
         }
     }
 
-    public int typeInCustomerID(CustomerCardList customerCardList, Order order) {
+    public int typeInCustomerID(CustomerCardList customerCardList, Order order, Scanner sc) {
         while (true) {
             System.out.print("Please enter the Member Card ID(for member-only), \nor type EXIT/BACK to exit/back(press ENTER to skip) : ");
             String input = sc.nextLine();
@@ -157,7 +155,7 @@ public class OrderView {
         }
     }
 
-    public int typeInPoint(Order order, CustomerCard customerCard) {
+    public int typeInPoint(Order order, CustomerCard customerCard, Scanner sc) {
         while (true) {
             System.out.printf("Current points in card: %s\n", customerCard.getPoint());
             System.out.print("Please enter the amount of points you want to use, or type EXIT/BACK to exit/back : ");
@@ -178,7 +176,7 @@ public class OrderView {
         }
     }
 
-    public boolean makeDecisionToPrintOrder() {
+    public boolean makeDecisionToPrintOrder(Scanner sc) {
         while (true) {
             System.out.print("Do yout want to print out this bill?\n(Y/N): ");
             String yesNo = sc.nextLine();

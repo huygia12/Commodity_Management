@@ -5,6 +5,8 @@
 package Models;
 
 import View.ShiftView;
+import com.google.gson.annotations.Expose;
+import com.google.gson.annotations.SerializedName;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
@@ -19,17 +21,35 @@ import java.util.Scanner;
  * @author FPTSHOP
  */
 public class Shift {
-
-    final Scanner sc = new Scanner(System.in);
+    @SerializedName("orderHisPerShift")
+    @Expose
     private List<Order> orderHisPerShift = new ArrayList<>();
+    @SerializedName("importGoodsHis")
+    @Expose
     private GoodsList<ImportedGoods> importGoodsHis = new GoodsList<>();
+    @SerializedName("openDateTime")
+    @Expose
     private String openDateTime = null;
+    @SerializedName("endDateTime")
+    @Expose
     private String endDateTime = null;
+    @SerializedName("openingBalance")
+    @Expose
     private BigDecimal openingBalance = BigDecimal.ZERO;
+    @SerializedName("shippingFee")
+    @Expose
     private BigDecimal shippingFee = BigDecimal.ZERO;
+    @SerializedName("employeeOfThisShift")
+    @Expose
     private EmployeeList employeeOfThisShift = new EmployeeList(new ArrayList());
+    @SerializedName("cashier")
+    @Expose
     private Employee cashier;
+    @SerializedName("ID")
+    @Expose
     private String ID;
+    @SerializedName("VAT")
+    @Expose
     private int VAT;
 
     public Shift() {
@@ -232,7 +252,7 @@ public class Shift {
         return staticalList;
     }
 
-    public void openShift(ShiftView shiftView, EmployeeList employeeList, IDGenerator iDGenerator, Store myStore) {
+    public void openShift(ShiftView shiftView, EmployeeList employeeList, IDGenerator iDGenerator, Store myStore, Scanner sc) {
         this.setOpenTime();
         this.setID(iDGenerator.generateID(Shift.class.getName(), 6));
         this.setVAT(myStore.getVAT());
@@ -241,34 +261,34 @@ public class Shift {
         while (n != 3) {
             switch (n) {
                 case 1:
-                    nextProcess = shiftView.typeInOpeningBalance(this);
+                    nextProcess = shiftView.typeInOpeningBalance(this, sc);
                     if (nextProcess == 0 || nextProcess == -1) {
                         return;
                     }
                 case 2:
-                    nextProcess = shiftView.typeInEmployeesOfThisShift(this, employeeList);
+                    nextProcess = shiftView.typeInEmployeesOfThisShift(this, employeeList, sc);
                     if (nextProcess == 0) {
                         return;
                     } else if (nextProcess == -1) {
                         break;
                     }
                 case 3:
-                    nextProcess = shiftView.typeInCashier(this, this.getEmployeeOfThisShift());
+                    nextProcess = shiftView.typeInCashier(this, this.getEmployeeOfThisShift(), sc);
                     n = 3;
                     break;
             }
         }
     }
 
-    private void deleteEmployeeFromShift(ShiftView shiftView, EmployeeList employeeList) {
-        Employee e = this.employeeOfThisShift.searchEmployee();
+    private void deleteEmployeeFromShift(ShiftView shiftView, EmployeeList employeeList, Scanner sc) {
+        Employee e = this.employeeOfThisShift.searchEmployee(sc);
         if (e != null) {
             boolean checkRemoving = true;
             if (e.getCCCD().equalsIgnoreCase(cashier.getCCCD())) {
-                if (shiftView.removeEmployeeCaution(this)) {
+                if (shiftView.removeEmployeeCaution(this, sc)) {
                     int check = -1;
                     while (check == -1) {
-                        check = shiftView.typeInCashier(this, employeeList);
+                        check = shiftView.typeInCashier(this, employeeList, sc);
                     }
                 }
                 checkRemoving = false;
@@ -279,19 +299,19 @@ public class Shift {
         }
     }
 
-    private void retypeEmployeeListOfThisShift(ShiftView shiftView, EmployeeList employeeList) {
+    private void retypeEmployeeListOfThisShift(ShiftView shiftView, EmployeeList employeeList, Scanner sc) {
         this.employeeOfThisShift.getList().clear();
         System.out.println("EmployeeList clear!");
         int check = -1;
         while(check == -1 || check == 0){
-            check = shiftView.typeInEmployeesOfThisShift(this, employeeList);
+            check = shiftView.typeInEmployeesOfThisShift(this, employeeList, sc);
         }
         while(check == -1){
-            check = shiftView.typeInCashier(this, employeeList);
+            check = shiftView.typeInCashier(this, employeeList, sc);
         }
     }
 
-    public void modifyEmployeeOfThisShift(ShiftView shiftView, EmployeeList employeeList) {
+    public void modifyEmployeeOfThisShift(ShiftView shiftView, EmployeeList employeeList, Scanner sc) {
         String choice;
         Employee e;
         do {
@@ -299,16 +319,16 @@ public class Shift {
             choice = sc.nextLine();
             switch (choice) {
                 case "1":
-                    e = employeeList.searchEmployee();
+                    e = employeeList.searchEmployee(sc);
                     if (e != null) {
                         this.employeeOfThisShift.getList().add(e);
                     }
                     break;
                 case "2":
-                    deleteEmployeeFromShift(shiftView, employeeList);
+                    deleteEmployeeFromShift(shiftView, employeeList, sc);
                     break;
                 case "3":
-                    retypeEmployeeListOfThisShift(shiftView, employeeList);
+                    retypeEmployeeListOfThisShift(shiftView, employeeList, sc);
                     break;
                 case "4":
                     System.out.println("Back...");
@@ -319,9 +339,9 @@ public class Shift {
         } while (!choice.equalsIgnoreCase("4"));
     }
 
-    public void endShift(ShiftView shiftView, Store myStore) {
+    public void endShift(ShiftView shiftView, Store myStore, Scanner sc) {
         if (this.shippingFee == null) {
-            shiftView.typeInShippingFee(this);
+            shiftView.typeInShippingFee(this, sc);
         }
         this.setEndTime();
         shiftView.printFileOfThisShiftOverView(myStore, this);

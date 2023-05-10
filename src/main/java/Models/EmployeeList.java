@@ -6,6 +6,8 @@ package Models;
 
 import View.EmployeeListView;
 import View.EmployeeView;
+import com.google.gson.annotations.Expose;
+import com.google.gson.annotations.SerializedName;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
@@ -15,14 +17,25 @@ import java.util.Scanner;
  * @author FPTSHOP
  */
 public class EmployeeList extends AbstractHumanList<Employee> {
-
-    final Scanner sc = new Scanner(System.in);
+    @SerializedName("salaryMaxSize")
+    @Expose
     private int salaryMaxSize;
+    @SerializedName("CCCDmaxSize")
+    @Expose
     private int CCCDmaxSize;
+    @SerializedName("firstNameMaxSize")
+    @Expose
     private int firstNameMaxSize;
+    @SerializedName("lastNameMaxSize")
+    @Expose
     private int lastNameMaxSize;
+    @SerializedName("phoneNumberMaxSize")
+    @Expose
     private int phoneNumberMaxSize;
+    @SerializedName("addressMaxSize")
+    @Expose
     private int addressMaxSize;
+    
 
     public EmployeeList() {
     }
@@ -39,26 +52,26 @@ public class EmployeeList extends AbstractHumanList<Employee> {
         this.list = humanList;
     }
 
-    public void addNewEmployee(EmployeeView employeeView) {
+    public void addNewEmployee(EmployeeView employeeView, Scanner sc) {
         Employee newEmployee = new Employee();
         int n = 1;
         int nextProcess;
         while (n != 8) {
             switch (n) {
                 case 1:
-                    nextProcess = employeeView.typeInFirstName(newEmployee);
+                    nextProcess = employeeView.typeInFirstName(newEmployee, sc);
                     if (nextProcess == 0 || nextProcess == -1) {
                         return;
                     }
                 case 2:
-                    nextProcess = employeeView.typeInLastName(newEmployee);
+                    nextProcess = employeeView.typeInLastName(newEmployee, sc);
                     if (nextProcess == 0) {
                         return;
                     } else if (nextProcess == -1) {
                         break;
                     }
                 case 3:
-                    nextProcess = employeeView.typeInAge(newEmployee);
+                    nextProcess = employeeView.typeInAge(newEmployee, sc);
                     if (nextProcess == 0) {
                         return;
                     } else if (nextProcess == -1) {
@@ -66,7 +79,7 @@ public class EmployeeList extends AbstractHumanList<Employee> {
                         break;
                     }
                 case 4:
-                    nextProcess = employeeView.typeInPhoneNumber(newEmployee);
+                    nextProcess = employeeView.typeInPhoneNumber(newEmployee, sc);
                     if (nextProcess == 0) {
                         return;
                     } else if (nextProcess == -1) {
@@ -78,7 +91,7 @@ public class EmployeeList extends AbstractHumanList<Employee> {
                         break;
                     }
                 case 5:
-                    nextProcess = employeeView.typeInGender(newEmployee);
+                    nextProcess = employeeView.typeInGender(newEmployee, sc);
                     if (nextProcess == 0) {
                         return;
                     } else if (nextProcess == -1) {
@@ -86,7 +99,7 @@ public class EmployeeList extends AbstractHumanList<Employee> {
                         break;
                     }
                 case 6:
-                    nextProcess = employeeView.typeInAndress(newEmployee);
+                    nextProcess = employeeView.typeInAndress(newEmployee, sc);
                     if (nextProcess == 0) {
                         return;
                     } else if (nextProcess == -1) {
@@ -94,7 +107,7 @@ public class EmployeeList extends AbstractHumanList<Employee> {
                         break;
                     }
                 case 7:
-                    nextProcess = employeeView.typeInCCCD(newEmployee, this);
+                    nextProcess = employeeView.typeInCCCD(newEmployee, this, sc);
                     if (nextProcess == 0) {
                         return;
                     } else if (nextProcess == -1) {
@@ -102,7 +115,7 @@ public class EmployeeList extends AbstractHumanList<Employee> {
                         break;
                     }
                 case 8:
-                    nextProcess = employeeView.typeInSalaryPerDay(newEmployee);
+                    nextProcess = employeeView.typeInSalaryPerDay(newEmployee, sc);
                     if (nextProcess == 0) {
                         return;
                     } else if (nextProcess == -1) {
@@ -115,7 +128,8 @@ public class EmployeeList extends AbstractHumanList<Employee> {
         this.getList().add(newEmployee);
     }
 
-    public void editEmployeeInfor(Employee employee, EmployeeListView employeeListView, EmployeeView employeeView) {
+    public void editEmployeeInfor(Employee employee, EmployeeListView employeeListView, 
+            EmployeeView employeeView, Scanner sc) {
         Employee cloneEmployee = employee.cloneEmployee();
         String choice;
         do {
@@ -123,23 +137,23 @@ public class EmployeeList extends AbstractHumanList<Employee> {
             choice = sc.nextLine().trim();
             switch (choice) {
                 case "1":
-                    if (employeeView.typeInFirstName(cloneEmployee) == 0) {
+                    if (employeeView.typeInFirstName(cloneEmployee, sc) == 0) {
                         return;
                     }
                     break;
                 case "2":
-                    if (employeeView.typeInLastName(cloneEmployee) == 0) {
+                    if (employeeView.typeInLastName(cloneEmployee, sc) == 0) {
                         return;
                     }
                     break;
                 case "3":
-                    if (employeeView.typeInCCCD(cloneEmployee, this) == 0) {
+                    if (employeeView.typeInCCCD(cloneEmployee, this, sc) == 0) {
                         return;
                     }
                     break;
                 case "4":
                     String tmp = cloneEmployee.getPhoneNumber();
-                    int nextProcess = employeeView.typeInPhoneNumber(cloneEmployee);
+                    int nextProcess = employeeView.typeInPhoneNumber(cloneEmployee, sc);
                     if (nextProcess == 0) {
                         return;
                     } else if (this.phoneNumAlreadyExisted(cloneEmployee.getPhoneNumber()) != null) {
@@ -148,22 +162,22 @@ public class EmployeeList extends AbstractHumanList<Employee> {
                     }
                     break;
                 case "5":
-                    if (employeeView.typeInAge(cloneEmployee) == 0) {
+                    if (employeeView.typeInAge(cloneEmployee, sc) == 0) {
                         return;
                     }
                     break;
                 case "6":
-                    if (employeeView.typeInGender(cloneEmployee) == 0) {
+                    if (employeeView.typeInGender(cloneEmployee, sc) == 0) {
                         return;
                     }
                     break;
                 case "7":
-                    if (employeeView.typeInSalaryPerDay(cloneEmployee) == 0) {
+                    if (employeeView.typeInSalaryPerDay(cloneEmployee, sc) == 0) {
                         return;
                     }
                     break;
                 case "8":
-                    if (employeeView.typeInAndress(cloneEmployee) == 0) {
+                    if (employeeView.typeInAndress(cloneEmployee, sc) == 0) {
                         return;
                     }
                     break;
@@ -183,7 +197,7 @@ public class EmployeeList extends AbstractHumanList<Employee> {
         System.out.println("Delete succeed!");
     }
 
-    public Employee searchEmployee() {
+    public Employee searchEmployee(Scanner sc) {
         Employee searchingEmployee = null;
         if (this.getList().isEmpty()) {
             System.out.println("Cannot search in an empty List!");

@@ -5,6 +5,8 @@
 package Models;
 
 import View.Cautions;
+import com.google.gson.annotations.Expose;
+import com.google.gson.annotations.SerializedName;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
@@ -14,8 +16,11 @@ import java.util.Scanner;
  * @author FPTSHOP
  */
 public class History {
+    @SerializedName("ctions")
+    @Expose
     final Cautions ctions = new Cautions();
-    final Scanner sc = new Scanner(System.in);
+    @SerializedName("shiftHistory")
+    @Expose
     private List<Shift> shiftHistory = new ArrayList<>();
 
     public History(List<Shift> shiftHistory) {
@@ -64,7 +69,7 @@ public class History {
         return null;
     }
 
-    public Order searchOrder() {
+    public Order searchOrder(Scanner sc) {
         // tra ve null neu nguoi dung nhap 'back', nguoc lai, tra ve 1 order duoc tim kiem
         if (this.getShiftHistory().isEmpty()) {
             System.out.println("Cannot search in an empty List!");
@@ -94,7 +99,7 @@ public class History {
         return searchingOrder;
     }
     
-    public ImportedGoods searchImportGoods() {
+    public ImportedGoods searchImportGoods(Scanner sc) {
         // tra ve null neu nguoi dung nhap 'back', nguoc lai, tra ve 1 importGoods duoc tim kiem
         if (this.getShiftHistory().isEmpty()) {
             System.out.println("Cannot search in an empty List!");
@@ -124,7 +129,7 @@ public class History {
         return searchingImportGoods;
     }
     
-    public Shift searchShift() {
+    public Shift searchShift(Scanner sc) {
         // tra ve null neu nguoi dung nhap 'back', nguoc lai, tra ve 1 Shift duoc tim kiem
         if (this.getShiftHistory().isEmpty()) {
             System.out.println("Cannot search in an empty List!");

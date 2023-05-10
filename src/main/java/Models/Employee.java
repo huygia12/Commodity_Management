@@ -4,6 +4,8 @@
  */
 package Models;
 
+import com.google.gson.annotations.Expose;
+import com.google.gson.annotations.SerializedName;
 import java.math.BigDecimal;
 
 /**
@@ -11,8 +13,11 @@ import java.math.BigDecimal;
  * @author s1rja
  */
 public class Employee extends AbstractHuman {
-
+    @SerializedName("salaryPerDay")
+    @Expose
     private BigDecimal salaryPerDay = BigDecimal.ZERO;
+    @SerializedName("CCCD")
+    @Expose
     private String CCCD;
 
     public Employee() {

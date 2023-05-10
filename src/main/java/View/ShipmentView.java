@@ -19,11 +19,10 @@ public class ShipmentView {
 
     final String INPUT_DATE_PATTERN = "d/M/y";
     final LocalDate CURRENT_DATE = LocalDate.now();
-    Scanner sc = new Scanner(System.in);
     Cautions ctions = new Cautions();
 
     
-    public int typeInQuan(Shipment shipment) {
+    public int typeInQuan(Shipment shipment, Scanner sc) {
         while (true) {
             System.out.print("Type in quantity or type EXIT/BACK to exit/back: ");
             String inputStr = sc.nextLine();
@@ -47,7 +46,7 @@ public class ShipmentView {
         }
     }
 
-    public int typeInImportPrice(Shipment shipment) {
+    public int typeInImportPrice(Shipment shipment, Scanner sc) {
         while (true) {
             System.out.print("Input goods import price or type EXIT/BACK to go exit/back: ");
             String inputStr = sc.nextLine();
@@ -71,7 +70,7 @@ public class ShipmentView {
         }
     }
 
-    public int typeInProDate(Shipment shipment) {
+    public int typeInProDate(Shipment shipment, Scanner sc) {
         while (true) {
             System.out.print("Input production date or type EXIT/BACK to go exit/back: ");
             String inputStr = sc.nextLine();
@@ -102,7 +101,7 @@ public class ShipmentView {
         }
     }
 
-    public int typeInEpirDate(Shipment shipment) {
+    public int typeInEpirDate(Shipment shipment, Scanner sc) {
         while (true) {
             System.out.print("Input expiration Date or type EXIT/BACK to go exit/back: ");
             String inputStr = sc.nextLine();
@@ -127,7 +126,7 @@ public class ShipmentView {
         }
     }  
 
-    public boolean gainQuanDecision() {
+    public boolean gainQuanDecision(Scanner sc) {
         // give the user to make a decision between gain the shipmentQuantity one or abort changes
         while (true) {
             System.out.println(
