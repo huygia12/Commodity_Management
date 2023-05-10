@@ -4,6 +4,7 @@
  */
 package Models;
 
+import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 
@@ -13,6 +14,7 @@ import java.time.format.DateTimeFormatter;
  */
 public class ImportedGoods extends Goods{
     private String importDateTime;
+    private BigDecimal totalAmountImport = BigDecimal.ZERO;
 
     public ImportedGoods(){
     }
@@ -31,4 +33,22 @@ public class ImportedGoods extends Goods{
         return this.importDateTime;
     }
 
+    public void setTotalAmountImport(BigDecimal totalAmountImport){
+        this.totalAmountImport = totalAmountImport;
+    }
+    
+    public BigDecimal getTotalAmountImport(){
+        return this.totalAmountImport;
+    }
+    
+    public ImportedGoods cloneImportGoods(){
+        ImportedGoods cloneImportedGoods = new ImportedGoods();
+        cloneImportedGoods.setGoodsName(this.getGoodsName());
+        cloneImportedGoods.setManufacture(this.getManufacture());
+        cloneImportedGoods.setListPrice(this.getListPrice());
+        cloneImportedGoods.setID(this.getID());
+        cloneImportedGoods.setTotalQuantity(this.getTotalQuanByShipments());
+        return cloneImportedGoods;
+    }
+    
 }

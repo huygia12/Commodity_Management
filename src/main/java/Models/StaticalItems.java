@@ -12,8 +12,8 @@ import java.math.BigDecimal;
  */
 public class StaticalItems {
     private String name;
-    private BigDecimal quantity;
-    private BigDecimal revenue;
+    private BigDecimal quantity = BigDecimal.ZERO;
+    private BigDecimal revenue = BigDecimal.ZERO;
     private double ratio;
     
     public StaticalItems(String name, BigDecimal quantity, BigDecimal revenue, double ratio) {

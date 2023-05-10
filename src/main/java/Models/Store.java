@@ -82,7 +82,7 @@ public class Store {
         System.out.println("");
     }
 
-    public void setStoreInfor(SettingsView settingsView) {
+    public void setStoreInfor(SettingsView settingsView, Shift currentShift) {
         String choice;
         do {
             settingsView.menuOfChangeStoreInfor();
@@ -109,6 +109,10 @@ public class Store {
                     }
                     break;
                 case "5":
+                    if(currentShift != null){
+                        System.out.println("This current Shift is not over yet, change cannot be performed!");
+                        break;
+                    }
                     if (settingsView.typeInVAT(this) == 0) {
                         return;
                     }

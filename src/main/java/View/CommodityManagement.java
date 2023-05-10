@@ -12,9 +12,19 @@ import Controllers.OrderController;
 import Controllers.RepositoryController;
 import Controllers.SettingsController;
 import Controllers.ShiftController;
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 import java.awt.AWTException;
 import java.awt.Robot;
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.IOException;
+import java.io.PrintWriter;
+import java.lang.reflect.Type;
 import java.math.BigDecimal;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.StandardOpenOption;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -30,19 +40,25 @@ import java.util.logging.Logger;
  */
 public class CommodityManagement {
 
+    private static final String HOME = System.getProperty("user.dir");
+    private static final String SEPARATOR = File.separator;
+    private static final String FILE_PRINT = HOME + SEPARATOR + "data" + SEPARATOR + "projectData.json";
+    private static final Path dataPath = Path.of(FILE_PRINT);
+    
     static Scanner sc = new Scanner(System.in);
     static Cautions ctions = new Cautions();
-    static final List<Goods> myGoodsList = new ArrayList<>();
-    static final IDGenerator idGenerator = new IDGenerator(new HashMap<>());
-    static final GoodsList repoGoodsList = new GoodsList(myGoodsList);
-    static final ShiftController shiftCtr = new ShiftController(new Shift());
-    static final EmployeeListController employeeListCtr = new EmployeeListController(new EmployeeList(new ArrayList<>()));
-    static final CustomerCardListController customerCardListCtr = new CustomerCardListController(new CustomerCardList(new ArrayList<>()));
-    static final SettingsController settingsCtr = new SettingsController(new Store());
-    static final RepositoryController repoCtr = new RepositoryController(new Repository(myGoodsList));
-    static final HistoryController hisCtr = new HistoryController(new History());
-    
-    public static void menuOfMainFunction() {
+    static List<Goods> myGoodsList = new ArrayList<>();
+    static IDGenerator idGenerator = new IDGenerator(new HashMap<>());
+    static ShiftController shiftCtr = new ShiftController();
+    static EmployeeListController employeeListCtr = new EmployeeListController();
+    static CustomerCardListController customerCardListCtr = new CustomerCardListController(new CustomerCardList(new ArrayList<>()));
+    static SettingsController settingsCtr = new SettingsController(new Store());
+    static RepositoryController repoCtr = new RepositoryController(new Repository(myGoodsList));
+    static HistoryController hisCtr = new HistoryController(new History());
+    static OrderController orderCtr = new OrderController();
+    static HashMap<String, Object> myData = new HashMap<>();
+
+    private static void menuOfMainFunction() {
         System.out.println("\n********************************");
         System.out.println("* 1. Repository Management     *");
         System.out.println("* 2. Make New Order            *");
@@ -66,34 +82,40 @@ public class CommodityManagement {
                 sc.nextLine();
                 switch (choice) {
                     case 1:
+                        if (shiftCtr.getShift() == null) {
+                            shiftCtr.getView().shiftNotOpenCaution();
+                            break;
+                        }
                         repoCtr.repositoryManagement(shiftCtr.getShift(), idGenerator);
                         break;
                     case 2:
-                        Order newOrder = new Order(idGenerator.generateID(Order.class.getName(), 6),
-                                settingsCtr.getMyStore().getVAT());
-                        OrderController orderCtr = new OrderController(newOrder);
-                        if (orderCtr.makeNewOrder(repoGoodsList, 
-                                customerCardListCtr.getCustomerCardList(), 
-                                settingsCtr.getMyStore())) {
-                            shiftCtr.getShift()
-                                    .getOrderHisPerShift()
-                                    .add(newOrder);
+                        if (shiftCtr.getShift() == null) {
+                            shiftCtr.getView().shiftNotOpenCaution();
+                            break;
                         }
+                        orderCtr.makeNewOrder(repoCtr.getRepository(),
+                                customerCardListCtr.getCustomerCardList(),
+                                settingsCtr.getMyStore(),
+                                shiftCtr.getShift(),
+                                idGenerator);
                         break;
                     case 3:
-                        shiftCtr.ShiftManagement(employeeListCtr.getEmployeeList(), settingsCtr.getMyStore());
+                        shiftCtr.ShiftManagement(employeeListCtr.getEmployeeList(),
+                                settingsCtr.getMyStore(),
+                                idGenerator,
+                                hisCtr.getHistory());
                         break;
                     case 4:
                         hisCtr.historyManagement();
                         break;
                     case 5:
-                        employeeListCtr.employeeListManagement();
+                        employeeListCtr.employeeListManagement(shiftCtr.getShift());
                         break;
                     case 6:
                         customerCardListCtr.customerCardListManagement(idGenerator);
                         break;
                     case 7:
-                        settingsCtr.SettingsManagement();
+                        settingsCtr.SettingsManagement(shiftCtr.getShift());
                         break;
                     case 8:
                         System.out.println("Exiting...");
@@ -108,9 +130,10 @@ public class CommodityManagement {
                 sc.next();
             }
         } while (choice != 8);
+        saveData();
     }
 
-    static void insertInformation() {
+    private static void insertInformation() {
         myGoodsList.add(new Goods("Custard Cake", "TuyenIndustry", new BigDecimal("3000"), idGenerator.generateID(Goods.class.getName(), 6)));
         myGoodsList.add(new Goods("Cup Cake", "TuyenIndustry", new BigDecimal("8000"), idGenerator.generateID(Goods.class.getName(), 6)));
         myGoodsList.add(new Goods("Donut", "TuyenIndustry", new BigDecimal("12000"), idGenerator.generateID(Goods.class.getName(), 6)));
@@ -184,7 +207,7 @@ public class CommodityManagement {
         customerCardListCtr.getCustomerCardList().getList().add(new CustomerCard(idGenerator.generateID(CustomerCard.class.getName(), 6), new Customer("Le Van", "Quyet", "0333333222", "26 Do Duc Duc", 20, Gender.OTHER)));
         customerCardListCtr.getCustomerCardList().getList().add(new CustomerCard(idGenerator.generateID(CustomerCard.class.getName(), 6), new Customer("Do Quynh", "Anh", "0733833888", "16 Cau Giay", 22, Gender.FEMALE)));
         customerCardListCtr.getCustomerCardList().getList().add(new CustomerCard(idGenerator.generateID(CustomerCard.class.getName(), 6), new Customer("Le Duc", "Cuong", "053555133", "41 Minh Khai", 17, Gender.MALE)));
-        settingsCtr.setMyStore(new Store("Chang hi", "huycaptain@gmail.com", "112-Nguyen Van Loc", 10, "0705737292"));
+        settingsCtr.setMyStore(new Store("Chang hi", "bonEmMuonAnHotpotWangWang@gmail.com", "112-Nguyen Van Loc", 10, "0705737292"));
     }
 
     public void clearScreen() {
@@ -204,4 +227,42 @@ public class CommodityManagement {
         sc.nextLine();
     }
 
+    private static void saveData() {
+        myData.put("myGoodsList", myGoodsList);
+        myData.put("idGenerator", idGenerator);
+        myData.put("shiftCtr", shiftCtr);
+        myData.put("employeeListCtr", employeeListCtr);
+        myData.put("customerCardListCtr", customerCardListCtr);
+        myData.put("settingsCtr", settingsCtr);
+        myData.put("repoCtr", repoCtr);
+        myData.put("hisCtr", hisCtr);
+
+        try ( PrintWriter pw = new PrintWriter(Files.newBufferedWriter(dataPath,
+                StandardOpenOption.CREATE,
+                StandardOpenOption.WRITE,
+                StandardOpenOption.TRUNCATE_EXISTING))) {
+            Gson gson = new Gson();
+            gson.toJson(repoCtr, pw);
+        } catch (IOException ex) {
+            Logger.getLogger(CommodityManagement.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+
+    private static void loadData() {
+        try ( BufferedReader br = new BufferedReader(Files.newBufferedReader(dataPath))) {
+            Gson gson = new Gson();
+            Type type = new TypeToken<HashMap<String, Object>>(){}.getType();
+            myData = gson.fromJson(br, type);
+        } catch (IOException ex) {
+            Logger.getLogger(CommodityManagement.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        myGoodsList = (List<Goods>)myData.get("myGoodsList");
+        idGenerator = (IDGenerator)myData.get("idGenerator");
+        shiftCtr = (ShiftController)myData.get("shiftCtr");
+        employeeListCtr = (EmployeeListController)myData.get("employeeListCtr");
+        customerCardListCtr = (CustomerCardListController)myData.get("customerCardListCtr");
+        settingsCtr = (SettingsController)myData.get("settingsCtr");
+        repoCtr = (RepositoryController)myData.get("repoCtr");
+        hisCtr = (HistoryController)myData.get("hisCtr");
+    }
 }

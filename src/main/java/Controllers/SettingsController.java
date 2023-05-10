@@ -4,6 +4,7 @@
  */
 package Controllers;
 
+import Models.Shift;
 import Models.Store;
 import View.SettingsView;
 import java.util.Scanner;
@@ -37,7 +38,7 @@ public class SettingsController {
         return this.settingsView;
     }
 
-    public void SettingsManagement() {
+    public void SettingsManagement(Shift currentShift) {
         String choice;
         do {
             this.settingsView.menuOfSettings();
@@ -47,7 +48,7 @@ public class SettingsController {
                     this.myStore.showStoreInfor();
                     break;
                 case "2":
-                    this.myStore.setStoreInfor(settingsView);
+                    this.myStore.setStoreInfor(settingsView, currentShift);
                     break;
                 case "3":
                     break;

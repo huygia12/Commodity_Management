@@ -20,15 +20,14 @@ import java.util.Scanner;
  */
 public class Shift {
 
-
     final Scanner sc = new Scanner(System.in);
     private List<Order> orderHisPerShift = new ArrayList<>();
-    private List<ImportedGoods> importGoodsHis = new ArrayList<>();
+    private GoodsList<ImportedGoods> importGoodsHis = new GoodsList<>();
     private String openDateTime = null;
     private String endDateTime = null;
-    private BigDecimal openingBalance = null;
-    private BigDecimal shippingFee = null;
-    private EmployeeList employeeOfThisShift;
+    private BigDecimal openingBalance = BigDecimal.ZERO;
+    private BigDecimal shippingFee = BigDecimal.ZERO;
+    private EmployeeList employeeOfThisShift = new EmployeeList(new ArrayList());
     private Employee cashier;
     private String ID;
     private int VAT;
@@ -41,46 +40,50 @@ public class Shift {
         this.VAT = VAT;
     }
 
+    public void setVAT(int VAT) {
+        this.VAT = VAT;
+    }
+
     public int getVAT() {
-        return VAT;
+        return this.VAT;
     }
 
     public List<Order> getOrderHisPerShift() {
-        return orderHisPerShift;
+        return this.orderHisPerShift;
     }
 
-    public List<ImportedGoods> getImportGoodsHis() {
-        return importGoodsHis;
+    public GoodsList<ImportedGoods> getImportGoodsHis() {
+        return this.importGoodsHis;
     }
 
     public void setOrderHisPerShift(List<Order> orderHisPerShift) {
         this.orderHisPerShift = orderHisPerShift;
     }
 
-    public void setImportGoodsHis(List<ImportedGoods> importGoodsHis) {
+    public void setImportGoodsHis(GoodsList<ImportedGoods> importGoodsHis) {
         this.importGoodsHis = importGoodsHis;
     }
 
     public String getOpenTime() {
-        return openDateTime;
+        return this.openDateTime;
     }
 
     public void setOpenTime() {
         this.openDateTime = LocalDateTime.now()
-                .format(DateTimeFormatter.ofPattern("HH:mm:ss"));
+                .format(DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm:ss"));
     }
 
     public String getEndTime() {
-        return endDateTime;
+        return this.endDateTime;
     }
 
     public void setEndTime() {
         this.endDateTime = LocalDateTime.now()
-                .format(DateTimeFormatter.ofPattern("HH:mm:ss"));
+                .format(DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm:ss"));
     }
 
     public String getID() {
-        return ID;
+        return this.ID;
     }
 
     public void setID(String ID) {
@@ -88,7 +91,7 @@ public class Shift {
     }
 
     public BigDecimal getOpeningBalance() {
-        return openingBalance;
+        return this.openingBalance;
     }
 
     public void setOpeningBalance(BigDecimal openingBalance) {
@@ -96,7 +99,7 @@ public class Shift {
     }
 
     public BigDecimal getTransportFee() {
-        return shippingFee;
+        return this.shippingFee;
     }
 
     public void setTransportFee(BigDecimal transportFee) {
@@ -137,7 +140,7 @@ public class Shift {
 
     public BigDecimal getTotalDiscountMoney() {
         BigDecimal result = BigDecimal.ZERO;
-        for (Order order : orderHisPerShift) {
+        for (Order order : this.orderHisPerShift) {
             result = result.add(order.getDiscountMoney());
         }
         return result;
@@ -145,8 +148,8 @@ public class Shift {
 
     public BigDecimal getTotalPaymentByCash() {
         BigDecimal result = BigDecimal.ZERO;
-        for (Order order : orderHisPerShift) {
-            if (order.getPaymentOptions().equals(PaymentOptions.Wire_Transfer_Payment)) {
+        for (Order order : this.orderHisPerShift) {
+            if (order.getPaymentOptions().equals(PaymentOptions.Cash_Payment)) {
                 result = result.add(order.getTotal());
             }
         }
@@ -155,7 +158,7 @@ public class Shift {
 
     public BigDecimal getTotalPaymentByWireTransfer() {
         BigDecimal result = BigDecimal.ZERO;
-        for (Order order : orderHisPerShift) {
+        for (Order order : this.orderHisPerShift) {
             if (order.getPaymentOptions().equals(PaymentOptions.Wire_Transfer_Payment)) {
                 result = result.add(order.getTotal());
             }
@@ -165,31 +168,34 @@ public class Shift {
 
     public BigDecimal getTotalVAT() {
         BigDecimal result = BigDecimal.ZERO;
-        for (Order order : orderHisPerShift) {
+        for (Order order : this.orderHisPerShift) {
             result = result.add(order.getTaxFee());
         }
         return result;
     }
-    
-    public BigDecimal getTotalPointDiscount(){
+
+    public BigDecimal getTotalPointDiscount() {
         BigDecimal result = BigDecimal.ZERO;
-        for (Order order : orderHisPerShift) {
+        for (Order order : this.orderHisPerShift) {
             result = result.add(order.getPointDiscount());
         }
         return result;
     }
-    
+
     public long getNumberOfOrder() {
-        return orderHisPerShift.stream().count();
+        return this.orderHisPerShift.stream().count();
     }
 
     public BigDecimal getAveragePerOrder() {
+        if (this.getNumberOfOrder() == 0) {
+            return BigDecimal.ZERO;
+        }
         return this.getNetRevenue().divide(new BigDecimal(this.getNumberOfOrder()));
     }
 
     public BigDecimal getTotalGoodsQuanOfThisShift() {
         BigDecimal result = BigDecimal.ZERO;
-        for (Order order : orderHisPerShift) {
+        for (Order order : this.orderHisPerShift) {
             for (Goods goods : order.getGoodsList()) {
                 result = result.add(goods.getTotalQuanByShipments());
             }
@@ -199,14 +205,14 @@ public class Shift {
 
     public Map<String, StaticalItems> getStaticalList() {
         Map<String, StaticalItems> staticalList = new HashMap<>();
-        for (Order order : orderHisPerShift) {
+        for (Order order : this.orderHisPerShift) {
             for (Goods goods : order.getGoodsList()) {
                 StaticalItems newStaticalItems = new StaticalItems();
                 newStaticalItems.setName(goods.getGoodsName());
                 newStaticalItems.setQuantity(goods.getTotalQuanByShipments());
-                newStaticalItems.setRevenue(goods.getListPrice()
+                newStaticalItems.setRevenue((goods.getListPrice().add(goods.getVATMoneyPerGoods(order.getVAT())))
                         .multiply(goods.getTotalQuanByShipments()
-                                .multiply(new BigDecimal(1.0 - order.getDiscount() * 1.0 / 100 + order.getVAT() * 1.0 / 100))));
+                                .multiply(new BigDecimal(1.0 - order.getDiscount() * 1.0 / 100))));
                 if (staticalList.containsKey(goods.getID())) {
                     BigDecimal quanBefore = staticalList.get(goods.getID()).getQuantity();
                     BigDecimal revenueBefore = staticalList.get(goods.getID()).getRevenue();
@@ -226,12 +232,10 @@ public class Shift {
         return staticalList;
     }
 
-    public void openShift(ShiftView shiftView, EmployeeList employeeList) {
-        if (this.endDateTime != null) {
-            shiftView.shiftNotEndCaution();
-            return;
-        }
+    public void openShift(ShiftView shiftView, EmployeeList employeeList, IDGenerator iDGenerator, Store myStore) {
         this.setOpenTime();
+        this.setID(iDGenerator.generateID(Shift.class.getName(), 6));
+        this.setVAT(myStore.getVAT());
         int n = 1;
         int nextProcess;
         while (n != 3) {
@@ -241,7 +245,6 @@ public class Shift {
                     if (nextProcess == 0 || nextProcess == -1) {
                         return;
                     }
-                    break;
                 case 2:
                     nextProcess = shiftView.typeInEmployeesOfThisShift(this, employeeList);
                     if (nextProcess == 0) {
@@ -249,15 +252,43 @@ public class Shift {
                     } else if (nextProcess == -1) {
                         break;
                     }
-                    break;
                 case 3:
-                    nextProcess = shiftView.typeInCashier(this);
+                    nextProcess = shiftView.typeInCashier(this, this.getEmployeeOfThisShift());
+                    n = 3;
                     break;
             }
         }
-        this.openDateTime = LocalDateTime.now()
-                .format(DateTimeFormatter.ofPattern("HH:mm:ss dd/MM/yyyy"));
+    }
 
+    private void deleteEmployeeFromShift(ShiftView shiftView, EmployeeList employeeList) {
+        Employee e = this.employeeOfThisShift.searchEmployee();
+        if (e != null) {
+            boolean checkRemoving = true;
+            if (e.getCCCD().equalsIgnoreCase(cashier.getCCCD())) {
+                if (shiftView.removeEmployeeCaution(this)) {
+                    int check = -1;
+                    while (check == -1) {
+                        check = shiftView.typeInCashier(this, employeeList);
+                    }
+                }
+                checkRemoving = false;
+            }
+            if (checkRemoving) {
+                this.employeeOfThisShift.getList().remove(e);
+            }
+        }
+    }
+
+    private void retypeEmployeeListOfThisShift(ShiftView shiftView, EmployeeList employeeList) {
+        this.employeeOfThisShift.getList().clear();
+        System.out.println("EmployeeList clear!");
+        int check = -1;
+        while(check == -1 || check == 0){
+            check = shiftView.typeInEmployeesOfThisShift(this, employeeList);
+        }
+        while(check == -1){
+            check = shiftView.typeInCashier(this, employeeList);
+        }
     }
 
     public void modifyEmployeeOfThisShift(ShiftView shiftView, EmployeeList employeeList) {
@@ -274,14 +305,10 @@ public class Shift {
                     }
                     break;
                 case "2":
-                    e = this.employeeOfThisShift.searchEmployee();
-                    if (e != null) {
-                        this.employeeOfThisShift.getList().remove(e);
-                    }
+                    deleteEmployeeFromShift(shiftView, employeeList);
                     break;
                 case "3":
-                    this.employeeOfThisShift.getList().clear();
-                    shiftView.typeInEmployeesOfThisShift(this, employeeList);
+                    retypeEmployeeListOfThisShift(shiftView, employeeList);
                     break;
                 case "4":
                     System.out.println("Back...");
@@ -293,11 +320,7 @@ public class Shift {
     }
 
     public void endShift(ShiftView shiftView, Store myStore) {
-        if (this.openDateTime != null) {
-            shiftView.shiftNotOpenCaution();
-            return;
-        }
-        if (this.shippingFee != null) {
+        if (this.shippingFee == null) {
             shiftView.typeInShippingFee(this);
         }
         this.setEndTime();

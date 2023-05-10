@@ -12,7 +12,7 @@ import java.math.BigDecimal;
  */
 public class Employee extends AbstractHuman {
 
-    private BigDecimal salaryPerDay;
+    private BigDecimal salaryPerDay = BigDecimal.ZERO;
     private String CCCD;
 
     public Employee() {

@@ -26,10 +26,10 @@ public class test {
     static  Map<String, Integer> staticalList = new HashMap<>();
     
     public static void main(String[] args) {
-        LocalDate test = LocalDate.parse("14/04/2024 12:12:12", 
+        LocalDate test = LocalDate.parse("10/05/2023 15:12:12", 
                 DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm:ss"));
         LocalDate test2 = LocalDate.now();
-        System.out.println(test.isAfter(test2));
+        System.out.println(test.isEqual(test2));
     }
     
     public static void testSetting(){

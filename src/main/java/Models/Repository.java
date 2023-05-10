@@ -17,7 +17,7 @@ import java.util.List;
  *
  * @author s1rja
  */
-public class Repository extends GoodsList {
+public class Repository extends GoodsList<Goods>{
 
     final Cautions ctions = new Cautions();
 
@@ -78,6 +78,7 @@ public class Repository extends GoodsList {
         int nextProcess;
         Shipment newShipment = new Shipment();
         ImportedGoods newImportedGoods = new ImportedGoods(searchGoods);
+        // copy lay cac thuoc tinh ngoai tru cac list Shipment trong searchGoods
         newImportedGoods.getShipments().clear();
         while (n != 4) {
             switch (n) {
@@ -132,12 +133,12 @@ public class Repository extends GoodsList {
         return newImportedGoods;
     }
 
-    public void delGoodsInRepo(Goods goods, GoodsList goodsList) {
+    public void delGoodsInRepo(Goods goods, GoodsList<Goods> goodsList) {
         goodsList.getGoodsList().remove(goods);
         System.out.println("Delete succeed...");
     }
 
-    private void finishEditGoods(Goods searchGoods, Goods draftGoods, GoodsList goodsList) {
+    private void finishEditGoods(Goods searchGoods, Goods draftGoods, GoodsList<Goods> goodsList) {
         GoodsList bucket = new GoodsList(new ArrayList<>(goodsList.getGoodsList()
                 .stream()
                 .filter(x -> x.twoGoodsIsDup(draftGoods))
@@ -161,7 +162,7 @@ public class Repository extends GoodsList {
         }
     }
 
-    public void editGoods(Goods searchGoods, GoodsList goodsList, GoodsView goodsView, RepositoryView repoView) {
+    public void editGoods(Goods searchGoods, GoodsList<Goods> goodsList, GoodsView goodsView, RepositoryView repoView) {
         Goods draftGoods = searchGoods.cloneGoods();
 
         int choice;

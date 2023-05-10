@@ -79,7 +79,7 @@ public class Goods {
         }
         return listPrice;
     }
-
+    
     public void setListPrice(BigDecimal listPrice) {
         this.listPrice = listPrice;
     }
@@ -92,6 +92,10 @@ public class Goods {
         this.totalQuantity = totalQuantity;
     }
 
+    public BigDecimal getVATMoneyPerGoods(int vat){
+        return this.listPrice.multiply(new BigDecimal(vat*1.0/100));
+    }
+    
     public BigDecimal getTotalQuanByShipments() {
         this.totalQuantity = BigDecimal.ZERO;
         for (int i = 0; i < shipments.size(); i++) {
@@ -116,7 +120,7 @@ public class Goods {
         return cloneGoods;
     }
 
-    public boolean twoGoodsIsDup(Goods anotherGoods) {
+    public<T extends Goods> boolean twoGoodsIsDup(T anotherGoods) {
         // tra ve true neu goods voi anotherGoods co cung name va manufacture, nguoc lai, tra ve true
         return this.getGoodsName().equalsIgnoreCase(anotherGoods.getGoodsName())
                 && this.getManufacture().equalsIgnoreCase(anotherGoods.getManufacture());

@@ -6,6 +6,7 @@ package Controllers;
 
 import Models.Employee;
 import Models.EmployeeList;
+import Models.Shift;
 import View.EmployeeListView;
 import java.util.ArrayList;
 import java.util.Scanner;
@@ -15,10 +16,10 @@ import java.util.Scanner;
  * @author FPTSHOP
  */
 public class EmployeeListController {
-    
+
     final Scanner sc = new Scanner(System.in);
     private final EmployeeListView view = new EmployeeListView();
-    private EmployeeList employeeList;
+    private EmployeeList employeeList = new EmployeeList(new ArrayList<>());
 
     public EmployeeListController() {
     }
@@ -39,7 +40,7 @@ public class EmployeeListController {
         return view;
     }
 
-    public void employeeListManagement() {
+    public void employeeListManagement(Shift currentShift) {
         EmployeeController employeeCtr = new EmployeeController();
         Employee searchedEmployee;
         String choice;
@@ -60,6 +61,13 @@ public class EmployeeListController {
                 case "3":
                     Employee delEmployee = this.employeeList.searchEmployee();
                     if (delEmployee != null) {
+                        if (currentShift != null) {
+                            if (currentShift.getEmployeeOfThisShift()
+                                    .containEmployee(delEmployee.getCCCD()) != null) {
+                                System.out.println("This employee is still working in this shift, delete connot be performed!");
+                                break;
+                            }
+                        }
                         this.getEmployeeList().deleteEmpployee(delEmployee);
                     }
                     break;

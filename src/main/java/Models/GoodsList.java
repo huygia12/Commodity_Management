@@ -13,8 +13,9 @@ import java.util.Scanner;
 /**
  *
  * @author FPTSHOP
+ * @param <T>
  */
-public class GoodsList {
+public class GoodsList <T extends Goods>{
     final Scanner sc = new Scanner(System.in);
     private final String OUTPUT_DATE_PATTERN = "dd/MM/yyyy";
     private int nameMaxSize;
@@ -23,27 +24,27 @@ public class GoodsList {
     private int totalQuantityMaxSize;
     private int importPriceMaxSize;
     private int quantityMaxSize;
-    private List<Goods> myGoodsList = new ArrayList<>();
+    private List<T> myGoodsList = new ArrayList<>();
 
     public GoodsList() {}
 
-    public GoodsList(List<Goods> goodsList) {
+    public GoodsList(List<T> goodsList) {
         this.myGoodsList = goodsList;
     }
 
     
-    public List<Goods> getGoodsList() {
+    public List<T> getGoodsList() {
         return myGoodsList;
     }
 
-    public void setGoodsList(List<Goods> goodsList) {
+    public void setGoodsList(List<T> goodsList) {
         this.myGoodsList = goodsList;
     }
 
     
-    public int indexOfDupGoods(Goods checkingGoods) {
+    public int indexOfDupGoods(T checkingGoods) {
         // tra ve index cua goods dau tien trong goodsList co manufac va name giong voi checkingGoods
-        for (Goods goods : this.myGoodsList) {
+        for (T goods : this.myGoodsList) {
             if (goods.twoGoodsIsDup(checkingGoods)) {
                 return this.myGoodsList.indexOf(goods);
             }
@@ -71,7 +72,7 @@ public class GoodsList {
                 + " | %-" + String.format(providerMaxSize + "s")
                 + " | %-" + String.format(listPriceMaxSize + "s")
                 + " | %-" + String.format(totalQuantityMaxSize + "s")
-                + " | %11s | %-15s | %-15s | %-" + String.format(importPriceMaxSize + "s")
+                + " | %-11s | %-15s | %-15s | %-" + String.format(importPriceMaxSize + "s")
                 + " | %-" + String.format(quantityMaxSize + "s")
                 + " |\n",
                 "Goods ID", "Name",
@@ -84,8 +85,8 @@ public class GoodsList {
         for (Goods goods : this.myGoodsList) {
             System.out.printf("| %-8s | %-" + String.format(nameMaxSize + "s")
                     + " | %-" + String.format(providerMaxSize + "s")
-                    + " | %-" + String.format(listPriceMaxSize + "s")
-                    + " | %-" + String.format(totalQuantityMaxSize + "s") + " |",
+                    + " | %-" + String.format(listPriceMaxSize + ".1f")
+                    + " | %-" + String.format(totalQuantityMaxSize + ".1f") + " |",
                     goods.getID(),
                     goods.getGoodsName(),
                     goods.getManufacture(),
@@ -97,8 +98,8 @@ public class GoodsList {
                 String productionDateString = formatDate(shipment.getNsx(), OUTPUT_DATE_PATTERN);
                 String expirationDateString = formatDate(shipment.getHsd(), OUTPUT_DATE_PATTERN);
                 System.out.printf(" %-11s | %-15s | %-15s | %-"
-                        + String.format(importPriceMaxSize + "s")
-                        + " | %-" + String.format(quantityMaxSize + "s")
+                        + String.format(importPriceMaxSize + ".1f")
+                        + " | %-" + String.format(quantityMaxSize + ".1f")
                         + " |\n",
                         shipment.getID(), productionDateString, expirationDateString,
                         shipment.getImportPrice(),
@@ -111,8 +112,8 @@ public class GoodsList {
                     int spaceInGoodsColumns = nameMaxSize + providerMaxSize + listPriceMaxSize + totalQuantityMaxSize + 20;
                     System.out.printf("| %-" + String.format(spaceInGoodsColumns + "s")
                             + " | %-11s | %-15s | %-15s"
-                            + " | %-" + String.format(importPriceMaxSize + "s")
-                            + " | %-" + String.format(quantityMaxSize + "s") + " |\n",
+                            + " | %-" + String.format(importPriceMaxSize + ".1f")
+                            + " | %-" + String.format(quantityMaxSize + ".1f") + " |\n",
                             "",
                             shipment.getID(), productionDateString, expirationDateString,
                             shipment.getImportPrice(),
@@ -143,18 +144,18 @@ public class GoodsList {
             if (goods.getManufacture().length() > providerMaxSize) {
                 providerMaxSize = goods.getManufacture().length();
             }
-            if (goods.getListPrice().toString().length() > listPriceMaxSize) {
-                listPriceMaxSize = goods.getListPrice().toString().length();
+            if (String.format(".1f", goods.getListPrice()).length() > listPriceMaxSize) {
+                listPriceMaxSize = String.format(".1f", goods.getListPrice()).length();
             }
-            if (goods.getTotalQuanByShipments().toString().length() > totalQuantityMaxSize) {
-                totalQuantityMaxSize = goods.getTotalQuanByShipments().toString().length();
+            if (String.format(".1f", goods.getTotalQuanByShipments()).length() > totalQuantityMaxSize) {
+                totalQuantityMaxSize = String.format(".1f", goods.getTotalQuanByShipments()).length();
             }
             for (Shipment shipment : goods.getShipments()) {
-                if (shipment.getImportPrice().toString().length() > importPriceMaxSize) {
-                    importPriceMaxSize = shipment.getImportPrice().toString().length();
+                if (String.format(".1f", shipment.getImportPrice()).length() > importPriceMaxSize) {
+                    importPriceMaxSize = String.format(".1f", shipment.getImportPrice()).length();
                 }
-                if (shipment.getQuantity().toString().length() > quantityMaxSize) {
-                    quantityMaxSize = shipment.getQuantity().toString().length();
+                if (String.format(".1f", shipment.getQuantity()).length() > quantityMaxSize) {
+                    quantityMaxSize = String.format(".1f", shipment.getQuantity()).length();
                 }
             }
         }
@@ -164,8 +165,8 @@ public class GoodsList {
         return date.format(DateTimeFormatter.ofPattern(formatPattern));
     }
 
-    public Goods containGoods(String id) {
-        for (Goods tmpGoods : this.myGoodsList) {
+    public T containGoods(String id) {
+        for (T tmpGoods : this.myGoodsList) {
             if (tmpGoods.getID().equals(id)) {
                 return tmpGoods;
             }
@@ -173,7 +174,7 @@ public class GoodsList {
         return null;
     }
 
-    public Goods searchGoods() {
+    public T searchGoods() {
         // tra ve null neu nguoi dung nhap 'back', nguoc lai, tra ve 1 goods duoc tim kiem
         if (this.getGoodsList().isEmpty()) {
             System.out.println("Cannot search in an empty List!");
@@ -181,7 +182,7 @@ public class GoodsList {
         }
         String inputStr = new String();
         boolean completed = false;
-        Goods searchingGoods = null;
+        T searchingGoods = null;
         do {
             try {
                 System.out.print("Input productID to search(Type name for suggestion or press 'Enter' to see the whole List) or BACK to go back: ");

@@ -305,7 +305,9 @@ public class RepositoryController {
                         ImportedGoods newImportGoods = this.repository.importGoods(shipCtr.getView(), idGenerator);
                         // sau moi lan nhap hang thi add newImportGoods vao ImportGoodsHistory cua shift hien tai
                         if(newImportGoods!=null){
-                            shift.getImportGoodsHis().add(newImportGoods);
+                            shift.getImportGoodsHis()
+                                    .getGoodsList()
+                                    .add(newImportGoods);
                         }
                         //uf.clearScreen();
                         break;

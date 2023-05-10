@@ -9,14 +9,14 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 
-public class Order extends GoodsList {
+public class Order extends GoodsList<Goods>{
 
     private final String ORDER_DATE;
     final Cautions ctions = new Cautions();
     private String ID;
-    private int VAT;
+    private int VAT = 0;
     private BigDecimal cusMoney = BigDecimal.ZERO;
-    private int discount;
+    private int discount = 0;
     private PaymentOptions paymentOptions;
     private CustomerCard customerCard;
     private BigDecimal pointDiscount = BigDecimal.ZERO;
@@ -108,17 +108,22 @@ public class Order extends GoodsList {
 
     public BigDecimal getTotal() {
         // Khoan tien can thanh toan khi da tru di discount va cong them VAT
-        return this.getSubTotal()
-                .subtract(this.getDiscountMoney())
-                .add(this.getTaxFee())
+        return (this.getSubTotal()
+                .add(this.getTaxFee()))
+                .multiply(new BigDecimal(1.0-this.discount*1.0/100))
                 .subtract(this.pointDiscount);
     }
 
     public BigDecimal getDiscountMoney() {
         // tong tien giam gia 
-        return this.getSubTotal().multiply(new BigDecimal(this.discount * 1.0 / 100));
+        return (this.getSubTotal().add(this.getTaxFee()))
+                .multiply(new BigDecimal(this.discount * 1.0 / 100));
     }
-
+    
+    public BigDecimal getChange(){
+        return this.getCusMoney().subtract(this.getTotal());
+    }
+    
     public CustomerCard getCustomerCard() {
         return customerCard;
     }
@@ -158,12 +163,12 @@ public class Order extends GoodsList {
             }
         }
         BigDecimal inputQuantity = orderShipment.getQuantity();
-        // Check if order already had this goods or not
+        // Kiem tra neu order da chua goods nay hay chua
         Goods existedOrderGoods = this.containGoods(searchGoods.getID());
         orderShipment = searchShipment.cloneShipment();
         orderShipment.setQuantity(inputQuantity);
         if (existedOrderGoods == null) {
-            // if not, add new Goods and it'sShipment to currentOrder
+            // Neu khong chua thi them moi vao Order hien tai
             Goods orderGoods = searchGoods.cloneGoods();
             orderGoods.getShipments().clear();
             orderGoods.getShipments().add(orderShipment);
@@ -177,7 +182,7 @@ public class Order extends GoodsList {
                         .setQuantity(existedOrderShipment.getQuantity()
                                 .add(orderShipment.getQuantity()));
             } else {
-                // if not, add new Shipment to order 
+                // Neu chua ton tai shipment nay, them shipment vao trong  
                 existedOrderGoods.getShipments().add(orderShipment);
             }
         }
@@ -374,6 +379,9 @@ public class Order extends GoodsList {
             this.customerCard.gainPoint(this.getTotal());
         }
         orderView.showBill(this, myStore);
+        if(orderView.makeDecisionToPrintOrder()){
+            orderView.printBillToFile(this, myStore);
+        }
         return true;
     }
 }

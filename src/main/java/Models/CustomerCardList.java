@@ -17,7 +17,7 @@ import java.util.Scanner;
 public class CustomerCardList {
 
     final Scanner sc = new Scanner(System.in);
-    private List<CustomerCard> cardList;
+    private List<CustomerCard> cardList = new ArrayList<>();
     private int pointMaxSize;
     private int IDMaxSize;
     private int firstNameMaxSize;

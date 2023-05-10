@@ -1,0 +1,21 @@
+
+-------------- YOUR BILL ---------------
+----------------------------------------
+Store Name: Chang hi
+Email: bonEmMuonAnHotpotWangWang@gmail.com
+Address: 112-Nguyen Van Loc
+Phone Number: 0705737292
+Date: 10/05/2023 20:55:09
+
+Name                      Quantity   Price           Total          
+------------------------- ---------- --------------- ---------------
+Custard Cake              15.0       3000.0          45000.0        
+Sugar                     15.0       22000.0         330000.0       
+SubTotal: 375000.0
+Discount Amount(Discount=12%): 49500.0
+Tax(VAT=10%): 37500.0
+Payment Option: Wire_Transfer_Payment
+Member Card ID: 000000
+Point Discount: 0.0
+Total: 363000.0
+----------------------------------------

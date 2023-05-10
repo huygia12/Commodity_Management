@@ -8,6 +8,8 @@ import Models.CustomerCardList;
 import Models.Order;
 import Models.Goods;
 import Models.GoodsList;
+import Models.IDGenerator;
+import Models.Shift;
 import Models.Shipment;
 import Models.Store;
 import View.Cautions;
@@ -29,8 +31,8 @@ public class OrderController {
     final Scanner sc = new Scanner(System.in);
     final Cautions ctions = new Cautions();
     final LocalDate CURRENT_DATE = LocalDate.now();
-    private final GoodsList draftGoodsList = new GoodsList(new ArrayList<>());
-    private GoodsList repoGoodsList = new GoodsList(new ArrayList<>());
+    private final GoodsList<Goods> draftGoodsList = new GoodsList(new ArrayList<>());
+    private GoodsList<Goods> repoGoodsList = new GoodsList(new ArrayList<>());
     private final OrderView view = new OrderView();
     private Order order;
 
@@ -84,7 +86,9 @@ public class OrderController {
         }
     }
     
-    public boolean makeNewOrder(GoodsList repoGoodsList, CustomerCardList customerCardList, Store myStore) {
+    public void makeNewOrder(GoodsList repoGoodsList, CustomerCardList customerCardList, Store myStore, Shift shift, IDGenerator idGenerator) {
+        this.setOrder(new Order(idGenerator.generateID(Order.class.getName(), 6),
+                                myStore.getVAT()));
         this.repoGoodsList = repoGoodsList;
         // tao mot ban cpy cua repositoryGoodsList la draftGoodsList
         makeDraftGoodsList();
@@ -121,8 +125,8 @@ public class OrderController {
             }
         } while (choice != 4 && !completed);
         if(completed){
+            shift.getOrderHisPerShift().add(this.order);
             updateQuanAfterPay();
         }
-        return completed;
     }
 }

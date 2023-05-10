@@ -10,10 +10,18 @@ import Models.Goods;
 import Models.Order;
 import Models.PaymentOptions;
 import Models.Store;
+import java.io.File;
+import java.io.IOException;
+import java.io.PrintWriter;
 import java.math.BigDecimal;
 import java.math.BigInteger;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.StandardOpenOption;
 import java.util.InputMismatchException;
 import java.util.Scanner;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  *
@@ -21,6 +29,9 @@ import java.util.Scanner;
  */
 public class OrderView {
 
+    private final String HOME = System.getProperty("user.dir");
+    private final String SEPARATOR = File.separator;
+    private final String FILE_PRINT = HOME + SEPARATOR + "output" + SEPARATOR + "bill.txt";
     final Scanner sc = new Scanner(System.in);
     final Cautions ctions = new Cautions();
 
@@ -148,7 +159,8 @@ public class OrderView {
 
     public int typeInPoint(Order order, CustomerCard customerCard) {
         while (true) {
-            System.out.print("Please enter the point you want to use, or type EXIT/BACK to exit/back : ");
+            System.out.printf("Current points in card: %s\n", customerCard.getPoint());
+            System.out.print("Please enter the amount of points you want to use, or type EXIT/BACK to exit/back : ");
             String input = sc.nextLine();
             if ("back".equalsIgnoreCase(input)) {
                 return -1;
@@ -162,6 +174,20 @@ public class OrderView {
                 } catch (NumberFormatException nfe) {
                     ctions.wrInput();
                 }
+            }
+        }
+    }
+
+    public boolean makeDecisionToPrintOrder() {
+        while (true) {
+            System.out.print("Do yout want to print out this bill?\n(Y/N): ");
+            String yesNo = sc.nextLine();
+            if (yesNo.equalsIgnoreCase("y")) {
+                return true;
+            } else if (yesNo.equalsIgnoreCase("n")) {
+                return false;
+            } else {
+                ctions.wrInput();
             }
         }
     }
@@ -190,7 +216,6 @@ public class OrderView {
         if (order.getCustomerCard() != null) {
             customerID = order.getCustomerCard().getID();
         }
-        BigDecimal change = order.getCusMoney().subtract(order.getTotal());
         System.out.println("");
         System.out.println("-------------- YOUR BILL ---------------");
         System.out.println("----------------------------------------");
@@ -207,20 +232,63 @@ public class OrderView {
             BigDecimal totalQuantity = goods.getTotalQuanByShipments();
             BigDecimal price = goods.getListPrice();
             BigDecimal totalPrice = totalQuantity.multiply(price);
-            System.out.format("%-25s %-10s %-15s %-15s\n", goods.getGoodsName(), totalQuantity, price, totalPrice);
+            System.out.format("%-25s %-10.1f %-15.1f %-15.1f\n", goods.getGoodsName(), totalQuantity, price, totalPrice);
         }
-        System.out.printf("SubTotal: %.0f\n",  order.getSubTotal());
-        System.out.printf("Discount Amount(Discount=%s): %.0f\n", order.getDiscount() + "%", order.getDiscountMoney());
-        System.out.printf("Tax(VAT=%s): %.0f\n", myStore.getVAT() + "%", order.getTaxFee());
+        System.out.printf("SubTotal: %.1f\n", order.getSubTotal());
+        System.out.printf("Discount Amount(Discount=%s): %.1f\n", order.getDiscount() + "%", order.getDiscountMoney());
+        System.out.printf("Tax(VAT=%s): %.1f\n", myStore.getVAT() + "%", order.getTaxFee());
         System.out.println("Payment Option: " + order.getPaymentOptions());
         System.out.println("Member Card ID: " + customerID);
-        System.out.printf("Point Discount: %.0f\n",  order.getPointDiscount());
-        System.out.printf("Total: %.0f\n",  order.getTotal());
+        System.out.printf("Point Discount: %.1f\n", order.getPointDiscount());
+        System.out.printf("Total: %.1f\n", order.getTotal());
         if (order.getPaymentOptions().equals(PaymentOptions.Cash_Payment)) {
-            System.out.printf("Customer payment: %.0f\n", order.getCusMoney());
-            System.out.printf("Change: %.0f\n", change);
+            System.out.printf("Customer payment: %.1f\n", order.getCusMoney());
+            System.out.printf("Change: %.1f\n", order.getCusMoney());
         }
         System.out.println("----------------------------------------");
     }
 
+    public void printBillToFile(Order order, Store myStore) {
+        try ( PrintWriter pw = new PrintWriter(Files.newBufferedWriter(Path.of(FILE_PRINT),
+                StandardOpenOption.CREATE,
+                StandardOpenOption.WRITE,
+                StandardOpenOption.TRUNCATE_EXISTING))) {
+            String customerID = "";
+            if (order.getCustomerCard() != null) {
+                customerID = order.getCustomerCard().getID();
+            }
+            pw.println("");
+            pw.println("-------------- YOUR BILL ---------------");
+            pw.println("----------------------------------------");
+            pw.println("Store Name: " + myStore.getName());
+            pw.println("Email: " + myStore.getEmail());
+            pw.println("Address: " + myStore.getAddress());
+            pw.println("Phone Number: " + myStore.getPhoneNumber());
+            pw.println("Date: " + order.getOrderDateTime());
+            pw.println("");
+            pw.format("%-25s %-10s %-15s %-15s\n", "Name", "Quantity", "Price", "Total");
+            pw.format("%-25s %-10s %-15s %-15s\n", "-------------------------", "----------", "---------------", "---------------");
+            for (int i = 0; i < order.getGoodsList().size(); i++) {
+                Goods goods = order.getGoodsList().get(i);
+                BigDecimal totalQuantity = goods.getTotalQuanByShipments();
+                BigDecimal price = goods.getListPrice();
+                BigDecimal totalPrice = totalQuantity.multiply(price);
+                pw.format("%-25s %-10.1f %-15.1f %-15.1f\n", goods.getGoodsName(), totalQuantity, price, totalPrice);
+            }
+            pw.printf("SubTotal: %.1f\n", order.getSubTotal());
+            pw.printf("Discount Amount(Discount=%s): %.1f\n", order.getDiscount() + "%", order.getDiscountMoney());
+            pw.printf("Tax(VAT=%s): %.1f\n", myStore.getVAT() + "%", order.getTaxFee());
+            pw.println("Payment Option: " + order.getPaymentOptions());
+            pw.println("Member Card ID: " + customerID);
+            pw.printf("Point Discount: %.1f\n", order.getPointDiscount());
+            pw.printf("Total: %.1f\n", order.getTotal());
+            if (order.getPaymentOptions().equals(PaymentOptions.Cash_Payment)) {
+                pw.printf("Customer payment: %.1f\n", order.getCusMoney());
+                pw.printf("Change: %.1f\n", order.getCusMoney());
+            }
+            pw.println("----------------------------------------");
+        } catch (IOException ex) {
+            Logger.getLogger(OrderView.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
 }
