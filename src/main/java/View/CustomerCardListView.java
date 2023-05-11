@@ -11,7 +11,7 @@ package View;
 public class CustomerCardListView {
     public void menuOfcustomerCardListManagement() {
         System.out.print("""
-                           \n***************************************
+                           \n*******CUSTOMER_CARD_MANAGEMENT********
                            * 1. New customer card generate       *
                            * 2. Change card Information          *
                            * 3. Delete a card                    *
@@ -24,7 +24,7 @@ public class CustomerCardListView {
     
     public void menuOfEditCustomerCardInfor() {
         System.out.print("""
-                           \n*************************************
+                           \n*********CHANGE_CARD_INFOR***********
                            * 1. Change Customer first Name     *
                            * 2. Change Customer last Name      *
                            * 3. Change Customer phone number   *

@@ -114,7 +114,7 @@ public class SettingsView {
             } else {
                 try {
                     BigDecimal VAT = new BigDecimal(inputStr);
-                    if (!ctions.checkIfBigDecimalNegative(VAT)) {
+                    if (!ctions.checkIfNumberNegative(VAT)) {
                         continue;
                     }
                     store.setVAT(Math.min(100, Integer.parseInt(inputStr)));

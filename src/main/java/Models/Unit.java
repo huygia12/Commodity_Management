@@ -14,5 +14,7 @@ public enum Unit {
     Cai,
     Goi,
     Hop,
-    Bich
+    Bich,
+    Kg,
+    g
 }

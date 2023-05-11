@@ -77,8 +77,8 @@ public class HumanView<T extends AbstractHuman> {
             } else {
                 try {
                     int age = Integer.parseInt(inputStr);
-                    if (ctions.checkIfIntNegative(age)
-                            || ctions.checkIfIntEqualZero(age)) {
+                    if (ctions.checkIfNumberNegative(age)
+                            || ctions.checkIfNumberEqualZero(age)) {
                         continue;
                     }
                     human.setAge(age);

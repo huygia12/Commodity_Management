@@ -71,7 +71,7 @@ public class OrderView {
             } else {
                 try {
                     order.setDiscount(Math.min(100, Integer.parseInt(input)));
-                    if (ctions.checkIfIntNegative(order.getDiscount())) {
+                    if (ctions.checkIfNumberNegative(order.getDiscount())) {
                         order.setDiscount(0);
                     } else {
                         return 1;
@@ -95,7 +95,7 @@ public class OrderView {
             } else {
                 try {
                     order.setCusMoney(new BigDecimal(input));
-                    if (!ctions.checkIfBigDecimalNegative(order.getCusMoney())) {
+                    if (!ctions.checkIfNumberNegative(order.getCusMoney())) {
                         order.setCusMoney(BigDecimal.ZERO);
                     } else if (order.getCusMoney().compareTo(order.getTotal()) < 0) {
                         order.setCusMoney(BigDecimal.ZERO);

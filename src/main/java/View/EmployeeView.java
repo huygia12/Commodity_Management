@@ -27,7 +27,7 @@ public class EmployeeView extends HumanView<Employee> {
             } else {
                 try {
                     BigDecimal salaryPerDay = new BigDecimal(inputStr);
-                    if (!ctions.checkIfBigDecimalNegative(salaryPerDay)) {
+                    if (ctions.checkIfNumberNegative(salaryPerDay)) {
                         continue;
                     }
                     e.setSalaryPerDay(salaryPerDay);

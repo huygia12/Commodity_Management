@@ -254,7 +254,7 @@ public class Shift {
         return consumptions;
     }
 
-    public void openShift(ShiftView shiftView, EmployeeList employeeList, IDGenerator iDGenerator, Store myStore, Scanner sc) {
+    public boolean openShift(ShiftView shiftView, EmployeeList employeeList, IDGenerator iDGenerator, Store myStore, Scanner sc) {
         this.setOpenTime();
         this.setID(iDGenerator.generateID(Shift.class.getName(), 6));
         this.setVAT(myStore.getVAT());
@@ -265,12 +265,12 @@ public class Shift {
                 case 1:
                     nextProcess = shiftView.typeInOpeningBalance(this, sc);
                     if (nextProcess == 0 || nextProcess == -1) {
-                        return;
+                        return false;
                     }
                 case 2:
                     nextProcess = shiftView.typeInEmployeesOfThisShift(this, employeeList, sc);
                     if (nextProcess == 0) {
-                        return;
+                        return false;
                     } else if (nextProcess == -1) {
                         break;
                     }
@@ -280,6 +280,7 @@ public class Shift {
                     break;
             }
         }
+        return true;
     }
 
     private void deleteEmployeeFromShift(ShiftView shiftView, EmployeeList employeeList, Scanner sc) {
@@ -341,12 +342,15 @@ public class Shift {
         } while (!choice.equalsIgnoreCase("4"));
     }
 
-    public void endShift(ShiftView shiftView, Store myStore, Scanner sc) {
-        if (this.shippingFee == null) {
-            shiftView.typeInShippingFee(this, sc);
+    public boolean endShift(ShiftView shiftView, Store myStore, Scanner sc) {
+        if (this.shippingFee == BigDecimal.ZERO) {
+            if(shiftView.typeInShippingFee(this, sc)!=1){
+                return false;
+            }
         }
         this.setEndTime();
         shiftView.printFileOfThisShiftOverView(myStore, this);
+        return true;
     }
 
 }

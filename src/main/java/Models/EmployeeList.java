@@ -68,6 +68,7 @@ public class EmployeeList extends AbstractHumanList<Employee> {
                     if (nextProcess == 0) {
                         return;
                     } else if (nextProcess == -1) {
+                        n = 1;
                         break;
                     }
                 case 3:

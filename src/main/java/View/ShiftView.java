@@ -94,7 +94,7 @@ public class ShiftView {
             } else {
                 try {
                     BigDecimal openBalance = new BigDecimal(inputStr);
-                    if (!ctions.checkIfBigDecimalNegative(openBalance)) {
+                    if (!ctions.checkIfNumberNegative(openBalance)) {
                         continue;
                     }
                     shift.setOpeningBalance(openBalance);
@@ -116,7 +116,7 @@ public class ShiftView {
             } else {
                 try {
                     BigDecimal openBalance = new BigDecimal(inputStr);
-                    if (!ctions.checkIfBigDecimalNegative(openBalance)) {
+                    if (!ctions.checkIfNumberNegative(openBalance)) {
                         continue;
                     }
                     shift.setTransportFee(openBalance);

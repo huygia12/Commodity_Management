@@ -9,14 +9,9 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import java.awt.AWTException;
 import java.awt.Robot;
-import java.io.BufferedReader;
 import java.io.File;
-import java.io.IOException;
-import java.io.PrintWriter;
 import java.math.BigDecimal;
-import java.nio.file.Files;
 import java.nio.file.Path;
-import java.nio.file.StandardOpenOption;
 import java.time.LocalDate;
 import java.util.InputMismatchException;
 import java.util.Scanner;
@@ -43,7 +38,8 @@ public class CommodityManagement {
     static GsonBuilder gsonBuilder = new GsonBuilder();
     
     private static void menuOfMainFunction() {
-        System.out.println("\n********************************");
+        System.out.println("");
+        System.out.println("******COMMODITY_MANAGEMENT******");
         System.out.println("* 1. Repository Management     *");
         System.out.println("* 2. Make New Order            *");
         System.out.println("* 3. Current Shift             *");

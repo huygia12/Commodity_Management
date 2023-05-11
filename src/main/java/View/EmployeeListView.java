@@ -12,7 +12,7 @@ public class EmployeeListView {
 
     public void menuOfEmployeeManagement() {
         System.out.print("""
-                           \n***************************************
+                           \n**********EMPLOYEE_MANAGEMENT**********
                            * 1. Add new Employee                 *
                            * 2. Change Employee Information      *
                            * 3. Remove an employee               *
@@ -25,7 +25,7 @@ public class EmployeeListView {
 
     public void menuOfEditEmployeeInfor() {
         System.out.print("""
-                           \n*************************************
+                           \n*******CHANGE_EMPLOYEE_INFOR*********
                            * 1. Change employee first Name     *
                            * 2. Change employee last Name      *
                            * 3. Change employee identification *

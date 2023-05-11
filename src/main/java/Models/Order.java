@@ -176,7 +176,7 @@ public class Order extends GoodsList<Goods>{
             } else if (orderShipment.getQuantity().compareTo(searchShipment.getQuantity()) > 0) {
                 System.out.println("Doesn't have enough quantity!");
                 orderShipment.setQuantity(BigDecimal.ZERO);
-            } else if (!ctions.checkIfBigDecimalNegative(orderShipment.getQuantity())) {
+            } else if (!ctions.checkIfNumberNegative(orderShipment.getQuantity())) {
                 orderShipment.setQuantity(BigDecimal.ZERO);
             } else {
                 break;

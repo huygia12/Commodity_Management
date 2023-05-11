@@ -21,6 +21,7 @@ import java.util.Scanner;
  * @author FPTSHOP
  */
 public class ShiftController {
+
     @SerializedName("view")
     @Expose
     private final ShiftView view = new ShiftView();
@@ -47,8 +48,8 @@ public class ShiftController {
         this.shift = shift;
     }
 
-    public void ShiftManagement(EmployeeList employeeList, Store myStore,IDGenerator idGenerator, History currentHistory, Scanner sc) {
-        if(employeeList.getList().isEmpty()){
+    public void ShiftManagement(EmployeeList employeeList, Store myStore, IDGenerator idGenerator, History currentHistory, Scanner sc) {
+        if (employeeList.getList().isEmpty()) {
             System.out.println("Please add employees first to open shift!\n(Go to 'Employee Management'->'Add new Employee')");
             return;
         }
@@ -66,7 +67,10 @@ public class ShiftController {
                         break;
                     }
                     this.setShift(new Shift());
-                    this.shift.openShift(this.view, employeeList, idGenerator, myStore, sc);
+                    if (!this.shift.openShift(this.view, employeeList,
+                            idGenerator, myStore, sc)) {
+                        this.setShift(null);
+                    }
                     currentHistory.getShiftHistory().add(this.shift);
                     break;
                 case "2":
@@ -95,7 +99,7 @@ public class ShiftController {
                         this.view.shiftNotOpenCaution();
                         break;
                     }
-                    if(this.shift.getOrderHisPerShift().isEmpty()){
+                    if (this.shift.getOrderHisPerShift().isEmpty()) {
                         System.out.println("Your current order history is empty!");
                         break;
                     }
@@ -108,7 +112,7 @@ public class ShiftController {
                         this.view.shiftNotOpenCaution();
                         break;
                     }
-                    if(this.shift.getImportGoodsHis().getGoodsList().isEmpty()){
+                    if (this.shift.getImportGoodsHis().getGoodsList().isEmpty()) {
                         System.out.println("Your current import history is empty!");
                         break;
                     }
@@ -128,8 +132,9 @@ public class ShiftController {
                         this.view.shiftNotOpenCaution();
                         break;
                     }
-                    this.shift.endShift(this.view, myStore, sc);
-                    this.shift = null;
+                    if (this.shift.endShift(this.view, myStore, sc)) {
+                        this.shift = null;
+                    }
                     break;
                 case "9":
                     System.out.println("Back...");

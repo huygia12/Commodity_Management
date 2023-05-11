@@ -17,11 +17,12 @@ import java.util.Set;
 public class RepositoryView {
     
     public void menuOfRepoManagement() {
-        System.out.println("\n***********************************");
+        System.out.println("");
+        System.out.println("*******REPOSITORY_MANAGEMENT*******");
         System.out.println("* 1. Add New Goods                *");
         System.out.println("* 2. Import Goods                 *");
         System.out.println("* 3. Change Goods||Shipment Infor *");
-        System.out.println("* 4. Delete Goods||Shipment Infor *");
+        System.out.println("* 4. Delete Goods||Shipment       *");
         System.out.println("* 5. Show Repository              *");
         System.out.println("* 6. List Filter                  *");
         System.out.println("* 7. Back                         *");
@@ -30,7 +31,8 @@ public class RepositoryView {
     }
 
     public void menuOfFunctionEditGoodsInfor() {
-        System.out.println("\n***************************************");
+        System.out.println("");
+        System.out.println("**********CHANGE_GOOGS_INFOR***********");
         System.out.println("* 1. Change product Name              *");
         System.out.println("* 2. Change goods List price          *");
         System.out.println("* 3. Change goods Manufacture         *");
@@ -40,7 +42,8 @@ public class RepositoryView {
     }
 
     public void menuOfFunctionEditShipmentsInfor() {
-        System.out.println("\n***************************************");
+        System.out.println("");
+        System.out.println("*********CHANGE_SHIPMENT_INfOR*********");
         System.out.println("* 1. Change shipment Import Price     *");
         System.out.println("* 2. Change shipment Production Date  *");
         System.out.println("* 3. Change shipment Expiration Date  *");
@@ -51,7 +54,8 @@ public class RepositoryView {
     }
 
     public void menuOfFunctionEditInfor() {
-        System.out.println("\n****************************************");
+        System.out.println("");
+        System.out.println("******CHANGE_GOOGS||SHIPMENT_INfOR******");
         System.out.println("* 1. Change goods Informations         *");
         System.out.println("* 2. Change shipment Information       *");
         System.out.println("* 3. Back                              *");
@@ -61,7 +65,8 @@ public class RepositoryView {
 
     
     public void menuOfFunctionDel() {
-        System.out.println("\n********************************");
+        System.out.println("");
+        System.out.println("*****DELETE_GOODS||SHIPMENT*****");
         System.out.println("* 1. Delete a goods            *");
         System.out.println("* 2. Delete a shipment         *");
         System.out.println("* 3. Back                      *");
@@ -90,7 +95,8 @@ public class RepositoryView {
 
     
     public void menuOfRequestedList() {
-        System.out.println("\n*****************************************************");
+        System.out.println("");
+        System.out.println("******************LIST_FILTER************************");
         System.out.println("* 1. All Goods from the same manufacturer           *");
         System.out.println("* 2. Top 10 least quantity goodss in stock          *");
         System.out.println("* 3. Top 10 largest quantity goodss in stock        *");

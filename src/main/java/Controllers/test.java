@@ -14,33 +14,36 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-
-
-
-
 /**
  *
  * @author FPTSHOP
  */
 public class test {
-    static  Map<String, Integer> staticalList = new HashMap<>();
-    
+
+    static Map<String, Integer> staticalList = new HashMap<>();
+
     public static void main(String[] args) {
-        LocalDate test = LocalDate.parse("10/05/2023 15:12:12", 
-                DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm:ss"));
-        LocalDate test2 = LocalDate.now();
-        System.out.println(test.isEqual(test2));
+        System.out.println(checkIfNumberEqualZero(2));
     }
-    
-    public static void testSetting(){
+
+    public static <T extends Number> boolean checkIfNumberEqualZero(T number) {
+        BigDecimal numToBigDecimal = new BigDecimal(number+"");
+        if (numToBigDecimal.compareTo(BigDecimal.ZERO) == 0) {
+            System.out.println("This number cannot equal zero!");
+            return false;
+        }
+        return true;
+    }
+
+    public static void testSetting() {
         staticalList.put("huy", 1);
         staticalList.put("huy", 2);
         staticalList.put("ha", 5);
-        
+
         List<Integer> list = new ArrayList<>(staticalList.values());
         for (Map.Entry<String, Integer> entry : staticalList.entrySet()) {
-            System.out.println(entry.getKey()+" : "+entry.getValue());
+            System.out.println(entry.getKey() + " : " + entry.getValue());
         }
-        list.stream().forEach(x->System.out.print(x+" "));
+        list.stream().forEach(x -> System.out.print(x + " "));
     }
 }

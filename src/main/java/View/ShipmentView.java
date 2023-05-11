@@ -34,7 +34,7 @@ public class ShipmentView {
             } else {
                 try {
                     BigDecimal quantity = new BigDecimal(inputStr);
-                    if (!ctions.checkIfBigDecimalNegative(quantity)) {
+                    if (!ctions.checkIfNumberNegative(quantity)) {
                         continue;
                     }
                     shipment.setQuantity(quantity);
@@ -58,7 +58,7 @@ public class ShipmentView {
             } else {
                 try {
                     BigDecimal importPrice = new BigDecimal(inputStr);
-                    if (!ctions.checkIfBigDecimalNegative(importPrice)) {
+                    if (!ctions.checkIfNumberNegative(importPrice)) {
                         continue;
                     }
                     shipment.setImportPrice(importPrice);
