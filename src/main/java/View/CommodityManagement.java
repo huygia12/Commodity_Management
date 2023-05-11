@@ -60,7 +60,7 @@ public class CommodityManagement {
         gsonBuilder.registerTypeAdapter(LocalDate.class, new LocalDateSerializer());
         gsonBuilder.registerTypeAdapter(LocalDate.class, new LocalDateDeserializer());
         Gson gson =  gsonBuilder.setPrettyPrinting().create();
-        loadData(gson);
+        myData.loadData(gson, dataPath);
         int choice;
         //insertInformation();
         do {
@@ -122,7 +122,7 @@ public class CommodityManagement {
                 sc.next();
             }
         } while (choice != 8);
-        saveData(gson);
+        myData.saveData(gson, dataPath);
     }
 
     private static void insertInformation() {
@@ -219,39 +219,4 @@ public class CommodityManagement {
         sc.nextLine();
     }
 
-    private static void saveData(Gson gson) {
-//        myData.getstorage().put("myData.getRepoCtr().getRepository().getGoodsList()", myData.getRepoCtr().getRepository().getGoodsList());
-//        myData.getstorage().put("myData.getIdGenerator()", myData.getIdGenerator());
-//        myData.getstorage().put("shiftCtr", shiftCtr);
-//        myData.getstorage().put("myData.getEmployeeListCtr()", myData.getEmployeeListCtr());
-//        myData.getstorage().put("myData.getCustomerCardListCtr()", myData.getCustomerCardListCtr());
-//        myData.getstorage().put("settingsCtr", settingsCtr);
-//        myData.getstorage().put("repoCtr", repoCtr);
-//        myData.getstorage().put("hisCtr", hisCtr);
-        
-        try ( PrintWriter pw = new PrintWriter(Files.newBufferedWriter(dataPath,
-                StandardOpenOption.CREATE,
-                StandardOpenOption.WRITE,
-                StandardOpenOption.TRUNCATE_EXISTING))) {
-            gson.toJson(myData, pw);
-        } catch (IOException ex) {
-            Logger.getLogger(CommodityManagement.class.getName()).log(Level.SEVERE, null, ex);
-        }
-    }
-
-    private static void loadData(Gson gson) {
-        try ( BufferedReader br = new BufferedReader(Files.newBufferedReader(dataPath))) {
-            myData = gson.fromJson(br, DataStorage.class);
-        } catch (IOException ex) {
-            Logger.getLogger(CommodityManagement.class.getName()).log(Level.SEVERE, null, ex);
-        }
-//        myData.getRepoCtr().getRepository().getGoodsList() = (List<Goods>)myData.getstorage().get("myData.getRepoCtr().getRepository().getGoodsList()");
-//        myData.getIdGenerator() = (IDGenerator)myData.getstorage().get("myData.getIdGenerator()");
-//        shiftCtr = (ShiftController)myData.getstorage().get("shiftCtr");
-//        myData.getEmployeeListCtr() = (EmployeeListController)myData.getstorage().get("myData.getEmployeeListCtr()");
-//        myData.getCustomerCardListCtr() = (CustomerCardListController)myData.getstorage().get("myData.getCustomerCardListCtr()");
-//        settingsCtr = (SettingsController)myData.getstorage().get("settingsCtr");
-//        repoCtr = (RepositoryController)myData.getstorage().get("repoCtr");
-//        hisCtr = (HistoryController)myData.getstorage().get("hisCtr");
-    }
 }

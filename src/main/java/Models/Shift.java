@@ -224,7 +224,9 @@ public class Shift {
     }
 
     public Map<String, StaticalItems> getStaticalList() {
-        Map<String, StaticalItems> staticalList = new HashMap<>();
+        // Tao danh sach consumptions de thong ke sanpham/soluongBan/SoTienThuDuoc/phanTram 
+        // cua tat ca san pham trong 1 ca lam viec
+        Map<String, StaticalItems> consumptions = new HashMap<>();
         for (Order order : this.orderHisPerShift) {
             for (Goods goods : order.getGoodsList()) {
                 StaticalItems newStaticalItems = new StaticalItems();
@@ -233,23 +235,23 @@ public class Shift {
                 newStaticalItems.setRevenue((goods.getListPrice().add(goods.getVATMoneyPerGoods(order.getVAT())))
                         .multiply(goods.getTotalQuanByShipments()
                                 .multiply(new BigDecimal(1.0 - order.getDiscount() * 1.0 / 100))));
-                if (staticalList.containsKey(goods.getID())) {
-                    BigDecimal quanBefore = staticalList.get(goods.getID()).getQuantity();
-                    BigDecimal revenueBefore = staticalList.get(goods.getID()).getRevenue();
+                if (consumptions.containsKey(goods.getID())) {
+                    BigDecimal quanBefore = consumptions.get(goods.getID()).getQuantity();
+                    BigDecimal revenueBefore = consumptions.get(goods.getID()).getRevenue();
                     newStaticalItems.setQuantity(quanBefore.add(newStaticalItems.getQuantity()));
                     newStaticalItems.setQuantity(revenueBefore.add(newStaticalItems.getRevenue()));
                 }
-                staticalList.put(goods.getID(), newStaticalItems);
+                consumptions.put(goods.getID(), newStaticalItems);
             }
         }
         BigDecimal totalQuan = this.getTotalGoodsQuanOfThisShift();
-        for (Map.Entry<String, StaticalItems> entry : staticalList.entrySet()) {
+        for (Map.Entry<String, StaticalItems> entry : consumptions.entrySet()) {
             entry.getValue().setRatio(Double.parseDouble(entry
                     .getValue()
                     .getQuantity()
                     .divide(totalQuan) + ""));
         }
-        return staticalList;
+        return consumptions;
     }
 
     public void openShift(ShiftView shiftView, EmployeeList employeeList, IDGenerator iDGenerator, Store myStore, Scanner sc) {

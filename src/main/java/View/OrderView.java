@@ -241,7 +241,7 @@ public class OrderView {
         System.out.printf("Total: %.1f\n", order.getTotal());
         if (order.getPaymentOptions().equals(PaymentOptions.Cash_Payment)) {
             System.out.printf("Customer payment: %.1f\n", order.getCusMoney());
-            System.out.printf("Change: %.1f\n", order.getCusMoney());
+            System.out.printf("Change: %.1f\n", order.getChange());
         }
         System.out.println("----------------------------------------");
     }
