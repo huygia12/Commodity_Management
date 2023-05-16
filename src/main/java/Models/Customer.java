@@ -22,23 +22,4 @@ public class Customer extends AbstractHuman {
         this.gender = gender;
     }
     
-    public Customer cloneCustomer() {
-        Customer cus = new Customer();
-        cus.setAddress(this.getAddress());
-        cus.setAge(this.getAge());
-        cus.setFirstName(this.getFirstName());
-        cus.setLastName(this.getLastName());
-        cus.setPhoneNumber(this.getPhoneNumber());
-        cus.setGender(this.getGender());
-        return cus;
-    }
-    
-    public boolean equals(Customer anotherCustomer) {
-        return this.address.equalsIgnoreCase(anotherCustomer.address)
-                && (this.age == anotherCustomer.age)
-                && this.gender.equals(anotherCustomer.gender)
-                && this.getFirstName().equalsIgnoreCase(anotherCustomer.getFirstName())
-                && this.getLastName().equalsIgnoreCase(anotherCustomer.getLastName())
-                && this.getPhoneNumber().equalsIgnoreCase(anotherCustomer.getPhoneNumber());
-    }
 }

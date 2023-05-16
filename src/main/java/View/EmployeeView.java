@@ -4,6 +4,7 @@
  */
 package View;
 
+import Controllers.EmployeeListController;
 import Models.Employee;
 import Models.EmployeeList;
 import java.math.BigDecimal;
@@ -14,8 +15,9 @@ import java.util.Scanner;
  * @author FPTSHOP
  */
 public class EmployeeView extends HumanView<Employee> {
-
-    public int typeInSalaryPerDay(Employee e, Scanner sc) {
+    private final Scanner sc = new Scanner(System.in);
+    
+    public int typeInSalaryPerDay(Employee e) {
         while (true) {
             System.out.print("Type in Salary per day or type EXIT/BACK to exit/back: ");
             String inputStr = sc.nextLine();
@@ -39,7 +41,7 @@ public class EmployeeView extends HumanView<Employee> {
         }
     }
 
-    public int typeInCCCD(Employee e, EmployeeList employeeList, Scanner sc) {
+    public int typeInCCCD(Employee e, EmployeeList employeeList, EmployeeListController employeeListCtr) {
         while (true) {
             System.out.print("Type in CCCD or type EXIT/BACK to exit/back: ");
             String inputStr = sc.nextLine();
@@ -49,7 +51,7 @@ public class EmployeeView extends HumanView<Employee> {
                 return -1;
             } else if (ctions.checkIfNoInput(inputStr)
                     || !ctions.checkIfANumberSequence(inputStr)) {
-            } else if (employeeList.containEmployee(inputStr) != null) {
+            } else if (employeeListCtr.containEmployee(employeeList, inputStr) != null) {
                 System.out.println("This employee already existed.");
             } else {
                 e.setCCCD(inputStr);

@@ -4,22 +4,18 @@
  */
 package Models;
 
-import View.Cautions;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Scanner;
 
 /**
  *
  * @author s1rja
  */
 public class Goods {
-    @SerializedName("ctions")
-    @Expose
-    final Cautions ctions = new Cautions();
+    
     @SerializedName("goodsName")
     @Expose
     private String goodsName;
@@ -88,9 +84,6 @@ public class Goods {
     }
 
     public BigDecimal getListPrice() {
-        if(this.listPrice == null){
-            this.listPrice = BigDecimal.ZERO;
-        }
         return listPrice;
     }
     
@@ -105,88 +98,4 @@ public class Goods {
     public void setTotalQuantity(BigDecimal totalQuantity){
         this.totalQuantity = totalQuantity;
     }
-
-    public BigDecimal getVATMoneyPerGoods(int vat){
-        return this.listPrice.multiply(new BigDecimal(vat*1.0/100));
-    }
-    
-    public BigDecimal getTotalQuanByShipments() {
-        this.totalQuantity = BigDecimal.ZERO;
-        for (int i = 0; i < shipments.size(); i++) {
-            this.totalQuantity = this.totalQuantity.add(shipments.get(i).getQuantity());
-        }
-        if(this.totalQuantity == null){
-            this.totalQuantity = BigDecimal.ZERO;
-        }
-        return this.totalQuantity;
-    }
-
-    public Goods cloneGoods() {
-        // tra ve 1 goods duoc cpy cac thuoc tinh cua goods goi ham cloneGoods() nay
-        Goods cloneGoods = new Goods();
-        cloneGoods.setID(this.getID());
-        cloneGoods.setGoodsName(this.getGoodsName());
-        cloneGoods.setListPrice(this.getListPrice());
-        cloneGoods.setManufacture(this.getManufacture());
-        for (Shipment shipment : this.getShipments()) {
-            cloneGoods.getShipments().add(shipment.cloneShipment());
-        }
-        return cloneGoods;
-    }
-
-    public<T extends Goods> boolean twoGoodsIsDup(T anotherGoods) {
-        // tra ve true neu goods voi anotherGoods co cung name va manufacture, nguoc lai, tra ve true
-        return this.getGoodsName().equalsIgnoreCase(anotherGoods.getGoodsName())
-                && this.getManufacture().equalsIgnoreCase(anotherGoods.getManufacture());
-    }
-
-    public int indexOfDupShip(Shipment chekingShipment) {
-        // tra ve -1 neu khong tim thay shipment trong shipmentList co cung hsd, nsx, importPrice voi checkingShipment
-        // != -1 neu tim thay va chinh la index cua shipment do trong shipmentList
-        for (Shipment tmpShipment : this.getShipments()) {
-            if (tmpShipment.getImportPrice() == chekingShipment.getImportPrice()
-                    && tmpShipment.getHsd().isEqual(chekingShipment.getHsd())
-                    && tmpShipment.getNsx().isEqual(chekingShipment.getNsx())) {
-                return this.getShipments().indexOf(tmpShipment);
-            }
-        }
-        return -1;
-    }
-
-    public Shipment containShipment(String shipmentID) {
-        // tra ve mot shipment voi tham so dau vao la id cua shipment do
-        for (Shipment tmpShipment : this.getShipments()) {
-            if (tmpShipment.getID().equals(shipmentID)) {
-                return tmpShipment;
-            }
-        }
-        return null;
-    }
-
-    public Shipment searchShipment(Scanner sc) {
-        // tim kiem shipment trong goods goi den method seachShipment() nay
-        GoodsList bucket = new GoodsList(new ArrayList<>());
-        if (ctions.checkIfListEmpty(this.getShipments())) {
-            return null;
-        }
-        bucket.getGoodsList().add(this);
-        do {
-            bucket.showGoodsList();
-            System.out.print("Input shipment ID or type BACK to go back: ");
-            String inputStr = sc.nextLine();
-            if ("back".equalsIgnoreCase(inputStr)) {
-                System.out.println("Back...");
-                return null;
-            } else if (ctions.checkIfNoInput(inputStr)) {
-            } else {
-                for (Shipment shipment : this.getShipments()) {
-                    if (inputStr.equals(shipment.getID())) {
-                        return shipment;
-                    }
-                }
-                System.out.println("No shipment found!");
-            }
-        } while (true);
-    }
-
 }

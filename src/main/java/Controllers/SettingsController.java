@@ -4,11 +4,9 @@
  */
 package Controllers;
 
+import Models.Settings;
 import Models.Shift;
-import Models.Store;
 import View.SettingsView;
-import com.google.gson.annotations.Expose;
-import com.google.gson.annotations.SerializedName;
 import java.util.Scanner;
 
 /**
@@ -16,44 +14,53 @@ import java.util.Scanner;
  * @author FPTSHOP
  */
 public class SettingsController {
-
-    @SerializedName("settingsView")
-    @Expose
+    
     private final SettingsView settingsView = new SettingsView();
-    @SerializedName("myStore")
-    @Expose
-    private Store myStore;
-
+    final Scanner sc = new Scanner(System.in);
+    final StoreController storeCtr = new StoreController();
+    
     public SettingsController() {
-    }
-
-    public SettingsController(Store myStore) {
-        this.myStore = myStore;
-    }
-
-    public Store getMyStore() {
-        return myStore;
-    }
-
-    public void setMyStore(Store myStore) {
-        this.myStore = myStore;
     }
 
     public SettingsView getSettingsView() {
         return this.settingsView;
     }
 
-    public void SettingsManagement(Shift currentShift, Scanner sc) {
+    public void SettingsManagement(Shift currentShift, Settings settings) {
         String choice;
         do {
             this.settingsView.menuOfSettings();
             choice = sc.nextLine();
             switch (choice) {
                 case "1":
-                    this.myStore.showStoreInfor();
+                    storeCtr.getStoreView().showStoreInfor(settings.getMyStore());
                     break;
                 case "2":
-                    this.myStore.setStoreInfor(settingsView, currentShift, sc);
+                    storeCtr.setStoreInfor(currentShift, settings.getMyStore());
+                    break;
+                case "3":
+                    pointsExchangeMechanism(settings);
+                    break;
+                case "4":
+                    break;
+                default:
+                    System.out.println("Wrong input, Please type from 1->4!");
+                    break;
+            }
+        } while (!choice.equalsIgnoreCase("4"));
+    }
+    
+    private void pointsExchangeMechanism(Settings settings){
+        String choice;
+        do {
+            this.settingsView.menuOfPointsExchangeMechanism();
+            choice = sc.nextLine();
+            switch (choice) {
+                case "1":
+                    this.settingsView.typeInAmountForOnePoint(settings);
+                    break;
+                case "2":
+                    this.settingsView.typeInPointsForOneVND(settings);
                     break;
                 case "3":
                     break;

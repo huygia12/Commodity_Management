@@ -4,7 +4,7 @@
  */
 package Controllers;
 
-import Models.CustomPair;
+import Ultility.CustomPair;
 import Models.Goods;
 import Models.GoodsList;
 import Models.History;
@@ -12,10 +12,8 @@ import Models.ImportedGoods;
 import Models.Order;
 import Models.Shift;
 import Models.SoldGoods;
-import View.Cautions;
+import Ultility.Cautions;
 import View.HistoryView;
-import com.google.gson.annotations.Expose;
-import com.google.gson.annotations.SerializedName;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
@@ -30,32 +28,65 @@ import java.util.Set;
  * @author FPTSHOP
  */
 public class HistoryController {
-    @SerializedName("ctions")
-    @Expose
-    final Cautions ctions = new Cautions();
-    @SerializedName("view")
-    @Expose
+    
     private final HistoryView view = new HistoryView();
-    @SerializedName("history")
-    @Expose
-    private History history;
-
-    public HistoryController(History history) {
-        this.history = history;
-    }
-
-    public History getHistory() {
-        return history;
-    }
-
-    public void setHistory(History history) {
-        this.history = history;
+    final Scanner sc = new Scanner(System.in);
+    final Cautions ctions = new Cautions();
+    final GoodsListController goodsListCtr = new GoodsListController();
+    
+    public HistoryController() {
     }
 
     public HistoryView getHistoryView() {
         return this.view;
     }
-
+    
+    
+    public void historyManagement(History history) {
+        if(history.getShiftHistory().isEmpty()){
+            System.out.println("Nothing found in history!");
+            return;
+        }
+        int choice;
+        do {
+            try {
+                this.view.menuOfHistoryManagement();
+                choice = sc.nextInt();
+                sc.nextLine();
+                switch (choice) {
+                    case 1:
+                        statisticOfOrder(history);
+                        break;
+                    case 2:
+                        statisticOfImportGoods(history);
+                        break;
+                    case 3:
+                        statisticOfShiftGoods(history);
+                        break;
+                    case 4:
+                        searchOrderInDetail(history);
+                        break;
+                    case 5:
+                        searchImportGoodsInDetail(history);
+                        break;
+                    case 6:
+                        searchShiftInDetail(history);
+                        break;
+                    case 7:
+                        System.out.println("Back...");
+                        break;
+                    default:
+                        System.out.println("Wrong input, Please type from 1->7!");
+                        break;
+                }
+            } catch (InputMismatchException ime) {
+                ctions.wrInput();
+                choice = -1;
+                sc.next();
+            }
+        } while (choice != 7);
+    }
+    
     //function 1
     public GoodsList<SoldGoods> makeHisoryOrderGoodsList(List<Shift> shiftList) {
         GoodsList<SoldGoods> soldGoodsList = new GoodsList();
@@ -65,7 +96,7 @@ public class HistoryController {
             for (Order order : shift.getOrderHisPerShift()) {
                 for (Goods goods : order.getGoodsList()) {
                     if (IDBucket.contains(goods.getID())) {
-                        soldGoods = soldGoodsList.containGoods(goods.getID());
+                        soldGoods = goodsListCtr.containGoods(soldGoodsList, goods.getID());
                         // set gia da ban cho khach hang 
                         soldGoods.setSoldPrice(order.getVAT(), order.getDiscount());
                         // tang tong tien cua san pham da ban
@@ -94,9 +125,9 @@ public class HistoryController {
         return soldGoodsList;
     }
 
-    private List<Shift> ordersBetweenFromToDate(CustomPair<LocalDate, LocalDate> fromToDate) {
+    private List<Shift> ordersBetweenFromToDate(CustomPair<LocalDate, LocalDate> fromToDate, History history) {
         List<Shift> shiftList = new ArrayList<>();
-        for (Shift shift : this.history.getShiftHistory()) {
+        for (Shift shift : history.getShiftHistory()) {
             Shift tempShift = new Shift();
             for (Order order : shift.getOrderHisPerShift()) {
                 LocalDate orderDateTime = LocalDate
@@ -118,11 +149,11 @@ public class HistoryController {
         return shiftList;
     }
 
-    private void statisticOfOrder(Scanner sc) {
-        this.view.showOrderHistory(this.history);
-        CustomPair<LocalDate, LocalDate> fromToDate = this.view.typeInFromToDate(sc);
+    private void statisticOfOrder(History history) {
+        this.view.showOrderHistory(history);
+        CustomPair<LocalDate, LocalDate> fromToDate = this.view.typeInFromToDate();
         // Nhat tat ca order nam trong khoang fromToDate de cho vao shiftList
-        List<Shift> shiftList = ordersBetweenFromToDate(fromToDate);
+        List<Shift> shiftList = ordersBetweenFromToDate(fromToDate, history);
         // Hien thi cac thong tin co ban cua cac order do: orderID, shiftID, orderDateTime, orderTotal
         this.view.showOrderHistory(new History(shiftList));
         // Hien thi thong ke so luong va so tien cua tung mat hang duoc ban
@@ -131,28 +162,29 @@ public class HistoryController {
 
     //function 2
     public GoodsList<ImportedGoods> makeHistoryImportGoodsList(List<Shift> shiftList) {
+        ImportedGoodsController importGoodsCtr = new ImportedGoodsController();
         GoodsList<ImportedGoods> importGoodsList = new GoodsList();
         Set<String> IDBucket = new HashSet<>();
         ImportedGoods tmpImportGoods = new ImportedGoods();
         for (Shift shift : shiftList) {
             for (ImportedGoods importGoods : shift.getImportGoodsHis().getGoodsList()) {
                 if (IDBucket.contains(importGoods.getID())) {
-                    tmpImportGoods = importGoodsList.containGoods(importGoods.getID());
+                    tmpImportGoods = goodsListCtr.containGoods(importGoodsList, importGoods.getID());
                     // tang so luong vao tong so luong
                     tmpImportGoods.setTotalQuantity(tmpImportGoods.getTotalQuantity()
-                            .add(importGoods.getTotalQuanByShipments()));
+                            .add(importGoodsCtr.getTotalQuanByShipments(importGoods)));
                     // tang tong tien nhap hang cua san pham do
                     tmpImportGoods.setTotalAmountImport(importGoods.getShipments().get(0).getImportPrice()
-                            .multiply(importGoods.getTotalQuanByShipments())
+                            .multiply(importGoodsCtr.getTotalQuanByShipments(importGoods))
                             .add(tmpImportGoods.getTotalAmountImport()));
                 } else {
-                    tmpImportGoods = importGoods.cloneImportGoods();
+                    tmpImportGoods = importGoodsCtr.cloneImportGoods(importGoods);
                     // set so luong cua san pham nhap
-                    tmpImportGoods.setTotalQuantity(tmpImportGoods.getTotalQuanByShipments());
+                    tmpImportGoods.setTotalQuantity(importGoodsCtr.getTotalQuanByShipments(tmpImportGoods));
                     // set tong tien cua san pham da nhap
                     tmpImportGoods.setTotalAmountImport(
                             importGoods.getShipments().get(0).getImportPrice()
-                                    .multiply(importGoods.getTotalQuanByShipments()));
+                                    .multiply(importGoodsCtr.getTotalQuanByShipments(importGoods)));
                     // them vao danh sach cac san pham da nhap
                     importGoodsList.getGoodsList().add(tmpImportGoods);
                     // them id cua importGoods da ton tai vao trong idbucket
@@ -163,9 +195,9 @@ public class HistoryController {
         return importGoodsList;
     }
 
-    private List<Shift> importGoodsBetweenFromToDate(CustomPair<LocalDate, LocalDate> fromToDate) {
+    private List<Shift> importGoodsBetweenFromToDate(CustomPair<LocalDate, LocalDate> fromToDate, History history) {
         List<Shift> shiftList = new ArrayList<>();
-        for (Shift shift : this.history.getShiftHistory()) {
+        for (Shift shift : history.getShiftHistory()) {
             Shift tempShift = new Shift();
             for (ImportedGoods importGoods : shift.getImportGoodsHis().getGoodsList()) {
                 LocalDate importDateTime = LocalDate
@@ -187,18 +219,18 @@ public class HistoryController {
         return shiftList;
     }
 
-    private void statisticOfImportGoods(Scanner sc) {
-        this.view.showImportGoodsHistory(this.history);
-        CustomPair<LocalDate, LocalDate> fromToDate = this.view.typeInFromToDate(sc);
-        List<Shift> shiftList = importGoodsBetweenFromToDate(fromToDate);
+    private void statisticOfImportGoods(History history) {
+        this.view.showImportGoodsHistory(history);
+        CustomPair<LocalDate, LocalDate> fromToDate = this.view.typeInFromToDate();
+        List<Shift> shiftList = importGoodsBetweenFromToDate(fromToDate, history);
         this.view.showImportGoodsHistory(new History(shiftList));
         this.view.showImportGoodsHistory(makeHistoryImportGoodsList(shiftList));
     }
 
     //function 3
-    private List<Shift> shiftBetweenFromToDate(CustomPair<LocalDate, LocalDate> fromToDate) {
+    private List<Shift> shiftBetweenFromToDate(CustomPair<LocalDate, LocalDate> fromToDate, History history) {
         List<Shift> shiftList = new ArrayList<>();
-        for (Shift shift : this.history.getShiftHistory()) {
+        for (Shift shift : history.getShiftHistory()) {
             LocalDate importDateTime = LocalDate
                     .parse(shift.getOpenTime(),
                             DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm:ss"));
@@ -213,78 +245,155 @@ public class HistoryController {
         return shiftList;
     }
 
-    private void statisticOfShiftGoods(Scanner sc) {
-        CustomPair<LocalDate, LocalDate> fromToDate = this.view.typeInFromToDate(sc);
-        List<Shift> shiftList = shiftBetweenFromToDate(fromToDate);
+    private void statisticOfShiftGoods(History history) {
+        CustomPair<LocalDate, LocalDate> fromToDate = this.view.typeInFromToDate();
+        List<Shift> shiftList = shiftBetweenFromToDate(fromToDate, history);
         this.view.showShiftHistory(new History(shiftList));
     }
 
     //function 4
-    private void searchOrderInDetail(Scanner sc){
-        Order searchingOrder = this.history.searchOrder(sc);
+    private void searchOrderInDetail(History history){
+        Order searchingOrder = searchOrder(history);
         if(searchingOrder != null){
             this.view.showAnOrderInDetail(searchingOrder);
             GoodsList<Goods> orderGoodsList = new GoodsList(searchingOrder.getGoodsList());
-            orderGoodsList.showGoodsList();
+            goodsListCtr.getView().showGoodsList(orderGoodsList);
         }
     }
     
-    private void searchImportGoodsInDetail(Scanner sc){
-        ImportedGoods searchingImportGoods = this.history.searchImportGoods(sc);
+    private void searchImportGoodsInDetail(History history){
+        ImportedGoods searchingImportGoods = searchImportGoods(history);
         if(searchingImportGoods != null){
             this.view.showAnImpotedGoodsInDetail(searchingImportGoods);
         }
     }
     
-    private void searchShiftInDetail(Scanner sc){
-        Shift searchingShift = this.history.searchShift(sc);
+    private void searchShiftInDetail(History history){
+        Shift searchingShift = searchShift(history);
         if(searchingShift != null){
             this.view.showAnShiftInDetail(searchingShift);
         }
     }
     
-    public void historyManagement(Scanner sc) {
-        if(history.getShiftHistory().isEmpty()){
-            System.out.println("Nothing found in history!");
-            return;
+    public Order containOrder(String ID, History history) {
+        for (Shift shift : history.getShiftHistory()) {
+            for (Order order : shift.getOrderHisPerShift()) {
+                if (order.getID().equals(ID)) {
+                    return order;
+                }
+            }
         }
-        int choice;
+        return null;
+    }
+
+    public ImportedGoods containImportedGoods(String ID, History history) {
+        for (Shift shift : history.getShiftHistory()) {
+            for (ImportedGoods importGoods : shift.getImportGoodsHis().getGoodsList()) {
+                if (importGoods.getID().equals(ID)) {
+                    return importGoods;
+                }
+            }
+        }
+        return null;
+    }
+
+    public Shift containShift(String ID, History history) {
+        for (Shift shift : history.getShiftHistory()) {
+            if (shift.getID().equals(ID)) {
+                return shift;
+            }
+        }
+        return null;
+    }
+
+    public Order searchOrder(History history) {
+        // tra ve null neu nguoi dung nhap 'back', nguoc lai, tra ve 1 order duoc tim kiem
+        if (history.getShiftHistory().isEmpty()) {
+            System.out.println("Cannot search in an empty List!");
+            return null;
+        }
+        String inputStr;
+        boolean completed = false;
+        Order searchingOrder = null;
         do {
             try {
-                this.view.menuOfHistoryManagement();
-                choice = sc.nextInt();
-                sc.nextLine();
-                switch (choice) {
-                    case 1:
-                        statisticOfOrder(sc);
-                        break;
-                    case 2:
-                        statisticOfImportGoods(sc);
-                        break;
-                    case 3:
-                        statisticOfShiftGoods(sc);
-                        break;
-                    case 4:
-                        searchOrderInDetail(sc);
-                        break;
-                    case 5:
-                        searchImportGoodsInDetail(sc);
-                        break;
-                    case 6:
-                        searchShiftInDetail(sc);
-                        break;
-                    case 7:
-                        System.out.println("Back...");
-                        break;
-                    default:
-                        System.out.println("Wrong input, Please type from 1->7!");
-                        break;
+                System.out.print("Input orderID to search or BACK to go back: ");
+                inputStr = sc.nextLine();
+                if ("back".equalsIgnoreCase(inputStr)) {
+                    return null;
                 }
-            } catch (InputMismatchException ime) {
+                int searchingKey = Integer.parseInt(inputStr);
+                searchingOrder = containOrder(inputStr, history);
+                if (searchingOrder == null) {
+                    System.out.println("Your input ID doesnt exist.");
+                    continue;
+                }
+                completed = true;
+            } catch (NumberFormatException nfe) {
                 ctions.wrInput();
-                choice = -1;
-                sc.next();
             }
-        } while (choice != 7);
+        } while (!completed);
+        return searchingOrder;
     }
+    
+    public ImportedGoods searchImportGoods(History history) {
+        // tra ve null neu nguoi dung nhap 'back', nguoc lai, tra ve 1 importGoods duoc tim kiem
+        if (history.getShiftHistory().isEmpty()) {
+            System.out.println("Cannot search in an empty List!");
+            return null;
+        }
+        String inputStr;
+        boolean completed = false;
+        ImportedGoods searchingImportGoods = null;
+        do {
+            try {
+                System.out.print("Input goodsID to search or BACK to go back: ");
+                inputStr = sc.nextLine();
+                if ("back".equalsIgnoreCase(inputStr)) {
+                    return null;
+                }
+                int searchingKey = Integer.parseInt(inputStr);
+                searchingImportGoods = containImportedGoods(inputStr, history);
+                if (searchingImportGoods == null) {
+                    System.out.println("Your input ID doesnt exist.");
+                    continue;
+                }
+                completed = true;
+            } catch (NumberFormatException nfe) {
+                ctions.wrInput();
+            }
+        } while (!completed);
+        return searchingImportGoods;
+    }
+    
+    public Shift searchShift(History history) {
+        // tra ve null neu nguoi dung nhap 'back', nguoc lai, tra ve 1 Shift duoc tim kiem
+        if (history.getShiftHistory().isEmpty()) {
+            System.out.println("Cannot search in an empty List!");
+            return null;
+        }
+        String inputStr;
+        boolean completed = false;
+        Shift searchingShift = null;
+        do {
+            try {
+                System.out.print("Input shiftID to search or BACK to go back: ");
+                inputStr = sc.nextLine();
+                if ("back".equalsIgnoreCase(inputStr)) {
+                    return null;
+                }
+                int searchingKey = Integer.parseInt(inputStr);
+                searchingShift = containShift(inputStr, history);
+                if (searchingShift == null) {
+                    System.out.println("Your input ID doesnt exist.");
+                    continue;
+                }
+                completed = true;
+            } catch (NumberFormatException nfe) {
+                ctions.wrInput();
+            }
+        } while (!completed);
+        return searchingShift;
+    }
+    
 }

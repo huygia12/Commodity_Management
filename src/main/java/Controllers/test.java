@@ -13,6 +13,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 /**
  *
@@ -23,7 +24,13 @@ public class test {
     static Map<String, Integer> staticalList = new HashMap<>();
 
     public static void main(String[] args) {
-        System.out.println(checkIfNumberEqualZero(2));
+        List<String> idList = new ArrayList<>();
+        idList.add("huy");
+        idList.add("Ha");
+        
+        List<String> copy = idList.stream().map(x->x).collect(Collectors.toList());
+        copy.set(0, "Dang");
+        copy.stream().forEach(System.out::println);
     }
 
     public static <T extends Number> boolean checkIfNumberEqualZero(T number) {

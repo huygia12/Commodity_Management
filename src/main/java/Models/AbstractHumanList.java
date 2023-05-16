@@ -4,6 +4,9 @@
  */
 package Models;
 
+import com.google.gson.annotations.Expose;
+import com.google.gson.annotations.SerializedName;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -12,20 +15,7 @@ import java.util.List;
  * @param <T>
  */
 public abstract class AbstractHumanList<T extends AbstractHuman> {
-    protected List<T> list;
-
-    protected abstract void showList();
-    
-    protected abstract void computeSizeOfEachCol();
-    
-    public T phoneNumAlreadyExisted(String checkingPhoneNum) {
-        // neu nhu ton tai human co cung sdt voi human truyen vao thi tra ve true
-        // nguoc lai tra ve false
-        for (T temp : list) {
-            if (temp.getPhoneNumber().equalsIgnoreCase(checkingPhoneNum)) {
-                return temp;
-            }
-        }
-        return null;
-    }
+    @SerializedName("")
+    @Expose
+    protected List<T> list = new ArrayList<>();
 }

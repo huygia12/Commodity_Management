@@ -1,0 +1,59 @@
+{
+  "": [
+    {
+      "salaryPerDay": 22000,
+      "CCCD": "2223666611",
+      "IDOfOrdersInCharge": [],
+      "firstName": "Nguyen Gia",
+      "lastName": "Huy",
+      "phoneNumber": "0705737293",
+      "address": "so10-Ngo2-YenPhuc-PhucLa-HaDong",
+      "age": 19,
+      "gender": "MALE"
+    },
+    {
+      "salaryPerDay": 23000,
+      "CCCD": "3553646623",
+      "IDOfOrdersInCharge": [],
+      "firstName": "Vu Hung",
+      "lastName": "Tung",
+      "phoneNumber": "0905737293",
+      "address": "AeonMall HaDong",
+      "age": 16,
+      "gender": "MALE"
+    },
+    {
+      "salaryPerDay": 22000,
+      "CCCD": "7337593977",
+      "IDOfOrdersInCharge": [],
+      "firstName": "Dao Van",
+      "lastName": "Tuyen",
+      "phoneNumber": "0805737293",
+      "address": "220-TrieuKhuc-TanTrieu-ThanhTri",
+      "age": 20,
+      "gender": "MALE"
+    },
+    {
+      "salaryPerDay": 25000,
+      "CCCD": "3957577777",
+      "IDOfOrdersInCharge": [],
+      "firstName": "Nguyen Thao",
+      "lastName": "Chi",
+      "phoneNumber": "0505737293",
+      "address": "141-ChienThang-TanTrieu",
+      "age": 20,
+      "gender": "FEMALE"
+    },
+    {
+      "salaryPerDay": 20000,
+      "CCCD": "2727495500",
+      "IDOfOrdersInCharge": [],
+      "firstName": "Tran Luu",
+      "lastName": "Dung",
+      "phoneNumber": "0903737293",
+      "address": "Vinhome Riverside",
+      "age": 19,
+      "gender": "OTHER"
+    }
+  ]
+}

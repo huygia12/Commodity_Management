@@ -4,18 +4,18 @@
  */
 package Models;
 
-import View.CustomerView;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
-import java.math.BigDecimal;
 import java.math.BigInteger;
-import java.util.Scanner;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  *
  * @author FPTSHOP
  */
 public class CustomerCard {
+
     @SerializedName("ID")
     @Expose
     private String ID;
@@ -25,6 +25,9 @@ public class CustomerCard {
     @SerializedName("customer")
     @Expose
     private Customer customer = new Customer();
+    @SerializedName("IDOfBoughtOrders")
+    @Expose
+    private List<String> IDOfBoughtOrders = new ArrayList<>();
 
     public CustomerCard() {
     }
@@ -58,94 +61,11 @@ public class CustomerCard {
         this.customer = customer;
     }
 
-    public CustomerCard generateCard(CustomerView customerView, CustomerCardList customerCardList, 
-            IDGenerator idGenerator, Scanner sc) {
-        CustomerCard newCustomerCard = new CustomerCard();
-        int n = 1;
-        int nextProcess;
-        while (n != 6) {
-            switch (n) {
-                case 1:
-                    nextProcess = customerView.typeInFirstName(newCustomerCard.getCustomer(), sc);
-                    if (nextProcess == 0 || nextProcess == -1) {
-                        return null;
-                    }
-                case 2:
-                    nextProcess = customerView.typeInLastName(newCustomerCard.getCustomer(), sc);
-                    if (nextProcess == 0) {
-                        return null;
-                    } else if (nextProcess == -1) {
-                        n = 1;
-                        break;
-                    }
-                case 3:
-                    nextProcess = customerView.typeInAge(newCustomerCard.getCustomer(), sc);
-                    if (nextProcess == 0) {
-                        return null;
-                    } else if (nextProcess == -1) {
-                        n = 2;
-                        break;
-                    }
-                case 4:
-                    nextProcess = customerView.typeInPhoneNumber(newCustomerCard.getCustomer(), sc);
-                    if (nextProcess == 0) {
-                        return null;
-                    } else if (nextProcess == -1) {
-                        n = 3;
-                        break;
-                    } else if (customerCardList.phoneNumAlreadyExisted(newCustomerCard.getCustomer()
-                            .getPhoneNumber()) != null) {
-                        n = 4;
-                        System.out.println("This phone number already existed.");
-                        break;
-                    }
-                case 5:
-                    nextProcess = customerView.typeInGender(newCustomerCard.getCustomer(), sc);
-                    if (nextProcess == 0) {
-                        return null;
-                    } else if (nextProcess == -1) {
-                        n = 4;
-                        break;
-                    }
-                case 6:
-                    nextProcess = customerView.typeInAndress(newCustomerCard.getCustomer(), sc);
-                    if (nextProcess == 0) {
-                        return null;
-                    } else if (nextProcess == -1) {
-                        n = 5;
-                        break;
-                    }
-                    n = 6;
-            }
-        }
-        newCustomerCard.setID(idGenerator.generateID(CustomerCard.class.getName(), 6));
-        return newCustomerCard;
+    public List<String> getIDOfBoughtOrders() {
+        return IDOfBoughtOrders;
     }
 
-    public CustomerCard cloneCustomerCard() {
-        CustomerCard customerCard = new CustomerCard();
-        customerCard.setCustomer(this.customer.cloneCustomer());
-        customerCard.setID(this.getID());
-        customerCard.setPoint(this.getPoint());
-        return customerCard;
-    }
-
-    public void gainPoint(BigDecimal totalPayment) {
-        this.point = this.point.add(totalPayment.toBigInteger().divide(new BigInteger("10000")));
-    }
-
-    public BigDecimal convertPointToMoney(BigInteger inputPoint) {
-        if(inputPoint.compareTo(BigInteger.ZERO)<=0){
-            return BigDecimal.ZERO;
-        }
-        if (inputPoint.compareTo(this.point) >= 0) {
-            this.point = BigInteger.ZERO;
-            inputPoint = this.point;
-        } else {
-            this.point = this.point.subtract(inputPoint);
-        }
-        return new BigDecimal(inputPoint
-                .divide(new BigInteger(10+""))
-                .multiply(new BigInteger(1000+""))+"");
+    public void setIDOfBoughtOrders(List<String> IDOfBoughtOrders) {
+        this.IDOfBoughtOrders = IDOfBoughtOrders;
     }
 }

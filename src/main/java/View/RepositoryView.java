@@ -4,8 +4,8 @@
  */
 package View;
 
-import Controllers.RepositoryController;
 import Models.Goods;
+import Models.GoodsList;
 import java.util.InputMismatchException;
 import java.util.HashSet;
 import java.util.Scanner;
@@ -15,6 +15,7 @@ import java.util.Set;
  * @author FPTSHOP
  */
 public class RepositoryView {
+    final Scanner sc = new Scanner(System.in);
     
     public void menuOfRepoManagement() {
         System.out.println("");
@@ -74,7 +75,7 @@ public class RepositoryView {
         System.out.print("Option => ");
     }
 
-    public int typeDelOption(Scanner sc) {
+    public int typeDelOption() {
         // Option duoc tra ve: 1-Xoa 1 goods | 2-Xoa 1 shipment | 3-back
         int input;
         do {
@@ -107,10 +108,10 @@ public class RepositoryView {
         System.out.print("Option => ");
     }
     
-    public Set<String> printManufacList(RepositoryController repoCtr) {
+    public Set<String> printManufacList(GoodsList<Goods> repoGoodsList) {
         // in ra danh sach cac manufacture hien tai(khong in trung lap)
         Set<String> listOfManufac = new HashSet<>();
-        for (Goods goods : repoCtr.getRepository().getGoodsList()) {
+        for (Goods goods : repoGoodsList.getGoodsList()) {
             listOfManufac.add(goods.getManufacture());
         }
         if (listOfManufac.isEmpty()) {

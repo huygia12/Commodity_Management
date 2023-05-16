@@ -1,0 +1,7 @@
+{
+  "bucket": {
+    "Models.CustomerCard": 3,
+    "Models.Shipment": 47,
+    "Models.Goods": 15
+  }
+}

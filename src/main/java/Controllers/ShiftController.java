@@ -4,16 +4,22 @@
  */
 package Controllers;
 
+import Models.Employee;
 import Models.EmployeeList;
+import Models.Goods;
 import Models.History;
-import Models.IDGenerator;
+import Models.Order;
+import Models.PaymentOptions;
+import Ultility.IDGenerator;
 import Models.Shift;
+import Models.StaticalItems;
 import Models.Store;
 import View.ShiftView;
-import com.google.gson.annotations.Expose;
-import com.google.gson.annotations.SerializedName;
+import java.math.BigDecimal;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Scanner;
 
 /**
@@ -22,118 +28,89 @@ import java.util.Scanner;
  */
 public class ShiftController {
 
-    @SerializedName("view")
-    @Expose
-    private final ShiftView view = new ShiftView();
-    @SerializedName("shift")
-    @Expose
-    private Shift shift;
+    private final ShiftView shiftView = new ShiftView();
+    final Scanner sc = new Scanner(System.in);
+    final OrderController orderCtr = new OrderController();
+    final GoodsController goodsCtr = new GoodsController();
+    final EmployeeListController employeeListCtr = new EmployeeListController();
 
     public ShiftController() {
     }
 
-    public ShiftController(Shift shift) {
-        this.shift = shift;
-    }
-
     public ShiftView getView() {
-        return this.view;
+        return this.shiftView;
     }
 
-    public Shift getShift() {
-        return this.shift;
-    }
-
-    public void setShift(Shift shift) {
-        this.shift = shift;
-    }
-
-    public void ShiftManagement(EmployeeList employeeList, Store myStore, IDGenerator idGenerator, History currentHistory, Scanner sc) {
+    public Shift ShiftManagement(EmployeeList employeeList, Store myStore, IDGenerator idGenerator, History currentHistory, Shift shift) {
+        HistoryController hisCtr = new HistoryController();
         if (employeeList.getList().isEmpty()) {
             System.out.println("Please add employees first to open shift!\n(Go to 'Employee Management'->'Add new Employee')");
-            return;
+            return null;
         }
-        List<Shift> shiftList = new ArrayList<>();
-        shiftList.add(this.shift);
-        HistoryController hisCtr = new HistoryController(new History(shiftList));
         String choice;
         do {
-            this.view.menuOfShiftManagement();
+            this.shiftView.menuOfShiftManagement();
             choice = sc.nextLine();
             switch (choice) {
                 case "1":
-                    if (this.shift != null) {
-                        this.view.shiftNotEndCaution();
+                    if (shift != null) {
+                        this.shiftView.shiftNotEndCaution();
                         break;
                     }
-                    this.setShift(new Shift());
-                    if (!this.shift.openShift(this.view, employeeList,
-                            idGenerator, myStore, sc)) {
-                        this.setShift(null);
+                    shift = openShift(employeeList, idGenerator, myStore, shift);
+                    if (shift != null) {
+                        currentHistory.getShiftHistory().add(shift);
                     }
-                    currentHistory.getShiftHistory().add(this.shift);
                     break;
                 case "2":
-                    if (this.shift == null) {
-                        this.view.shiftNotOpenCaution();
+                    if (shift == null) {
+                        this.shiftView.shiftNotOpenCaution();
                         break;
                     }
-                    this.view.typeInShippingFee(this.shift, sc);
+                    this.shiftView.typeInShippingFee(shift);
                     break;
                 case "3":
-                    if (this.shift == null) {
-                        this.view.shiftNotOpenCaution();
+                    if (shift == null) {
+                        this.shiftView.shiftNotOpenCaution();
                         break;
                     }
-                    this.shift.modifyEmployeeOfThisShift(view, employeeList, sc);
+                    modifyEmployeeOfThisShift(employeeList, shift);
                     break;
                 case "4":
-                    if (this.shift == null) {
-                        this.view.shiftNotOpenCaution();
+                    if (shift == null) {
+                        this.shiftView.shiftNotOpenCaution();
                         break;
                     }
-                    this.view.typeInOpeningBalance(this.shift, sc);
+                    this.shiftView.typeInOpeningBalance(shift);
                     break;
                 case "5":
-                    if (this.shift == null) {
-                        this.view.shiftNotOpenCaution();
+                    if (shift == null) {
+                        this.shiftView.shiftNotOpenCaution();
                         break;
                     }
-                    if (this.shift.getOrderHisPerShift().isEmpty()) {
-                        System.out.println("Your current order history is empty!");
-                        break;
-                    }
-                    hisCtr.getHistoryView().showOrderHistory(new History(shiftList));
-                    hisCtr.getHistoryView().showOrderHistory(
-                            hisCtr.makeHisoryOrderGoodsList(shiftList));
+                    showorderHistory(shift, hisCtr);
                     break;
                 case "6":
-                    if (this.shift == null) {
-                        this.view.shiftNotOpenCaution();
+                    if (shift == null) {
+                        this.shiftView.shiftNotOpenCaution();
                         break;
                     }
-                    if (this.shift.getImportGoodsHis().getGoodsList().isEmpty()) {
-                        System.out.println("Your current import history is empty!");
-                        break;
-                    }
-                    hisCtr.getHistoryView().showImportGoodsHistory(new History(shiftList));
-                    hisCtr.getHistoryView().showImportGoodsHistory(
-                            hisCtr.makeHistoryImportGoodsList(shiftList));
+                    showImportGoodsHistory(shift, hisCtr);
                     break;
                 case "7":
-                    if (this.shift == null) {
-                        this.view.shiftNotOpenCaution();
+                    if (shift == null) {
+                        this.shiftView.shiftNotOpenCaution();
                         break;
                     }
-                    hisCtr.getHistoryView().showAnShiftInDetail(this.shift);
+                    hisCtr.getHistoryView().showAnShiftInDetail(shift);
                     break;
                 case "8":
-                    if (this.shift == null) {
-                        this.view.shiftNotOpenCaution();
+                    if (shift == null) {
+                        this.shiftView.shiftNotOpenCaution();
                         break;
                     }
-                    if (this.shift.endShift(this.view, myStore, sc)) {
-                        this.shift = null;
+                    if (endShift(myStore, shift)) {
+                        shift = null;
                     }
                     break;
                 case "9":
@@ -144,5 +121,249 @@ public class ShiftController {
                     break;
             }
         } while (!choice.equals("9"));
+        return shift;
     }
+
+    public BigDecimal getGrossRevenue(Shift shift) {
+        BigDecimal result = BigDecimal.ZERO;
+        for (Order order : shift.getOrderHisPerShift()) {
+            result = result.add(orderCtr.getSubTotal(order));
+        }
+        return result;
+    }
+
+    public BigDecimal getNetRevenue(Shift shift) {
+        BigDecimal result = BigDecimal.ZERO;
+        for (Order order : shift.getOrderHisPerShift()) {
+            result = result.add(orderCtr.getTotal(order));
+        }
+        return result;
+    }
+
+    public BigDecimal getTotalDiscountMoney(Shift shift) {
+        BigDecimal result = BigDecimal.ZERO;
+        for (Order order : shift.getOrderHisPerShift()) {
+            result = result.add(orderCtr.getDiscountMoney(order));
+        }
+        return result;
+    }
+
+    public BigDecimal getTotalPaymentByCash(Shift shift) {
+        BigDecimal result = BigDecimal.ZERO;
+        for (Order order : shift.getOrderHisPerShift()) {
+            if (order.getPaymentOptions().equals(PaymentOptions.Cash_Payment)) {
+                result = result.add(orderCtr.getTotal(order));
+            }
+        }
+        return result;
+    }
+
+    public BigDecimal getTotalPaymentByWireTransfer(Shift shift) {
+        BigDecimal result = BigDecimal.ZERO;
+        for (Order order : shift.getOrderHisPerShift()) {
+            if (order.getPaymentOptions().equals(PaymentOptions.Wire_Transfer_Payment)) {
+                result = result.add(orderCtr.getTotal(order));
+            }
+        }
+        return result;
+    }
+
+    public BigDecimal getTotalVAT(Shift shift) {
+        BigDecimal result = BigDecimal.ZERO;
+        for (Order order : shift.getOrderHisPerShift()) {
+            result = result.add(orderCtr.getTaxFee(order));
+        }
+        return result;
+    }
+
+    public BigDecimal getTotalPointDiscount(Shift shift) {
+        BigDecimal result = BigDecimal.ZERO;
+        for (Order order : shift.getOrderHisPerShift()) {
+            result = result.add(order.getPointDiscount());
+        }
+        return result;
+    }
+
+    public long getNumberOfOrder(Shift shift) {
+        return shift.getOrderHisPerShift().stream().count();
+    }
+
+    public BigDecimal getAveragePerOrder(Shift shift) {
+        if (getNumberOfOrder(shift) == 0) {
+            return BigDecimal.ZERO;
+        }
+        return getNetRevenue(shift).divide(new BigDecimal(getNumberOfOrder(shift)));
+    }
+
+    public BigDecimal getTotalGoodsQuanOfThisShift(Shift shift) {
+        BigDecimal result = BigDecimal.ZERO;
+        for (Order order : shift.getOrderHisPerShift()) {
+            for (Goods goods : order.getGoodsList()) {
+                result = result.add(goodsCtr.getTotalQuanByShipments(goods));
+            }
+        }
+        return result;
+    }
+
+    public Map<String, StaticalItems> getStaticalList(Shift shift) {
+        // Tao danh sach consumptions de thong ke sanpham/soluongBan/SoTienThuDuoc/phanTram 
+        // cua tat ca san pham trong 1 ca lam viec
+        Map<String, StaticalItems> consumptions = new HashMap<>();
+        for (Order order : shift.getOrderHisPerShift()) {
+            for (Goods goods : order.getGoodsList()) {
+                StaticalItems newStaticalItems = new StaticalItems();
+                newStaticalItems.setName(goods.getGoodsName());
+                newStaticalItems.setQuantity(goodsCtr.getTotalQuanByShipments(goods));
+                newStaticalItems.setRevenue((goods.getListPrice().add(goodsCtr.getVATMoneyPerGoods(goods, order.getVAT())))
+                        .multiply(goodsCtr.getTotalQuanByShipments(goods)
+                                .multiply(new BigDecimal(1.0 - order.getDiscount() * 1.0 / 100))));
+                if (consumptions.containsKey(goods.getID())) {
+                    BigDecimal quanBefore = consumptions.get(goods.getID()).getQuantity();
+                    BigDecimal revenueBefore = consumptions.get(goods.getID()).getRevenue();
+                    newStaticalItems.setQuantity(quanBefore.add(newStaticalItems.getQuantity()));
+                    newStaticalItems.setQuantity(revenueBefore.add(newStaticalItems.getRevenue()));
+                }
+                consumptions.put(goods.getID(), newStaticalItems);
+            }
+        }
+        BigDecimal totalQuan = getTotalGoodsQuanOfThisShift(shift);
+        for (Map.Entry<String, StaticalItems> entry : consumptions.entrySet()) {
+            entry.getValue().setRatio(Double.parseDouble(entry
+                    .getValue()
+                    .getQuantity()
+                    .divide(totalQuan) + ""));
+        }
+        return consumptions;
+    }
+
+    private Shift openShift(EmployeeList employeeList, IDGenerator iDGenerator, Store myStore, Shift shift) {
+        shift = new Shift(iDGenerator.generateID(Shift.class.getName(), 6),
+                myStore.getVAT());
+        shift.setOpenTime();
+        int n = 1;
+        int nextProcess;
+        while (n != 3) {
+            switch (n) {
+                case 1:
+                    nextProcess = this.shiftView.typeInOpeningBalance(shift);
+                    if (nextProcess == 0 || nextProcess == -1) {
+                        return null;
+                    }
+                case 2:
+                    nextProcess = this.shiftView.typeInEmployeesOfThisShift(shift, employeeList);
+                    if (nextProcess == 0) {
+                        return null;
+                    } else if (nextProcess == -1) {
+                        n = 1;
+                        break;
+                    }
+                case 3:
+                    nextProcess = this.shiftView.typeInCashier(shift, employeeList);
+                    n = 3;
+                    break;
+            }
+        }
+        return shift;
+    }
+
+    private void showorderHistory(Shift shift, HistoryController hisCtr) {
+        if (shift.getOrderHisPerShift().isEmpty()) {
+            System.out.println("Your current order history is empty!");
+            return;
+        }
+        List<Shift> shiftList = new ArrayList<>();
+        shiftList.add(shift);
+        hisCtr.getHistoryView().showOrderHistory(new History(shiftList));
+        hisCtr.getHistoryView().showOrderHistory(
+                hisCtr.makeHisoryOrderGoodsList(shiftList));
+    }
+
+    private void showImportGoodsHistory(Shift shift, HistoryController hisCtr) {
+        if (shift.getImportGoodsHis().getGoodsList().isEmpty()) {
+            System.out.println("Your current import history is empty!");
+            return;
+        }
+        List<Shift> shiftList = new ArrayList<>();
+        shiftList.add(shift);
+        hisCtr.getHistoryView().showImportGoodsHistory(new History(shiftList));
+        hisCtr.getHistoryView().showImportGoodsHistory(
+                hisCtr.makeHistoryImportGoodsList(shiftList));
+    }
+
+    private void addEmployeeToShift(EmployeeList employeeList, Shift shift) {
+        Employee e = employeeListCtr.searchEmployee(employeeList);
+        if (e != null) {
+            if (this.shiftView.checkIfThisShiftContainThisEmployee(shift, e.getCCCD())) {
+                return;
+            }
+            shift.getEmployeeOfThisShift().getList().add(e);
+        }
+    }
+
+    private void deleteEmployeeFromShift(EmployeeList employeeList, Shift shift) {
+        Employee e = employeeListCtr.searchEmployee(employeeList);
+        if (e != null) {
+            boolean checkRemoving = true;
+            if (e.getCCCD().equalsIgnoreCase(shift.getCashier().getCCCD())) {
+                if (this.shiftView.removeEmployeeCaution(shift)) {
+                    int check = -1;
+                    while (check == -1) {
+                        check = shiftView.typeInCashier(shift, employeeList);
+                    }
+                }
+                checkRemoving = false;
+            }
+            if (checkRemoving) {
+                shift.getEmployeeOfThisShift().getList().remove(e);
+            }
+        }
+    }
+
+    private void retypeEmployeeListOfThisShift(EmployeeList employeeList, Shift shift) {
+        shift.getEmployeeOfThisShift().getList().clear();
+        System.out.println("EmployeeList clear!");
+        int check = -1;
+        while (check == -1) {
+            check = this.shiftView.typeInEmployeesOfThisShift(shift, employeeList);
+        }
+        if (check == 1) {
+            check = shiftView.typeInCashier(shift, employeeList);
+        }
+    }
+
+    private void modifyEmployeeOfThisShift(EmployeeList employeeList, Shift shift) {
+        String choice;
+        do {
+            shiftView.menuOfModifyEmployeeListOfThisShift();
+            choice = sc.nextLine();
+            switch (choice) {
+                case "1":
+                    addEmployeeToShift(employeeList, shift);
+                    break;
+                case "2":
+                    deleteEmployeeFromShift(employeeList, shift);
+                    break;
+                case "3":
+                    retypeEmployeeListOfThisShift(employeeList, shift);
+                    break;
+                case "4":
+                    System.out.println("Back...");
+                    break;
+                default:
+                    System.out.println("Wrong input, Please type from 1->4!");
+            }
+        } while (!choice.equalsIgnoreCase("4"));
+    }
+
+    private boolean endShift(Store myStore, Shift shift) {
+        if (shift.getTransportFee() == BigDecimal.ZERO) {
+            if (this.shiftView.typeInShippingFee(shift) != 1) {
+                return false;
+            }
+        }
+        shift.setEndTime();
+        shiftView.printFileOfThisShiftOverView(myStore, shift, this);
+        return true;
+    }
+
 }

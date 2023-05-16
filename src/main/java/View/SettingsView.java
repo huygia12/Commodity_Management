@@ -4,8 +4,10 @@
  */
 package View;
 
-import Models.Store;
+import Models.Settings;
+import Ultility.Cautions;
 import java.math.BigDecimal;
+import java.math.BigInteger;
 import java.util.Scanner;
 
 /**
@@ -13,113 +15,66 @@ import java.util.Scanner;
  * @author FPTSHOP
  */
 public class SettingsView {
+
+    final Scanner sc = new Scanner(System.in);
     final Cautions ctions = new Cautions();
     public void menuOfSettings() {
         System.out.print("""
-                           \n*******************************
-                           * 1. Show Store Information   *
-                           * 2. Change Store Information *
-                           * 3. Back                     *
-                           *******************************
+                           \n************SETTINGS************
+                           * 1. Show Store Information    *
+                           * 2. Change Store Information  *
+                           * 3. Points Exchange Mechanism *
+                           * 4. Back                      *
+                           ********************************
                            Options => """);
     }
-    
-    public void menuOfChangeStoreInfor(){
+
+    public void menuOfPointsExchangeMechanism() {
         System.out.print("""
-                           \n**************************
-                           * 1. Change Store Name   *
-                           * 2. Change Email        *
-                           * 3. Change Address      *
-                           * 4. Change Phone Number *
-                           * 5. Change VAT          *
-                           * 6. Done                *
-                           **************************
+                           \n**************POINTS_EXCHANGE_MECHANISM**************
+                           * 1. Set amount to exchange for 1 Point             *
+                           * 2. Set amount of Points to exchange for 1000 VND  *
+                           * 3. Back                                           *
+                           *****************************************************
                            Options => """);
     }
-    
-    public int typeInStoreName(Store store, Scanner sc) {
+
+    public int typeInAmountForOnePoint(Settings settings) {
+        System.out.printf("The Current amount(VND) to exchange for 1 Point: %.1f\n", 
+                settings.getAmountForOnePoint());
         while (true) {
-            System.out.print("Type in Store Name or type EXIT/BACK to exit/back: ");
-            String inputStr = sc.nextLine();
-            if ("exit".equalsIgnoreCase(inputStr)) {
-                return 0;
-            } else if ("back".equalsIgnoreCase(inputStr)) {
-                return -1;
-            } else if (ctions.checkIfNoInput(inputStr)) {
-            } else {
-                store.setName(inputStr);
+            System.out.print("Type in amount(VND) or type BACK to go back: ");
+            String input = sc.nextLine().trim();
+            try {
+                BigDecimal amountForOnePoint = new BigDecimal(input);
+                settings.setAmountForOnePoint(amountForOnePoint);
                 return 1;
-            }
-        }
-    }
-    
-    public int typeInEmail(Store store, Scanner sc) {
-        while (true) {
-            System.out.print("Type in Email or type EXIT/BACK to exit/back: ");
-            String inputStr = sc.nextLine();
-            if ("exit".equalsIgnoreCase(inputStr)) {
-                return 0;
-            } else if ("back".equalsIgnoreCase(inputStr)) {
-                return -1;
-            } else if (ctions.checkIfNoInput(inputStr)) {
-            } else {
-                store.setEmail(inputStr);
-                return 1;
-            }
-        }
-    }
-    
-    public int typeInPhoneNumber(Store store, Scanner sc) {
-        while (true) {
-            System.out.print("Type in Phone Number or type EXIT/BACK to exit/back: ");
-            String inputStr = sc.nextLine();
-            if ("exit".equalsIgnoreCase(inputStr)) {
-                return 0;
-            } else if ("back".equalsIgnoreCase(inputStr)) {
-                return -1;
-            } else if (ctions.checkIfNoInput(inputStr)
-                    || !ctions. checkIfANumberSequence(inputStr)) {
-            }else {
-                store.setPhoneNumber(inputStr);
-                return 1;
-            }
-        }
-    }
-    
-    public int typeInAndress(Store store, Scanner sc) {
-        while (true) {
-            System.out.print("Type in Andress or type EXIT/BACK to exit/back: ");
-            String inputStr = sc.nextLine();
-            if ("exit".equalsIgnoreCase(inputStr)) {
-                return 0;
-            } else if ("back".equalsIgnoreCase(inputStr)) {
-                return -1;
-            } else if (ctions.checkIfNoInput(inputStr)) {
-            } else {
-                store.setAddress(inputStr);
-                return 1;
+            } catch (NumberFormatException nfe) {
+                if (input.equalsIgnoreCase("back")) {
+                    return -1;
+                } else if(ctions.checkIfNoInput(input)) {
+                }else{
+                    ctions.wrInput();
+                }
             }
         }
     }
 
-    public int typeInVAT(Store store, Scanner sc) {
+    public int typeInPointsForOneVND(Settings settings) {
+        System.out.printf("The Current number of points to exchange for 1000VND: %s\n", 
+                settings.getPointsForOneVND());
         while (true) {
-            System.out.print("Type in VAT or type EXIT/BACK to exit/back: ");
-            String inputStr = sc.nextLine();
-            if ("exit".equalsIgnoreCase(inputStr)) {
-                return 0;
-            } else if ("back".equalsIgnoreCase(inputStr)) {
-                return -1;
-            } else if (ctions.checkIfNoInput(inputStr)) {
-            } else {
-                try {
-                    BigDecimal VAT = new BigDecimal(inputStr);
-                    if (!ctions.checkIfNumberNegative(VAT)) {
-                        continue;
-                    }
-                    store.setVAT(Math.min(100, Integer.parseInt(inputStr)));
-                    return 1;
-                } catch (NumberFormatException nfe) {
+            System.out.print("Type in the number of points or type BACK to go back: ");
+            String input = sc.nextLine().trim();
+            try {
+                BigInteger amountForOnePoint = new BigInteger(input);
+                settings.setPointsForOneVND(amountForOnePoint);
+                return 1;
+            } catch (NumberFormatException nfe) {
+                if (input.equalsIgnoreCase("back")) {
+                    return -1;
+                } else if(ctions.checkIfNoInput(input)) {
+                }else{
                     ctions.wrInput();
                 }
             }

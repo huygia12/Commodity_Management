@@ -4,7 +4,12 @@
  */
 package View;
 
-import Models.CustomPair;
+import Controllers.EmployeeListController;
+import Controllers.ImportedGoodsController;
+import Controllers.OrderController;
+import Controllers.ShiftController;
+import Ultility.Cautions;
+import Ultility.CustomPair;
 import Models.GoodsList;
 import Models.History;
 import Models.ImportedGoods;
@@ -27,8 +32,12 @@ import java.util.Scanner;
  * @author FPTSHOP
  */
 public class HistoryView {
-    
     final Cautions ctions = new Cautions();
+    final Scanner sc = new Scanner(System.in);
+    final OrderController orderCtr = new OrderController();
+    final ImportedGoodsController importGoodsCtr = new ImportedGoodsController();
+    final EmployeeListController employeeListCtr = new EmployeeListController();
+    final ShiftController shiftCtr = new ShiftController();
     final String DATE_FORMAT = "dd/MM/yyyy";
     private int orderIDMaxSize;
     private int orderDateTimeMaxSize;
@@ -93,7 +102,7 @@ public class HistoryView {
                         order.getID(),
                         order.getOrderDateTime(),
                         shift.getID(),
-                        order.getTotal());
+                        orderCtr.getTotal(order));
                 System.out.println("");
                 System.out.println("|" + "-".repeat(borderLength) + "|");
             }
@@ -113,8 +122,8 @@ public class HistoryView {
                 if (order.getOrderDateTime().length() > orderDateTimeMaxSize) {
                     orderDateTimeMaxSize = order.getOrderDateTime().length();
                 }
-                if (String.format("%.1f", order.getTotal()).length() > totalMaxSize) {
-                    totalMaxSize = String.format("%.1f", order.getTotal()).length();
+                if (String.format("%.1f", orderCtr.getTotal(order)).length() > totalMaxSize) {
+                    totalMaxSize = String.format("%.1f", orderCtr.getTotal(order)).length();
                 }
             }
             if (shift.getID().length() > shiftIDMaxSize) {
@@ -216,7 +225,7 @@ public class HistoryView {
                         importGoods.getID(),
                         importGoods.getImportDateTime(),
                         importGoods.getGoodsName(),
-                        importGoods.getTotalQuanByShipments());
+                        importGoodsCtr.getTotalQuanByShipments(importGoods));
                 System.out.println("");
                 System.out.println("|" + "-".repeat(borderLength) + "|");
             }
@@ -236,8 +245,11 @@ public class HistoryView {
                 if (importGoods.getImportDateTime().length() > importDateMaxSize) {
                     importDateMaxSize = importGoods.getImportDateTime().length();
                 }
-                if (String.format("%.1f", importGoods.getTotalQuanByShipments()).length() > importGoodsQuanMaxSize) {
-                    importGoodsQuanMaxSize = String.format("%.1f", importGoods.getTotalQuanByShipments()).length();
+                if (String.format("%.1f", 
+                        importGoodsCtr.getTotalQuanByShipments(importGoods)).length() 
+                        > importGoodsQuanMaxSize) {
+                    importGoodsQuanMaxSize = String.format("%.1f", 
+                            importGoodsCtr.getTotalQuanByShipments(importGoods)).length();
                 }
                 if (importGoods.getGoodsName().length() > importGoodsNameMaxSize) {
                     importGoodsNameMaxSize = importGoods.getGoodsName().length();
@@ -338,13 +350,13 @@ public class HistoryView {
                     shift.getID(),
                     shift.getOpenTime(),
                     shift.getEndTime(),
-                    shift.getNetRevenue());
+                    shiftCtr.getNetRevenue(shift));
             System.out.println("");
             System.out.println("|" + "-".repeat(borderLength) + "|");
         }
         BigDecimal total = BigDecimal.ZERO;
         for (Shift shift : history.getShiftHistory()) {
-            total = total.add(shift.getNetRevenue());
+            total = total.add(shiftCtr.getNetRevenue(shift));
         }
         System.out.println(String.format("%" + (totalColSize - netRevenueMaxSize) + "s"
                 + "%" + netRevenueMaxSize + ".1f", "Total Net Revenue: ", total));
@@ -365,8 +377,8 @@ public class HistoryView {
             if ((shift.getEndTime() + "").length() > importGoodsQuanMaxSize) {
                 importGoodsQuanMaxSize = (shift.getEndTime() + "").length();
             }
-            if (String.format("%.1f", shift.getNetRevenue()).length() > netRevenueMaxSize) {
-                netRevenueMaxSize = String.format("%.1f", shift.getNetRevenue()).length();
+            if (String.format("%.1f", shiftCtr.getNetRevenue(shift)).length() > netRevenueMaxSize) {
+                netRevenueMaxSize = String.format("%.1f", shiftCtr.getNetRevenue(shift)).length();
             }
         }
     }
@@ -382,10 +394,10 @@ public class HistoryView {
         System.out.printf("%s: %s\n", "Payment Option", order.getPaymentOptions());
         if (order.getPaymentOptions().equals(PaymentOptions.Cash_Payment)) {
             System.out.printf("%s: %.1f\n", "Customer money", order.getCusMoney());
-            System.out.printf("%s: %.1f\n", "Change", order.getChange());
+            System.out.printf("%s: %.1f\n", "Change", orderCtr.getChange(order));
         }
-        System.out.printf("%s: %.1f\n", "SubTotal", order.getSubTotal());
-        System.out.printf("%s: %.1f\n", "Total", order.getTotal());
+        System.out.printf("%s: %.1f\n", "SubTotal", orderCtr.getSubTotal(order));
+        System.out.printf("%s: %.1f\n", "Total", orderCtr.getTotal(order));
     }
 
     public void showAnShiftInDetail(Shift shift) {
@@ -403,26 +415,26 @@ public class HistoryView {
         System.out.printf("%s: %-20s\n", "End Date&Time", shift.getEndTime());
         System.out.printf("%s: %-20s\n", "Cashier", shift.getCashier().getFirstName()+" "+shift.getCashier().getLastName());
         System.out.printf("%s: %-20.1f\n", "Opening Balance", shift.getOpeningBalance());
-        System.out.printf("%s: %-20.1f\n", "Gross revenue", shift.getGrossRevenue());
-        System.out.printf("%s: %-20.1f\n", "Total direct discount", shift.getTotalDiscountMoney());
-        System.out.printf("%s: %-20.1f\n", "Total point discount", shift.getTotalPointDiscount());
+        System.out.printf("%s: %-20.1f\n", "Gross revenue", shiftCtr.getGrossRevenue(shift));
+        System.out.printf("%s: %-20.1f\n", "Total direct discount", shiftCtr.getTotalDiscountMoney(shift));
+        System.out.printf("%s: %-20.1f\n", "Total point discount", shiftCtr.getTotalPointDiscount(shift));
         System.out.printf("%s: %-20s\n", "VAT", shift.getVAT() + "%");
         System.out.printf("%s: %-20.1f\n", "Shipping Fee", shift.getTransportFee());
-        System.out.printf("%s: %-20.1f\n", "Net Revenue", shift.getNetRevenue());
-        System.out.printf("%s: %-20s\n", "Number of Order", shift.getNumberOfOrder());
-        System.out.printf("%s: %-20.1f\n", "Average per Order", shift.getAveragePerOrder());
+        System.out.printf("%s: %-20.1f\n", "Net Revenue", shiftCtr.getNetRevenue(shift));
+        System.out.printf("%s: %-20s\n", "Number of Order", shiftCtr.getNumberOfOrder(shift));
+        System.out.printf("%s: %-20.1f\n", "Average per Order", shiftCtr.getAveragePerOrder(shift));
         System.out.println("OPTIONS PAYMENT:");
-        System.out.printf("%s: %-20.1f\n", "+Cash", shift.getTotalPaymentByCash());
-        System.out.printf("%s: %-20.1f\n", "+Wire transfer", shift.getTotalPaymentByWireTransfer());
-        System.out.printf("%s: %-20.1f\n", "+Current CashBox money", shift.getTotalPaymentByCash()
+        System.out.printf("%s: %-20.1f\n", "+Cash", shiftCtr.getTotalPaymentByCash(shift));
+        System.out.printf("%s: %-20.1f\n", "+Wire transfer", shiftCtr.getTotalPaymentByWireTransfer(shift));
+        System.out.printf("%s: %-20.1f\n", "+Current CashBox money", shiftCtr.getTotalPaymentByCash(shift)
                 .add(shift.getOpeningBalance()));
         System.out.println(String.format("%5s", "CONSUMPTIONS:"));
         System.out.println(String.format("%-20s" + " | " + "%-20s" + " | " + "%-20s" + " | " + "%-20s",
                 "Goods Name", "Quantity", "Revenue", "Ratio"));
-        List<StaticalItems> staticalItemsList = new ArrayList<>(shift.getStaticalList().values());
+        List<StaticalItems> staticalItemsList = new ArrayList<>(shiftCtr.getStaticalList(shift).values());
         staticalItemsList.stream().forEach(x -> System.out.println(String.format("%-20s" + " | " + "%-20.1f" + " | " + "%-20.1f" + " | " + "%-20s",
                 x.getName(), x.getQuantity(), x.getRevenue(), String.format("%.1f", x.getRatio())+"%")));
-        shift.getEmployeeOfThisShift().showList();
+        employeeListCtr.getView().showList(shift.getEmployeeOfThisShift());
     }
 
     public void showAnImpotedGoodsInDetail(ImportedGoods importGoods) {
@@ -460,7 +472,7 @@ public class HistoryView {
                 importGoods.getGoodsName(),
                 importGoods.getManufacture(),
                 importGoods.getListPrice(),
-                importGoods.getTotalQuanByShipments());
+                importGoodsCtr.getTotalQuanByShipments(importGoods));
         if (!importGoods.getShipments().isEmpty()) {
             // Neu list shipment cua goods da ton tai it nhat 1 shipment, thuc hien in ra shipment do
             Shipment shipment = importGoods.getShipments().get(0);
@@ -500,19 +512,28 @@ public class HistoryView {
         if (String.format(".1f", importGoods.getListPrice()).length() > listPriceMaxSize) {
             listPriceMaxSize = String.format(".1f", importGoods.getListPrice()).length();
         }
-        if (String.format(".1f", importGoods.getTotalQuanByShipments()).length() > goodsTotalQuanMaxSize) {
-            goodsTotalQuanMaxSize = String.format(".1f", importGoods.getTotalQuanByShipments()).length();
+        if (String.format(".1f", 
+                importGoodsCtr.getTotalQuanByShipments(importGoods)).length()
+                > goodsTotalQuanMaxSize) {
+            goodsTotalQuanMaxSize = String.format(".1f", 
+                    importGoodsCtr.getTotalQuanByShipments(importGoods)).length();
         }
-        if (String.format(".1f", importGoods.getShipments().get(0).getImportPrice()).length() > importPriceMaxSize) {
-            importPriceMaxSize = String.format(".1f", importGoods.getShipments().get(0).getImportPrice()).length();
+        if (String.format(".1f", 
+                importGoods.getShipments().get(0).getImportPrice()).length()
+                > importPriceMaxSize) {
+            importPriceMaxSize = String.format(".1f", 
+                    importGoods.getShipments().get(0).getImportPrice()).length();
         }
-        if (String.format(".1f", importGoods.getShipments().get(0).getQuantity()).length() > importGoodsQuanMaxSize) {
-            importGoodsQuanMaxSize = String.format(".1f", importGoods.getShipments().get(0).getQuantity()).length();
+        if (String.format(".1f", 
+                importGoods.getShipments().get(0).getQuantity()).length()
+                > importGoodsQuanMaxSize) {
+            importGoodsQuanMaxSize = String.format(".1f", 
+                    importGoods.getShipments().get(0).getQuantity()).length();
         }
     }
 
     //
-    public CustomPair typeInFromToDate(Scanner sc) {
+    public CustomPair typeInFromToDate() {
         String inputStr;
         LocalDate fromDate = null, toDate = null;
         int n = 1;

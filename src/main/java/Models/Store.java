@@ -4,10 +4,8 @@
  */
 package Models;
 
-import View.SettingsView;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
-import java.util.Scanner;
 
 /**
  *
@@ -79,60 +77,5 @@ public class Store {
 
     public void setPhoneNumber(String phoneNumber) {
         this.phoneNumber = phoneNumber.trim();
-    }
-
-    public void showStoreInfor() {
-        System.out.println("");
-        System.out.println(String.format("%20s" + " | " + "%-20s", "STORE NAME", this.name));
-        System.out.println(String.format("%20s" + " | " + "%-20s", "EMAIL", this.email));
-        System.out.println(String.format("%20s" + " | " + "%-20s", "ADDRESS", this.address));
-        System.out.println(String.format("%20s" + " | " + "%-20s", "PHONE NUMBER", this.phoneNumber));
-        System.out.println(String.format("%20s" + " | " + "%-20s", "VAT", this.VAT + "%"));
-        System.out.println("     (VAT is applied to all products)");
-        System.out.println("");
-    }
-
-    public void setStoreInfor(SettingsView settingsView, Shift currentShift, Scanner sc) {
-        String choice;
-        do {
-            settingsView.menuOfChangeStoreInfor();
-            choice = "";
-            switch (choice) {
-                case "1":
-                    if (settingsView.typeInStoreName(this, sc) == 0) {
-                        return;
-                    }
-                    break;
-                case "2":
-                    if (settingsView.typeInEmail(this, sc) == 0) {
-                        return;
-                    }
-                    break;
-                case "3":
-                    if (settingsView.typeInAndress(this, sc) == 0) {
-                        return;
-                    }
-                    break;
-                case "4":
-                    if (settingsView.typeInPhoneNumber(this, sc) == 0) {
-                        return;
-                    }
-                    break;
-                case "5":
-                    if(currentShift != null){
-                        System.out.println("This current Shift is not over yet, change cannot be performed!");
-                        break;
-                    }
-                    if (settingsView.typeInVAT(this, sc) == 0) {
-                        return;
-                    }
-                    break;
-                case "6":
-                    break;
-                default:
-                    System.out.println("Wrong input, Please type from 1->6!");
-                    break;
-            }
-        } while (!choice.equalsIgnoreCase("6"));
     }
 }

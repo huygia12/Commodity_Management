@@ -1,21 +1,21 @@
 END-SHIFT-REPORT
            STORE NAME | Chang hi            
 ----------------------------------------
-            Open time | 10/05/2023 21:23:41 
-           Close time | 10/05/2023 21:24:04 
+            Open time | 16/05/2023 15:20:32 
+           Close time | 16/05/2023 15:21:31 
               Cashier | Nguyen Gia Huy      
-     Openning balance | 500000.0            
+     Openning balance | 0.0                 
         Gross revenue | 0.0                 
 Total direct discount | 0.0                 
  Total point discount | 0.0                 
                VAT10% | 0.0                 
-         Shipping fee | 0.0                 
+         Shipping fee | 9.0                 
           Net revenue | 0.0                 
      Number of orders | 0                   
     Average per Order | 0.0                 
      OPTIONS PAYMENT:
                 +Cash | 0.0                 
        +Wire transfer | 0.0                 
-+Current CashBox money | 500000.0            
++Current CashBox money | 0.0                 
         CONSUMPTIONS:
 Goods Name            | Quantity             | Revenue              | Ratio               

@@ -34,6 +34,10 @@ public class ImportedGoods extends Goods{
                 .now()
                 .format(DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm:ss"));
     }
+    
+    public void setImportDateTime(String importDateTime){
+        this.importDateTime = importDateTime;
+    }
 
     public String getImportDateTime() {
         return this.importDateTime;
@@ -46,15 +50,4 @@ public class ImportedGoods extends Goods{
     public BigDecimal getTotalAmountImport(){
         return this.totalAmountImport;
     }
-    
-    public ImportedGoods cloneImportGoods(){
-        ImportedGoods cloneImportedGoods = new ImportedGoods();
-        cloneImportedGoods.setGoodsName(this.getGoodsName());
-        cloneImportedGoods.setManufacture(this.getManufacture());
-        cloneImportedGoods.setListPrice(this.getListPrice());
-        cloneImportedGoods.setID(this.getID());
-        cloneImportedGoods.setTotalQuantity(this.getTotalQuanByShipments());
-        return cloneImportedGoods;
-    }
-    
 }

@@ -1,0 +1,56 @@
+{
+  "cardList": [
+    {
+      "ID": "000000",
+      "point": 0,
+      "customer": {
+        "firstName": "Nguyen Duc",
+        "lastName": "Anh",
+        "phoneNumber": "0444033022",
+        "address": "34 Nguyen Du",
+        "age": 20,
+        "gender": "MALE"
+      },
+      "IDOfBoughtOrders": []
+    },
+    {
+      "ID": "000001",
+      "point": 0,
+      "customer": {
+        "firstName": "Le Van",
+        "lastName": "Quyet",
+        "phoneNumber": "0333333222",
+        "address": "26 Do Duc Duc",
+        "age": 20,
+        "gender": "OTHER"
+      },
+      "IDOfBoughtOrders": []
+    },
+    {
+      "ID": "000002",
+      "point": 0,
+      "customer": {
+        "firstName": "Do Quynh",
+        "lastName": "Anh",
+        "phoneNumber": "0733833888",
+        "address": "16 Cau Giay",
+        "age": 22,
+        "gender": "FEMALE"
+      },
+      "IDOfBoughtOrders": []
+    },
+    {
+      "ID": "000003",
+      "point": 0,
+      "customer": {
+        "firstName": "Le Duc",
+        "lastName": "Cuong",
+        "phoneNumber": "053555133",
+        "address": "41 Minh Khai",
+        "age": 17,
+        "gender": "MALE"
+      },
+      "IDOfBoughtOrders": []
+    }
+  ]
+}

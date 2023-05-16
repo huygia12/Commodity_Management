@@ -4,6 +4,11 @@
  */
 package View;
 
+import Ultility.Cautions;
+import Controllers.CustomerCardController;
+import Controllers.CustomerCardListController;
+import Controllers.GoodsController;
+import Controllers.OrderController;
 import Models.CustomerCard;
 import Models.CustomerCardList;
 import Models.Goods;
@@ -32,7 +37,11 @@ public class OrderView {
     private final String SEPARATOR = File.separator;
     private final String FILE_PRINT = HOME + SEPARATOR + "output" + SEPARATOR + "bill.txt";
     final Cautions ctions = new Cautions();
-
+    final Scanner sc = new Scanner(System.in);
+    final CustomerCardListController cardListCtr = new CustomerCardListController();
+    final CustomerCardController cardCtr = new CustomerCardController();
+    private final GoodsController goodsCtr = new GoodsController();
+    
     public void orderMenu() {
         System.out.println("");
         System.out.println("--------------------------");
@@ -59,7 +68,7 @@ public class OrderView {
         System.out.print("Option=> ");
     }
 
-    public int typeInDcountPctage(Order order, Scanner sc) {
+    public int typeInDcountPctage(Order order) {
         while (true) {
             System.out.print("Please enter the discount percentage (must be a positive number), \nor type EXIT/BACK to go exit/back: ");
             String input = sc.nextLine();
@@ -83,7 +92,7 @@ public class OrderView {
         }
     }
 
-    public int typeInCusMoney(Order order, Scanner sc) {
+    public int typeInCusMoney(Order order, OrderController orderCtr) {
         while (true) {
             System.out.print("Please enter the amount of money customer give, \nor type EXIT/BACK to exit/back from payment : ");
             String input = sc.nextLine();
@@ -95,9 +104,9 @@ public class OrderView {
             } else {
                 try {
                     order.setCusMoney(new BigDecimal(input));
-                    if (!ctions.checkIfNumberNegative(order.getCusMoney())) {
+                    if (ctions.checkIfNumberNegative(order.getCusMoney())) {
                         order.setCusMoney(BigDecimal.ZERO);
-                    } else if (order.getCusMoney().compareTo(order.getTotal()) < 0) {
+                    } else if (order.getCusMoney().compareTo(orderCtr.getTotal(order)) < 0) {
                         order.setCusMoney(BigDecimal.ZERO);
                         System.out.println("Insufficient payment! Please pay more.");
                     } else {
@@ -110,7 +119,7 @@ public class OrderView {
         }
     }
 
-    public int typeOfPayment(Order order, Scanner sc) {
+    public int typeOfPayment(Order order) {
         while (true) {
             try {
                 System.out.print("""
@@ -137,11 +146,11 @@ public class OrderView {
         }
     }
 
-    public int typeInCustomerID(CustomerCardList customerCardList, Order order, Scanner sc) {
+    public int typeInCustomerID(CustomerCardList customerCardList, Order order) {
         while (true) {
             System.out.print("Please enter the Member Card ID(for member-only), \nor type EXIT/BACK to exit/back(press ENTER to skip) : ");
             String input = sc.nextLine();
-            CustomerCard customerCard = customerCardList.findCustomerCardWithID(input);
+            CustomerCard customerCard = cardListCtr.findCustomerCardWithID(customerCardList, input);
             if ("back".equalsIgnoreCase(input)) {
                 return -1;
             } else if ("exit".equalsIgnoreCase(input)) {
@@ -155,9 +164,9 @@ public class OrderView {
         }
     }
 
-    public int typeInPoint(Order order, CustomerCard customerCard, Scanner sc) {
+    public int typeInPoint(Order order) {
         while (true) {
-            System.out.printf("Current points in card: %s\n", customerCard.getPoint());
+            System.out.printf("Current points in card: %s\n", order.getCustomerCard().getPoint());
             System.out.print("Please enter the amount of points you want to use, or type EXIT/BACK to exit/back : ");
             String input = sc.nextLine();
             if ("back".equalsIgnoreCase(input)) {
@@ -167,7 +176,8 @@ public class OrderView {
             } else {
                 try {
                     BigInteger point = new BigInteger(input);
-                    order.setPointDiscount(customerCard.convertPointToMoney(point));
+                    order.setPointDiscount(cardCtr
+                            .convertPointToMoney(order.getCustomerCard(), point));
                     return 1;
                 } catch (NumberFormatException nfe) {
                     ctions.wrInput();
@@ -176,7 +186,7 @@ public class OrderView {
         }
     }
 
-    public boolean makeDecisionToPrintOrder(Scanner sc) {
+    public boolean makeDecisionToPrintOrder() {
         while (true) {
             System.out.print("Do yout want to print out this bill?\n(Y/N): ");
             String yesNo = sc.nextLine();
@@ -190,7 +200,7 @@ public class OrderView {
         }
     }
 
-    public void showDraftOrder(Order order) {
+    public void showDraftOrder(Order order, OrderController orderCtr) {
         System.out.println("");
         System.out.println("-------------------------- YOUR ORDER ------------------------------");
         System.out.println("--------------------------------------------------------------------");
@@ -198,18 +208,18 @@ public class OrderView {
         System.out.format("%-25s %-10s %-15s %-15s\n", "-------------------------", "----------", "---------------", "---------------");
         for (int i = 0; i < order.getGoodsList().size(); i++) {
             Goods goods = order.getGoodsList().get(i);
-            BigDecimal totalQuantity = goods.getTotalQuanByShipments();
+            BigDecimal totalQuantity = goodsCtr.getTotalQuanByShipments(goods);
             BigDecimal price = goods.getListPrice();
             BigDecimal totalPrice = totalQuantity.multiply(price);
             System.out.format("%-25s %-10s %-15s %-15s\n", goods.getGoodsName(), totalQuantity + "", price + "", totalPrice + "");
         }
-        BigDecimal totalPayment = order.getSubTotal();
         System.out.println(" ");
-        System.out.println("Total payment: " + totalPayment);
+        System.out.printf("Total payment: %.1f\n", orderCtr.getSubTotal(order));
+        System.out.printf("Total(Taxed: %s): %.1f\n",order.getVAT()+"%",  orderCtr.getTotal(order));
         System.out.println("--------------------------------------------------------------------");
     }
 
-    public void showBill(Order order, Store myStore) {
+    public void showBill(Order order, Store myStore, OrderController orderCtr) {
         String customerID = "";
         if (order.getCustomerCard() != null) {
             customerID = order.getCustomerCard().getID();
@@ -227,26 +237,26 @@ public class OrderView {
         System.out.format("%-25s %-10s %-15s %-15s\n", "-------------------------", "----------", "---------------", "---------------");
         for (int i = 0; i < order.getGoodsList().size(); i++) {
             Goods goods = order.getGoodsList().get(i);
-            BigDecimal totalQuantity = goods.getTotalQuanByShipments();
+            BigDecimal totalQuantity = goodsCtr.getTotalQuanByShipments(goods);
             BigDecimal price = goods.getListPrice();
             BigDecimal totalPrice = totalQuantity.multiply(price);
             System.out.format("%-25s %-10.1f %-15.1f %-15.1f\n", goods.getGoodsName(), totalQuantity, price, totalPrice);
         }
-        System.out.printf("SubTotal: %.1f\n", order.getSubTotal());
-        System.out.printf("Discount Amount(Discount=%s): %.1f\n", order.getDiscount() + "%", order.getDiscountMoney());
-        System.out.printf("Tax(VAT=%s): %.1f\n", myStore.getVAT() + "%", order.getTaxFee());
+        System.out.printf("SubTotal: %.1f\n", orderCtr.getSubTotal(order));
+        System.out.printf("Discount Amount(Discount=%s): %.1f\n", order.getDiscount() + "%", orderCtr.getDiscountMoney(order));
+        System.out.printf("Tax(VAT=%s): %.1f\n", myStore.getVAT() + "%", orderCtr.getTaxFee(order));
         System.out.println("Payment Option: " + order.getPaymentOptions());
         System.out.println("Member Card ID: " + customerID);
         System.out.printf("Point Discount: %.1f\n", order.getPointDiscount());
-        System.out.printf("Total: %.1f\n", order.getTotal());
+        System.out.printf("Total: %.1f\n", orderCtr.getTotal(order));
         if (order.getPaymentOptions().equals(PaymentOptions.Cash_Payment)) {
             System.out.printf("Customer payment: %.1f\n", order.getCusMoney());
-            System.out.printf("Change: %.1f\n", order.getChange());
+            System.out.printf("Change: %.1f\n", orderCtr.getChange(order));
         }
         System.out.println("----------------------------------------");
     }
 
-    public void printBillToFile(Order order, Store myStore) {
+    public void printBillToFile(Order order, Store myStore, OrderController orderCtr) {
         try ( PrintWriter pw = new PrintWriter(Files.newBufferedWriter(Path.of(FILE_PRINT),
                 StandardOpenOption.CREATE,
                 StandardOpenOption.WRITE,
@@ -268,18 +278,18 @@ public class OrderView {
             pw.format("%-25s %-10s %-15s %-15s\n", "-------------------------", "----------", "---------------", "---------------");
             for (int i = 0; i < order.getGoodsList().size(); i++) {
                 Goods goods = order.getGoodsList().get(i);
-                BigDecimal totalQuantity = goods.getTotalQuanByShipments();
+                BigDecimal totalQuantity = goodsCtr.getTotalQuanByShipments(goods);
                 BigDecimal price = goods.getListPrice();
                 BigDecimal totalPrice = totalQuantity.multiply(price);
                 pw.format("%-25s %-10.1f %-15.1f %-15.1f\n", goods.getGoodsName(), totalQuantity, price, totalPrice);
             }
-            pw.printf("SubTotal: %.1f\n", order.getSubTotal());
-            pw.printf("Discount Amount(Discount=%s): %.1f\n", order.getDiscount() + "%", order.getDiscountMoney());
-            pw.printf("Tax(VAT=%s): %.1f\n", myStore.getVAT() + "%", order.getTaxFee());
+            pw.printf("SubTotal: %.1f\n", orderCtr.getSubTotal(order));
+            pw.printf("Discount Amount(Discount=%s): %.1f\n", order.getDiscount() + "%", orderCtr.getDiscountMoney(order));
+            pw.printf("Tax(VAT=%s): %.1f\n", myStore.getVAT() + "%", orderCtr.getTaxFee(order));
             pw.println("Payment Option: " + order.getPaymentOptions());
             pw.println("Member Card ID: " + customerID);
             pw.printf("Point Discount: %.1f\n", order.getPointDiscount());
-            pw.printf("Total: %.1f\n", order.getTotal());
+            pw.printf("Total: %.1f\n", orderCtr.getTotal(order));
             if (order.getPaymentOptions().equals(PaymentOptions.Cash_Payment)) {
                 pw.printf("Customer payment: %.1f\n", order.getCusMoney());
                 pw.printf("Change: %.1f\n", order.getCusMoney());

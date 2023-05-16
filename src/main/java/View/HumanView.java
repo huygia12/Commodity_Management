@@ -4,6 +4,7 @@
  */
 package View;
 
+import Ultility.Cautions;
 import Models.AbstractHuman;
 import Models.Gender;
 import java.util.Scanner;
@@ -15,9 +16,10 @@ import java.util.Scanner;
  */
 public class HumanView<T extends AbstractHuman> {
 
+    private final Scanner sc = new Scanner(System.in);
     final Cautions ctions = new Cautions();
 
-    public int typeInFirstName(T human, Scanner sc) {
+    public int typeInFirstName(T human) {
         while (true) {
             System.out.print("Type in Fisrt Name or type EXIT/BACK to exit/back: ");
             String inputStr = sc.nextLine();
@@ -33,7 +35,7 @@ public class HumanView<T extends AbstractHuman> {
         }
     }
 
-    public int typeInLastName(T human, Scanner sc) {
+    public int typeInLastName(T human ) {
         while (true) {
             System.out.print("Type in Last Name or type EXIT/BACK to exit/back: ");
             String inputStr = sc.nextLine();
@@ -49,7 +51,7 @@ public class HumanView<T extends AbstractHuman> {
         }
     }
 
-    public int typeInAndress(T human, Scanner sc) {
+    public int typeInAndress(T human ) {
         while (true) {
             System.out.print("Type in Andress or type EXIT/BACK to exit/back: ");
             String inputStr = sc.nextLine();
@@ -65,7 +67,7 @@ public class HumanView<T extends AbstractHuman> {
         }
     }
 
-    public int typeInAge(T human, Scanner sc) {
+    public int typeInAge(T human ) {
         while (true) {
             System.out.print("Type in Age or type EXIT/BACK to exit/back: ");
             String inputStr = sc.nextLine();
@@ -90,7 +92,7 @@ public class HumanView<T extends AbstractHuman> {
         }
     }
 
-    public int typeInPhoneNumber(T human, Scanner sc) {
+    public int typeInPhoneNumber(T human ) {
         while (true) {
             System.out.print("Type in Phone Number or type EXIT/BACK to exit/back: ");
             String inputStr = sc.nextLine();
@@ -99,15 +101,15 @@ public class HumanView<T extends AbstractHuman> {
             } else if ("back".equalsIgnoreCase(inputStr)) {
                 return -1;
             } else if (ctions.checkIfNoInput(inputStr)
-                    || !ctions. checkIfANumberSequence(inputStr)) {
-            }else {
+                    || !ctions.checkIfANumberSequence(inputStr)) {
+            } else {
                 human.setPhoneNumber(inputStr);
                 return 1;
             }
         }
     }
 
-    public int typeInGender(T human, Scanner sc) {
+    public int typeInGender(T human ) {
         while (true) {
             System.out.print("Type in Gender or type EXIT/BACK to exit/back: ");
             String inputStr = sc.nextLine().trim().toLowerCase();

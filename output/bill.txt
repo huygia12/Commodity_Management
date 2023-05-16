@@ -5,17 +5,16 @@ Store Name: Chang hi
 Email: bonEmMuonAnHotpotWangWang@gmail.com
 Address: 112-Nguyen Van Loc
 Phone Number: 0705737292
-Date: 11/05/2023 12:37:30
+Date: 16/05/2023 16:42:10
 
 Name                      Quantity   Price           Total          
 ------------------------- ---------- --------------- ---------------
-Donut                     35.0       12000.0         420000.0       
-Note                      40.0       7000.0          280000.0       
-SubTotal: 700000.0
-Discount Amount(Discount=5%): 38500.0
-Tax(VAT=10%): 70000.0
+Custard Cake              5000.0     3000.0          15000000.0     
+SubTotal: 15000000.0
+Discount Amount(Discount=10%): 1650000.0
+Tax(VAT=10%): 1500000.0
 Payment Option: Wire_Transfer_Payment
-Member Card ID: 000001
+Member Card ID: 000000
 Point Discount: 0.0
-Total: 731500.0
+Total: 14850000.0
 ----------------------------------------

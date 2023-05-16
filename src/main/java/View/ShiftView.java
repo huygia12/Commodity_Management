@@ -4,6 +4,9 @@
  */
 package View;
 
+import Controllers.EmployeeListController;
+import Controllers.ShiftController;
+import Ultility.Cautions;
 import Models.Employee;
 import Models.EmployeeList;
 import Models.Shift;
@@ -27,10 +30,13 @@ import java.util.logging.Logger;
  * @author FPTSHOP
  */
 public class ShiftView {
+
     private final String HOME = System.getProperty("user.dir");
     private final String SEPARATOR = File.separator;
     private final String FILE_PRINT = HOME + SEPARATOR + "output" + SEPARATOR + "shiftOverView.txt";
+    final Scanner sc = new Scanner(System.in);
     final Cautions ctions = new Cautions();
+    final EmployeeListController employeeListCtr = new EmployeeListController();
 
     public void shiftNotOpenCaution() {
         System.out.println("Shift not open yet!");
@@ -40,7 +46,7 @@ public class ShiftView {
         System.out.println("Current shift not over yet!!");
     }
 
-    public boolean removeEmployeeCaution(Shift currentShift, Scanner sc) {
+    public boolean removeEmployeeCaution(Shift currentShift) {
         while (true) {
             System.out.println("This eliminates will also remove cashier of this shift, keep your change?");
             System.out.println("(If yes, you must choose another cashier of this shift)");
@@ -57,10 +63,10 @@ public class ShiftView {
 
     public void menuOfShiftManagement() {
         System.out.print("""
-                           \n****************************************
+                           \n************SHIFT_MANAGEMENT************
                            * 1. Open shift                        *
                            * 2. Set Shipping fee                  *
-                           * 3. Change employees of this shift    *
+                           * 3. Modify employees of this shift    *
                            * 4. Change shift openning balance     *
                            * 5. Show order history                *
                            * 6. Show import goods history         *
@@ -73,16 +79,24 @@ public class ShiftView {
 
     public void menuOfModifyEmployeeListOfThisShift() {
         System.out.print("""
-                           \n***********************************************
-                           * 1. Add employee                             *
-                           * 2. Remove employee                          *
+                           \n*********MODIFY_EMPLOYEES_OF_THIS_SHIFT*********
+                           * 1. Add employee                              *
+                           * 2. Remove employee                           *
                            * 3. Reset and retype employees of shift Shift *
-                           * 4. Back                                     *
-                           ***********************************************
+                           * 4. Back                                      *
+                           ************************************************
                            Options => """);
     }
 
-    public int typeInOpeningBalance(Shift shift, Scanner sc) {
+    public boolean checkIfThisShiftContainThisEmployee(Shift shift, String CCCD) {
+        if (employeeListCtr.containEmployee(shift.getEmployeeOfThisShift(), CCCD) != null) {
+            System.out.println("This employee already existed in this Shift!");
+            return true;
+        }
+        return false;
+    }
+
+    public int typeInOpeningBalance(Shift shift) {
         while (true) {
             System.out.print("Type in openning balance or type EXIT/BACK to exit/back: ");
             String inputStr = sc.nextLine();
@@ -94,7 +108,7 @@ public class ShiftView {
             } else {
                 try {
                     BigDecimal openBalance = new BigDecimal(inputStr);
-                    if (!ctions.checkIfNumberNegative(openBalance)) {
+                    if (ctions.checkIfNumberNegative(openBalance)) {
                         continue;
                     }
                     shift.setOpeningBalance(openBalance);
@@ -106,7 +120,7 @@ public class ShiftView {
         }
     }
 
-    public int typeInShippingFee(Shift shift, Scanner sc) {
+    public int typeInShippingFee(Shift shift) {
         while (true) {
             System.out.print("Type in Shipping Fee or type BACK to back: ");
             String inputStr = sc.nextLine();
@@ -116,7 +130,7 @@ public class ShiftView {
             } else {
                 try {
                     BigDecimal openBalance = new BigDecimal(inputStr);
-                    if (!ctions.checkIfNumberNegative(openBalance)) {
+                    if (ctions.checkIfNumberNegative(openBalance)) {
                         continue;
                     }
                     shift.setTransportFee(openBalance);
@@ -128,14 +142,14 @@ public class ShiftView {
         }
     }
 
-    public int typeInEmployeesOfThisShift(Shift shift, EmployeeList employeeList, Scanner sc) {
+    public int typeInEmployeesOfThisShift(Shift shift, EmployeeList employeeList) {
         Employee e;
         System.out.println("Choose employees of this shift by typing in their phonenumber:");
         do {
-            e = employeeList.searchEmployee(sc);
+            e = employeeListCtr.searchEmployee(employeeList);
             if (e != null) {
-                if (shift.getEmployeeOfThisShift().containEmployee(e.getCCCD()) != null) {
-                    System.out.println("This employee already existed in this Shift!");
+                // neu shift da ton tai employee nay roi thi bo qua
+                if (checkIfThisShiftContainThisEmployee(shift, e.getCCCD())) {
                     continue;
                 }
                 shift.getEmployeeOfThisShift().getList().add(e);
@@ -157,15 +171,16 @@ public class ShiftView {
         }
     }
 
-    public int typeInCashier(Shift shift, EmployeeList employeeList, Scanner sc) {
+    public int typeInCashier(Shift shift, EmployeeList employeeList) {
         while (true) {
             System.out.println("Choose Cashier of this shift by typing in her/his phonenumber or type BACK to go back:");
-            Employee e = employeeList.searchEmployee(sc);
+            Employee e = employeeListCtr.searchEmployee(employeeList);
             if (e == null) {
                 return -1;
             } else {
                 shift.setCashier(e);
-                if(shift.getEmployeeOfThisShift().containEmployee(e.getCCCD()) == null){
+                // neu chua ton tai employee trong shift thi them vao shift, neu da ton tai thi bo qua
+                if (employeeListCtr.containEmployee(shift.getEmployeeOfThisShift(), e.getCCCD()) == null) {
                     shift.getEmployeeOfThisShift().getList().add(e);
                 }
                 return 1;
@@ -173,7 +188,7 @@ public class ShiftView {
         }
     }
 
-    public void printFileOfThisShiftOverView(Store myStore, Shift shift) {
+    public void printFileOfThisShiftOverView(Store myStore, Shift shift, ShiftController shiftCtr) {
         Path outputPath = Path.of(FILE_PRINT);
         try ( PrintWriter pw = new PrintWriter(Files.newBufferedWriter(outputPath,
                 StandardOpenOption.CREATE,
@@ -186,23 +201,23 @@ public class ShiftView {
             pw.println(String.format("%21s" + " | " + "%-20s", "Close time", shift.getEndTime()));
             pw.println(String.format("%21s" + " | " + "%-20s", "Cashier", shift.getCashier().getFirstName() + " " + shift.getCashier().getLastName()));
             pw.println(String.format("%21s" + " | " + "%-20.1f", "Openning balance", shift.getOpeningBalance()));
-            pw.println(String.format("%21s" + " | " + "%-20.1f", "Gross revenue", shift.getGrossRevenue()));
-            pw.println(String.format("%21s" + " | " + "%-20.1f", "Total direct discount", shift.getTotalDiscountMoney()));
-            pw.println(String.format("%21s" + " | " + "%-20.1f", "Total point discount", shift.getTotalPointDiscount()));
-            pw.println(String.format("%21s" + " | " + "%-20.1f", "VAT" + shift.getVAT() + "%", shift.getTotalVAT()));
+            pw.println(String.format("%21s" + " | " + "%-20.1f", "Gross revenue", shiftCtr.getGrossRevenue(shift)));
+            pw.println(String.format("%21s" + " | " + "%-20.1f", "Total direct discount", shiftCtr.getTotalDiscountMoney(shift)));
+            pw.println(String.format("%21s" + " | " + "%-20.1f", "Total point discount", shiftCtr.getTotalPointDiscount(shift)));
+            pw.println(String.format("%21s" + " | " + "%-20.1f", "VAT" + shift.getVAT() + "%", shiftCtr.getTotalVAT(shift)));
             pw.println(String.format("%21s" + " | " + "%-20.1f", "Shipping fee", shift.getTransportFee()));
-            pw.println(String.format("%21s" + " | " + "%-20.1f", "Net revenue", shift.getNetRevenue()));
-            pw.println(String.format("%21s" + " | " + "%-20s", "Number of orders", shift.getNumberOfOrder()));
-            pw.println(String.format("%21s" + " | " + "%-20.1f", "Average per Order", shift.getAveragePerOrder()));
+            pw.println(String.format("%21s" + " | " + "%-20.1f", "Net revenue", shiftCtr.getNetRevenue(shift)));
+            pw.println(String.format("%21s" + " | " + "%-20s", "Number of orders", shiftCtr.getNumberOfOrder(shift)));
+            pw.println(String.format("%21s" + " | " + "%-20.1f", "Average per Order", shiftCtr.getAveragePerOrder(shift)));
             pw.println(String.format("%21s", "OPTIONS PAYMENT:"));
-            pw.println(String.format("%21s" + " | " + "%-20.1f", "+Cash", shift.getTotalPaymentByCash()));
-            pw.println(String.format("%21s" + " | " + "%-20.1f", "+Wire transfer", shift.getTotalPaymentByWireTransfer()));
-            pw.println(String.format("%21s" + " | " + "%-20.1f", "+Current CashBox money", shift.getTotalPaymentByCash().add(shift.getOpeningBalance())));
+            pw.println(String.format("%21s" + " | " + "%-20.1f", "+Cash", shiftCtr.getTotalPaymentByCash(shift)));
+            pw.println(String.format("%21s" + " | " + "%-20.1f", "+Wire transfer", shiftCtr.getTotalPaymentByWireTransfer(shift)));
+            pw.println(String.format("%21s" + " | " + "%-20.1f", "+Current CashBox money", shiftCtr.getTotalPaymentByCash(shift).add(shift.getOpeningBalance())));
             pw.println(String.format("%21s", "CONSUMPTIONS:"));
             pw.println(String.format("%-21s" + " | " + "%-20s" + " | " + "%-20s" + " | " + "%-20s", "Goods Name", "Quantity", "Revenue", "Ratio"));
-            List<StaticalItems> staticalItemsList = new ArrayList<>(shift.getStaticalList().values());
+            List<StaticalItems> staticalItemsList = new ArrayList<>(shiftCtr.getStaticalList(shift).values());
             staticalItemsList.stream().forEach(x -> pw.println(String.format("%-21s" + " | " + "%-20.1f" + " | " + "%-20.1f" + " | " + "%-20s",
-                    x.getName(), x.getQuantity(), x.getRevenue(), String.format("%.1f", x.getRatio())+"%")));
+                    x.getName(), x.getQuantity(), x.getRevenue(), String.format("%.1f", x.getRatio()) + "%")));
         } catch (IOException ex) {
             Logger.getLogger(Shift.class.getName()).log(Level.SEVERE, null, ex);
         }

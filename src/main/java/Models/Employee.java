@@ -7,6 +7,8 @@ package Models;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 import java.math.BigDecimal;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  *
@@ -19,7 +21,11 @@ public class Employee extends AbstractHuman {
     @SerializedName("CCCD")
     @Expose
     private String CCCD;
-
+    @SerializedName("IDOfOrdersInCharge")
+    @Expose
+    private List<String> IDOfOrdersInCharge = new ArrayList<>();
+    
+    
     public Employee() {
     }
 
@@ -51,29 +57,12 @@ public class Employee extends AbstractHuman {
         this.CCCD = CCCD.trim();
     }
 
-    
-    
-    public Employee cloneEmployee() {
-        Employee e = new Employee();
-        e.setAddress(this.getAddress());
-        e.setAge(this.getAge());
-        e.setCCCD(this.getCCCD());
-        e.setFirstName(this.getFirstName());
-        e.setLastName(this.getLastName());
-        e.setPhoneNumber(this.getPhoneNumber());
-        e.setSalaryPerDay(this.getSalaryPerDay());
-        e.setGender(this.getGender());
-        return e;
+    public List<String> getIDOfOrdersInCharge() {
+        return IDOfOrdersInCharge;
     }
-    
-    public boolean equals(Employee anotherEmployee) {
-        return this.CCCD.equalsIgnoreCase(anotherEmployee.CCCD)
-                && this.address.equalsIgnoreCase(anotherEmployee.address)
-                && (this.age == anotherEmployee.age)
-                && this.gender.equals(anotherEmployee.gender)
-                && this.getFirstName().equalsIgnoreCase(anotherEmployee.getFirstName())
-                && this.getLastName().equalsIgnoreCase(anotherEmployee.getLastName())
-                && this.getPhoneNumber().equalsIgnoreCase(anotherEmployee.getPhoneNumber())
-                && (this.getSalaryPerDay().compareTo(anotherEmployee.getSalaryPerDay()) == 0);
+
+    public void setIDOfOrdersInCharge(List<String> IDOfOrdersInCharge) {
+        this.IDOfOrdersInCharge = IDOfOrdersInCharge;
     }
+
 }

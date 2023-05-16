@@ -6,6 +6,7 @@ package Controllers;
 
 import Models.Shipment;
 import View.ShipmentView;
+import java.math.BigDecimal;
 
 /**
  *
@@ -14,26 +15,27 @@ import View.ShipmentView;
 public class ShipmentController {
 
     final private ShipmentView shipmentView = new ShipmentView();
-    private Shipment shipment;
 
     public ShipmentController() {
-    }
-
-    public ShipmentController(Shipment shipment) {
-        this.shipment = shipment;
-    }
-
-    
-    public Shipment getShipment() {
-        return shipment;
-    }
-
-    public void setShipment(Shipment shipmentModel) {
-        this.shipment = shipmentModel;
     }
 
     public ShipmentView getView() {
         return shipmentView;
     }
     
+    
+    public Shipment cloneShipment(Shipment shipment) {
+        Shipment cloneShipment = new Shipment();
+        cloneShipment.setID(shipment.getID());
+        cloneShipment.setImportPrice(shipment.getImportPrice());
+        cloneShipment.setQuantity(shipment.getQuantity());
+        cloneShipment.setHsd(shipment.getHsd());
+        cloneShipment.setNsx(shipment.getNsx());
+        return cloneShipment;
+    }
+
+    public void gainQuantity(Shipment shipment, BigDecimal quantity) {
+        BigDecimal sumQuantity = shipment.getQuantity().add(quantity);
+        shipment.setQuantity(sumQuantity);
+    }
 }
