@@ -9,6 +9,7 @@ E:\CommodityManagementProject\src\main\java\View\EmployeeView.java
 E:\CommodityManagementProject\src\main\java\Controllers\CustomerCardListController.java
 E:\CommodityManagementProject\src\main\java\Models\AbstractHumanList.java
 E:\CommodityManagementProject\src\main\java\Ultility\ManufacComparator.java
+E:\CommodityManagementProject\src\main\java\GUI\SignUpPanel.java
 E:\CommodityManagementProject\src\main\java\Builder\CustomerBuilder.java
 E:\CommodityManagementProject\src\main\java\View\GoodsView.java
 E:\CommodityManagementProject\src\main\java\Controllers\HistoryController.java
@@ -62,6 +63,7 @@ E:\CommodityManagementProject\src\main\java\Models\Gender.java
 E:\CommodityManagementProject\src\main\java\Models\CustomerCard.java
 E:\CommodityManagementProject\src\main\java\Controllers\GoodsController.java
 E:\CommodityManagementProject\src\main\java\Models\Employee.java
+E:\CommodityManagementProject\src\main\java\GUI\LogInPanel.java
 E:\CommodityManagementProject\src\main\java\Models\Customer.java
 E:\CommodityManagementProject\src\main\java\Builder\EmployeeBuilder.java
 E:\CommodityManagementProject\src\main\java\Models\Store.java
