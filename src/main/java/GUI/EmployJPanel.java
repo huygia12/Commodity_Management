@@ -58,12 +58,12 @@ public class EmployJPanel extends javax.swing.JPanel {
         setPreferredSize(new java.awt.Dimension(970, 560));
 
         inputFirstNameLabel.setFont(new java.awt.Font("Dialog", 1, 11)); // NOI18N
-        inputFirstNameLabel.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        inputFirstNameLabel.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
         inputFirstNameLabel.setText("First Name:");
         inputFirstNameLabel.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
 
         inputLastNameLabel.setFont(new java.awt.Font("Dialog", 1, 11)); // NOI18N
-        inputLastNameLabel.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        inputLastNameLabel.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
         inputLastNameLabel.setText("Last Name:");
 
         inputLastNameTextField1.addActionListener(new java.awt.event.ActionListener() {
@@ -73,11 +73,11 @@ public class EmployJPanel extends javax.swing.JPanel {
         });
 
         inputAgeLabel.setFont(new java.awt.Font("Dialog", 1, 11)); // NOI18N
-        inputAgeLabel.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        inputAgeLabel.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
         inputAgeLabel.setText("Age:");
 
         inputGenderLabel.setFont(new java.awt.Font("Dialog", 1, 11)); // NOI18N
-        inputGenderLabel.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        inputGenderLabel.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
         inputGenderLabel.setText("Gender:");
 
         genderbuttonGroup.add(maleButton);
@@ -97,19 +97,19 @@ public class EmployJPanel extends javax.swing.JPanel {
         otherRadioButton.setText("OTHER");
 
         inputPhoneLabel.setFont(new java.awt.Font("Dialog", 1, 11)); // NOI18N
-        inputPhoneLabel.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        inputPhoneLabel.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
         inputPhoneLabel.setText("Phone:");
 
         inputAdressLabel.setFont(new java.awt.Font("Dialog", 1, 11)); // NOI18N
-        inputAdressLabel.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        inputAdressLabel.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
         inputAdressLabel.setText("Adress:");
 
         inputCCCDLabel.setFont(new java.awt.Font("Dialog", 1, 11)); // NOI18N
-        inputCCCDLabel.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        inputCCCDLabel.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
         inputCCCDLabel.setText("CCCD:");
 
         inputSalaryLabel.setFont(new java.awt.Font("Dialog", 1, 11)); // NOI18N
-        inputSalaryLabel.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        inputSalaryLabel.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
         inputSalaryLabel.setText("Salary:");
 
         buttonPanel.setLayout(new java.awt.FlowLayout(java.awt.FlowLayout.CENTER, 20, 5));
@@ -176,7 +176,7 @@ public class EmployJPanel extends javax.swing.JPanel {
         );
         displayPanelLayout.setVerticalGroup(
             displayPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 469, Short.MAX_VALUE)
+            .addGap(0, 461, Short.MAX_VALUE)
             .addGroup(displayPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                 .addGroup(displayPanelLayout.createSequentialGroup()
                     .addContainerGap()
@@ -190,7 +190,7 @@ public class EmployJPanel extends javax.swing.JPanel {
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addComponent(buttonPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
             .addGroup(layout.createSequentialGroup()
-                .addContainerGap()
+                .addGap(180, 180, 180)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -209,20 +209,24 @@ public class EmployJPanel extends javax.swing.JPanel {
                     .addComponent(maleButton, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, 91, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(femaleRadioButton, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, 91, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(inputFirstNameTextField, javax.swing.GroupLayout.Alignment.LEADING))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 113, Short.MAX_VALUE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(inputPhoneLabel, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 59, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(inputAdressLabel, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 59, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(inputCCCDLabel, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 59, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(inputSalaryLabel, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 59, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(20, 20, 20)
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(inputAdressLabel, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 59, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(inputCCCDLabel, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 59, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(inputSalaryLabel, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 59, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(20, 20, 20))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                        .addComponent(inputPhoneLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 59, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)))
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                         .addComponent(inputPhoneTextField, javax.swing.GroupLayout.PREFERRED_SIZE, 160, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addComponent(inputAdressField, javax.swing.GroupLayout.PREFERRED_SIZE, 160, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addComponent(inputCCCDTextField, javax.swing.GroupLayout.PREFERRED_SIZE, 160, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addComponent(inputSalaryTextField, javax.swing.GroupLayout.PREFERRED_SIZE, 160, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(26, 26, 26))
+                .addGap(180, 180, 180))
             .addComponent(displayPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
         layout.setVerticalGroup(
