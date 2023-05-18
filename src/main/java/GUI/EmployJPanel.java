@@ -27,6 +27,7 @@ public class EmployJPanel extends javax.swing.JPanel {
     private void initComponents() {
 
         genderbuttonGroup = new javax.swing.ButtonGroup();
+        inputInfoPanel = new javax.swing.JPanel();
         inputFirstNameLabel = new javax.swing.JLabel();
         inputFirstNameTextField = new javax.swing.JTextField();
         inputLastNameLabel = new javax.swing.JLabel();
@@ -45,26 +46,27 @@ public class EmployJPanel extends javax.swing.JPanel {
         inputCCCDTextField = new javax.swing.JTextField();
         inputSalaryLabel = new javax.swing.JLabel();
         inputSalaryTextField = new javax.swing.JTextField();
-        buttonPanel = new javax.swing.JPanel();
+        functionPanel = new javax.swing.JPanel();
         addButton = new javax.swing.JButton();
-        removeButton = new javax.swing.JButton();
         changeButton = new javax.swing.JButton();
+        removeButton = new javax.swing.JButton();
         searchButton = new javax.swing.JButton();
+        searchIDTextField = new javax.swing.JTextField();
         displayPanel = new javax.swing.JPanel();
         displayScrollPane = new javax.swing.JScrollPane();
         displayTable = new javax.swing.JTable();
 
-        setBorder(javax.swing.BorderFactory.createTitledBorder(null, "INFO'S EMPLOY", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Dialog", 0, 18))); // NOI18N
+        setBorder(javax.swing.BorderFactory.createTitledBorder(null, "THÔNG TIN NHÂN VIÊN", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Dialog", 0, 18))); // NOI18N
         setPreferredSize(new java.awt.Dimension(970, 560));
 
         inputFirstNameLabel.setFont(new java.awt.Font("Dialog", 1, 11)); // NOI18N
         inputFirstNameLabel.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
-        inputFirstNameLabel.setText("First Name:");
+        inputFirstNameLabel.setText("Họ:");
         inputFirstNameLabel.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
 
         inputLastNameLabel.setFont(new java.awt.Font("Dialog", 1, 11)); // NOI18N
         inputLastNameLabel.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
-        inputLastNameLabel.setText("Last Name:");
+        inputLastNameLabel.setText("Tên:");
 
         inputLastNameTextField1.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -74,14 +76,13 @@ public class EmployJPanel extends javax.swing.JPanel {
 
         inputAgeLabel.setFont(new java.awt.Font("Dialog", 1, 11)); // NOI18N
         inputAgeLabel.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
-        inputAgeLabel.setText("Age:");
+        inputAgeLabel.setText("Tuổi:");
 
         inputGenderLabel.setFont(new java.awt.Font("Dialog", 1, 11)); // NOI18N
         inputGenderLabel.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
-        inputGenderLabel.setText("Gender:");
+        inputGenderLabel.setText("Giới tính:");
 
         genderbuttonGroup.add(maleButton);
-        maleButton.setSelected(true);
         maleButton.setText("MALE");
         maleButton.setAutoscrolls(true);
 
@@ -98,11 +99,11 @@ public class EmployJPanel extends javax.swing.JPanel {
 
         inputPhoneLabel.setFont(new java.awt.Font("Dialog", 1, 11)); // NOI18N
         inputPhoneLabel.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
-        inputPhoneLabel.setText("Phone:");
+        inputPhoneLabel.setText("SĐT:");
 
         inputAdressLabel.setFont(new java.awt.Font("Dialog", 1, 11)); // NOI18N
         inputAdressLabel.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
-        inputAdressLabel.setText("Adress:");
+        inputAdressLabel.setText("Địa chỉ:");
 
         inputCCCDLabel.setFont(new java.awt.Font("Dialog", 1, 11)); // NOI18N
         inputCCCDLabel.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
@@ -110,45 +111,153 @@ public class EmployJPanel extends javax.swing.JPanel {
 
         inputSalaryLabel.setFont(new java.awt.Font("Dialog", 1, 11)); // NOI18N
         inputSalaryLabel.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
-        inputSalaryLabel.setText("Salary:");
+        inputSalaryLabel.setText("Lương:");
 
-        buttonPanel.setLayout(new java.awt.FlowLayout(java.awt.FlowLayout.CENTER, 20, 5));
+        javax.swing.GroupLayout inputInfoPanelLayout = new javax.swing.GroupLayout(inputInfoPanel);
+        inputInfoPanel.setLayout(inputInfoPanelLayout);
+        inputInfoPanelLayout.setHorizontalGroup(
+            inputInfoPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, inputInfoPanelLayout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(inputInfoPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(inputGenderLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 59, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(inputLastNameLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 68, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(inputFirstNameLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 70, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(inputAgeLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 59, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGroup(inputInfoPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                    .addComponent(inputLastNameTextField1, javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(otherRadioButton, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, 91, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(inputAgeTextField, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, 44, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(maleButton, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, 91, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(femaleRadioButton, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, 91, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(inputFirstNameTextField, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, 160, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 38, Short.MAX_VALUE)
+                .addGroup(inputInfoPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, inputInfoPanelLayout.createSequentialGroup()
+                        .addGroup(inputInfoPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(inputAdressLabel, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 59, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(inputCCCDLabel, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 59, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(inputSalaryLabel, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 59, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(20, 20, 20))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, inputInfoPanelLayout.createSequentialGroup()
+                        .addComponent(inputPhoneLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 59, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)))
+                .addGroup(inputInfoPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(inputInfoPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                        .addComponent(inputPhoneTextField, javax.swing.GroupLayout.PREFERRED_SIZE, 160, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(inputAdressField, javax.swing.GroupLayout.PREFERRED_SIZE, 160, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(inputCCCDTextField, javax.swing.GroupLayout.PREFERRED_SIZE, 160, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(inputSalaryTextField, javax.swing.GroupLayout.PREFERRED_SIZE, 160, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap())
+        );
+        inputInfoPanelLayout.setVerticalGroup(
+            inputInfoPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(inputInfoPanelLayout.createSequentialGroup()
+                .addGap(25, 25, 25)
+                .addGroup(inputInfoPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(inputInfoPanelLayout.createSequentialGroup()
+                        .addGroup(inputInfoPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(inputFirstNameLabel)
+                            .addComponent(inputFirstNameTextField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(inputPhoneLabel)
+                            .addComponent(inputPhoneTextField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(18, 18, 18)
+                        .addGroup(inputInfoPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(inputLastNameLabel)
+                            .addComponent(inputLastNameTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(inputAdressField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(inputAdressLabel))
+                        .addGap(18, 18, 18)
+                        .addGroup(inputInfoPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(inputAgeLabel)
+                            .addComponent(inputAgeTextField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(inputCCCDTextField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(inputCCCDLabel))
+                        .addGap(18, 18, 18)
+                        .addGroup(inputInfoPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(inputGenderLabel)
+                            .addComponent(maleButton)))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, inputInfoPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(inputSalaryLabel)
+                        .addComponent(inputSalaryTextField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(femaleRadioButton)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(otherRadioButton)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+        );
 
         addButton.setFont(new java.awt.Font("Dialog", 0, 14)); // NOI18N
-        addButton.setText("ADD");
+        addButton.setText("THÊM");
         addButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 addButtonActionPerformed(evt);
             }
         });
-        buttonPanel.add(addButton);
-
-        removeButton.setFont(new java.awt.Font("Dialog", 0, 14)); // NOI18N
-        removeButton.setText("REMOVE");
-        removeButton.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                removeButtonActionPerformed(evt);
-            }
-        });
-        buttonPanel.add(removeButton);
 
         changeButton.setFont(new java.awt.Font("Dialog", 0, 14)); // NOI18N
-        changeButton.setText("CHANGE");
+        changeButton.setText("SỬA");
         changeButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 changeButtonActionPerformed(evt);
             }
         });
-        buttonPanel.add(changeButton);
 
-        searchButton.setFont(new java.awt.Font("Dialog", 0, 14)); // NOI18N
-        searchButton.setText("SEARCH");
+        removeButton.setFont(new java.awt.Font("Dialog", 0, 14)); // NOI18N
+        removeButton.setText("XÓA");
+        removeButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                removeButtonActionPerformed(evt);
+            }
+        });
+
+        searchButton.setFont(new java.awt.Font("Dialog", 0, 12)); // NOI18N
+        searchButton.setText("TÌM KIẾM");
         searchButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 searchButtonActionPerformed(evt);
             }
         });
-        buttonPanel.add(searchButton);
+
+        javax.swing.GroupLayout functionPanelLayout = new javax.swing.GroupLayout(functionPanel);
+        functionPanel.setLayout(functionPanelLayout);
+        functionPanelLayout.setHorizontalGroup(
+            functionPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, functionPanelLayout.createSequentialGroup()
+                .addGroup(functionPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addGroup(functionPanelLayout.createSequentialGroup()
+                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addGroup(functionPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addGroup(functionPanelLayout.createSequentialGroup()
+                                .addComponent(removeButton, javax.swing.GroupLayout.PREFERRED_SIZE, 71, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(1, 1, 1))
+                            .addGroup(functionPanelLayout.createSequentialGroup()
+                                .addComponent(searchIDTextField, javax.swing.GroupLayout.PREFERRED_SIZE, 160, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(31, 31, 31)
+                                .addComponent(searchButton))))
+                    .addGroup(functionPanelLayout.createSequentialGroup()
+                        .addGap(0, 0, Short.MAX_VALUE)
+                        .addGroup(functionPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addComponent(changeButton, javax.swing.GroupLayout.PREFERRED_SIZE, 72, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(addButton))))
+                .addGap(38, 38, 38))
+        );
+        functionPanelLayout.setVerticalGroup(
+            functionPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, functionPanelLayout.createSequentialGroup()
+                .addGap(24, 24, 24)
+                .addGroup(functionPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(searchButton, javax.swing.GroupLayout.PREFERRED_SIZE, 22, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(searchIDTextField, javax.swing.GroupLayout.PREFERRED_SIZE, 22, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(18, 18, 18)
+                .addComponent(addButton)
+                .addGap(18, 18, 18)
+                .addComponent(changeButton, javax.swing.GroupLayout.PREFERRED_SIZE, 29, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(18, 18, Short.MAX_VALUE)
+                .addComponent(removeButton)
+                .addGap(75, 75, 75))
+        );
 
         displayTable.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -158,7 +267,7 @@ public class EmployJPanel extends javax.swing.JPanel {
                 {null, null, null, null, null, null, null, null, null}
             },
             new String [] {
-                "ID", "First Name", "Last Name", "Age", "Gender", "Phone", "Adress", "CCCD", "Salary"
+                "ID", "Họ", "Tên", "Tuổi", "Giới tính", "SĐT", "Địa chỉ", "CCCD", "Lương"
             }
         ));
         displayScrollPane.setViewportView(displayTable);
@@ -167,11 +276,11 @@ public class EmployJPanel extends javax.swing.JPanel {
         displayPanel.setLayout(displayPanelLayout);
         displayPanelLayout.setHorizontalGroup(
             displayPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 547, Short.MAX_VALUE)
+            .addGap(0, 936, Short.MAX_VALUE)
             .addGroup(displayPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                 .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, displayPanelLayout.createSequentialGroup()
                     .addContainerGap()
-                    .addComponent(displayScrollPane, javax.swing.GroupLayout.DEFAULT_SIZE, 523, Short.MAX_VALUE)
+                    .addComponent(displayScrollPane, javax.swing.GroupLayout.DEFAULT_SIZE, 912, Short.MAX_VALUE)
                     .addContainerGap()))
         );
         displayPanelLayout.setVerticalGroup(
@@ -188,86 +297,24 @@ public class EmployJPanel extends javax.swing.JPanel {
         this.setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(buttonPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
             .addGroup(layout.createSequentialGroup()
-                .addGap(180, 180, 180)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                .addComponent(inputAgeLabel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                .addComponent(inputGenderLabel, javax.swing.GroupLayout.DEFAULT_SIZE, 59, Short.MAX_VALUE))
-                            .addComponent(inputLastNameLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 68, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGap(20, 20, 20))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                        .addComponent(inputFirstNameLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 70, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)))
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                    .addComponent(inputLastNameTextField1, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 160, Short.MAX_VALUE)
-                    .addComponent(otherRadioButton, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, 91, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(inputAgeTextField, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, 44, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(maleButton, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, 91, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(femaleRadioButton, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, 91, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(inputFirstNameTextField, javax.swing.GroupLayout.Alignment.LEADING))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 113, Short.MAX_VALUE)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(inputAdressLabel, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 59, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(inputCCCDLabel, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 59, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(inputSalaryLabel, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 59, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGap(20, 20, 20))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                        .addComponent(inputPhoneLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 59, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)))
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                        .addComponent(inputPhoneTextField, javax.swing.GroupLayout.PREFERRED_SIZE, 160, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addComponent(inputAdressField, javax.swing.GroupLayout.PREFERRED_SIZE, 160, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addComponent(inputCCCDTextField, javax.swing.GroupLayout.PREFERRED_SIZE, 160, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addComponent(inputSalaryTextField, javax.swing.GroupLayout.PREFERRED_SIZE, 160, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(180, 180, 180))
-            .addComponent(displayPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(inputInfoPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(18, 18, 18)
+                        .addComponent(functionPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addGroup(layout.createSequentialGroup()
+                        .addContainerGap()
+                        .addComponent(displayPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                .addContainerGap())
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(28, 28, 28)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(inputFirstNameLabel)
-                            .addComponent(inputFirstNameTextField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(inputPhoneLabel)
-                            .addComponent(inputPhoneTextField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGap(18, 18, 18)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(inputLastNameLabel)
-                            .addComponent(inputLastNameTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(inputAdressField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(inputAdressLabel))
-                        .addGap(18, 18, 18)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(inputAgeLabel)
-                            .addComponent(inputAgeTextField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(inputCCCDTextField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(inputCCCDLabel))
-                        .addGap(18, 18, 18)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(inputGenderLabel)
-                            .addComponent(maleButton)))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                        .addContainerGap()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(inputSalaryLabel)
-                            .addComponent(inputSalaryTextField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(inputInfoPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(functionPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(femaleRadioButton)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(otherRadioButton)
-                .addGap(26, 26, 26)
-                .addComponent(buttonPanel, javax.swing.GroupLayout.PREFERRED_SIZE, 49, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(displayPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addContainerGap())
         );
@@ -300,12 +347,12 @@ public class EmployJPanel extends javax.swing.JPanel {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton addButton;
-    private javax.swing.JPanel buttonPanel;
     private javax.swing.JButton changeButton;
     private javax.swing.JPanel displayPanel;
     private javax.swing.JScrollPane displayScrollPane;
     private javax.swing.JTable displayTable;
     private javax.swing.JRadioButton femaleRadioButton;
+    private javax.swing.JPanel functionPanel;
     private javax.swing.ButtonGroup genderbuttonGroup;
     private javax.swing.JTextField inputAdressField;
     private javax.swing.JLabel inputAdressLabel;
@@ -316,6 +363,7 @@ public class EmployJPanel extends javax.swing.JPanel {
     private javax.swing.JLabel inputFirstNameLabel;
     private javax.swing.JTextField inputFirstNameTextField;
     private javax.swing.JLabel inputGenderLabel;
+    private javax.swing.JPanel inputInfoPanel;
     private javax.swing.JLabel inputLastNameLabel;
     private javax.swing.JTextField inputLastNameTextField1;
     private javax.swing.JLabel inputPhoneLabel;
@@ -326,5 +374,6 @@ public class EmployJPanel extends javax.swing.JPanel {
     private javax.swing.JRadioButton otherRadioButton;
     private javax.swing.JButton removeButton;
     private javax.swing.JButton searchButton;
+    private javax.swing.JTextField searchIDTextField;
     // End of variables declaration//GEN-END:variables
 }
