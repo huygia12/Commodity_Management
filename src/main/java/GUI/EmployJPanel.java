@@ -54,7 +54,8 @@ public class EmployJPanel extends javax.swing.JPanel {
         displayScrollPane = new javax.swing.JScrollPane();
         displayTable = new javax.swing.JTable();
 
-        setBorder(javax.swing.BorderFactory.createTitledBorder("INFO'S EMPLOY"));
+        setBorder(javax.swing.BorderFactory.createTitledBorder(null, "INFO'S EMPLOY", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Dialog", 0, 18))); // NOI18N
+        setPreferredSize(new java.awt.Dimension(970, 560));
 
         inputFirstNameLabel.setFont(new java.awt.Font("Dialog", 1, 11)); // NOI18N
         inputFirstNameLabel.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
@@ -175,7 +176,7 @@ public class EmployJPanel extends javax.swing.JPanel {
         );
         displayPanelLayout.setVerticalGroup(
             displayPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 461, Short.MAX_VALUE)
+            .addGap(0, 469, Short.MAX_VALUE)
             .addGroup(displayPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                 .addGroup(displayPanelLayout.createSequentialGroup()
                     .addContainerGap()
