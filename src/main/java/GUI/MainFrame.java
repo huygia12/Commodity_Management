@@ -28,10 +28,9 @@ public class MainFrame extends javax.swing.JFrame {
 
         jPanel1 = new javax.swing.JPanel();
         tabPanel = new javax.swing.JTabbedPane();
-        repoPanel = new javax.swing.JPanel();
-        orderPanel = new javax.swing.JPanel();
-        employeePanel = new javax.swing.JPanel();
-        historyPanel = new javax.swing.JPanel();
+        repoPanel1 = new GUI.RepoPanel();
+        purchasePanel1 = new GUI.PurchasePanel();
+        employJPanel1 = new GUI.EmployJPanel();
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -45,54 +44,16 @@ public class MainFrame extends javax.swing.JFrame {
         );
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setPreferredSize(new java.awt.Dimension(1033, 620));
 
         tabPanel.setBackground(new java.awt.Color(0, 204, 255));
         tabPanel.setBorder(javax.swing.BorderFactory.createEtchedBorder());
         tabPanel.setTabPlacement(javax.swing.JTabbedPane.LEFT);
         tabPanel.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
         tabPanel.setFont(new java.awt.Font("MTO Telephone", 1, 12)); // NOI18N
-
-        repoPanel.setLayout(new java.awt.BorderLayout());
-        tabPanel.addTab("Repository", repoPanel);
-
-        javax.swing.GroupLayout orderPanelLayout = new javax.swing.GroupLayout(orderPanel);
-        orderPanel.setLayout(orderPanelLayout);
-        orderPanelLayout.setHorizontalGroup(
-            orderPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 555, Short.MAX_VALUE)
-        );
-        orderPanelLayout.setVerticalGroup(
-            orderPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 401, Short.MAX_VALUE)
-        );
-
-        tabPanel.addTab("Order", orderPanel);
-
-        javax.swing.GroupLayout employeePanelLayout = new javax.swing.GroupLayout(employeePanel);
-        employeePanel.setLayout(employeePanelLayout);
-        employeePanelLayout.setHorizontalGroup(
-            employeePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 555, Short.MAX_VALUE)
-        );
-        employeePanelLayout.setVerticalGroup(
-            employeePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 401, Short.MAX_VALUE)
-        );
-
-        tabPanel.addTab("Employee", employeePanel);
-
-        javax.swing.GroupLayout historyPanelLayout = new javax.swing.GroupLayout(historyPanel);
-        historyPanel.setLayout(historyPanelLayout);
-        historyPanelLayout.setHorizontalGroup(
-            historyPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 555, Short.MAX_VALUE)
-        );
-        historyPanelLayout.setVerticalGroup(
-            historyPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 401, Short.MAX_VALUE)
-        );
-
-        tabPanel.addTab("History", historyPanel);
+        tabPanel.addTab("tab1", repoPanel1);
+        tabPanel.addTab("tab2", purchasePanel1);
+        tabPanel.addTab("tab3", employJPanel1);
 
         getContentPane().add(tabPanel, java.awt.BorderLayout.CENTER);
 
@@ -135,11 +96,10 @@ public class MainFrame extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JPanel employeePanel;
-    private javax.swing.JPanel historyPanel;
+    private GUI.EmployJPanel employJPanel1;
     private javax.swing.JPanel jPanel1;
-    private javax.swing.JPanel orderPanel;
-    private javax.swing.JPanel repoPanel;
+    private GUI.PurchasePanel purchasePanel1;
+    private GUI.RepoPanel repoPanel1;
     private javax.swing.JTabbedPane tabPanel;
     // End of variables declaration//GEN-END:variables
 }
