@@ -44,15 +44,15 @@ public class MainFrame extends javax.swing.JFrame {
         );
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
-        setPreferredSize(new java.awt.Dimension(1033, 620));
 
         tabPanel.setBackground(new java.awt.Color(0, 204, 255));
         tabPanel.setBorder(javax.swing.BorderFactory.createEtchedBorder());
         tabPanel.setTabPlacement(javax.swing.JTabbedPane.LEFT);
         tabPanel.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
         tabPanel.setFont(new java.awt.Font("MTO Telephone", 1, 12)); // NOI18N
+        tabPanel.setPreferredSize(new java.awt.Dimension(1033, 615));
         tabPanel.addTab("tab1", repoPanel1);
-        tabPanel.addTab("tab2", purchasePanel1);
+        tabPanel.addTab("Bán Hàng", purchasePanel1);
         tabPanel.addTab("tab3", employJPanel1);
 
         getContentPane().add(tabPanel, java.awt.BorderLayout.CENTER);
