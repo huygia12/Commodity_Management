@@ -77,7 +77,7 @@ public class OrderController extends GoodsListController{
     }
 
     
-    public void makeNewOrder(GoodsList<Goods> repoGoodsList, CustomerCardList customerCardList,
+    public Order makeNewOrder(GoodsList<Goods> repoGoodsList, CustomerCardList customerCardList,
             Store myStore, Shift shift, IDGenerator idGenerator) {
         
         Order order = new Order(idGenerator.generateID(Order.class.getName(), 6),
@@ -93,7 +93,7 @@ public class OrderController extends GoodsListController{
                 sc.nextLine();
                 switch (choice) {
                     case 1:
-                        addToOrder(draftGoodsList, order);
+                        addToOrder(order);
                         break;
                     case 2:
                         editOrder(repoGoodsList, order);
@@ -119,9 +119,11 @@ public class OrderController extends GoodsListController{
             shift.getOrderHisPerShift().add(order);
             updateQuanAfterPay(repoGoodsList, order);
         }
+        return order;
     }
     
-    private void makeDraftGoodsList(GoodsList<Goods> repoGoodsList) {
+    public GoodsList<Goods> makeDraftGoodsList(GoodsList<Goods> repoGoodsList) {
+        // tao mot ban cpy cua repositoryGoodsList la draftGoodsList
         draftGoodsList.setGoodsList(repoGoodsList.getGoodsList()
                 .stream()
                 .map(x -> goodsCtr.cloneGoods(x))
@@ -138,6 +140,7 @@ public class OrderController extends GoodsListController{
                 .stream()
                 .filter(x -> !x.getShipments().isEmpty())
                 .collect(Collectors.toList()));
+        return draftGoodsList;
     }
 
     private void updateQuanAfterPay(GoodsList<Goods> repoGoodsList, Order order) {
@@ -153,7 +156,7 @@ public class OrderController extends GoodsListController{
     }
     
     //Function 1
-    private void addToOrder(GoodsList draftGoodsList, Order order) {
+    private void addToOrder(Order order) {
         Shipment orderShipment = new Shipment();
         Goods searchGoods = searchGoods(draftGoodsList);
         // Tim kiem goods va shipment muon them vao order

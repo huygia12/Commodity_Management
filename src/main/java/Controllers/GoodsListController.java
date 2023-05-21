@@ -6,6 +6,7 @@ package Controllers;
 
 import Models.Goods;
 import Models.GoodsList;
+import Models.Shipment;
 import View.GoodsListView;
 import java.util.ArrayList;
 import java.util.Scanner;
@@ -15,10 +16,11 @@ import java.util.Scanner;
  * @author FPTSHOP
  */
 public class GoodsListController {
+
     private final GoodsListView view = new GoodsListView();
     private final Scanner sc = new Scanner(System.in);
     final GoodsController goodsCtr = new GoodsController();
-    
+
     public GoodsListController() {
     }
 
@@ -26,7 +28,7 @@ public class GoodsListController {
         return view;
     }
 
-    public<T extends Goods> int indexOfDupGoods(GoodsList<T> goodsList, T checkingGoods) {
+    public <T extends Goods> int indexOfDupGoods(GoodsList<T> goodsList, T checkingGoods) {
         // tra ve index cua goods dau tien trong goodsList co manufac va name giong voi checkingGoods
         for (T goods : goodsList.getGoodsList()) {
             if (goodsCtr.twoGoodsIsDup(goods, checkingGoods)) {
@@ -36,7 +38,7 @@ public class GoodsListController {
         return -1;
     }
 
-    public<T extends Goods> T containGoods(GoodsList<T> goodsList, String id) {
+    public <T extends Goods> T containGoods(GoodsList<T> goodsList, String id) {
         for (T tmpGoods : goodsList.getGoodsList()) {
             if (tmpGoods.getID().equals(id)) {
                 return tmpGoods;
@@ -45,7 +47,7 @@ public class GoodsListController {
         return null;
     }
 
-    public<T extends Goods> T searchGoods(GoodsList<T> goodsList) {
+    public <T extends Goods> T searchGoods(GoodsList<T> goodsList) {
         // tra ve null neu nguoi dung nhap 'back', nguoc lai, tra ve 1 goods duoc tim kiem
         if (goodsList.getGoodsList().isEmpty()) {
             System.out.println("Cannot search in an empty List!");
@@ -87,5 +89,42 @@ public class GoodsListController {
             }
         } while (!completed);
         return searchingGoods;
+    }
+
+    public <T extends Goods> Object searchGoodsForGUI(String searchedGoodsID, GoodsList<T> goodsList) {
+        // trả về null nếu không tìm thấy bất kỳ kết quả nào phù hợp
+        try {
+            int key = Integer.parseInt(searchedGoodsID);
+
+            // nếu searchingKey là 1 chuỗi toàn số
+            containGoods(goodsList, searchedGoodsID);
+            return containGoods(goodsList, searchedGoodsID);
+        } catch (NumberFormatException nfe) {
+            // nếu searchingKey là 1 chuỗi gồm ít nhất 1 ký tự là chữ
+            GoodsList<T> bucket = new GoodsList(new ArrayList<>());
+            String inputToLowerCase = searchedGoodsID.toLowerCase();
+            for (T tmpGoods : goodsList.getGoodsList()) {
+                String nameToLowerCase = tmpGoods.getGoodsName().toLowerCase();
+                if (nameToLowerCase.contains(inputToLowerCase)) {
+                    bucket.getGoodsList().add(tmpGoods);
+                }
+            }
+            if (bucket.getGoodsList().isEmpty()) {
+                return null;
+            } else {
+                return bucket;
+            }
+        }
+    }
+
+    public <T extends Goods> T containGoodsForGUI(GoodsList<T> goodsList, String shipmentID) {
+        for (T tmpGoods : goodsList.getGoodsList()) {
+            for (Shipment shipment : tmpGoods.getShipments()) {
+                if (shipment.getID().equals(shipmentID)) {
+                    return tmpGoods;
+                }
+            }
+        }
+        return null;
     }
 }
