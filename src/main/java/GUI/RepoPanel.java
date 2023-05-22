@@ -39,7 +39,7 @@ public class RepoPanel extends javax.swing.JPanel {
         addButton = new javax.swing.JButton();
         editButton = new javax.swing.JButton();
         deleteButton = new javax.swing.JButton();
-        jButton1 = new javax.swing.JButton();
+        shipmentsButton = new javax.swing.JButton();
         IDLabel = new javax.swing.JLabel();
         IDTextField = new javax.swing.JTextField();
         totalQuantityLabel = new javax.swing.JLabel();
@@ -59,7 +59,7 @@ public class RepoPanel extends javax.swing.JPanel {
 
         controllerPanel.setBackground(new java.awt.Color(0, 204, 255));
 
-        nameLabel.setText("Name:");
+        nameLabel.setText("Tên sản phẩm:");
 
         nameTextField.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -67,19 +67,19 @@ public class RepoPanel extends javax.swing.JPanel {
             }
         });
 
-        jLabel1.setText("Manufacturer:");
+        jLabel1.setText("Nhà sản xuất:");
 
-        listPriceLabel.setText("List price:");
+        listPriceLabel.setText("Giá sản phẩm:");
 
-        addButton.setText("Add");
+        addButton.setText("Thêm");
 
-        editButton.setText("Edit");
+        editButton.setText("Sửa");
 
-        deleteButton.setText("Delete");
+        deleteButton.setText("Xóa");
 
-        jButton1.setText("Show Shipments");
+        shipmentsButton.setText("Xem lô hàng");
 
-        IDLabel.setText("Product ID:");
+        IDLabel.setText("Mã sản phẩm:");
 
         IDTextField.setEditable(false);
         IDTextField.setEnabled(false);
@@ -89,7 +89,7 @@ public class RepoPanel extends javax.swing.JPanel {
             }
         });
 
-        totalQuantityLabel.setText("Total quantity:");
+        totalQuantityLabel.setText("Tổng số lượng:");
 
         totalQuantityTextField.setEditable(false);
         totalQuantityTextField.setEnabled(false);
@@ -124,7 +124,7 @@ public class RepoPanel extends javax.swing.JPanel {
                             .addComponent(editButton, javax.swing.GroupLayout.PREFERRED_SIZE, 117, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addGap(45, 45, 45)
                         .addGroup(controllerPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(jButton1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(shipmentsButton, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                             .addComponent(deleteButton, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
                     .addGroup(controllerPanelLayout.createSequentialGroup()
                         .addComponent(nameTextField, javax.swing.GroupLayout.PREFERRED_SIZE, 153, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -159,7 +159,7 @@ public class RepoPanel extends javax.swing.JPanel {
                             .addComponent(addButton))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addGroup(controllerPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(jButton1)
+                            .addComponent(shipmentsButton)
                             .addComponent(editButton))))
                 .addContainerGap())
         );
@@ -216,7 +216,6 @@ public class RepoPanel extends javax.swing.JPanel {
     private javax.swing.JPanel controllerPanel;
     private javax.swing.JButton deleteButton;
     private javax.swing.JButton editButton;
-    private javax.swing.JButton jButton1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JTable jTable1;
@@ -226,6 +225,7 @@ public class RepoPanel extends javax.swing.JPanel {
     private javax.swing.JLabel nameLabel;
     private javax.swing.JTextField nameTextField;
     private javax.swing.JPanel repoManagementPanel;
+    private javax.swing.JButton shipmentsButton;
     private javax.swing.JPanel tablePanel;
     private javax.swing.JLabel totalQuantityLabel;
     private javax.swing.JTextField totalQuantityTextField;
