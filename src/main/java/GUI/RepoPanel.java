@@ -1,11 +1,15 @@
 package GUI;
 
+import Models.Goods;
+import Models.GoodsList;
+import java.util.ArrayList;
+import java.util.List;
+import javax.swing.JOptionPane;
+
 /*
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JPanel.java to edit this template
  */
-
-
 /**
  *
  * @author s1rja
@@ -17,6 +21,7 @@ public class RepoPanel extends javax.swing.JPanel {
      */
     public RepoPanel() {
         initComponents();
+
     }
 
     /**
@@ -44,6 +49,7 @@ public class RepoPanel extends javax.swing.JPanel {
         IDTextField = new javax.swing.JTextField();
         totalQuantityLabel = new javax.swing.JLabel();
         totalQuantityTextField = new javax.swing.JTextField();
+        unitComboBox = new javax.swing.JComboBox<>();
         tablePanel = new javax.swing.JPanel();
         jScrollPane1 = new javax.swing.JScrollPane();
         jTable1 = new javax.swing.JTable();
@@ -72,6 +78,11 @@ public class RepoPanel extends javax.swing.JPanel {
         listPriceLabel.setText("Giá sản phẩm:");
 
         addButton.setText("Thêm");
+        addButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                addButtonActionPerformed(evt);
+            }
+        });
 
         editButton.setText("Sửa");
 
@@ -94,6 +105,20 @@ public class RepoPanel extends javax.swing.JPanel {
         totalQuantityTextField.setEditable(false);
         totalQuantityTextField.setEnabled(false);
 
+        unitComboBox.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Thêm đơn vị" }));
+        unitComboBox.setSelectedIndex(-1);
+        unitComboBox.setLightWeightPopupEnabled(false);
+        unitComboBox.addItemListener(new java.awt.event.ItemListener() {
+            public void itemStateChanged(java.awt.event.ItemEvent evt) {
+                unitComboBoxItemStateChanged(evt);
+            }
+        });
+        unitComboBox.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                unitComboBoxActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout controllerPanelLayout = new javax.swing.GroupLayout(controllerPanel);
         controllerPanel.setLayout(controllerPanelLayout);
         controllerPanelLayout.setHorizontalGroup(
@@ -110,7 +135,7 @@ public class RepoPanel extends javax.swing.JPanel {
                         .addComponent(totalQuantityLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 89, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(18, 18, 18)
                         .addComponent(totalQuantityTextField, javax.swing.GroupLayout.PREFERRED_SIZE, 153, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 51, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addGroup(controllerPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(nameLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 89, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel1))
@@ -128,7 +153,9 @@ public class RepoPanel extends javax.swing.JPanel {
                             .addComponent(deleteButton, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
                     .addGroup(controllerPanelLayout.createSequentialGroup()
                         .addComponent(nameTextField, javax.swing.GroupLayout.PREFERRED_SIZE, 153, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(102, 102, 102)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(unitComboBox, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(24, 24, 24)
                         .addComponent(listPriceLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 89, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(18, 18, 18)
                         .addComponent(listPriceTextField, javax.swing.GroupLayout.PREFERRED_SIZE, 153, javax.swing.GroupLayout.PREFERRED_SIZE)))
@@ -143,7 +170,8 @@ public class RepoPanel extends javax.swing.JPanel {
                     .addComponent(nameTextField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(nameLabel)
                     .addComponent(IDLabel)
-                    .addComponent(IDTextField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(IDTextField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(unitComboBox, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 9, Short.MAX_VALUE)
                 .addGroup(controllerPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(controllerPanelLayout.createSequentialGroup()
@@ -208,6 +236,45 @@ public class RepoPanel extends javax.swing.JPanel {
         // TODO add your handling code here:
     }//GEN-LAST:event_IDTextFieldActionPerformed
 
+    private void addButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_addButtonActionPerformed
+        // TODO add your handling code here:
+
+    }//GEN-LAST:event_addButtonActionPerformed
+
+    private void unitComboBoxActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_unitComboBoxActionPerformed
+        // TODO add your handling code here:
+        if (unitComboBox.getSelectedItem().toString().equals("Thêm đơn vị")) {
+            unitComboBox.setSelectedIndex(-1);
+            String unit = JOptionPane.showInputDialog(null, "Vui lòng thêm một đơn vị mới:", "Thêm đơn vị", JOptionPane.QUESTION_MESSAGE);
+            if (unitsList.isEmpty()) {
+                unitsList.add(unit);
+                unitComboBox.addItem(unit);
+            } else {
+                long similar = unitsList.stream().filter(x -> !x.equalsIgnoreCase(unit)).count();
+                if (similar != 0) {
+                    unitsList.add(unit);
+                    unitComboBox.addItem(unit);
+                } else {
+                    JOptionPane.showMessageDialog(null, "Identical unit found!", "Oh no!", JOptionPane.WARNING_MESSAGE);
+                }
+            }
+        }
+    }//GEN-LAST:event_unitComboBoxActionPerformed
+
+    private void unitComboBoxItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_unitComboBoxItemStateChanged
+        // TODO add your handling code here:
+    }//GEN-LAST:event_unitComboBoxItemStateChanged
+
+    public void setGoodsList(GoodsList<Goods> goodsList) {
+        this.goodsList = goodsList;
+    }
+
+    public void setUnitsList(ArrayList<String> unitsList) {
+        this.unitsList = unitsList;
+    }
+
+    private GoodsList<Goods> goodsList;
+    private List<String> unitsList;
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel IDLabel;
@@ -229,5 +296,6 @@ public class RepoPanel extends javax.swing.JPanel {
     private javax.swing.JPanel tablePanel;
     private javax.swing.JLabel totalQuantityLabel;
     private javax.swing.JTextField totalQuantityTextField;
+    private javax.swing.JComboBox<String> unitComboBox;
     // End of variables declaration//GEN-END:variables
 }
