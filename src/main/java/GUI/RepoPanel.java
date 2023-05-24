@@ -271,7 +271,7 @@ public class RepoPanel extends javax.swing.JPanel {
             }
         ) {
             boolean[] canEdit = new boolean [] {
-                false, false, true, false, false, false
+                false, false, false, false, false, false
             };
 
             public boolean isCellEditable(int rowIndex, int columnIndex) {
@@ -279,6 +279,8 @@ public class RepoPanel extends javax.swing.JPanel {
             }
         });
         jTable1.setColumnSelectionAllowed(true);
+        jTable1.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
+        jTable1.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
         jTable1.getTableHeader().setReorderingAllowed(false);
         jTable1.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
@@ -330,7 +332,8 @@ public class RepoPanel extends javax.swing.JPanel {
     private void addButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_addButtonActionPerformed
         // TODO add your handling code here:
         long dupedGood = goodsList.getGoodsList().stream().filter(x->x.getGoodsName().equalsIgnoreCase(goodName)&&
-                                                                      x.getManufacture().equals(goodManufacturer)).count();
+                                                                      x.getManufacture().equals(goodManufacturer)&&
+                                                                        x.getUnit().equals(goodUnit)).count();
         if(dupedGood == 0) {
             goodTableModel.addRow(new Object[] {
                 goodID,
@@ -340,6 +343,8 @@ public class RepoPanel extends javax.swing.JPanel {
                 goodListedPrice,
                 0
             });
+            goodsList.getGoodsList().add(new Goods(goodName, goodManufacturer, goodListedPrice, goodID, goodUnit));
+            resetVariables();
         } else {
             JOptionPane.showMessageDialog(null, "Mặt hàng đã tồn tại!", "Oh no!", JOptionPane.WARNING_MESSAGE);
         }
@@ -454,15 +459,15 @@ public class RepoPanel extends javax.swing.JPanel {
         }
         if (dupedID == 0) {
             goodID = IDTextField.getText();
+            addCheck();
             invalidIDLabel.setVisible(false);
         }  else {
             invalidIDLabel.setVisible(true);
         }
-        addCheck();
     }//GEN-LAST:event_IDTextFieldKeyReleased
 
     public void addCheck () {
-        if(!goodName.isBlank() && !goodManufacturer.isBlank() && !goodUnit.isBlank() && !listPriceTextField.getText().isBlank() && !goodID.isBlank()) {
+        if(!goodName.isBlank() && !goodManufacturer.isBlank() && !goodUnit.isBlank() && goodListedPrice.intValue()!=-1 && !goodID.isBlank()) {
             addButton.setEnabled(true);
         } else {
             addButton.setEnabled(false);
@@ -485,6 +490,25 @@ public class RepoPanel extends javax.swing.JPanel {
         }
     }
     
+    public void resetVariables() {
+        IDTextField.setText("");
+        nameTextField.setText("");
+        unitComboBox.setSelectedIndex(-1);
+        manufacturerTextField.setText("");
+        listPriceTextField.setText("");
+        
+        goodID = "";
+        goodListedPrice = BigDecimal.valueOf(-1);
+        goodManufacturer = "";
+        goodName = "";
+        goodUnit = "";
+        
+        addButton.setEnabled(false);
+        deleteButton.setEnabled(false);
+        editButton.setEnabled(false);
+        shipmentsButton.setEnabled(false);
+    }
+    
     public void setGoodsList(GoodsList<Goods> goodsList) {
         this.goodsList = goodsList;
     }
@@ -501,7 +525,7 @@ public class RepoPanel extends javax.swing.JPanel {
     private String goodUnit = "";
     private String goodManufacturer = "";
     private String goodID = "";
-    private BigDecimal goodListedPrice;
+    private BigDecimal goodListedPrice = BigDecimal.valueOf(-1);
     private DefaultTableModel goodTableModel;
     
     // Variables declaration - do not modify//GEN-BEGIN:variables
