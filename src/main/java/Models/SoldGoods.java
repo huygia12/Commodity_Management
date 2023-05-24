@@ -21,7 +21,8 @@ public class SoldGoods extends Goods{
         super(goods.getGoodsName(), 
                 goods.getManufacture(), 
                 goods.getListPrice(),
-                goods.getID());
+                goods.getID(),
+                goods.getUnit());
         this.soldPrice = goods.getListPrice();
     }
 
