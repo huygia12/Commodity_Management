@@ -24,20 +24,13 @@ public class Shipment {
     private BigDecimal importPrice = BigDecimal.ZERO;
     @SerializedName("id")
     @Expose
-    private String id = null;
-    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "d/M/y")
-    private LocalDate nsx = null;
-    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "d/M/y")
-    private LocalDate hsd = null;
+    private String id;
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd/MM/yyyy")
+    private LocalDate nsx;
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd/MM/yyyy")
+    private LocalDate hsd;
 
     public Shipment() {
-    }
-
-    public Shipment(BigDecimal quantity, BigDecimal importPrice, LocalDate nsx, LocalDate hsd) {
-        this.quantity = quantity;
-        this.importPrice = importPrice;
-        this.nsx = nsx;
-        this.hsd = hsd;
     }
 
     public Shipment(BigDecimal quantity, BigDecimal importPrice, LocalDate nsx, LocalDate hsd, String id) {

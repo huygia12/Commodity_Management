@@ -13,24 +13,19 @@ import java.util.List;
  *
  * @author FPTSHOP
  */
-public class History {
-
-    @SerializedName("shiftHistory")
+public class Units {
+    @SerializedName("bucket")
     @Expose
-    private List<Shift> shiftHistory = new ArrayList<>();
+    private List<String> bucket = new ArrayList<>();
 
-    public History(List<Shift> shiftHistory) {
-        this.shiftHistory = shiftHistory;
+    public Units() {
     }
 
-    public History() {
+    public List<String> getBucket() {
+        return bucket;
     }
 
-    public List<Shift> getShiftHistory() {
-        return this.shiftHistory;
-    }
-
-    public void setShiftHistory(List<Shift> shiftHistory) {
-        this.shiftHistory = shiftHistory;
+    public void setBucket(List<String> bucket) {
+        this.bucket = bucket;
     }
 }

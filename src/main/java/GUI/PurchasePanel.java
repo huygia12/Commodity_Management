@@ -475,6 +475,11 @@ public class PurchasePanel extends javax.swing.JPanel {
         taxText.setMaximumSize(new java.awt.Dimension(2147483647, 20));
         taxText.setMinimumSize(new java.awt.Dimension(64, 20));
         taxText.setPreferredSize(new java.awt.Dimension(64, 20));
+        taxText.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseExited(java.awt.event.MouseEvent evt) {
+                taxTextMouseExited(evt);
+            }
+        });
 
         javax.swing.GroupLayout subFeePanelLayout = new javax.swing.GroupLayout(subFeePanel);
         subFeePanel.setLayout(subFeePanelLayout);
@@ -1183,7 +1188,7 @@ public class PurchasePanel extends javax.swing.JPanel {
     private void checkCustomerIDBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_checkCustomerIDBtnActionPerformed
         String customerID = customerIDText.getText();
         if (customerID.isBlank()) { // Kiểm tra xem có trống hay không
-            insertWarningToTextField(customerIDText,EMPTY_TEXT_FIELD_WARNING, 12);
+            insertWarningToTextField(customerIDText, EMPTY_TEXT_FIELD_WARNING, 12);
             return;
         } else if (!ctions.checkIfANumberSequenceForGUI(customerID)) { // kiểm tra xem có phải là số hợp lệ không 
             insertWarningToTextField(customerIDText, INVALID_NUMBER_WARNING, 12);
@@ -1333,6 +1338,10 @@ public class PurchasePanel extends javax.swing.JPanel {
         customerIDText.setEditable(true);
     }//GEN-LAST:event_customerIDTextMouseClicked
 
+    private void taxTextMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_taxTextMouseExited
+        // TODO add your handling code here:
+    }//GEN-LAST:event_taxTextMouseExited
+
     private void insertWarningToLabel(javax.swing.JLabel label, String warningText) {
         label.setText(warningText);
         label.setVisible(true);
@@ -1461,18 +1470,18 @@ public class PurchasePanel extends javax.swing.JPanel {
         totalTextField.setText("0.0");
         changeAmountTextField.setText("0.0");
     }
-    
+
     private void clearAllTextFieldInEmployeeAndCustomerPanel() {
         initEmployeeListComboBox();
-        if(cashierBindWithShift){
+        if (cashierBindWithShift) {
             cashierPhoneNumText.setText(shift.getCashier().toString());
-        }else{
+        } else {
             cashierPhoneNumText.setText("");
         }
         customerIDText.setText("");
         customerPointCheckTextField.setText("");
     }
-    
+
     private void initVariables() {
         goodsListModel = (DefaultTableModel) goodsListTable.getModel();
         orderGoodsListModel = (DefaultTableModel) orderGoodsListTable.getModel();
@@ -1535,13 +1544,13 @@ public class PurchasePanel extends javax.swing.JPanel {
         paymentOptionCombobox.setSelectedIndex(0);
     }
 
-//    public void passData(Settings settings, Shift shift, IDGenerator idGenerator, Repository repository) {
-//        this.repository = repository;
-//        this.idGenerator = idGenerator;
-//        this.settings = settings;
-//        this.shift = shift;
-//    }
-//    
+    public void passData(Settings settings, Shift shift, IDGenerator idGenerator, Repository repository) {
+        this.repository = repository;
+        this.idGenerator = idGenerator;
+        this.settings = settings;
+        this.shift = shift;
+    }
+
     private void loadData() {
         myData = new JsonDataFile();
         repository = myData.load(Path.of(REPOSITORY_PATH), Repository.class, repository);
@@ -1585,8 +1594,8 @@ public class PurchasePanel extends javax.swing.JPanel {
     private DefaultTableModel goodsListModel;
     private final String HOME = System.getProperty("user.dir");
     private final String SEPARATOR = File.separator;
-    private final String DATA_FOLDER = "E:\\CommodityManagement\\draftData" + SEPARATOR;
-    private final String REPOSITORY_PATH = DATA_FOLDER + "repositoryData.json";
+    private final String DATA_FOLDER = HOME + SEPARATOR + "data" + SEPARATOR;
+    private final String REPOSITORY_PATH = DATA_FOLDER + SEPARATOR + "repositoryData.json";
     private final String EMPLOYEE_LIST_PATH = DATA_FOLDER + "employeeListData.json";
     private final String CUSTOMER_CARD_LIST_PATH = DATA_FOLDER + "customerCardListData.json";
     private final String IDGENERATOR_PATH = DATA_FOLDER + "idgenerator.json";

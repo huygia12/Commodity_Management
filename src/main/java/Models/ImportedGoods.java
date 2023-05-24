@@ -29,7 +29,8 @@ public class ImportedGoods extends Goods{
         super(goods.getGoodsName(), 
                 goods.getManufacture(), 
                 goods.getListPrice(), 
-                goods.getID());
+                goods.getID(),
+                goods.getUnit());
         this.importDateTime = LocalDateTime
                 .now()
                 .format(DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm:ss"));

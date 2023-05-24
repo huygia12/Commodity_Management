@@ -25,6 +25,9 @@ public class Goods {
     @SerializedName("manufacture")
     @Expose
     private String manufacture;
+    @SerializedName("unit")
+    @Expose
+    private String unit;
     @SerializedName("listPrice")
     @Expose
     private BigDecimal listPrice = BigDecimal.ZERO;
@@ -38,17 +41,12 @@ public class Goods {
     public Goods() {
     }
 
-    public Goods(String goodsName, String manufac, BigDecimal listPrice) {
-        this.goodsName = goodsName.trim();
-        this.manufacture = manufac.trim();
-        this.listPrice = listPrice;
-    }
-
-    public Goods(String goodsName, String manufac, BigDecimal listPrice, String goodsID) {
+    public Goods(String goodsName, String manufac, BigDecimal listPrice, String goodsID, String unit) {
         this.goodsName = goodsName.trim();
         this.manufacture = manufac.trim();
         this.listPrice = listPrice;
         this.id = goodsID.trim();
+        this.unit = unit.trim();
     }
 
     public List<Shipment> getShipments() {
@@ -97,5 +95,13 @@ public class Goods {
     
     public void setTotalQuantity(BigDecimal totalQuantity){
         this.totalQuantity = totalQuantity;
+    }
+
+    public String getUnit() {
+        return unit;
+    }
+
+    public void setUnit(String unit) {
+        this.unit = unit.trim();
     }
 }
