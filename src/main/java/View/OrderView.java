@@ -39,7 +39,6 @@ public class OrderView {
     final Cautions ctions = new Cautions();
     final Scanner sc = new Scanner(System.in);
     final CustomerCardListController cardListCtr = new CustomerCardListController();
-    final CustomerCardController cardCtr = new CustomerCardController();
     private final GoodsController goodsCtr = new GoodsController();
     
     public void orderMenu() {
@@ -150,7 +149,7 @@ public class OrderView {
         while (true) {
             System.out.print("Please enter the Member Card ID(for member-only), \nor type EXIT/BACK to exit/back(press ENTER to skip) : ");
             String input = sc.nextLine();
-            CustomerCard customerCard = cardListCtr.findCustomerCardWithID(customerCardList, input);
+            CustomerCard customerCard = cardListCtr.containCustomerCard(customerCardList, input);
             if ("back".equalsIgnoreCase(input)) {
                 return -1;
             } else if ("exit".equalsIgnoreCase(input)) {
@@ -176,8 +175,7 @@ public class OrderView {
             } else {
                 try {
                     BigInteger point = new BigInteger(input);
-                    order.setPointDiscount(cardCtr
-                            .convertPointToMoney(order.getCustomerCard(), point));
+                    order.setPointDiscount(point);
                     return 1;
                 } catch (NumberFormatException nfe) {
                     ctions.wrInput();
@@ -243,11 +241,11 @@ public class OrderView {
             System.out.format("%-25s %-10.1f %-15.1f %-15.1f\n", goods.getGoodsName(), totalQuantity, price, totalPrice);
         }
         System.out.printf("SubTotal: %.1f\n", orderCtr.getSubTotal(order));
-        System.out.printf("Discount Amount(Discount=%s): %.1f\n", order.getDiscount() + "%", orderCtr.getDiscountMoney(order));
-        System.out.printf("Tax(VAT=%s): %.1f\n", myStore.getVAT() + "%", orderCtr.getTaxFee(order));
+        System.out.printf("Discount Amount(Discount=%s): %.1f\n", order.getDiscount() + "%", orderCtr.getDiscountAmount(order));
+        System.out.printf("Tax(VAT=%s): %.1f\n", myStore.getVAT() + "%", orderCtr.getTaxAmount(order));
         System.out.println("Payment Option: " + order.getPaymentOptions());
         System.out.println("Member Card ID: " + customerID);
-        System.out.printf("Point Discount: %.1f\n", order.getPointDiscount());
+        System.out.printf("Point Discount: %.1f\n", orderCtr.getPointDiscountAmount(order));
         System.out.printf("Total: %.1f\n", orderCtr.getTotal(order));
         if (order.getPaymentOptions().equals(PaymentOptions.Cash_Payment)) {
             System.out.printf("Customer payment: %.1f\n", order.getCusMoney());
@@ -284,8 +282,8 @@ public class OrderView {
                 pw.format("%-25s %-10.1f %-15.1f %-15.1f\n", goods.getGoodsName(), totalQuantity, price, totalPrice);
             }
             pw.printf("SubTotal: %.1f\n", orderCtr.getSubTotal(order));
-            pw.printf("Discount Amount(Discount=%s): %.1f\n", order.getDiscount() + "%", orderCtr.getDiscountMoney(order));
-            pw.printf("Tax(VAT=%s): %.1f\n", myStore.getVAT() + "%", orderCtr.getTaxFee(order));
+            pw.printf("Discount Amount(Discount=%s): %.1f\n", order.getDiscount() + "%", orderCtr.getDiscountAmount(order));
+            pw.printf("Tax(VAT=%s): %.1f\n", myStore.getVAT() + "%", orderCtr.getTaxAmount(order));
             pw.println("Payment Option: " + order.getPaymentOptions());
             pw.println("Member Card ID: " + customerID);
             pw.printf("Point Discount: %.1f\n", order.getPointDiscount());

@@ -37,7 +37,7 @@ public class Shift {
     private String ID;
     @SerializedName("VAT")
     @Expose
-    private int VAT;
+    private int VAT = 0;
     @SerializedName("orderHisPerShift")
     @Expose
     private List<Order> orderHisPerShift = new ArrayList<>();

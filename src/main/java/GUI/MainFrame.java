@@ -26,40 +26,96 @@ public class MainFrame extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        jPanel1 = new javax.swing.JPanel();
         tabPanel = new javax.swing.JTabbedPane();
         repoPanel1 = new GUI.RepoPanel();
-        purchasePanel1 = new GUI.PurchasePanel();
         employJPanel1 = new GUI.EmployJPanel();
-
-        javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
-        jPanel1.setLayout(jPanel1Layout);
-        jPanel1Layout.setHorizontalGroup(
-            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 653, Short.MAX_VALUE)
-        );
-        jPanel1Layout.setVerticalGroup(
-            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 401, Short.MAX_VALUE)
-        );
+        purchasePanel1 = new GUI.PurchasePanel();
+        jMenuBar1 = new javax.swing.JMenuBar();
+        fileMenu = new javax.swing.JMenu();
+        editMenu = new javax.swing.JMenu();
+        optionsMenu = new javax.swing.JMenu();
+        customOrder = new javax.swing.JMenu();
+        cashierBindWithShiftMenuItem = new javax.swing.JCheckBoxMenuItem();
+        vatBindWithShiftMenuItem = new javax.swing.JCheckBoxMenuItem();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
-        setPreferredSize(new java.awt.Dimension(1070, 615));
+        setAutoRequestFocus(false);
+        setFocusable(false);
+        setMaximumSize(new java.awt.Dimension(1200, 700));
+        setMinimumSize(new java.awt.Dimension(1080, 660));
+        setPreferredSize(new java.awt.Dimension(1100, 680));
+        setResizable(false);
 
         tabPanel.setBackground(new java.awt.Color(0, 204, 255));
-        tabPanel.setBorder(javax.swing.BorderFactory.createEtchedBorder());
+        tabPanel.setTabLayoutPolicy(javax.swing.JTabbedPane.SCROLL_TAB_LAYOUT);
         tabPanel.setTabPlacement(javax.swing.JTabbedPane.LEFT);
         tabPanel.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
+        tabPanel.setFocusable(false);
         tabPanel.setFont(new java.awt.Font("MTO Telephone", 1, 12)); // NOI18N
-        tabPanel.setPreferredSize(new java.awt.Dimension(1033, 615));
+        tabPanel.setMaximumSize(new java.awt.Dimension(1100, 650));
+        tabPanel.setMinimumSize(new java.awt.Dimension(970, 620));
+        tabPanel.setPreferredSize(new java.awt.Dimension(1070, 620));
         tabPanel.addTab("tab1", repoPanel1);
-        tabPanel.addTab("Bán Hàng", purchasePanel1);
         tabPanel.addTab("tab3", employJPanel1);
+
+        purchasePanel1.setFocusable(false);
+        purchasePanel1.setMaximumSize(new java.awt.Dimension(1000, 650));
+        tabPanel.addTab("Bán Hàng", purchasePanel1);
 
         getContentPane().add(tabPanel, java.awt.BorderLayout.CENTER);
 
+        jMenuBar1.setMaximumSize(new java.awt.Dimension(171, 20));
+        jMenuBar1.setMinimumSize(new java.awt.Dimension(171, 15));
+        jMenuBar1.setPreferredSize(new java.awt.Dimension(171, 20));
+
+        fileMenu.setText("File");
+        jMenuBar1.add(fileMenu);
+
+        editMenu.setText("Chỉnh Sửa");
+        jMenuBar1.add(editMenu);
+
+        optionsMenu.setText("Tùy Chọn");
+
+        customOrder.setText("Hóa Đơn");
+
+        cashierBindWithShiftMenuItem.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_T, java.awt.event.InputEvent.ALT_DOWN_MASK | java.awt.event.InputEvent.CTRL_DOWN_MASK));
+        cashierBindWithShiftMenuItem.setMnemonic('T');
+        cashierBindWithShiftMenuItem.setSelected(true);
+        cashierBindWithShiftMenuItem.setText("Thu ngân theo ca");
+        cashierBindWithShiftMenuItem.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                cashierBindWithShiftMenuItemActionPerformed(evt);
+            }
+        });
+        customOrder.add(cashierBindWithShiftMenuItem);
+
+        vatBindWithShiftMenuItem.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_V, java.awt.event.InputEvent.ALT_DOWN_MASK | java.awt.event.InputEvent.CTRL_DOWN_MASK));
+        vatBindWithShiftMenuItem.setMnemonic('V');
+        vatBindWithShiftMenuItem.setSelected(true);
+        vatBindWithShiftMenuItem.setText("VAT theo ca");
+        vatBindWithShiftMenuItem.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                vatBindWithShiftMenuItemActionPerformed(evt);
+            }
+        });
+        customOrder.add(vatBindWithShiftMenuItem);
+
+        optionsMenu.add(customOrder);
+
+        jMenuBar1.add(optionsMenu);
+
+        setJMenuBar(jMenuBar1);
+
         pack();
     }// </editor-fold>//GEN-END:initComponents
+
+    private void cashierBindWithShiftMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cashierBindWithShiftMenuItemActionPerformed
+        purchasePanel1.setCashierByWithShift(cashierBindWithShiftMenuItem.isSelected());
+    }//GEN-LAST:event_cashierBindWithShiftMenuItemActionPerformed
+
+    private void vatBindWithShiftMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_vatBindWithShiftMenuItemActionPerformed
+        purchasePanel1.setVATBindWithShift(vatBindWithShiftMenuItem.isSelected());
+    }//GEN-LAST:event_vatBindWithShiftMenuItemActionPerformed
 
     /**
      * @param args the command line arguments
@@ -72,7 +128,7 @@ public class MainFrame extends javax.swing.JFrame {
          */
         try {
             for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
-                if ("Nimbus".equals(info.getName())) {
+                if ("Flatlaf Light".equals(info.getName())) {
                     javax.swing.UIManager.setLookAndFeel(info.getClassName());
                     break;
                 }
@@ -90,17 +146,64 @@ public class MainFrame extends javax.swing.JFrame {
 
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
+            @Override
             public void run() {
                 new MainFrame().setVisible(true);
             }
         });
     }
 
+//    private void loadData() {
+//        repositoryGoodsList = myData.load(Path.of(REPOSITORY_PATH), Repository.class, repositoryGoodsList);
+//        shift = myData.load(Path.of(SHIFT_PATH), Shift.class, shift);
+//        history = myData.load(Path.of(HISTORY_PATH), History.class, history);
+//        employeeList = myData.load(Path.of(EMPLOYEE_LIST_PATH), EmployeeList.class, employeeList);
+//        cardList = myData.load(Path.of(CUSTOMER_CARD_LIST_PATH), CustomerCardList.class, cardList);
+//        idGenerator = myData.load(Path.of(IDGENERATOR_PATH), IDGenerator.class, idGenerator);
+//        settings = myData.load(Path.of(SETTINGS_PATH), Settings.class, settings);
+//        purchasePanel1.passData(settings, shift, idGenerator, repositoryGoodsList);
+//    }
+//    
+//    private static void saveData() {
+//        myData.save(Path.of(REPOSITORY_PATH), repositoryGoodsList);
+//        myData.save(Path.of(SHIFT_PATH), shift);
+//        myData.save(Path.of(HISTORY_PATH), history);
+//        myData.save(Path.of(EMPLOYEE_LIST_PATH), employeeList);
+//        myData.save(Path.of(CUSTOMER_CARD_LIST_PATH), cardList);
+//        myData.save(Path.of(IDGENERATOR_PATH), idGenerator);
+//        myData.save(Path.of(SETTINGS_PATH), settings);
+//    }
+//    
+//    static Repository repositoryGoodsList = new Repository();
+//    static Shift shift = new Shift();
+//    static History history = new History();
+//    static CustomerCardList cardList = new CustomerCardList();
+//    static EmployeeList employeeList = new EmployeeList();
+//    static IDGenerator idGenerator = new IDGenerator();
+//    static Settings settings = new Settings();
+//    private static final JsonDataFile myData = new JsonDataFile();
+//    private static final String HOME = System.getProperty("user.dir");
+//    private static final String SEPARATOR = File.separator;
+//    private static final String DATA_FOLDER = HOME + SEPARATOR + "data" + SEPARATOR;
+//    private static final String REPOSITORY_PATH = DATA_FOLDER + "repositoryData.json";
+//    private static final String SHIFT_PATH = DATA_FOLDER + "currentShift.json";
+//    private static final String HISTORY_PATH = DATA_FOLDER + "historyData.json";
+//    private static final String EMPLOYEE_LIST_PATH = DATA_FOLDER + "employeeListData.json";
+//    private static final String CUSTOMER_CARD_LIST_PATH = DATA_FOLDER + "customerCardListData.json";
+//    private static final String IDGENERATOR_PATH = DATA_FOLDER + "idgenerator.json";
+//    private static final String SETTINGS_PATH = DATA_FOLDER + "settingsData.json";
+    
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JCheckBoxMenuItem cashierBindWithShiftMenuItem;
+    private javax.swing.JMenu customOrder;
+    private javax.swing.JMenu editMenu;
     private GUI.EmployJPanel employJPanel1;
-    private javax.swing.JPanel jPanel1;
+    private javax.swing.JMenu fileMenu;
+    private javax.swing.JMenuBar jMenuBar1;
+    private javax.swing.JMenu optionsMenu;
     private GUI.PurchasePanel purchasePanel1;
     private GUI.RepoPanel repoPanel1;
     private javax.swing.JTabbedPane tabPanel;
+    private javax.swing.JCheckBoxMenuItem vatBindWithShiftMenuItem;
     // End of variables declaration//GEN-END:variables
 }

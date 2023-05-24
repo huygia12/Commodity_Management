@@ -9,7 +9,7 @@ package Models;
  * @author FPTSHOP
  */
 public enum Unit {
-    Thung,
+    Thùng,
     Chai,
     Cai,
     Goi,

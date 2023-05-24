@@ -1,1 +1,12 @@
-null
+{
+  "openingBalance": 0,
+  "shippingFee": 0,
+  "VAT": 0,
+  "orderHisPerShift": [],
+  "importGoodsHis": {
+    "myGoodsList": []
+  },
+  "employeeOfThisShift": {
+    "": []
+  }
+}

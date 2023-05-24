@@ -4,8 +4,11 @@
  */
 package Controllers;
 
+import Models.Shift;
+import Ultility.JsonDataFile;
 import java.math.BigDecimal;
 import java.math.BigInteger;
+import java.nio.file.Path;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
@@ -24,13 +27,9 @@ public class test {
     static Map<String, Integer> staticalList = new HashMap<>();
 
     public static void main(String[] args) {
-        List<String> idList = new ArrayList<>();
-        idList.add("huy");
-        idList.add("Ha");
-        
-        List<String> copy = idList.stream().map(x->x).collect(Collectors.toList());
-        copy.set(0, "Dang");
-        copy.stream().forEach(System.out::println);
+        JsonDataFile myData = new JsonDataFile();
+        Shift shift = new Shift();
+        myData.save(Path.of("E:\\CommodityManagement\\Java_project\\data\\currentShift.json"), shift);
     }
 
     public static <T extends Number> boolean checkIfNumberEqualZero(T number) {

@@ -3,6 +3,7 @@ package Models;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 import java.math.BigDecimal;
+import java.math.BigInteger;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
@@ -32,8 +33,14 @@ public class Order extends GoodsList<Goods> {
     private CustomerCard customerCard;
     @SerializedName("pointDiscount")
     @Expose
-    private BigDecimal pointDiscount = BigDecimal.ZERO;
-
+    private BigInteger pointDiscount = BigInteger.ZERO;
+    @SerializedName("cashier")
+    @Expose 
+    private Employee cashier = new Employee();
+    @SerializedName("shippingFee")
+    @Expose 
+    private BigDecimal shippingFee = BigDecimal.ZERO;
+    
     public Order(String ID, int VAT) {
         super(new ArrayList<>());
         this.ID = ID.trim();
@@ -78,11 +85,11 @@ public class Order extends GoodsList<Goods> {
         return this.paymentOptions;
     }
 
-    public BigDecimal getPointDiscount() {
+    public BigInteger getPointDiscount() {
         return pointDiscount;
     }
 
-    public void setPointDiscount(BigDecimal pointDiscount) {
+    public void setPointDiscount(BigInteger pointDiscount) {
         this.pointDiscount = pointDiscount;
     }
 
@@ -109,5 +116,22 @@ public class Order extends GoodsList<Goods> {
     public void setCustomerCard(CustomerCard customerCard) {
         this.customerCard = customerCard;
     }
+
+    public Employee getCashier() {
+        return cashier;
+    }
+
+    public void setCashier(Employee cashier) {
+        this.cashier = cashier;
+    }
+
+    public BigDecimal getShippingFee() {
+        return shippingFee;
+    }
+
+    public void setShippingFee(BigDecimal shippingFee) {
+        this.shippingFee = shippingFee;
+    }
+    
     
 }

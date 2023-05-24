@@ -30,8 +30,8 @@ public class Cautions {
         return false;
     }
 
-    public<T extends Number> boolean checkIfNumberNegative(T number) {
-        BigDecimal numToBigDecimal = new BigDecimal(number+"");
+    public <T extends Number> boolean checkIfNumberNegative(T number) {
+        BigDecimal numToBigDecimal = new BigDecimal(number + "");
         if (numToBigDecimal.compareTo(BigDecimal.ZERO) < 0) {
             System.out.println("This number cannot take a negative value!");
             return true;
@@ -39,8 +39,8 @@ public class Cautions {
         return false;
     }
 
-    public<T extends Number> boolean checkIfNumberEqualZero(T number) {
-        BigDecimal numToBigDecimal = new BigDecimal(number+"");
+    public <T extends Number> boolean checkIfNumberEqualZero(T number) {
+        BigDecimal numToBigDecimal = new BigDecimal(number + "");
         if (numToBigDecimal.compareTo(BigDecimal.ZERO) == 0) {
             System.out.println("This number cannot equal zero!");
             return true;
@@ -62,5 +62,24 @@ public class Cautions {
 
     public void wrInput() {
         System.out.println("Invalid input! Please try again.");
+    }
+
+    public boolean checkIfANumberSequenceForGUI(String str) {
+        try {
+            BigInteger number = new BigInteger(str.trim());
+            if (!Cautions.this.checkIfNumberNegativeForGUI(number)) {
+                return true;
+            }
+        } catch (NumberFormatException nfe) {
+        }
+        return false;
+    }
+
+    public <T extends Number> boolean checkIfNumberNegativeForGUI(T number) {
+        BigDecimal numToBigDecimal = new BigDecimal(number + "");
+        if (numToBigDecimal.compareTo(BigDecimal.ZERO) < 0) {
+            return true;
+        }
+        return false;
     }
 }

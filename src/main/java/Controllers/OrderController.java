@@ -26,7 +26,7 @@ import java.util.stream.*;
  *
  * @author FPTSHOP
  */
-public class OrderController extends GoodsListController{
+public class OrderController extends GoodsListController {
 
     private final OrderView view = new OrderView();
     final Cautions ctions = new Cautions();
@@ -35,7 +35,7 @@ public class OrderController extends GoodsListController{
     private final ShipmentController shipmentCtr = new ShipmentController();
     private final CustomerCardController cardCtr = new CustomerCardController();
     private final Scanner sc = new Scanner(System.in);
-    
+
     public OrderController() {
     }
 
@@ -53,7 +53,7 @@ public class OrderController extends GoodsListController{
         return result;
     }
 
-    public BigDecimal getTaxFee(Order order) {
+    public BigDecimal getTaxAmount(Order order) {
         // tong tien phi VAT cho ca hoa don
         return getSubTotal(order).multiply(new BigDecimal(order.getVAT() * 1.0 / 100));
     }
@@ -61,14 +61,14 @@ public class OrderController extends GoodsListController{
     public BigDecimal getTotal(Order order) {
         // Khoan tien can thanh toan khi da tru di discount va cong them VAT
         return (getSubTotal(order)
-                .add(getTaxFee(order)))
+                .add(getTaxAmount(order)))
                 .multiply(new BigDecimal(1.0 - order.getDiscount() * 1.0 / 100))
-                .subtract(order.getPointDiscount());
+                .subtract(getPointDiscountAmount(order));
     }
 
-    public BigDecimal getDiscountMoney(Order order) {
+    public BigDecimal getDiscountAmount(Order order) {
         // tong tien giam gia 
-        return (getSubTotal(order).add(getTaxFee(order)))
+        return (getSubTotal(order).add(getTaxAmount(order)))
                 .multiply(new BigDecimal(order.getDiscount() * 1.0 / 100));
     }
 
@@ -76,10 +76,14 @@ public class OrderController extends GoodsListController{
         return order.getCusMoney().subtract(getTotal(order));
     }
 
-    
+    public BigDecimal getPointDiscountAmount(Order order) {
+        return cardCtr
+                .convertPointToMoney(order.getCustomerCard(), order.getPointDiscount());
+    }
+
     public Order makeNewOrder(GoodsList<Goods> repoGoodsList, CustomerCardList customerCardList,
             Store myStore, Shift shift, IDGenerator idGenerator) {
-        
+
         Order order = new Order(idGenerator.generateID(Order.class.getName(), 6),
                 myStore.getVAT());
         // tao mot ban cpy cua repositoryGoodsList la draftGoodsList
@@ -121,7 +125,7 @@ public class OrderController extends GoodsListController{
         }
         return order;
     }
-    
+
     public GoodsList<Goods> makeDraftGoodsList(GoodsList<Goods> repoGoodsList) {
         // tao mot ban cpy cua repositoryGoodsList la draftGoodsList
         draftGoodsList.setGoodsList(repoGoodsList.getGoodsList()
@@ -154,7 +158,7 @@ public class OrderController extends GoodsListController{
             }
         }
     }
-    
+
     //Function 1
     private void addToOrder(Order order) {
         Shipment orderShipment = new Shipment();
@@ -187,7 +191,7 @@ public class OrderController extends GoodsListController{
         }
         BigDecimal inputQuantity = orderShipment.getQuantity();
         // Kiem tra neu order da chua goods nay hay chua
-        Goods existedOrderGoods = containGoods(order,searchGoods.getID());
+        Goods existedOrderGoods = containGoods(order, searchGoods.getID());
         orderShipment = shipmentCtr.cloneShipment(searchShipment);
         orderShipment.setQuantity(inputQuantity);
         if (existedOrderGoods == null) {
@@ -233,10 +237,10 @@ public class OrderController extends GoodsListController{
             return;
         }
         // lay ra shipment muon chinh sua
-        Shipment editShipment = goodsCtr.containShipment(containGoods(draftOrder, searchOrderGoods.getID()), 
+        Shipment editShipment = goodsCtr.containShipment(containGoods(draftOrder, searchOrderGoods.getID()),
                 searchOrderShipment.getID());
         // lay so luong con lai o trong kho cua san pham da duoc tim kiem
-        BigDecimal remainQuan = goodsCtr.containShipment(containGoods(draftGoodsList, searchOrderGoods.getID()), 
+        BigDecimal remainQuan = goodsCtr.containShipment(containGoods(draftGoodsList, searchOrderGoods.getID()),
                 searchOrderShipment.getID())
                 .getQuantity();
         do {
@@ -259,12 +263,12 @@ public class OrderController extends GoodsListController{
                     if (editShipment.getQuantity().compareTo(BigDecimal.ZERO) == 0) {
                         System.out.println(
                                 "Your changes make quantity become 0 and will be automatically removed from order!");
-                        deleteFromOrder(repoGoodsList,  searchOrderGoods, searchOrderShipment, order);
+                        deleteFromOrder(repoGoodsList, searchOrderGoods, searchOrderShipment, order);
                     } else {
                         // set quantity in curOrder after finish edit
                         searchOrderShipment.setQuantity(editShipment.getQuantity());
                         // reset quantity in the draftGoodsList after finish edit
-                        goodsCtr.containShipment(containGoods(draftGoodsList, searchOrderGoods.getID()), 
+                        goodsCtr.containShipment(containGoods(draftGoodsList, searchOrderGoods.getID()),
                                 searchOrderShipment.getID())
                                 .setQuantity(remainQuan);
                         System.out.println("Edit succeed !");
@@ -319,25 +323,24 @@ public class OrderController extends GoodsListController{
         }
     }
 
-    private void deleteFromOrder(GoodsList repoGoodsList, Goods orderGoods, 
+    private void deleteFromOrder(GoodsList<Goods> repoGoodsList, Goods orderGoods,
             Shipment orderShipment, Order order) {
         orderGoods.getShipments().remove(orderShipment);
         if (orderGoods.getShipments().isEmpty()) {
             order.getGoodsList().remove(orderGoods);
         }
-        System.out.println("Deleted succeed !");
         // tra lai so luong ban dau neu delete
         BigDecimal originQuan = goodsCtr
-                .containShipment(containGoods(repoGoodsList, orderGoods.getID()), 
+                .containShipment(containGoods(repoGoodsList, orderGoods.getID()),
                         orderShipment.getID())
                 .getQuantity();
-        goodsCtr.containShipment( containGoods(draftGoodsList, orderGoods.getID()), 
+        goodsCtr.containShipment(containGoods(draftGoodsList, orderGoods.getID()),
                 orderShipment.getID())
                 .setQuantity(originQuan);
     }
 
     //Funtion 3
-    private boolean payOrder( CustomerCardList customerCardList, Store myStore, Order order) {
+    private boolean payOrder(CustomerCardList customerCardList, Store myStore, Order order) {
         // tra ve true neu pay thanh cong, false neu list khong co gi hoac user nhap exit
         if (ctions.checkIfListEmpty(order.getGoodsList())) {
             return false;
@@ -413,5 +416,106 @@ public class OrderController extends GoodsListController{
             this.view.printBillToFile(order, myStore, this);
         }
         return true;
+    }
+
+    //GUI
+    public Order makeNewOrderForGUI(Store myStore, Shift shift, IDGenerator idGenerator) {
+        Order order = new Order(idGenerator.generateID(Order.class.getName(), 6),
+                myStore.getVAT());
+        shift.getOrderHisPerShift().add(order);
+        return order;
+    }
+
+    public int addToOrderForGUI(GoodsList<Goods> draftGoodsList, Order order, String strQuantity, String goodsID, String shipmentID) {
+        int choice = 0;
+        Goods addedGoods = containGoods(draftGoodsList, goodsID);
+        Shipment addedShipment = goodsCtr.containShipment(addedGoods, shipmentID);
+
+        BigDecimal quantity = new BigDecimal(strQuantity);
+        Shipment cloneShipment = shipmentCtr.cloneShipment(addedShipment);
+        cloneShipment.setQuantity(quantity);
+        Goods existedGoods = containGoods(order, goodsID);
+        // nếu order chưa tồn tại sản phẩm này : 0
+        if (existedGoods == null) {
+            Goods cloneGoods = goodsCtr.cloneGoods(addedGoods);
+            cloneGoods.getShipments().clear();
+            cloneGoods.getShipments().add(cloneShipment);
+            order.getGoodsList().add(cloneGoods);
+        } else {
+            Shipment existedShipment = goodsCtr
+                    .containShipment(existedGoods, shipmentID);
+            // nếu shipment đã tồn tại thì cộng số lượng vào số lượng đã có : 1
+            if (existedShipment != null) {
+                existedShipment
+                        .setQuantity(existedShipment.getQuantity()
+                                .add(cloneShipment.getQuantity()));
+                choice = 1;
+            } else {
+                // Nếu shipment chưa tồn tại thì thêm cả shipment vào order : 2
+                existedGoods.getShipments().add(cloneShipment);
+                choice = 2;
+            }
+        }
+        // sau khi them goods vao order, giam so luong goods do torng draftGoodsList
+        BigDecimal quantityBefore = addedShipment.getQuantity();
+        addedShipment.setQuantity(quantityBefore.subtract(quantity));
+        return choice;
+    }
+
+    public void deleteFromOrderForGUI(GoodsList<Goods> repoGoodsList, GoodsList<Goods> draftGoodsList, Order order, String shipmentID, String goodsID) {
+        Goods selectedGoods = containGoods(order, goodsID);
+        Shipment deletedShipment = goodsCtr.containShipment(selectedGoods, shipmentID);
+        selectedGoods.getShipments().remove(deletedShipment);
+        if (selectedGoods.getShipments().isEmpty()) {
+            order.getGoodsList().remove(selectedGoods);
+        }
+        // trả lại số lượng cho draftGoodsList sau khi xóa 
+        BigDecimal originQuan = goodsCtr
+                .containShipment(containGoods(repoGoodsList, goodsID),
+                        shipmentID)
+                .getQuantity();
+        goodsCtr.containShipment(containGoods(draftGoodsList, goodsID),
+                shipmentID)
+                .setQuantity(originQuan);
+    }
+
+    public void resetOrder(GoodsList<Goods> draftGoodsList, Order order) {
+        for (Goods goods : order.getGoodsList()) {
+            for (Shipment shipment : goods.getShipments()) {
+                Shipment shipmentInDraftGoodsList = goodsCtr.containShipment(containGoods(draftGoodsList, goods.getID()),
+                        shipment.getID());
+                BigDecimal originQuan = shipment.getQuantity().add(shipmentInDraftGoodsList.getQuantity());
+                shipmentInDraftGoodsList.setQuantity(originQuan);
+            }
+        }
+        order.getGoodsList().clear();
+    }
+
+    public void editOrderForGUI(GoodsList<Goods> draftGoodsList, Order order,
+            Shipment remainShipment, Goods editedGoods, Shipment editedShipment,
+            BigDecimal quantityBefore, BigDecimal quantityAfter, BigDecimal quantityRemain) {
+        if (quantityAfter.compareTo(quantityBefore) > 0) {// nếu số lượng mới nhiều hơn số lượng cũ
+            remainShipment.setQuantity(quantityRemain
+                    .subtract(quantityAfter.subtract(quantityBefore)));
+        } else {// nếu số lượng mới ít hơn số lượng cũ
+            remainShipment.setQuantity(quantityRemain
+                    .add(quantityBefore.subtract(quantityAfter)));
+        }
+        if (quantityBefore.compareTo(BigDecimal.ZERO) != 0) {// nếu số lượng mới != 0 thì thay đổi
+            editedShipment.setQuantity(quantityAfter);
+        } else {// nếu số lượng mới == 0 thì xóa khỏi order
+            editedGoods.getShipments().remove(editedShipment);
+            if (editedGoods.getShipments().isEmpty()) {
+                order.getGoodsList().remove(editedGoods);
+            }
+        }
+    }
+
+    public void payOrderForGUI(Order order, Shift shift, GoodsList<Goods> repository) {
+        if (order.getCustomerCard() != null) {
+            cardCtr.gainPoint(order.getCustomerCard(), getTotal(order));
+        }
+        shift.getOrderHisPerShift().add(order);
+        updateQuanAfterPay(repository, order);
     }
 }

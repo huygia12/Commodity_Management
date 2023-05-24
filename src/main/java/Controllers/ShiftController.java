@@ -143,7 +143,7 @@ public class ShiftController {
     public BigDecimal getTotalDiscountMoney(Shift shift) {
         BigDecimal result = BigDecimal.ZERO;
         for (Order order : shift.getOrderHisPerShift()) {
-            result = result.add(orderCtr.getDiscountMoney(order));
+            result = result.add(orderCtr.getDiscountAmount(order));
         }
         return result;
     }
@@ -171,7 +171,7 @@ public class ShiftController {
     public BigDecimal getTotalVAT(Shift shift) {
         BigDecimal result = BigDecimal.ZERO;
         for (Order order : shift.getOrderHisPerShift()) {
-            result = result.add(orderCtr.getTaxFee(order));
+            result = result.add(orderCtr.getTaxAmount(order));
         }
         return result;
     }
@@ -179,7 +179,7 @@ public class ShiftController {
     public BigDecimal getTotalPointDiscount(Shift shift) {
         BigDecimal result = BigDecimal.ZERO;
         for (Order order : shift.getOrderHisPerShift()) {
-            result = result.add(order.getPointDiscount());
+            result = result.add(orderCtr.getPointDiscountAmount(order));
         }
         return result;
     }

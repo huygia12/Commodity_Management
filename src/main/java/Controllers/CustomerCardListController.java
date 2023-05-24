@@ -164,7 +164,7 @@ public class CustomerCardListController {
                 inputStr = sc.nextLine();
                 try {
                     int searchingID = Integer.parseInt(inputStr);
-                    searchingCustomerCard = findCustomerCardWithID(customerCardList, inputStr);
+                    searchingCustomerCard = containCustomerCard(customerCardList, inputStr);
                     if (searchingCustomerCard == null) {
                         System.out.println("CustomerCard with this ID doesnt existed.");
                         continue;
@@ -194,7 +194,7 @@ public class CustomerCardListController {
         return searchingCustomerCard;
     }
 
-    public CustomerCard findCustomerCardWithID(CustomerCardList customerCardList, String ID) {
+    public CustomerCard containCustomerCard(CustomerCardList customerCardList, String ID) {
         for (CustomerCard customerCard : customerCardList.getList()) {
             if (customerCard.getID().equalsIgnoreCase(ID)) {
                 return customerCard;

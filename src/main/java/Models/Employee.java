@@ -65,4 +65,10 @@ public class Employee extends AbstractHuman {
         this.IDOfOrdersInCharge = IDOfOrdersInCharge;
     }
 
+    @Override
+    public String toString() {
+        return this.lastName+"-"+this.phoneNumber;
+    }
+
+    
 }
