@@ -358,19 +358,22 @@ public class RepoPanel extends javax.swing.JPanel {
             String input = listPriceTextField.getText();
             if (input.length() == 0) {
                 invalidPriceLabel.setVisible(false);
+                addButton.setEnabled(false);
                 return;
             }
             double check = Double.parseDouble(input);
             if (check < 0) {
                 invalidPriceLabel.setVisible(true);
+                addButton.setEnabled(false);
             } else {
                 invalidPriceLabel.setVisible(false);
                 goodListedPrice = BigDecimal.valueOf(check);
+                addCheck();
             }
         } catch (NumberFormatException nfe) {
             invalidPriceLabel.setVisible(true);
+            addButton.setEnabled(false);
         }
-        addCheck();
     }//GEN-LAST:event_listPriceTextFieldKeyReleased
 
     private void jTable1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jTable1MouseClicked
@@ -390,7 +393,7 @@ public class RepoPanel extends javax.swing.JPanel {
     }//GEN-LAST:event_manufacturerTextFieldKeyReleased
 
     public void addCheck () {
-        if(!goodName.isBlank() && !goodManufacturer.isBlank() && !goodUnit.isBlank()) {
+        if(!goodName.isBlank() && !goodManufacturer.isBlank() && !goodUnit.isBlank() && !listPriceTextField.getText().isBlank()) {
             addButton.setEnabled(true);
         } else {
             addButton.setEnabled(false);
