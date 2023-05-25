@@ -4,6 +4,12 @@
  */
 package GUI;
 
+import java.nio.file.Path;
+import Models.*;
+import Ultility.*;
+import java.io.File;
+import javax.swing.ImageIcon;
+
 /**
  *
  * @author FPTSHOP
@@ -14,9 +20,12 @@ public class MainFrame extends javax.swing.JFrame {
      * Creates new form MainFrame
      */
     public MainFrame() {
-        
+        setIconImage(new ImageIcon(IMAGE_FOLDER+"icons8-grocery-store-96.png").getImage());
+        loadData();
         initComponents();
-        
+        purchasePanel1.passData(repository, idGenerator, 
+                settings, shift, units, 
+                customerCardList, employeeList);
     }
 
     /**
@@ -38,14 +47,13 @@ public class MainFrame extends javax.swing.JFrame {
         optionsMenu = new javax.swing.JMenu();
         customOrder = new javax.swing.JMenu();
         cashierBindWithShiftMenuItem = new javax.swing.JCheckBoxMenuItem();
-        vatBindWithShiftMenuItem = new javax.swing.JCheckBoxMenuItem();
+        vatBindWithStoreMenuItem = new javax.swing.JCheckBoxMenuItem();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setTitle("Quản lý bán hàng");
         setAutoRequestFocus(false);
         setFocusable(false);
-        setMaximumSize(new java.awt.Dimension(1200, 700));
         setMinimumSize(new java.awt.Dimension(1080, 660));
-        setPreferredSize(new java.awt.Dimension(1100, 680));
         setResizable(false);
 
         tabPanel.setBackground(new java.awt.Color(0, 204, 255));
@@ -59,12 +67,7 @@ public class MainFrame extends javax.swing.JFrame {
         tabPanel.setPreferredSize(new java.awt.Dimension(1070, 620));
         tabPanel.addTab("tab1", repoPanel1);
         tabPanel.addTab("tab3", employJPanel1);
-
-        purchasePanel1.setFocusable(false);
-        purchasePanel1.setMaximumSize(new java.awt.Dimension(1000, 650));
         tabPanel.addTab("Bán Hàng", purchasePanel1);
-
-        getContentPane().add(tabPanel, java.awt.BorderLayout.CENTER);
 
         jMenuBar1.setMaximumSize(new java.awt.Dimension(171, 20));
         jMenuBar1.setMinimumSize(new java.awt.Dimension(171, 15));
@@ -82,7 +85,6 @@ public class MainFrame extends javax.swing.JFrame {
 
         cashierBindWithShiftMenuItem.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_T, java.awt.event.InputEvent.ALT_DOWN_MASK | java.awt.event.InputEvent.CTRL_DOWN_MASK));
         cashierBindWithShiftMenuItem.setMnemonic('T');
-        cashierBindWithShiftMenuItem.setSelected(true);
         cashierBindWithShiftMenuItem.setText("Thu ngân theo ca");
         cashierBindWithShiftMenuItem.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -91,16 +93,16 @@ public class MainFrame extends javax.swing.JFrame {
         });
         customOrder.add(cashierBindWithShiftMenuItem);
 
-        vatBindWithShiftMenuItem.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_V, java.awt.event.InputEvent.ALT_DOWN_MASK | java.awt.event.InputEvent.CTRL_DOWN_MASK));
-        vatBindWithShiftMenuItem.setMnemonic('V');
-        vatBindWithShiftMenuItem.setSelected(true);
-        vatBindWithShiftMenuItem.setText("VAT theo ca");
-        vatBindWithShiftMenuItem.addActionListener(new java.awt.event.ActionListener() {
+        vatBindWithStoreMenuItem.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_V, java.awt.event.InputEvent.ALT_DOWN_MASK | java.awt.event.InputEvent.CTRL_DOWN_MASK));
+        vatBindWithStoreMenuItem.setMnemonic('V');
+        vatBindWithStoreMenuItem.setSelected(true);
+        vatBindWithStoreMenuItem.setText("VAT theo cửa hàng");
+        vatBindWithStoreMenuItem.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                vatBindWithShiftMenuItemActionPerformed(evt);
+                vatBindWithStoreMenuItemActionPerformed(evt);
             }
         });
-        customOrder.add(vatBindWithShiftMenuItem);
+        customOrder.add(vatBindWithStoreMenuItem);
 
         optionsMenu.add(customOrder);
 
@@ -108,16 +110,27 @@ public class MainFrame extends javax.swing.JFrame {
 
         setJMenuBar(jMenuBar1);
 
+        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
+        getContentPane().setLayout(layout);
+        layout.setHorizontalGroup(
+            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(tabPanel, javax.swing.GroupLayout.DEFAULT_SIZE, 1100, Short.MAX_VALUE)
+        );
+        layout.setVerticalGroup(
+            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(tabPanel, javax.swing.GroupLayout.DEFAULT_SIZE, 632, Short.MAX_VALUE)
+        );
+
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
     private void cashierBindWithShiftMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cashierBindWithShiftMenuItemActionPerformed
-        purchasePanel1.setCashierByWithShift(cashierBindWithShiftMenuItem.isSelected());
+        purchasePanel1.setCashierBindWithShift(cashierBindWithShiftMenuItem.isSelected());
     }//GEN-LAST:event_cashierBindWithShiftMenuItemActionPerformed
 
-    private void vatBindWithShiftMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_vatBindWithShiftMenuItemActionPerformed
-        purchasePanel1.setVATBindWithShift(vatBindWithShiftMenuItem.isSelected());
-    }//GEN-LAST:event_vatBindWithShiftMenuItemActionPerformed
+    private void vatBindWithStoreMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_vatBindWithStoreMenuItemActionPerformed
+        purchasePanel1.setVATBindWithStore(vatBindWithStoreMenuItem.isSelected());
+    }//GEN-LAST:event_vatBindWithStoreMenuItemActionPerformed
 
     /**
      * @param args the command line arguments
@@ -154,46 +167,49 @@ public class MainFrame extends javax.swing.JFrame {
             }
         });
     }
-
-//    private void loadData() {
-//        repositoryGoodsList = myData.load(Path.of(REPOSITORY_PATH), Repository.class, repositoryGoodsList);
-//        shift = myData.load(Path.of(SHIFT_PATH), Shift.class, shift);
-//        history = myData.load(Path.of(HISTORY_PATH), History.class, history);
-//        employeeList = myData.load(Path.of(EMPLOYEE_LIST_PATH), EmployeeList.class, employeeList);
-//        cardList = myData.load(Path.of(CUSTOMER_CARD_LIST_PATH), CustomerCardList.class, cardList);
-//        idGenerator = myData.load(Path.of(IDGENERATOR_PATH), IDGenerator.class, idGenerator);
-//        settings = myData.load(Path.of(SETTINGS_PATH), Settings.class, settings);
-//        purchasePanel1.passData(settings, shift, idGenerator, repositoryGoodsList);
-//    }
-//    
-//    private static void saveData() {
-//        myData.save(Path.of(REPOSITORY_PATH), repositoryGoodsList);
-//        myData.save(Path.of(SHIFT_PATH), shift);
-//        myData.save(Path.of(HISTORY_PATH), history);
-//        myData.save(Path.of(EMPLOYEE_LIST_PATH), employeeList);
-//        myData.save(Path.of(CUSTOMER_CARD_LIST_PATH), cardList);
-//        myData.save(Path.of(IDGENERATOR_PATH), idGenerator);
-//        myData.save(Path.of(SETTINGS_PATH), settings);
-//    }
-//    
-//    static Repository repositoryGoodsList = new Repository();
-//    static Shift shift = new Shift();
-//    static History history = new History();
-//    static CustomerCardList cardList = new CustomerCardList();
-//    static EmployeeList employeeList = new EmployeeList();
-//    static IDGenerator idGenerator = new IDGenerator();
-//    static Settings settings = new Settings();
-//    private static final JsonDataFile myData = new JsonDataFile();
-//    private static final String HOME = System.getProperty("user.dir");
-//    private static final String SEPARATOR = File.separator;
-//    private static final String DATA_FOLDER = HOME + SEPARATOR + "data" + SEPARATOR;
-//    private static final String REPOSITORY_PATH = DATA_FOLDER + "repositoryData.json";
-//    private static final String SHIFT_PATH = DATA_FOLDER + "currentShift.json";
-//    private static final String HISTORY_PATH = DATA_FOLDER + "historyData.json";
-//    private static final String EMPLOYEE_LIST_PATH = DATA_FOLDER + "employeeListData.json";
-//    private static final String CUSTOMER_CARD_LIST_PATH = DATA_FOLDER + "customerCardListData.json";
-//    private static final String IDGENERATOR_PATH = DATA_FOLDER + "idgenerator.json";
-//    private static final String SETTINGS_PATH = DATA_FOLDER + "settingsData.json";
+    
+    private void loadData() {
+        repository = myData.load(Path.of(REPOSITORY_PATH), Repository.class, repository);
+        shift = myData.load(Path.of(SHIFT_PATH), Shift.class, shift);
+        history = myData.load(Path.of(HISTORY_PATH), History.class, history);
+        employeeList = myData.load(Path.of(EMPLOYEE_LIST_PATH), EmployeeList.class, employeeList);
+        customerCardList = myData.load(Path.of(CUSTOMER_CARD_LIST_PATH), CustomerCardList.class, customerCardList);
+        idGenerator = myData.load(Path.of(IDGENERATOR_PATH), IDGenerator.class, idGenerator);
+        settings = myData.load(Path.of(SETTINGS_PATH), Settings.class, settings);
+        units = myData.load(Path.of(UNITS_PATH), Units.class, units);
+    }
+    
+    private static void saveData() {
+        myData.save(Path.of(REPOSITORY_PATH), repository);
+        myData.save(Path.of(SHIFT_PATH), shift);
+        myData.save(Path.of(HISTORY_PATH), history);
+        myData.save(Path.of(EMPLOYEE_LIST_PATH), employeeList);
+        myData.save(Path.of(CUSTOMER_CARD_LIST_PATH), customerCardList);
+        myData.save(Path.of(IDGENERATOR_PATH), idGenerator);
+        myData.save(Path.of(SETTINGS_PATH), settings);
+    }
+    
+    static Units units = new Units();
+    static Repository repository = new Repository();
+    static Shift shift = new Shift();
+    static History history = new History();
+    static CustomerCardList customerCardList = new CustomerCardList();
+    static EmployeeList employeeList = new EmployeeList();
+    static IDGenerator idGenerator = new IDGenerator();
+    static Settings settings = new Settings();
+    private static final JsonDataFile myData = new JsonDataFile();
+    private static final String HOME = System.getProperty("user.dir");
+    private static final String SEPARATOR = File.separator;
+    private static final String DATA_FOLDER = HOME + SEPARATOR + "data" + SEPARATOR;
+    private static final String IMAGE_FOLDER = HOME + SEPARATOR + "src" + SEPARATOR + "main"+ SEPARATOR + "image"+SEPARATOR;
+    private static final String REPOSITORY_PATH = DATA_FOLDER + "repositoryData.json";
+    private static final String SHIFT_PATH = DATA_FOLDER + "currentShift.json";
+    private static final String HISTORY_PATH = DATA_FOLDER + "historyData.json";
+    private static final String EMPLOYEE_LIST_PATH = DATA_FOLDER + "employeeListData.json";
+    private static final String CUSTOMER_CARD_LIST_PATH = DATA_FOLDER + "customerCardListData.json";
+    private static final String IDGENERATOR_PATH = DATA_FOLDER + "idgenerator.json";
+    private static final String SETTINGS_PATH = DATA_FOLDER + "settingsData.json";
+    private static final String UNITS_PATH = DATA_FOLDER + "units.json";
     
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JCheckBoxMenuItem cashierBindWithShiftMenuItem;
@@ -206,6 +222,6 @@ public class MainFrame extends javax.swing.JFrame {
     private GUI.PurchasePanel purchasePanel1;
     private GUI.RepoPanel repoPanel1;
     private javax.swing.JTabbedPane tabPanel;
-    private javax.swing.JCheckBoxMenuItem vatBindWithShiftMenuItem;
+    private javax.swing.JCheckBoxMenuItem vatBindWithStoreMenuItem;
     // End of variables declaration//GEN-END:variables
 }

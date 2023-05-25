@@ -422,6 +422,7 @@ public class OrderController extends GoodsListController {
     public Order makeNewOrderForGUI(Store myStore, Shift shift, IDGenerator idGenerator) {
         Order order = new Order(idGenerator.generateID(Order.class.getName(), 6),
                 myStore.getVAT());
+        // thêm order hiện tại vào lịch sử ca hiện tại
         shift.getOrderHisPerShift().add(order);
         return order;
     }
