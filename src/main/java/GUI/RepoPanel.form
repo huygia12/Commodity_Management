@@ -158,9 +158,9 @@
                                   <Component id="deleteButton" alignment="3" min="-2" max="-2" attributes="0"/>
                               </Group>
                               <EmptySpace max="-2" attributes="0"/>
-                              <Group type="103" groupAlignment="3" attributes="0">
-                                  <Component id="shipmentsButton" alignment="3" min="-2" max="-2" attributes="0"/>
+                              <Group type="103" groupAlignment="0" attributes="0">
                                   <Component id="editButton" alignment="0" min="-2" max="-2" attributes="0"/>
+                                  <Component id="shipmentsButton" min="-2" max="-2" attributes="0"/>
                               </Group>
                           </Group>
                       </Group>
@@ -215,6 +215,9 @@
               <Properties>
                 <Property name="text" type="java.lang.String" value="S&#x1eed;a h&#xe0;ng/&#x111;&#x1a1;n v&#x1ecb;"/>
               </Properties>
+              <Events>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="editButtonActionPerformed"/>
+              </Events>
             </Component>
             <Component class="javax.swing.JButton" name="deleteButton">
               <Properties>

@@ -126,6 +126,11 @@ public class RepoPanel extends javax.swing.JPanel {
         });
 
         editButton.setText("Sửa hàng/đơn vị");
+        editButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                editButtonActionPerformed(evt);
+            }
+        });
 
         deleteButton.setText("Xóa hàng/đon vị");
         deleteButton.addActionListener(new java.awt.event.ActionListener() {
@@ -252,9 +257,9 @@ public class RepoPanel extends javax.swing.JPanel {
                             .addComponent(addButton)
                             .addComponent(deleteButton))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addGroup(controllerPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(shipmentsButton)
-                            .addComponent(editButton))))
+                        .addGroup(controllerPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(editButton)
+                            .addComponent(shipmentsButton))))
                 .addContainerGap())
         );
 
@@ -355,7 +360,7 @@ public class RepoPanel extends javax.swing.JPanel {
         if (deleteButton.isEnabled()) {
             return;
         }
-        if (unitComboBox.getSelectedItem().toString().equals("Thêm đơn vị")) {
+        if (unitComboBox.getSelectedIndex() == 0) {
             unitComboBox.setSelectedIndex(-1);
             String unit = JOptionPane.showInputDialog(null, "Vui lòng thêm một đơn vị mới:", "Thêm đơn vị", JOptionPane.QUESTION_MESSAGE);
             if (unit == null) {
@@ -466,6 +471,21 @@ public class RepoPanel extends javax.swing.JPanel {
         }
     }//GEN-LAST:event_IDTextFieldKeyReleased
 
+    private void editButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_editButtonActionPerformed
+        // TODO add your handling code here:
+        if (jTable1.getSelectedRow() != -1) {
+            
+        } else {
+            String unitChanged = JOptionPane.showInputDialog(null, "Vui lòng nhập tên đơn vị:", "Thay đổi đơn vị", JOptionPane.QUESTION_MESSAGE);
+            unitsList.set(unitComboBox.getSelectedIndex()-1, unitChanged);
+            reloadUnitList();
+            unitComboBox.setSelectedIndex(-1);
+            addCheck();
+            deleteCheck();
+            editCheck();
+        }
+    }//GEN-LAST:event_editButtonActionPerformed
+
     public void addCheck () {
         if(!goodName.isBlank() && !goodManufacturer.isBlank() && !goodUnit.isBlank() && goodListedPrice.intValue()!=-1 && !goodID.isBlank()) {
             addButton.setEnabled(true);
@@ -507,6 +527,12 @@ public class RepoPanel extends javax.swing.JPanel {
         deleteButton.setEnabled(false);
         editButton.setEnabled(false);
         shipmentsButton.setEnabled(false);
+    }
+    
+    public void reloadUnitList() {
+        unitComboBox.removeAllItems();
+        unitComboBox.addItem("Thêm đơn vị");
+        unitsList.stream().forEach(x->unitComboBox.addItem(x));
     }
     
     public void setGoodsList(GoodsList<Goods> goodsList) {
