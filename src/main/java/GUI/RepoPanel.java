@@ -552,7 +552,7 @@ public class RepoPanel extends javax.swing.JPanel {
     }//GEN-LAST:event_cancelButtonActionPerformed
 
     public void addCheck () {
-        if(!nameTextField.getText().isBlank() && !manufacturerTextField.getText().isBlank() && unitComboBox.getSelectedIndex()!=-1 && !listPriceTextField.getText().isBlank() && !IDTextField.getText().isBlank()) {
+        if(!nameTextField.getText().isBlank() && unitComboBox.getSelectedIndex()!=-1 && !listPriceTextField.getText().isBlank() && !IDTextField.getText().isBlank() && !goodID.isBlank() && goodListedPrice != BigDecimal.valueOf(-1)) {
             addButton.setEnabled(true);
         } else {
             addButton.setEnabled(false);
