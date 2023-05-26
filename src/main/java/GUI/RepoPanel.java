@@ -37,6 +37,7 @@ public class RepoPanel extends javax.swing.JPanel {
         deleteButton.setEnabled(false);
         editButton.setEnabled(false);
         shipmentsButton.setEnabled(false);
+        cancelCheck();
         goodTableModel = (DefaultTableModel) jTable1.getModel();
     }
 
@@ -68,6 +69,7 @@ public class RepoPanel extends javax.swing.JPanel {
         unitComboBox = new javax.swing.JComboBox<>();
         invalidPriceLabel = new javax.swing.JLabel();
         invalidIDLabel = new javax.swing.JLabel();
+        cancelButton = new javax.swing.JButton();
         tablePanel = new javax.swing.JPanel();
         jScrollPane1 = new javax.swing.JScrollPane();
         jTable1 = new javax.swing.JTable();
@@ -181,6 +183,13 @@ public class RepoPanel extends javax.swing.JPanel {
         invalidIDLabel.setForeground(new java.awt.Color(255, 51, 51));
         invalidIDLabel.setText("Mã hàng không hợp lệ!");
 
+        cancelButton.setText("Hủy");
+        cancelButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                cancelButtonActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout controllerPanelLayout = new javax.swing.GroupLayout(controllerPanel);
         controllerPanel.setLayout(controllerPanelLayout);
         controllerPanelLayout.setHorizontalGroup(
@@ -207,9 +216,9 @@ public class RepoPanel extends javax.swing.JPanel {
                 .addGroup(controllerPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(controllerPanelLayout.createSequentialGroup()
                         .addComponent(nameTextField, javax.swing.GroupLayout.PREFERRED_SIZE, 153, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGap(18, 18, 18)
                         .addComponent(unitComboBox, 0, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 40, Short.MAX_VALUE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 28, Short.MAX_VALUE)
                         .addComponent(listPriceLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 89, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addGroup(controllerPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -217,7 +226,11 @@ public class RepoPanel extends javax.swing.JPanel {
                             .addComponent(listPriceTextField, javax.swing.GroupLayout.PREFERRED_SIZE, 153, javax.swing.GroupLayout.PREFERRED_SIZE)))
                     .addGroup(controllerPanelLayout.createSequentialGroup()
                         .addGroup(controllerPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addComponent(editButton, javax.swing.GroupLayout.PREFERRED_SIZE, 117, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addGroup(controllerPanelLayout.createSequentialGroup()
+                                .addGap(0, 0, Short.MAX_VALUE)
+                                .addComponent(cancelButton, javax.swing.GroupLayout.PREFERRED_SIZE, 118, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addComponent(editButton, javax.swing.GroupLayout.PREFERRED_SIZE, 117, javax.swing.GroupLayout.PREFERRED_SIZE))
                             .addGroup(controllerPanelLayout.createSequentialGroup()
                                 .addComponent(manufacturerTextField, javax.swing.GroupLayout.PREFERRED_SIZE, 153, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
@@ -258,7 +271,9 @@ public class RepoPanel extends javax.swing.JPanel {
                             .addComponent(deleteButton))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(controllerPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(editButton)
+                            .addGroup(controllerPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                .addComponent(editButton)
+                                .addComponent(cancelButton))
                             .addComponent(shipmentsButton))))
                 .addContainerGap())
         );
@@ -290,6 +305,9 @@ public class RepoPanel extends javax.swing.JPanel {
         jTable1.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 jTable1MouseClicked(evt);
+            }
+            public void mouseReleased(java.awt.event.MouseEvent evt) {
+                jTable1MouseReleased(evt);
             }
         });
         jScrollPane1.setViewportView(jTable1);
@@ -357,7 +375,7 @@ public class RepoPanel extends javax.swing.JPanel {
     
     private void unitComboBoxActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_unitComboBoxActionPerformed
         // TODO add your handling code here:
-        if (deleteButton.isEnabled()) {
+        if ((deleteButton.isEnabled()&&jTable1.getSelectedRow()==-1) || unitComboBox.getSelectedItem() == null) {
             return;
         }
         if (unitComboBox.getSelectedIndex() == 0) {
@@ -390,6 +408,10 @@ public class RepoPanel extends javax.swing.JPanel {
             addCheck();
             editCheck();
         }
+        cancelCheck();
+        addCheck();
+        editCheck();
+        deleteCheck();
     }//GEN-LAST:event_unitComboBoxActionPerformed
 
     private void unitComboBoxItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_unitComboBoxItemStateChanged
@@ -426,6 +448,10 @@ public class RepoPanel extends javax.swing.JPanel {
             invalidPriceLabel.setVisible(true);
             addButton.setEnabled(false);
         }
+        cancelCheck();
+        addCheck();
+        deleteCheck();
+        editCheck();
     }//GEN-LAST:event_listPriceTextFieldKeyReleased
 
     private void jTable1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jTable1MouseClicked
@@ -436,12 +462,14 @@ public class RepoPanel extends javax.swing.JPanel {
         // TODO add your handling code here:
         goodName = nameTextField.getText();
         addCheck();
+        cancelCheck();
     }//GEN-LAST:event_nameTextFieldKeyReleased
 
     private void manufacturerTextFieldKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_manufacturerTextFieldKeyReleased
         // TODO add your handling code here:
         goodManufacturer = manufacturerTextField.getText();
         addCheck();
+        cancelCheck();
     }//GEN-LAST:event_manufacturerTextFieldKeyReleased
 
     private void deleteButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_deleteButtonActionPerformed
@@ -469,6 +497,7 @@ public class RepoPanel extends javax.swing.JPanel {
         }  else {
             invalidIDLabel.setVisible(true);
         }
+        cancelCheck();
     }//GEN-LAST:event_IDTextFieldKeyReleased
 
     private void editButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_editButtonActionPerformed
@@ -486,8 +515,44 @@ public class RepoPanel extends javax.swing.JPanel {
         }
     }//GEN-LAST:event_editButtonActionPerformed
 
+    private void jTable1MouseReleased(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jTable1MouseReleased
+        // TODO add your handling code here:
+        if (jTable1.getSelectedRow() == -1) {
+        } else {
+            if (findUnit((String) goodTableModel.getValueAt(jTable1.getSelectedRow(), 2)) == 0) {
+                JOptionPane.showMessageDialog(null, "Đơn vị không tồn tại. Tiến hành thêm dơn vị...", "Uh oh!", JOptionPane.ERROR_MESSAGE);
+                unitsList.add((String) goodTableModel.getValueAt(jTable1.getSelectedRow(), 2));
+                unitComboBox.addItem((String) goodTableModel.getValueAt(jTable1.getSelectedRow(), 2));
+                unitComboBox.setSelectedItem((String) goodTableModel.getValueAt(jTable1.getSelectedRow(), 2));
+            } else {
+                unitComboBox.setSelectedItem((String) goodTableModel.getValueAt(jTable1.getSelectedRow(), 2));
+            }
+            IDTextField.setText((String) goodTableModel.getValueAt(jTable1.getSelectedRow(), 0));
+            nameTextField.setText((String) goodTableModel.getValueAt(jTable1.getSelectedRow(), 1));
+            manufacturerTextField.setText((String) goodTableModel.getValueAt(jTable1.getSelectedRow(), 3));
+            listPriceTextField.setText(goodTableModel.getValueAt(jTable1.getSelectedRow(), 4).toString());
+            totalQuantityTextField.setText(goodTableModel.getValueAt(jTable1.getSelectedRow(), 5).toString());
+            goodID = (String) goodTableModel.getValueAt(jTable1.getSelectedRow(), 0);
+            goodListedPrice = (BigDecimal) goodTableModel.getValueAt(jTable1.getSelectedRow(), 4);
+            goodManufacturer = (String) goodTableModel.getValueAt(jTable1.getSelectedRow(), 3);
+            goodTotalQuantity = BigDecimal.valueOf(Integer.toUnsignedLong((int) goodTableModel.getValueAt(jTable1.getSelectedRow(), 5)));
+            goodUnit = (String) goodTableModel.getValueAt(jTable1.getSelectedRow(), 2);
+            goodName = (String) goodTableModel.getValueAt(jTable1.getSelectedRow(), 1);
+        }
+        addCheck();
+        cancelCheck();
+        editCheck();
+        deleteCheck();
+    }//GEN-LAST:event_jTable1MouseReleased
+
+    private void cancelButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cancelButtonActionPerformed
+        // TODO add your handling code here:
+        reloadTable();
+        resetVariables();
+    }//GEN-LAST:event_cancelButtonActionPerformed
+
     public void addCheck () {
-        if(!goodName.isBlank() && !goodManufacturer.isBlank() && !goodUnit.isBlank() && goodListedPrice.intValue()!=-1 && !goodID.isBlank()) {
+        if(!nameTextField.getText().isBlank() && !manufacturerTextField.getText().isBlank() && unitComboBox.getSelectedIndex()!=-1 && !listPriceTextField.getText().isBlank() && !IDTextField.getText().isBlank()) {
             addButton.setEnabled(true);
         } else {
             addButton.setEnabled(false);
@@ -510,12 +575,23 @@ public class RepoPanel extends javax.swing.JPanel {
         }
     }
     
+    public void cancelCheck() {
+        if (jTable1.getSelectedRow() != -1 || !nameTextField.getText().isBlank() || !manufacturerTextField.getText().isBlank() || unitComboBox.getSelectedIndex()!=-1 || !listPriceTextField.getText().isBlank() || !IDTextField.getText().isBlank()) {
+            cancelButton.setEnabled(true);
+        } else {
+            cancelButton.setEnabled(false);
+        }
+    }
+    
     public void resetVariables() {
         IDTextField.setText("");
         nameTextField.setText("");
         unitComboBox.setSelectedIndex(-1);
         manufacturerTextField.setText("");
         listPriceTextField.setText("");
+        
+        invalidIDLabel.setVisible(false);
+        invalidPriceLabel.setVisible(false);
         
         goodID = "";
         goodListedPrice = BigDecimal.valueOf(-1);
@@ -527,6 +603,7 @@ public class RepoPanel extends javax.swing.JPanel {
         deleteButton.setEnabled(false);
         editButton.setEnabled(false);
         shipmentsButton.setEnabled(false);
+        cancelButton.setEnabled(false);
     }
     
     public void reloadUnitList() {
@@ -535,12 +612,32 @@ public class RepoPanel extends javax.swing.JPanel {
         unitsList.stream().forEach(x->unitComboBox.addItem(x));
     }
     
+    public void reloadTable() {
+        for (int i = 0; i < goodTableModel.getRowCount(); i++) {
+            goodTableModel.removeRow(i);
+        }
+        for (Goods good : goodsList.getGoodsList()) {
+            goodTableModel.addRow(new Object[] {
+                good.getID(),
+                good.getGoodsName(),
+                good.getUnit(),
+                good.getManufacture(),
+                good.getListPrice(),
+                good.getTotalQuantity()
+            });
+        }
+    }
+    
     public void setGoodsList(GoodsList<Goods> goodsList) {
         this.goodsList = goodsList;
     }
 
     public void setUnitsList(ArrayList<String> unitsList) {
         this.unitsList = unitsList;
+    }
+    
+    public int findUnit(String unit) {
+        return (int) unitsList.stream().filter(x->x.equals(unit)).count();
     }
 
     private GoodsList<Goods> goodsList;
@@ -552,12 +649,14 @@ public class RepoPanel extends javax.swing.JPanel {
     private String goodManufacturer = "";
     private String goodID = "";
     private BigDecimal goodListedPrice = BigDecimal.valueOf(-1);
+    private BigDecimal goodTotalQuantity = BigDecimal.valueOf(-1);
     private DefaultTableModel goodTableModel;
     
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel IDLabel;
     private javax.swing.JTextField IDTextField;
     private javax.swing.JButton addButton;
+    private javax.swing.JButton cancelButton;
     private javax.swing.JPanel controllerPanel;
     private javax.swing.JButton deleteButton;
     private javax.swing.JButton editButton;
