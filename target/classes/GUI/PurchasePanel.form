@@ -402,9 +402,6 @@
                 </Component>
                 <Component class="javax.swing.JTextField" name="customerIDText">
                   <Properties>
-                    <Property name="background" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
-                      <Color blue="ff" green="ff" red="ff" type="rgb"/>
-                    </Property>
                     <Property name="horizontalAlignment" type="int" value="0"/>
                   </Properties>
                   <Events>
@@ -779,6 +776,9 @@
                           <Dimension value="[64, 20]"/>
                         </Property>
                       </Properties>
+                      <Events>
+                        <EventHandler event="mouseExited" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="taxTextMouseExited"/>
+                      </Events>
                     </Component>
                   </SubComponents>
                 </Container>
@@ -1272,9 +1272,9 @@
                                           <Component id="keyWordLabel" alignment="3" min="-2" pref="20" max="-2" attributes="0"/>
                                       </Group>
                                       <EmptySpace type="unrelated" max="-2" attributes="0"/>
-                                      <Group type="103" groupAlignment="3" attributes="0">
-                                          <Component id="keyWordTextField" alignment="3" min="-2" pref="27" max="-2" attributes="0"/>
+                                      <Group type="103" groupAlignment="0" attributes="0">
                                           <Component id="searchBtn" alignment="0" min="-2" max="-2" attributes="0"/>
+                                          <Component id="keyWordTextField" min="-2" pref="27" max="-2" attributes="0"/>
                                       </Group>
                                       <EmptySpace type="unrelated" max="-2" attributes="0"/>
                                       <Component id="keyWarningLabel" min="-2" pref="22" max="-2" attributes="0"/>
