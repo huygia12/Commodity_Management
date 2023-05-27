@@ -204,7 +204,7 @@ public class ShiftView {
             pw.println(String.format("%21s" + " | " + "%-20.1f", "Gross revenue", shiftCtr.getGrossRevenue(shift)));
             pw.println(String.format("%21s" + " | " + "%-20.1f", "Total direct discount", shiftCtr.getTotalDiscountMoney(shift)));
             pw.println(String.format("%21s" + " | " + "%-20.1f", "Total point discount", shiftCtr.getTotalPointDiscount(shift)));
-            pw.println(String.format("%21s" + " | " + "%-20.1f", "VAT" + shift.getVAT() + "%", shiftCtr.getTotalVAT(shift)));
+            pw.println(String.format("%21s" + " | " + "%-20.1f", "VAT" + shift.getTax() + "%", shiftCtr.getTotalVAT(shift)));
             pw.println(String.format("%21s" + " | " + "%-20.1f", "Shipping fee", shift.getTransportFee()));
             pw.println(String.format("%21s" + " | " + "%-20.1f", "Net revenue", shiftCtr.getNetRevenue(shift)));
             pw.println(String.format("%21s" + " | " + "%-20s", "Number of orders", shiftCtr.getNumberOfOrder(shift)));

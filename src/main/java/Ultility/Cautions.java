@@ -66,7 +66,7 @@ public class Cautions {
 
     public boolean checkIfANumberSequenceForGUI(String str) {
         try {
-            BigInteger number = new BigInteger(str.trim());
+            BigDecimal number = new BigDecimal(str.trim());
             if (!Cautions.this.checkIfNumberNegativeForGUI(number)) {
                 return true;
             }

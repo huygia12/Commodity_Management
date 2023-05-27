@@ -4,7 +4,9 @@
  */
 package Controllers;
 
+import Models.Settings;
 import Models.Shift;
+import Ultility.CustomPair;
 import Ultility.JsonDataFile;
 import java.math.BigDecimal;
 import java.math.BigInteger;
@@ -16,6 +18,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Scanner;
 import java.util.stream.Collectors;
 
 /**
@@ -27,19 +30,19 @@ public class test {
     static Map<String, Integer> staticalList = new HashMap<>();
 
     public static void main(String[] args) {
-        JsonDataFile myData = new JsonDataFile();
-        Shift shift = new Shift();
-        myData.save(Path.of("E:\\CommodityManagement\\Java_project\\data\\currentShift.json"), shift);
+        SettingsController settingsCtr = new SettingsController();
+        Scanner sc = new Scanner(System.in);
+
+        while (true) {
+            CustomPair<BigDecimal, BigDecimal> cus = settingsCtr.convertFromComparisonOperatorToRange(sc.nextLine());
+            if(cus == null){
+                System.out.println("null");
+                continue;
+            }
+            System.out.println(cus.getK() +" "+cus.getV());
+        }
     }
 
-    public static <T extends Number> boolean checkIfNumberEqualZero(T number) {
-        BigDecimal numToBigDecimal = new BigDecimal(number+"");
-        if (numToBigDecimal.compareTo(BigDecimal.ZERO) == 0) {
-            System.out.println("This number cannot equal zero!");
-            return false;
-        }
-        return true;
-    }
 
     public static void testSetting() {
         staticalList.put("huy", 1);

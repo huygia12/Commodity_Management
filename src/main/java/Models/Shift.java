@@ -56,11 +56,11 @@ public class Shift {
         this.VAT = VAT;
     }
 
-    public void setVAT(int VAT) {
+    public void setTax(int VAT) {
         this.VAT = VAT;
     }
 
-    public int getVAT() {
+    public int getTax() {
         return this.VAT;
     }
 

@@ -22,7 +22,9 @@ import Models.StaticalItems;
 import java.math.BigDecimal;
 import java.time.DateTimeException;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.time.format.FormatStyle;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
@@ -39,6 +41,7 @@ public class HistoryView {
     final EmployeeListController employeeListCtr = new EmployeeListController();
     final ShiftController shiftCtr = new ShiftController();
     final String DATE_FORMAT = "dd/MM/yyyy";
+    final String DATE_TIME_FORMAT = "dd/MM/yyyy hh:mm:ss";
     private int orderIDMaxSize;
     private int orderDateTimeMaxSize;
     private int totalMaxSize;
@@ -119,8 +122,11 @@ public class HistoryView {
                 if (order.getID().length() > orderIDMaxSize) {
                     orderIDMaxSize = order.getID().length();
                 }
-                if (order.getOrderDateTime().length() > orderDateTimeMaxSize) {
-                    orderDateTimeMaxSize = order.getOrderDateTime().length();
+                int orderDateTimeSize = order.getOrderDateTime()
+                        .format(DateTimeFormatter.ofPattern(DATE_TIME_FORMAT))
+                        .length();
+                if (orderDateTimeSize > orderDateTimeMaxSize) {
+                    orderDateTimeMaxSize = orderDateTimeSize;
                 }
                 if (String.format("%.1f", orderCtr.getTotal(order)).length() > totalMaxSize) {
                     totalMaxSize = String.format("%.1f", orderCtr.getTotal(order)).length();
@@ -387,12 +393,12 @@ public class HistoryView {
     public void showAnOrderInDetail(Order order) {
         System.out.printf("%10s%8s\n", "ORDER ID: ", order.getID());
         System.out.printf("%s: %s\n", "Init Date&Time", order.getOrderDateTime());
-        System.out.printf("%s: %s\n", "VAT", order.getVAT() + "%");
+        System.out.printf("%s: %s\n", "VAT", order.getTax() + "%");
         System.out.printf("%s: %s\n", "Discount", order.getDiscount() + "%");
         System.out.printf("%s: %s\n", "Customer Card ID", order.getCustomerCard().getID());
         System.out.printf("%s: %.1f\n", "Point Discount", order.getPointDiscount());
         System.out.printf("%s: %s\n", "Payment Option", order.getPaymentOptions());
-        if (order.getPaymentOptions().equals(PaymentOptions.Cash_Payment)) {
+        if (order.getPaymentOptions().equals(PaymentOptions.CASH_PAYMENT)) {
             System.out.printf("%s: %.1f\n", "Customer money", order.getCusMoney());
             System.out.printf("%s: %.1f\n", "Change", orderCtr.getChange(order));
         }
@@ -418,7 +424,7 @@ public class HistoryView {
         System.out.printf("%s: %-20.1f\n", "Gross revenue", shiftCtr.getGrossRevenue(shift));
         System.out.printf("%s: %-20.1f\n", "Total direct discount", shiftCtr.getTotalDiscountMoney(shift));
         System.out.printf("%s: %-20.1f\n", "Total point discount", shiftCtr.getTotalPointDiscount(shift));
-        System.out.printf("%s: %-20s\n", "VAT", shift.getVAT() + "%");
+        System.out.printf("%s: %-20s\n", "VAT", shift.getTax() + "%");
         System.out.printf("%s: %-20.1f\n", "Shipping Fee", shift.getTransportFee());
         System.out.printf("%s: %-20.1f\n", "Net Revenue", shiftCtr.getNetRevenue(shift));
         System.out.printf("%s: %-20s\n", "Number of Order", shiftCtr.getNumberOfOrder(shift));

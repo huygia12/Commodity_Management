@@ -151,7 +151,7 @@ public class ShiftController {
     public BigDecimal getTotalPaymentByCash(Shift shift) {
         BigDecimal result = BigDecimal.ZERO;
         for (Order order : shift.getOrderHisPerShift()) {
-            if (order.getPaymentOptions().equals(PaymentOptions.Cash_Payment)) {
+            if (order.getPaymentOptions().equals(PaymentOptions.CASH_PAYMENT)) {
                 result = result.add(orderCtr.getTotal(order));
             }
         }
@@ -161,7 +161,7 @@ public class ShiftController {
     public BigDecimal getTotalPaymentByWireTransfer(Shift shift) {
         BigDecimal result = BigDecimal.ZERO;
         for (Order order : shift.getOrderHisPerShift()) {
-            if (order.getPaymentOptions().equals(PaymentOptions.Wire_Transfer_Payment)) {
+            if (order.getPaymentOptions().equals(PaymentOptions.OTHER_PAYMENT)) {
                 result = result.add(orderCtr.getTotal(order));
             }
         }
@@ -214,7 +214,7 @@ public class ShiftController {
                 StaticalItems newStaticalItems = new StaticalItems();
                 newStaticalItems.setName(goods.getGoodsName());
                 newStaticalItems.setQuantity(goodsCtr.getTotalQuanByShipments(goods));
-                newStaticalItems.setRevenue((goods.getListPrice().add(goodsCtr.getVATMoneyPerGoods(goods, order.getVAT())))
+                newStaticalItems.setRevenue((goods.getListPrice().add(goodsCtr.getVATMoneyPerGoods(goods, order.getTax())))
                         .multiply(goodsCtr.getTotalQuanByShipments(goods)
                                 .multiply(new BigDecimal(1.0 - order.getDiscount() * 1.0 / 100))));
                 if (consumptions.containsKey(goods.getID())) {

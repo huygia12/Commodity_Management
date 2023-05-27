@@ -2,7 +2,7 @@
   "cardList": [
     {
       "ID": "000000",
-      "point": 0,
+      "point": 100,
       "customer": {
         "firstName": "Nguyen Duc",
         "lastName": "Anh",

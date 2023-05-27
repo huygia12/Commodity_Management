@@ -18,6 +18,7 @@ import java.awt.AWTException;
 import java.awt.Robot;
 import java.io.File;
 import java.math.BigDecimal;
+import java.math.BigInteger;
 import java.nio.file.Path;
 import java.time.LocalDate;
 import java.util.Scanner;
@@ -113,7 +114,7 @@ public class CommodityManagement {
                     cardListCtr.customerCardListManagement(cardList, idGenerator);
                     break;
                 case "7":
-                    settingsCtr.SettingsManagement(shift, settings);
+                    settingsCtr.settingsManagement(shift, settings);
                     break;
                 case "8":
                     System.out.println("Exiting...");
@@ -226,10 +227,17 @@ public class CommodityManagement {
         employeeList.getList().add(new Employee(new BigDecimal("25000"), "3957577777", "Nguyen Thao", "Chi", "0505737293", "141-ChienThang-TanTrieu", 20, Gender.FEMALE));
         employeeList.getList().add(new Employee(new BigDecimal("20000"), "2727495500", "Tran Luu", "Dung", "0903737293", "Vinhome Riverside", 19, Gender.OTHER));
         cardList.getList().add(new CustomerCard(idGenerator.generateID(CustomerCard.class.getName(), 6), new Customer("Nguyen Duc", "Anh", "0444033022", "34 Nguyen Du", 20, Gender.MALE)));
+        cardList.getList().get(0).setPoint(new BigInteger("100"));
         cardList.getList().add(new CustomerCard(idGenerator.generateID(CustomerCard.class.getName(), 6), new Customer("Le Van", "Quyet", "0333333222", "26 Do Duc Duc", 20, Gender.OTHER)));
         cardList.getList().add(new CustomerCard(idGenerator.generateID(CustomerCard.class.getName(), 6), new Customer("Do Quynh", "Anh", "0733833888", "16 Cau Giay", 22, Gender.FEMALE)));
         cardList.getList().add(new CustomerCard(idGenerator.generateID(CustomerCard.class.getName(), 6), new Customer("Le Duc", "Cuong", "053555133", "41 Minh Khai", 17, Gender.MALE)));
         settings.setMyStore(new Store("Chang hi", "bonEmMuonAnHotpotWangWang@gmail.com", "112-Nguyen Van Loc", 10, "0705737292"));
+        settings.setPointsForOneVND(new BigInteger("10"));
+        settings.setAmountForOnePoint(new BigDecimal("10000"));
+        settings.getPriceAmountList().add("< 100000");
+        settings.getPriceAmountList().add("100000 - 300000");
+        settings.getPriceAmountList().add("300000 - 500000");
+        settings.getPriceAmountList().add("< 500000");
     }
 
     public void clearScreen() {

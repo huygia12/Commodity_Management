@@ -5,7 +5,6 @@
 package View;
 
 import Ultility.Cautions;
-import Controllers.CustomerCardController;
 import Controllers.CustomerCardListController;
 import Controllers.GoodsController;
 import Controllers.OrderController;
@@ -23,6 +22,7 @@ import java.math.BigInteger;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.StandardOpenOption;
+import java.time.format.DateTimeFormatter;
 import java.util.InputMismatchException;
 import java.util.Scanner;
 import java.util.logging.Level;
@@ -36,6 +36,7 @@ public class OrderView {
     private final String HOME = System.getProperty("user.dir");
     private final String SEPARATOR = File.separator;
     private final String FILE_PRINT = HOME + SEPARATOR + "output" + SEPARATOR + "bill.txt";
+    private final String DATE_TIME_FORMAT = "dd/MM/yyyy hh:mm:ss";
     final Cautions ctions = new Cautions();
     final Scanner sc = new Scanner(System.in);
     final CustomerCardListController cardListCtr = new CustomerCardListController();
@@ -132,7 +133,8 @@ public class OrderView {
                     case "4":
                         return 0;
                     case "1", "2":
-                        order.setPaymentOptions(Integer.parseInt(choice));
+                        order.setPaymentOptions(choice.equals("1") 
+                                ?  PaymentOptions.CASH_PAYMENT : PaymentOptions.OTHER_PAYMENT);
                         return 1;
                     default:
                         System.out.println("Wrong input! Please choose from 1->4");
@@ -213,7 +215,7 @@ public class OrderView {
         }
         System.out.println(" ");
         System.out.printf("Total payment: %.1f\n", orderCtr.getSubTotal(order));
-        System.out.printf("Total(Taxed: %s): %.1f\n",order.getVAT()+"%",  orderCtr.getTotal(order));
+        System.out.printf("Total(Taxed: %s): %.1f\n",order.getTax()+"%",  orderCtr.getTotal(order));
         System.out.println("--------------------------------------------------------------------");
     }
 
@@ -247,7 +249,7 @@ public class OrderView {
         System.out.println("Member Card ID: " + customerID);
         System.out.printf("Point Discount: %.1f\n", orderCtr.getPointDiscountAmount(order));
         System.out.printf("Total: %.1f\n", orderCtr.getTotal(order));
-        if (order.getPaymentOptions().equals(PaymentOptions.Cash_Payment)) {
+        if (order.getPaymentOptions().equals(PaymentOptions.CASH_PAYMENT)) {
             System.out.printf("Customer payment: %.1f\n", order.getCusMoney());
             System.out.printf("Change: %.1f\n", orderCtr.getChange(order));
         }
@@ -270,7 +272,7 @@ public class OrderView {
             pw.println("Email: " + myStore.getEmail());
             pw.println("Address: " + myStore.getAddress());
             pw.println("Phone Number: " + myStore.getPhoneNumber());
-            pw.println("Date: " + order.getOrderDateTime());
+            pw.println("Date: " + order.getOrderDateTime().format(DateTimeFormatter.ofPattern(DATE_TIME_FORMAT)));
             pw.println("");
             pw.format("%-25s %-10s %-15s %-15s\n", "Name", "Quantity", "Price", "Total");
             pw.format("%-25s %-10s %-15s %-15s\n", "-------------------------", "----------", "---------------", "---------------");
@@ -286,11 +288,11 @@ public class OrderView {
             pw.printf("Tax(VAT=%s): %.1f\n", myStore.getVAT() + "%", orderCtr.getTaxAmount(order));
             pw.println("Payment Option: " + order.getPaymentOptions());
             pw.println("Member Card ID: " + customerID);
-            pw.printf("Point Discount: %.1f\n", order.getPointDiscount());
+            pw.printf("Point Discount: \n", orderCtr.getPointDiscountAmount(order));
             pw.printf("Total: %.1f\n", orderCtr.getTotal(order));
-            if (order.getPaymentOptions().equals(PaymentOptions.Cash_Payment)) {
+            if (order.getPaymentOptions().equals(PaymentOptions.CASH_PAYMENT)) {
                 pw.printf("Customer payment: %.1f\n", order.getCusMoney());
-                pw.printf("Change: %.1f\n", order.getCusMoney());
+                pw.printf("Change: %.1f\n", orderCtr.getChange(order));
             }
             pw.println("----------------------------------------");
         } catch (IOException ex) {

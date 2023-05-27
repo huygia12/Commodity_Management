@@ -98,7 +98,7 @@ public class HistoryController {
                     if (IDBucket.contains(goods.getID())) {
                         soldGoods = goodsListCtr.containGoods(soldGoodsList, goods.getID());
                         // set gia da ban cho khach hang 
-                        soldGoods.setSoldPrice(order.getVAT(), order.getDiscount());
+                        soldGoods.setSoldPrice(order.getTax(), order.getDiscount());
                         // tang tong tien cua san pham da ban
                         soldGoods.setTotalAmountSold(soldGoods.getTotalAmountSold()
                                 .add(soldGoods.getSoldPrice().multiply(goods.getTotalQuantity())));
@@ -110,7 +110,7 @@ public class HistoryController {
                         // set so luong da ban cua san pham
                         soldGoods.setTotalQuantity(goods.getTotalQuantity());
                         // set gia da ban cho khach hang 
-                        soldGoods.setSoldPrice(order.getVAT(), order.getDiscount());
+                        soldGoods.setSoldPrice(order.getTax(), order.getDiscount());
                         // set tong tien cua san pham da ban
                         soldGoods.setTotalAmountSold(soldGoods.getSoldPrice()
                                 .multiply(soldGoods.getTotalQuantity()));
@@ -130,9 +130,7 @@ public class HistoryController {
         for (Shift shift : history.getShiftHistory()) {
             Shift tempShift = new Shift();
             for (Order order : shift.getOrderHisPerShift()) {
-                LocalDate orderDateTime = LocalDate
-                        .parse(order.getOrderDateTime(),
-                                DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm:ss"));
+                LocalDate orderDateTime = order.getOrderDateTime().toLocalDate();
                 // Neu order nam trong khoang cua fromToDate thi them vao tmp
                 if ((orderDateTime.isAfter(fromToDate.getK())
                         && orderDateTime.isBefore(fromToDate.getV()))

@@ -17,6 +17,7 @@ import Ultility.Cautions;
 import View.OrderView;
 import java.math.BigDecimal;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.InputMismatchException;
 import java.util.Scanner;
@@ -55,7 +56,7 @@ public class OrderController extends GoodsListController {
 
     public BigDecimal getTaxAmount(Order order) {
         // tong tien phi VAT cho ca hoa don
-        return getSubTotal(order).multiply(new BigDecimal(order.getVAT() * 1.0 / 100));
+        return getSubTotal(order).multiply(new BigDecimal(order.getTax() * 1.0 / 100));
     }
 
     public BigDecimal getTotal(Order order) {
@@ -63,7 +64,8 @@ public class OrderController extends GoodsListController {
         return (getSubTotal(order)
                 .add(getTaxAmount(order)))
                 .multiply(new BigDecimal(1.0 - order.getDiscount() * 1.0 / 100))
-                .subtract(getPointDiscountAmount(order));
+                .subtract(getPointDiscountAmount(order))
+                .add(order.getShippingFee());
     }
 
     public BigDecimal getDiscountAmount(Order order) {
@@ -84,8 +86,7 @@ public class OrderController extends GoodsListController {
     public Order makeNewOrder(GoodsList<Goods> repoGoodsList, CustomerCardList customerCardList,
             Store myStore, Shift shift, IDGenerator idGenerator) {
 
-        Order order = new Order(idGenerator.generateID(Order.class.getName(), 6),
-                myStore.getVAT());
+        Order order = new Order(idGenerator.generateID(Order.class.getName(), 6));
         // tao mot ban cpy cua repositoryGoodsList la draftGoodsList
         makeDraftGoodsList(repoGoodsList);
         int choice;
@@ -368,7 +369,7 @@ public class OrderController extends GoodsListController {
                             break OUTER;
                         default:
                             // neu chon payment option la Wire_Transfer_Payment thi bo qua case 3 
-                            if (order.getPaymentOptions().equals(PaymentOptions.Wire_Transfer_Payment)) {
+                            if (order.getPaymentOptions().equals(PaymentOptions.OTHER_PAYMENT)) {
                                 n = 4;
                                 break OUTER;
                             }
@@ -419,9 +420,8 @@ public class OrderController extends GoodsListController {
     }
 
     //GUI
-    public Order makeNewOrderForGUI(Store myStore, Shift shift, IDGenerator idGenerator) {
-        Order order = new Order(idGenerator.generateID(Order.class.getName(), 6),
-                myStore.getVAT());
+    public Order makeNewOrderForGUI(Shift shift, IDGenerator idGenerator) {
+        Order order = new Order(idGenerator.generateID(Order.class.getName(), 6));
         // thêm order hiện tại vào lịch sử ca hiện tại
         shift.getOrderHisPerShift().add(order);
         return order;
@@ -502,7 +502,7 @@ public class OrderController extends GoodsListController {
             remainShipment.setQuantity(quantityRemain
                     .add(quantityBefore.subtract(quantityAfter)));
         }
-        if (quantityBefore.compareTo(BigDecimal.ZERO) != 0) {// nếu số lượng mới != 0 thì thay đổi
+        if (quantityAfter.compareTo(BigDecimal.ZERO) != 0) {// nếu số lượng mới != 0 thì thay đổi
             editedShipment.setQuantity(quantityAfter);
         } else {// nếu số lượng mới == 0 thì xóa khỏi order
             editedGoods.getShipments().remove(editedShipment);
@@ -516,6 +516,7 @@ public class OrderController extends GoodsListController {
         if (order.getCustomerCard() != null) {
             cardCtr.gainPoint(order.getCustomerCard(), getTotal(order));
         }
+        order.setOrderDateTime(LocalDateTime.now());
         shift.getOrderHisPerShift().add(order);
         updateQuanAfterPay(repository, order);
     }

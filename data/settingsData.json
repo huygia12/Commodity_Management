@@ -6,6 +6,12 @@
     "VAT": 10,
     "phoneNumber": "0705737292"
   },
-  "amountForOnePoint": 0,
-  "pointsForOneVND": 0
+  "amountForOnePoint": 10000,
+  "pointsForOneVND": 10,
+  "priceAmountList": [
+    "\u003c 100000",
+    "100000 - 300000",
+    "300000 - 500000",
+    "\u003c 500000"
+  ]
 }

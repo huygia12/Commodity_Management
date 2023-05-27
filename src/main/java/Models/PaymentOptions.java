@@ -9,6 +9,6 @@ package Models;
  * @author FPTSHOP
  */
 public enum PaymentOptions {
-    Cash_Payment,
-    Wire_Transfer_Payment;
+    CASH_PAYMENT,
+    OTHER_PAYMENT
 }

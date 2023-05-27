@@ -49,6 +49,7 @@ public class GoodsController {
         cloneGoods.setGoodsName(goods.getGoodsName());
         cloneGoods.setListPrice(goods.getListPrice());
         cloneGoods.setManufacture(goods.getManufacture());
+        cloneGoods.setUnit(goods.getUnit());
         for (Shipment shipment : goods.getShipments()) {
             cloneGoods.getShipments().add(new ShipmentController().cloneShipment(shipment));
         }

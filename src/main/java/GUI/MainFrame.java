@@ -24,8 +24,7 @@ public class MainFrame extends javax.swing.JFrame {
         loadData();
         initComponents();
         purchasePanel1.passData(repository, idGenerator, 
-                settings, shift, units, 
-                customerCardList, employeeList);
+                settings, shift, units, customerCardList, employeeList);
     }
 
     /**
@@ -53,7 +52,7 @@ public class MainFrame extends javax.swing.JFrame {
         setTitle("Quản lý bán hàng");
         setAutoRequestFocus(false);
         setFocusable(false);
-        setMinimumSize(new java.awt.Dimension(1080, 660));
+        setMinimumSize(new java.awt.Dimension(1080, 600));
         setResizable(false);
 
         tabPanel.setBackground(new java.awt.Color(0, 204, 255));
@@ -95,7 +94,6 @@ public class MainFrame extends javax.swing.JFrame {
 
         vatBindWithStoreMenuItem.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_V, java.awt.event.InputEvent.ALT_DOWN_MASK | java.awt.event.InputEvent.CTRL_DOWN_MASK));
         vatBindWithStoreMenuItem.setMnemonic('V');
-        vatBindWithStoreMenuItem.setSelected(true);
         vatBindWithStoreMenuItem.setText("VAT theo cửa hàng");
         vatBindWithStoreMenuItem.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -143,7 +141,7 @@ public class MainFrame extends javax.swing.JFrame {
          */
         try {
             for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
-                if ("Flatlaf Light".equals(info.getName())) {
+                if ("Dark Nimbus".equals(info.getName())) {
                     javax.swing.UIManager.setLookAndFeel(info.getClassName());
                     break;
                 }

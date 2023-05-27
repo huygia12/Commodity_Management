@@ -1,24 +1,23 @@
 package Models;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 
 public class Order extends GoodsList<Goods> {
 
-    @SerializedName("orderDate")
-    @Expose
-    private final String orderDate;
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd/MM/yyyy hh:mm:ss")
+    private LocalDateTime orderDateTime;
     @SerializedName("ID")
     @Expose
     private String ID;
     @SerializedName("VAT")
     @Expose
-    private int VAT = 0;
+    private int tax = 0;
     @SerializedName("cusMoney")
     @Expose
     private BigDecimal cusMoney = BigDecimal.ZERO;
@@ -36,31 +35,28 @@ public class Order extends GoodsList<Goods> {
     private BigInteger pointDiscount = BigInteger.ZERO;
     @SerializedName("cashier")
     @Expose 
-    private Employee cashier = new Employee();
+    private Employee cashier;
     @SerializedName("shippingFee")
     @Expose 
     private BigDecimal shippingFee = BigDecimal.ZERO;
     
-    public Order(String ID, int VAT) {
+    public Order(String ID) {
         super(new ArrayList<>());
         this.ID = ID.trim();
-        this.VAT = VAT;
-        this.orderDate = LocalDateTime
-                .now()
-                .format(DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm:ss"));
     }
 
     public Order() {
         super(new ArrayList<>());
-        this.orderDate = LocalDateTime
-                .now()
-                .format(DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm:ss"));
     }
 
-    public int getVAT() {
-        return VAT;
+    public int getTax() {
+        return tax;
     }
 
+    public void setTax(int tax){
+        this.tax = tax;
+    }
+    
     public void setDiscount(int discount) {
         this.discount = discount;
     }
@@ -77,28 +73,28 @@ public class Order extends GoodsList<Goods> {
         return this.ID;
     }
 
-    public String getOrderDateTime() {
-        return this.orderDate;
+    public LocalDateTime getOrderDateTime() {
+        return this.orderDateTime;
     }
 
+    public void setOrderDateTime(LocalDateTime orderDateTime){
+        this.orderDateTime = orderDateTime;
+    }
+    
     public PaymentOptions getPaymentOptions() {
         return this.paymentOptions;
     }
 
     public BigInteger getPointDiscount() {
-        return pointDiscount;
+        return this.pointDiscount;
     }
 
     public void setPointDiscount(BigInteger pointDiscount) {
         this.pointDiscount = pointDiscount;
     }
 
-    public void setPaymentOptions(int option) {
-        if (option == 1) {
-            this.paymentOptions = PaymentOptions.Cash_Payment;
-        } else {
-            this.paymentOptions = PaymentOptions.Wire_Transfer_Payment;
-        }
+    public void setPaymentOptions(PaymentOptions typeOfPayment) {
+        this.paymentOptions = typeOfPayment;
     }
 
     public BigDecimal getCusMoney() {
