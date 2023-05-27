@@ -4,6 +4,13 @@
  */
 package GUI;
 
+import Models.Employee;
+import Models.EmployeeList;
+import Models.Shift;
+import java.util.ArrayList;
+import javax.swing.JOptionPane;
+import javax.swing.table.DefaultTableModel;
+
 /**
  *
  * @author DTuyen16
@@ -270,6 +277,11 @@ public class EmployJPanel extends javax.swing.JPanel {
                 "ID", "Họ", "Tên", "Tuổi", "Giới tính", "SĐT", "Địa chỉ", "CCCD", "Lương"
             }
         ));
+        displayTable.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                displayTableMouseClicked(evt);
+            }
+        });
         displayScrollPane.setViewportView(displayTable);
 
         javax.swing.GroupLayout displayPanelLayout = new javax.swing.GroupLayout(displayPanel);
@@ -330,20 +342,161 @@ public class EmployJPanel extends javax.swing.JPanel {
 
     private void addButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_addButtonActionPerformed
         // TODO add your handling code here:
+        String firstName = inputFirstNameTextField.getText();
+        String lastName = inputLastNameTextField1.getText();
+        int age = 0;
+        double salary = 0.0;
+        try {
+            age = Integer.parseInt(inputAgeTextField.getText());
+            salary = Double.parseDouble(inputSalaryTextField.getText());
+        } catch (NumberFormatException e) {
+            JOptionPane.showMessageDialog(this, "Age and Salary must be valid numbers.", "Error", JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+        String address = inputAdressField.getText();
+        String cccd = inputCCCDTextField.getText();
+        String phone = inputPhoneTextField.getText();
+        String gender = "";
+        if (maleButton.isSelected()) {
+            gender = "Male";
+        } else if (femaleRadioButton.isSelected()) {
+            gender = "Female";
+        } else if (otherRadioButton.isSelected()) {
+            gender = "Other";
+        } else {
+            JOptionPane.showMessageDialog(this, "Please select a gender.", "Error", JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+
+        // Tạo một đối tượng Employee mới với thông tin được nhập vào
+        Employee newEmployee = new Employee(firstName, lastName, age, address, cccd, phone, salary, gender);
+
+        // Lấy môt đối tượng DefaultTableModel của bảng hiển thị và thêm một hàng mới vào bảng với thông tin của đối tượng Employee
+        DefaultTableModel model = (DefaultTableModel) displayTable.getModel();
+        model.addRow(new Object[]{newEmployee.getFirstName(), newEmployee.getLastName(), newEmployee.getAge(), newEmployee.getAddress(), newEmployee.getCCCD(), newEmployee.getPhoneNumber(), newEmployee.getSalaryPerDay(), newEmployee.getGender()});
+
+        // Xóa các trường nhập để chuẩn bị cho việc nhập thông tin nhân viên tiếp theo
+        inputFirstNameTextField.setText("");
+        inputLastNameTextField1.setText("");
+        inputAgeTextField.setText("");
+        inputAdressField.setText("");
+        inputCCCDTextField.setText("");
+        inputPhoneTextField.setText("");
+        inputSalaryTextField.setText("");
+        genderbuttonGroup.clearSelection();
     }//GEN-LAST:event_addButtonActionPerformed
 
     private void changeButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_changeButtonActionPerformed
         // TODO add your handling code here:
+        // Lấy chỉ số của hàng được chọn trong bảng
+        int rowIndex = displayTable.getSelectedRow();
+
+        // Kiểm tra xem một hàng đã được chọn hay chưa
+        if (rowIndex >= 0) {
+            // Lấy DefaultTableModel của bảng
+            DefaultTableModel model = (DefaultTableModel) displayTable.getModel();
+
+            // Lấy các giá trị của hàng được chọn
+            String firstName = model.getValueAt(rowIndex, 0).toString();
+            String lastName = model.getValueAt(rowIndex, 1).toString();
+            int age = Integer.parseInt(model.getValueAt(rowIndex, 2).toString());
+            String address = model.getValueAt(rowIndex, 3).toString();
+            String cccd = model.getValueAt(rowIndex, 4).toString();
+            String phone = model.getValueAt(rowIndex, 5).toString();
+            double salary = Double.parseDouble(model.getValueAt(rowIndex, 6).toString());
+            String gender = model.getValueAt(rowIndex, 7).toString();
+
+            // Cập nhật các giá trị của nhân viên với các giá trị mới được nhập từ các trường nhập liệu
+            firstName = inputFirstNameTextField.getText();
+            lastName = inputLastNameTextField1.getText();
+            age = Integer.parseInt(inputAgeTextField.getText());
+            address = inputAdressField.getText();
+            cccd = inputCCCDTextField.getText();
+            phone = inputPhoneTextField.getText();
+            salary = Double.parseDouble(inputSalaryTextField.getText());
+            gender = maleButton.isSelected() ? "Male" : femaleRadioButton.isSelected() ? "Female" : "Other";
+
+            // Cập nhật các giá trị của hàng được chọn trong bảng với các giá trị mới
+            model.setValueAt(firstName, rowIndex, 0);
+            model.setValueAt(lastName, rowIndex, 1);
+            model.setValueAt(age, rowIndex, 2);
+            model.setValueAt(address, rowIndex, 3);
+            model.setValueAt(cccd, rowIndex, 4);
+            model.setValueAt(phone, rowIndex, 5);
+            model.setValueAt(salary, rowIndex, 6);
+            model.setValueAt(gender, rowIndex, 7);
+
+            // Hiển thị thông báo cho người dùng để thông báo rằng thông tin nhân viên đã được cập nhật thành công
+            JOptionPane.showMessageDialog(this, "Thông tin nhân viên đã được cập nhật thành công!", "Thông báo", JOptionPane.INFORMATION_MESSAGE);
+        } else {
+            // Nếu không có hàng nào được chọn, hiển thị một thông báo cho người dùng
+            JOptionPane.showMessageDialog(this, "Vui lòng chọn một hàng để cập nhật thông tin!", "Thông báo", JOptionPane.WARNING_MESSAGE);
+        }
     }//GEN-LAST:event_changeButtonActionPerformed
 
     private void removeButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_removeButtonActionPerformed
         // TODO add your handling code here:
+        DefaultTableModel model = (DefaultTableModel) displayTable.getModel();
+        int selectedRowIndex = displayTable.getSelectedRow();
+        if (selectedRowIndex >= 0) {
+            // Xóa dòng được chọn trong bảng
+            model.removeRow(selectedRowIndex);
+            // Lưu lại các thay đổi
+            model.fireTableDataChanged();
+        }
     }//GEN-LAST:event_removeButtonActionPerformed
 
     private void searchButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_searchButtonActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_searchButtonActionPerformed
 
+    private void displayTableMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_displayTableMouseClicked
+        // TODO add your handling code here:
+        // Lấy chỉ số của hàng được chọn trong bảng
+        int rowIndex = displayTable.getSelectedRow();
+
+        // Kiểm tra xem một hàng đã được chọn hay chưa
+        if (rowIndex >= 0) {
+            // Lấy DefaultTableModel của bảng
+            DefaultTableModel model = (DefaultTableModel) displayTable.getModel();
+
+            // Lấy các giá trị của hàng được chọn
+            String firstName = model.getValueAt(rowIndex, 0) != null ? model.getValueAt(rowIndex, 0).toString() : "";
+            String lastName = model.getValueAt(rowIndex, 1) != null ? model.getValueAt(rowIndex, 1).toString() : "";
+            String age = model.getValueAt(rowIndex, 2) != null ? model.getValueAt(rowIndex, 2).toString() : "";
+            String address = model.getValueAt(rowIndex, 3) != null ? model.getValueAt(rowIndex, 3).toString() : "";
+            String cccd = model.getValueAt(rowIndex, 4) != null ? model.getValueAt(rowIndex, 4).toString() : "";
+            String phone = model.getValueAt(rowIndex, 5) != null ? model.getValueAt(rowIndex, 5).toString() : "";
+            String salary = model.getValueAt(rowIndex, 6) != null ? model.getValueAt(rowIndex, 6).toString() : "";
+            String gender = model.getValueAt(rowIndex, 7) != null ? model.getValueAt(rowIndex, 7).toString() : "";
+
+            // Cập nhật các trường nhập liệu với các giá trị của nhân viên được chọn
+            inputFirstNameTextField.setText(firstName);
+            inputLastNameTextField1.setText(lastName);
+            inputAgeTextField.setText(age);
+            inputAdressField.setText(address);
+            inputCCCDTextField.setText(cccd);
+            inputPhoneTextField.setText(phone);
+            inputSalaryTextField.setText(salary);
+
+            // Kiểm tra nút radio giới tính tương ứng với giới tính của nhân viên được chọn
+            if (gender.equals("Male")) {
+                maleButton.setSelected(true);
+            } else if (gender.equals("Female")) {
+                femaleRadioButton.setSelected(true);
+            } else if (gender.equals("Other")) {
+                otherRadioButton.setSelected(true);
+            }
+        }
+    }//GEN-LAST:event_displayTableMouseClicked
+
+    public void passData(EmployeeList employeelist, Shift shift) {
+        this.employeelist = employeelist;
+        this.shift = shift;
+    }
+    private ArrayList<Employee> employees;
+    private EmployeeList employeelist;
+    private Shift shift;
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton addButton;

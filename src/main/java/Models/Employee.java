@@ -15,6 +15,7 @@ import java.util.List;
  * @author s1rja
  */
 public class Employee extends AbstractHuman {
+
     @SerializedName("salaryPerDay")
     @Expose
     private BigDecimal salaryPerDay = BigDecimal.ZERO;
@@ -24,12 +25,11 @@ public class Employee extends AbstractHuman {
     @SerializedName("IDOfOrdersInCharge")
     @Expose
     private List<String> IDOfOrdersInCharge = new ArrayList<>();
-    
-    
+
     public Employee() {
     }
 
-    public Employee(BigDecimal salaryPerDay, String CCCD,String firstName, String lastName, String phoneNumber, String address, int age, Gender gender) {
+    public Employee(BigDecimal salaryPerDay, String CCCD, String firstName, String lastName, String phoneNumber, String address, int age, Gender gender) {
         this.address = address;
         this.age = age;
         this.firstName = firstName;
@@ -40,7 +40,17 @@ public class Employee extends AbstractHuman {
         this.CCCD = CCCD;
     }
 
-    
+    public Employee(String firstName, String lastName, int age, String address, String cccd, String phone, double salary, String gender) {
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.age = age;
+        this.address = address;
+        this.CCCD = cccd;
+        this.phoneNumber = phone;
+        this.salaryPerDay = BigDecimal.valueOf(salary);
+        this.gender = Gender.valueOf(gender.toUpperCase());
+    }
+
     public BigDecimal getSalaryPerDay() {
         return salaryPerDay;
     }
@@ -67,8 +77,7 @@ public class Employee extends AbstractHuman {
 
     @Override
     public String toString() {
-        return this.lastName+"-"+this.phoneNumber;
+        return this.lastName + "-" + this.phoneNumber;
     }
 
-    
 }
