@@ -23,8 +23,16 @@ public class MainFrame extends javax.swing.JFrame {
         setIconImage(new ImageIcon(IMAGE_FOLDER+"icons8-grocery-store-96.png").getImage());
         loadData();
         initComponents();
+        // pass data vào purchasePanel
         purchasePanel1.passData(repository, idGenerator, 
                 settings, shift, units, customerCardList, employeeList);
+        // pass data vào customerCardPanel
+        customerCardPanel1.passData(customerCardList, idGenerator, history);
+        // pass data vào employPanel
+        employJPanel1.passData(employeeList, shift);
+        // pass data vào repoPanel
+        repoPanel1.setGoodsList(repository);
+        repoPanel1.setUnitsList(units);
     }
 
     /**
