@@ -40,6 +40,7 @@ public class MainFrame extends javax.swing.JFrame {
         repoPanel1 = new GUI.RepoPanel();
         employJPanel1 = new GUI.EmployJPanel();
         purchasePanel1 = new GUI.PurchasePanel();
+        customerCardPanel1 = new GUI.CustomerCardPanel();
         jMenuBar1 = new javax.swing.JMenuBar();
         fileMenu = new javax.swing.JMenu();
         editMenu = new javax.swing.JMenu();
@@ -67,6 +68,7 @@ public class MainFrame extends javax.swing.JFrame {
         tabPanel.addTab("tab1", repoPanel1);
         tabPanel.addTab("tab3", employJPanel1);
         tabPanel.addTab("Bán Hàng", purchasePanel1);
+        tabPanel.addTab("tab4", customerCardPanel1);
 
         jMenuBar1.setMaximumSize(new java.awt.Dimension(171, 20));
         jMenuBar1.setMinimumSize(new java.awt.Dimension(171, 15));
@@ -212,6 +214,7 @@ public class MainFrame extends javax.swing.JFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JCheckBoxMenuItem cashierBindWithShiftMenuItem;
     private javax.swing.JMenu customOrder;
+    private GUI.CustomerCardPanel customerCardPanel1;
     private javax.swing.JMenu editMenu;
     private GUI.EmployJPanel employJPanel1;
     private javax.swing.JMenu fileMenu;
