@@ -5,6 +5,7 @@
 package GUI;
 
 import Models.CustomerCardList;
+import Models.History;
 import Ultility.IDGenerator;
 
 /**
@@ -80,7 +81,7 @@ public class CustomerCardPanel extends javax.swing.JPanel {
         jLabel15 = new javax.swing.JLabel();
         jScrollPane3 = new javax.swing.JScrollPane();
         newMemberAddressTextPane = new javax.swing.JTextPane();
-        jButton5 = new javax.swing.JButton();
+        CreateNewCardButton = new javax.swing.JButton();
         jPanel8 = new javax.swing.JPanel();
         jLabel17 = new javax.swing.JLabel();
         jLabel18 = new javax.swing.JLabel();
@@ -406,8 +407,8 @@ public class CustomerCardPanel extends javax.swing.JPanel {
         newMemberAddressTextPane.setPreferredSize(new java.awt.Dimension(62, 48));
         jScrollPane3.setViewportView(newMemberAddressTextPane);
 
-        jButton5.setBackground(new java.awt.Color(153, 255, 255));
-        jButton5.setText("TẠO THẺ & THÊM THÀNH VIÊN");
+        CreateNewCardButton.setBackground(new java.awt.Color(153, 255, 255));
+        CreateNewCardButton.setText("TẠO THẺ & THÊM THÀNH VIÊN");
 
         javax.swing.GroupLayout AddMemberPanelLayout = new javax.swing.GroupLayout(AddMemberPanel);
         AddMemberPanel.setLayout(AddMemberPanelLayout);
@@ -443,7 +444,7 @@ public class CustomerCardPanel extends javax.swing.JPanel {
                 .addGap(0, 8, Short.MAX_VALUE))
             .addGroup(AddMemberPanelLayout.createSequentialGroup()
                 .addGap(35, 35, 35)
-                .addComponent(jButton5)
+                .addComponent(CreateNewCardButton)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         AddMemberPanelLayout.setVerticalGroup(
@@ -466,7 +467,7 @@ public class CustomerCardPanel extends javax.swing.JPanel {
                     .addComponent(jLabel15)
                     .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(jButton5, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(CreateNewCardButton, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addContainerGap())
         );
 
@@ -553,20 +554,18 @@ public class CustomerCardPanel extends javax.swing.JPanel {
             .addGroup(jPanel8Layout.createSequentialGroup()
                 .addGroup(jPanel8Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel8Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                        .addGroup(jPanel8Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(jPanel8Layout.createSequentialGroup()
-                                .addGap(24, 24, 24)
-                                .addComponent(jLabel28, javax.swing.GroupLayout.PREFERRED_SIZE, 27, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addGroup(jPanel8Layout.createSequentialGroup()
-                                .addContainerGap()
-                                .addComponent(jLabel16))
-                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel8Layout.createSequentialGroup()
-                                .addContainerGap()
-                                .addComponent(jLabel24)))
+                        .addGroup(jPanel8Layout.createSequentialGroup()
+                            .addGap(24, 24, 24)
+                            .addComponent(jLabel28, javax.swing.GroupLayout.PREFERRED_SIZE, 27, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGroup(jPanel8Layout.createSequentialGroup()
+                            .addContainerGap()
+                            .addComponent(jLabel16))
                         .addComponent(jLabel17, javax.swing.GroupLayout.Alignment.TRAILING))
                     .addGroup(jPanel8Layout.createSequentialGroup()
                         .addContainerGap()
-                        .addComponent(jLabel26)))
+                        .addGroup(jPanel8Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jLabel26)
+                            .addComponent(jLabel24))))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jSeparator1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -617,9 +616,9 @@ public class CustomerCardPanel extends javax.swing.JPanel {
                 .addComponent(jLabel34)
                 .addGroup(jPanel8Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel8Layout.createSequentialGroup()
-                        .addGap(0, 6, Short.MAX_VALUE)
+                        .addGap(0, 0, Short.MAX_VALUE)
                         .addComponent(jLabel24)
-                        .addGap(37, 37, 37)
+                        .addGap(43, 43, 43)
                         .addComponent(jLabel26)
                         .addGap(18, 18, 18)
                         .addComponent(jLabel28))
@@ -689,12 +688,14 @@ public class CustomerCardPanel extends javax.swing.JPanel {
         // TODO add your handling code here:
     }//GEN-LAST:event_CardRankTextFieldActionPerformed
 
-    public void passData(CustomerCardList cardList, IDGenerator idGenerator) {
+    public void passData(CustomerCardList cardList, IDGenerator idGenerator, History history) {
         this.cardList = cardList;
         this.idGenerator = idGenerator;
+        this.history = history;
     }
     private CustomerCardList cardList;
     private IDGenerator idGenerator;
+    private History history;
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JPanel AddMemberPanel;
@@ -702,6 +703,7 @@ public class CustomerCardPanel extends javax.swing.JPanel {
     private javax.swing.JTextField CardIDTextField;
     private javax.swing.JPanel CardInforPanel;
     private javax.swing.JTextField CardRankTextField;
+    private javax.swing.JButton CreateNewCardButton;
     private javax.swing.JPanel CustomerCardTable;
     private javax.swing.JPanel CustomerInforPanel;
     private javax.swing.JButton DeleteCardButton;
@@ -714,7 +716,6 @@ public class CustomerCardPanel extends javax.swing.JPanel {
     private javax.swing.JButton UpdateCustomerDateButton;
     private javax.swing.JTextField UsagePointTextField;
     private javax.swing.JTextField UsedPointTextField;
-    private javax.swing.JButton jButton5;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel11;
