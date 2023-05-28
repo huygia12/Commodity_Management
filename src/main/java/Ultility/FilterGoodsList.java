@@ -8,8 +8,12 @@ import Models.Goods;
 import Models.GoodsList;
 import Controllers.GoodsController;
 import Controllers.ShipmentController;
+import Models.Shipment;
+import View.GoodsListView;
 import java.math.BigDecimal;
 import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.stream.Collectors;
 
 /**
@@ -37,7 +41,6 @@ public class FilterGoodsList {
         this.goodsList = goodsList;
     }
 
-    
     public GoodsList<Goods> withSameUnit(String unit) {
         GoodsList<Goods> filterGoodsList = new GoodsList();
         filterGoodsList.setGoodsList(this.goodsList
@@ -51,45 +54,56 @@ public class FilterGoodsList {
     public GoodsList<Goods> withinProductionDateRange(LocalDate fromDate, LocalDate toDate) {
         GoodsList<Goods> filterGoodsList = new GoodsList();
         for (Goods goods : this.goodsList.getGoodsList()) {
-            goods.getShipments()
+            List<Shipment> shipmentList = new ArrayList<>();
+            shipmentList = goods.getShipments()
                     .stream()
                     .filter(shipment -> (shipment.getNsx().isAfter(fromDate)
                     && shipment.getNsx().isBefore(toDate))
-                    || shipment.getNsx().isEqual(fromDate)
-                    || shipment.getHsd().isEqual(toDate))
+                    || (shipment.getNsx().isEqual(fromDate))
+                    || (shipment.getNsx().isEqual(toDate)))
                     .map(x -> shipmentCtr.cloneShipment(x))
                     .collect(Collectors.toList());
-            filterGoodsList
-                    .getGoodsList()
-                    .add(goodsCtr.cloneGoods(goods));
+            if (!shipmentList.isEmpty()) {
+                Goods filterGoods = goodsCtr.cloneGoods(goods);
+                filterGoods.setShipments(shipmentList);
+                filterGoodsList
+                        .getGoodsList()
+                        .add(filterGoods);
+            }
         }
+        new GoodsListView().showGoodsList(filterGoodsList);
         return filterGoodsList;
     }
 
     public GoodsList<Goods> withinExpirDateRange(LocalDate fromDate, LocalDate toDate) {
         GoodsList<Goods> filterGoodsList = new GoodsList();
         for (Goods goods : this.goodsList.getGoodsList()) {
-            goods.getShipments()
+            List<Shipment> shipmentList = new ArrayList<>();
+            shipmentList = goods.getShipments()
                     .stream()
                     .filter(shipment -> (shipment.getHsd().isAfter(fromDate)
                     && shipment.getHsd().isBefore(toDate))
-                    || shipment.getHsd().isEqual(fromDate)
-                    || shipment.getHsd().isEqual(toDate))
+                    || (shipment.getHsd().isEqual(fromDate))
+                    || (shipment.getHsd().isEqual(toDate)))
                     .map(x -> shipmentCtr.cloneShipment(x))
                     .collect(Collectors.toList());
-            filterGoodsList
-                    .getGoodsList()
-                    .add(goodsCtr.cloneGoods(goods));
+            if (!shipmentList.isEmpty()) {
+                Goods filterGoods = goodsCtr.cloneGoods(goods);
+                filterGoods.setShipments(shipmentList);
+                filterGoodsList
+                        .getGoodsList()
+                        .add(filterGoods);
+            }
         }
         return filterGoodsList;
     }
-    
+
     public GoodsList<Goods> withinPriceRange(BigDecimal fromPrice, BigDecimal toPrice) {
         GoodsList<Goods> filterGoodsList = new GoodsList();
         filterGoodsList.setGoodsList(this.goodsList
                 .getGoodsList()
-                .stream().filter(x -> (x.getListPrice().compareTo(fromPrice)>=0 
-                        && x.getListPrice().compareTo(toPrice)<=0))
+                .stream().filter(x -> (x.getListPrice().compareTo(fromPrice) >= 0
+                && x.getListPrice().compareTo(toPrice) <= 0))
                 .map(x -> goodsCtr.cloneGoods(x))
                 .collect(Collectors.toList()));
         return filterGoodsList;

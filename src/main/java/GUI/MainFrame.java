@@ -32,7 +32,7 @@ public class MainFrame extends javax.swing.JFrame {
         employJPanel1.passData(employeeList, shift);
         // pass data vào repoPanel
         repoPanel1.setGoodsList(repository);
-        repoPanel1.setUnitsList(units);
+//        repoPanel1.setUnitsList(units);
     }
 
     /**
@@ -61,7 +61,7 @@ public class MainFrame extends javax.swing.JFrame {
         setTitle("Quản lý bán hàng");
         setAutoRequestFocus(false);
         setFocusable(false);
-        setMinimumSize(new java.awt.Dimension(1080, 600));
+        setMinimumSize(new java.awt.Dimension(1080, 640));
         setResizable(false);
 
         tabPanel.setBackground(new java.awt.Color(0, 204, 255));
@@ -71,8 +71,8 @@ public class MainFrame extends javax.swing.JFrame {
         tabPanel.setFocusable(false);
         tabPanel.setFont(new java.awt.Font("MTO Telephone", 1, 12)); // NOI18N
         tabPanel.setMaximumSize(new java.awt.Dimension(1100, 650));
-        tabPanel.setMinimumSize(new java.awt.Dimension(970, 620));
-        tabPanel.setPreferredSize(new java.awt.Dimension(1070, 620));
+        tabPanel.setMinimumSize(new java.awt.Dimension(970, 610));
+        tabPanel.setPreferredSize(new java.awt.Dimension(1085, 620));
         tabPanel.addTab("tab1", repoPanel1);
         tabPanel.addTab("tab3", employJPanel1);
         tabPanel.addTab("Bán Hàng", purchasePanel1);
@@ -122,11 +122,21 @@ public class MainFrame extends javax.swing.JFrame {
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(tabPanel, javax.swing.GroupLayout.DEFAULT_SIZE, 1100, Short.MAX_VALUE)
+            .addGap(0, 1085, Short.MAX_VALUE)
+            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(layout.createSequentialGroup()
+                    .addGap(0, 0, Short.MAX_VALUE)
+                    .addComponent(tabPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGap(0, 0, Short.MAX_VALUE)))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(tabPanel, javax.swing.GroupLayout.DEFAULT_SIZE, 632, Short.MAX_VALUE)
+            .addGap(0, 625, Short.MAX_VALUE)
+            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(layout.createSequentialGroup()
+                    .addGap(0, 0, Short.MAX_VALUE)
+                    .addComponent(tabPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGap(0, 0, Short.MAX_VALUE)))
         );
 
         pack();

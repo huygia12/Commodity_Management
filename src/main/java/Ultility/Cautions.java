@@ -6,6 +6,9 @@ package Ultility;
 
 import java.math.BigDecimal;
 import java.math.BigInteger;
+import java.time.DateTimeException;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 
 /**
@@ -13,6 +16,8 @@ import java.util.List;
  * @author FPTSHOP
  */
 public class Cautions {
+
+    final String INPUT_DATE_PATTERN = "d/M/y";
 
     public boolean checkIfNoInput(String str) {
         if ("".equalsIgnoreCase(str)) {
@@ -66,6 +71,17 @@ public class Cautions {
 
     public boolean checkIfANumberSequenceForGUI(String str) {
         try {
+            BigInteger number = new BigInteger(str.trim());
+            if (!Cautions.this.checkIfNumberNegativeForGUI(number)) {
+                return true;
+            }
+        } catch (NumberFormatException nfe) {
+        }
+        return false;
+    }
+    
+    public boolean checkIfAValidNumberForGUI(String str) {
+        try {
             BigDecimal number = new BigDecimal(str.trim());
             if (!Cautions.this.checkIfNumberNegativeForGUI(number)) {
                 return true;
@@ -76,9 +92,29 @@ public class Cautions {
     }
 
     public <T extends Number> boolean checkIfNumberNegativeForGUI(T number) {
-        BigDecimal numToBigDecimal = new BigDecimal(number + "");
-        if (numToBigDecimal.compareTo(BigDecimal.ZERO) < 0) {
+        return new BigDecimal(number + "").compareTo(BigDecimal.ZERO) < 0;
+    }
+
+    public boolean checkIfDateIsBeforeAnotherDate(String dateString, String anotherDateString) {
+        if(!checkIfValidDate(dateString)){
+            return false;
+        }
+        if(!checkIfValidDate(anotherDateString)){
+            return false;
+        }
+        LocalDate date = LocalDate.parse(dateString, DateTimeFormatter
+                .ofPattern(INPUT_DATE_PATTERN));
+        LocalDate anotherDate = LocalDate.parse(anotherDateString, DateTimeFormatter
+                .ofPattern(INPUT_DATE_PATTERN));
+        return date.isBefore(anotherDate) || date.isEqual(date);
+    }
+
+    public boolean checkIfValidDate(String dateString) {
+        try {
+            LocalDate.parse(dateString, DateTimeFormatter
+                    .ofPattern(INPUT_DATE_PATTERN));
             return true;
+        } catch (DateTimeException dte) {
         }
         return false;
     }
