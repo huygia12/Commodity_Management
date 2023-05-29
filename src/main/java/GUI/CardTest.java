@@ -1,6 +1,6 @@
 /*
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JPanel.java to edit this template
+ * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JFrame.java to edit this template
  */
 package GUI;
 
@@ -14,33 +14,13 @@ import javax.swing.JOptionPane;
  *
  * @author Chi Cute
  */
-public class CustomerCardPanel extends javax.swing.JPanel {
+public class CardTest extends javax.swing.JFrame {
 
     /**
-     * Creates new form CustomerCardPanel
+     * Creates new form CardTest
      */
-    public CustomerCardPanel() {
+    public CardTest() {
         initComponents();
-    }
-    
-    private boolean checkValidString(String firstNameStr, String lastNameStr, String addressStr) {
-        if (firstNameStr.isBlank() || lastNameStr.isBlank() || addressStr.isBlank()) {
-            return false;
-        }
-        return true;
-    }
-
-    private boolean checkValidNumber(String ageStr, String phoneNumberStr) {
-        if (ageStr.isBlank() || phoneNumberStr.isBlank()) {
-            return false;
-        } else if (cautions.checkIfANumberSequenceForGUI(ageStr) && cautions.checkIfANumberSequenceForGUI(phoneNumberStr)) {
-            return true;
-        }
-        return false;
-    }
-    
-    private void createNewMemberCard() {
-        
     }
 
     /**
@@ -52,14 +32,13 @@ public class CustomerCardPanel extends javax.swing.JPanel {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        jLabel20 = new javax.swing.JLabel();
-        jLabel25 = new javax.swing.JLabel();
+        jPanel2 = new javax.swing.JPanel();
         CustomerInforPanel = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
         CardIDTextField = new javax.swing.JTextField();
         jLabel6 = new javax.swing.JLabel();
         jScrollPane1 = new javax.swing.JScrollPane();
-        memberAddressTextPane = new javax.swing.JTextPane();
+        AddressTextPane = new javax.swing.JTextPane();
         DeleteCardButton = new javax.swing.JButton();
         UpdateCustomerDateButton = new javax.swing.JButton();
         CardInforPanel = new javax.swing.JPanel();
@@ -75,13 +54,13 @@ public class CustomerCardPanel extends javax.swing.JPanel {
         morePayToNextRank = new javax.swing.JLabel();
         jLabel30 = new javax.swing.JLabel();
         jLabel36 = new javax.swing.JLabel();
-        memberFirstNameTextField = new javax.swing.JTextField();
+        newMemberFirstNameTextField1 = new javax.swing.JTextField();
         jLabel37 = new javax.swing.JLabel();
-        memberLastNameTextField = new javax.swing.JTextField();
+        newMemberLastNameTextField1 = new javax.swing.JTextField();
         jLabel38 = new javax.swing.JLabel();
-        memberAgeTextField = new javax.swing.JTextField();
+        newMemberAgeTextField1 = new javax.swing.JTextField();
         jLabel39 = new javax.swing.JLabel();
-        memberPhoneNumberTextField = new javax.swing.JTextField();
+        newMemberPhoneNumberTextField1 = new javax.swing.JTextField();
         jPanel6 = new javax.swing.JPanel();
         ToolsPanel = new javax.swing.JPanel();
         SearchTextField = new javax.swing.JTextField();
@@ -125,15 +104,10 @@ public class CustomerCardPanel extends javax.swing.JPanel {
         jLabel40 = new javax.swing.JLabel();
         jLabel41 = new javax.swing.JLabel();
 
-        jLabel20.setFont(new java.awt.Font("Segoe UI", 2, 12)); // NOI18N
-        jLabel20.setText("Bạc");
+        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
-        jLabel25.setFont(new java.awt.Font("Segoe UI", 2, 12)); // NOI18N
-        jLabel25.setForeground(new java.awt.Color(153, 153, 153));
-        jLabel25.setText("(từ 30M)");
-
-        setPreferredSize(new java.awt.Dimension(970, 560));
-        setLayout(new java.awt.BorderLayout());
+        jPanel2.setPreferredSize(new java.awt.Dimension(970, 560));
+        jPanel2.setLayout(new java.awt.BorderLayout());
 
         CustomerInforPanel.setBackground(new java.awt.Color(255, 255, 255));
         CustomerInforPanel.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Thông tin khách hàng", javax.swing.border.TitledBorder.CENTER, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Segoe UI", 1, 18))); // NOI18N
@@ -145,8 +119,8 @@ public class CustomerCardPanel extends javax.swing.JPanel {
 
         jLabel6.setText("Địa chỉ:");
 
-        memberAddressTextPane.setPreferredSize(new java.awt.Dimension(62, 48));
-        jScrollPane1.setViewportView(memberAddressTextPane);
+        AddressTextPane.setPreferredSize(new java.awt.Dimension(62, 48));
+        jScrollPane1.setViewportView(AddressTextPane);
 
         DeleteCardButton.setBackground(new java.awt.Color(255, 51, 0));
         DeleteCardButton.setForeground(new java.awt.Color(255, 255, 255));
@@ -309,18 +283,18 @@ public class CustomerCardPanel extends javax.swing.JPanel {
                                     .addComponent(jLabel36, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE))
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                 .addGroup(CustomerInforPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                    .addComponent(memberAgeTextField)
-                                    .addComponent(memberFirstNameTextField, javax.swing.GroupLayout.DEFAULT_SIZE, 74, Short.MAX_VALUE))
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addGroup(CustomerInforPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, CustomerInforPanelLayout.createSequentialGroup()
+                                        .addComponent(newMemberFirstNameTextField1)
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                         .addComponent(jLabel37)
                                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                        .addComponent(memberLastNameTextField, javax.swing.GroupLayout.PREFERRED_SIZE, 141, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                        .addComponent(newMemberLastNameTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, 141, javax.swing.GroupLayout.PREFERRED_SIZE))
                                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, CustomerInforPanelLayout.createSequentialGroup()
+                                        .addComponent(newMemberAgeTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, 72, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                         .addComponent(jLabel39)
                                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                        .addComponent(memberPhoneNumberTextField, javax.swing.GroupLayout.PREFERRED_SIZE, 141, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                                        .addComponent(newMemberPhoneNumberTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, 141, javax.swing.GroupLayout.PREFERRED_SIZE))))
                             .addGroup(CustomerInforPanelLayout.createSequentialGroup()
                                 .addComponent(jLabel1)
                                 .addGap(18, 18, 18)
@@ -337,15 +311,15 @@ public class CustomerCardPanel extends javax.swing.JPanel {
                 .addGap(18, 18, 18)
                 .addGroup(CustomerInforPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel36)
-                    .addComponent(memberFirstNameTextField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(newMemberFirstNameTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel37)
-                    .addComponent(memberLastNameTextField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(newMemberLastNameTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
                 .addGroup(CustomerInforPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel38)
-                    .addComponent(memberAgeTextField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(newMemberAgeTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel39)
-                    .addComponent(memberPhoneNumberTextField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(newMemberPhoneNumberTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
                 .addGroup(CustomerInforPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jLabel6)
@@ -358,7 +332,7 @@ public class CustomerCardPanel extends javax.swing.JPanel {
                 .addComponent(CardInforPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
         );
 
-        add(CustomerInforPanel, java.awt.BorderLayout.LINE_END);
+        jPanel2.add(CustomerInforPanel, java.awt.BorderLayout.LINE_END);
 
         jPanel6.setLayout(new java.awt.BorderLayout());
 
@@ -452,16 +426,15 @@ public class CustomerCardPanel extends javax.swing.JPanel {
                                 .addContainerGap()
                                 .addComponent(jLabel11, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
                         .addGroup(AddMemberPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(newMemberAgeTextField, javax.swing.GroupLayout.DEFAULT_SIZE, 74, Short.MAX_VALUE)
-                            .addComponent(newMemberFirstNameTextField))
-                        .addGroup(AddMemberPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(AddMemberPanelLayout.createSequentialGroup()
+                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, AddMemberPanelLayout.createSequentialGroup()
+                                .addComponent(newMemberFirstNameTextField)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                 .addComponent(jLabel12)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                 .addComponent(newMemberLastNameTextField, javax.swing.GroupLayout.PREFERRED_SIZE, 141, javax.swing.GroupLayout.PREFERRED_SIZE))
                             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, AddMemberPanelLayout.createSequentialGroup()
-                                .addGap(4, 4, 4)
+                                .addComponent(newMemberAgeTextField, javax.swing.GroupLayout.PREFERRED_SIZE, 72, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                 .addComponent(jLabel14)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                 .addComponent(newMemberPhoneNumberTextField, javax.swing.GroupLayout.PREFERRED_SIZE, 141, javax.swing.GroupLayout.PREFERRED_SIZE)))))
@@ -491,7 +464,7 @@ public class CustomerCardPanel extends javax.swing.JPanel {
                     .addComponent(jLabel15)
                     .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
-                .addComponent(CreateNewCardButton, javax.swing.GroupLayout.PREFERRED_SIZE, 56, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(CreateNewCardButton, javax.swing.GroupLayout.PREFERRED_SIZE, 58, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
@@ -615,7 +588,7 @@ public class CustomerCardPanel extends javax.swing.JPanel {
                                 .addComponent(jLabel33))
                             .addComponent(jLabel35, javax.swing.GroupLayout.Alignment.TRAILING)
                             .addComponent(jLabel34))))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap(12, Short.MAX_VALUE))
         );
         jPanel8Layout.setVerticalGroup(
             jPanel8Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -670,14 +643,14 @@ public class CustomerCardPanel extends javax.swing.JPanel {
         MainPanelLayout.setHorizontalGroup(
             MainPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(MainPanelLayout.createSequentialGroup()
-                .addGroup(MainPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                    .addComponent(CustomerCardTable, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addGroup(MainPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(CustomerCardTable, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addGroup(MainPanelLayout.createSequentialGroup()
                         .addContainerGap()
                         .addComponent(AddMemberPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jPanel8, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap(11, Short.MAX_VALUE))
+                        .addComponent(jPanel8, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                .addContainerGap())
         );
         MainPanelLayout.setVerticalGroup(
             MainPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -692,7 +665,30 @@ public class CustomerCardPanel extends javax.swing.JPanel {
 
         jPanel6.add(MainPanel, java.awt.BorderLayout.CENTER);
 
-        add(jPanel6, java.awt.BorderLayout.CENTER);
+        jPanel2.add(jPanel6, java.awt.BorderLayout.CENTER);
+
+        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
+        getContentPane().setLayout(layout);
+        layout.setHorizontalGroup(
+            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 981, Short.MAX_VALUE)
+            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(layout.createSequentialGroup()
+                    .addGap(0, 0, Short.MAX_VALUE)
+                    .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, 981, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGap(0, 0, Short.MAX_VALUE)))
+        );
+        layout.setVerticalGroup(
+            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 610, Short.MAX_VALUE)
+            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(layout.createSequentialGroup()
+                    .addGap(0, 0, Short.MAX_VALUE)
+                    .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, 610, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGap(0, 0, Short.MAX_VALUE)))
+        );
+
+        pack();
     }// </editor-fold>//GEN-END:initComponents
 
     private void DeleteCardButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_DeleteCardButtonActionPerformed
@@ -715,6 +711,22 @@ public class CustomerCardPanel extends javax.swing.JPanel {
         // TODO add your handling code here:
     }//GEN-LAST:event_CardRankTextFieldActionPerformed
 
+    private void CreateNewCardButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_CreateNewCardButtonActionPerformed
+        // TODO add your handling code here:\
+        if (checkValidString(newMemberFirstNameTextField.getText(), newMemberLastNameTextField.getText(), newMemberAddressTextPane.getText())
+                && checkValidNumber(newMemberAgeTextField.getText(), newMemberPhoneNumberTextField.getText())) {
+            resetNewCardValue();
+            createNewMemberCard();
+            JOptionPane.showMessageDialog(null,
+                    "Đăng kí thành công!");
+        } else {
+            resetNewCardValue();
+            JOptionPane.showMessageDialog(null,
+                    "Thông tin chưa đầy đủ/không hợp lệ!\nVui lòng điền đầy đủ và chính xác thông tin.",
+                    "Đăng kí thất bại!",
+                    JOptionPane.WARNING_MESSAGE);
+        }
+    }//GEN-LAST:event_CreateNewCardButtonActionPerformed
     private void resetNewCardValue() {
         newMemberAddressTextPane.setText("");
         newMemberAgeTextField.setText("");
@@ -722,24 +734,61 @@ public class CustomerCardPanel extends javax.swing.JPanel {
         newMemberLastNameTextField.setText("");
         newMemberPhoneNumberTextField.setText("");
     }
-    
-    private void CreateNewCardButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_CreateNewCardButtonActionPerformed
-        // TODO add your handling code here:
-        if (checkValidString(newMemberFirstNameTextField.getText(), newMemberLastNameTextField.getText(), newMemberAddressTextPane.getText())
-            && checkValidNumber(newMemberAgeTextField.getText(), newMemberPhoneNumberTextField.getText())) {
-            resetNewCardValue();
-            createNewMemberCard();
-            JOptionPane.showMessageDialog(CustomerCardPanel.this, 
-                    "Đăng kí thành công!");
+
+    private boolean checkValidString(String firstNameStr, String lastNameStr, String addressStr) {
+        if (firstNameStr.isBlank() || lastNameStr.isBlank() || addressStr.isBlank()) {
+            return false;
         }
-        else {
-            resetNewCardValue();
-            JOptionPane.showMessageDialog(CustomerCardPanel.this, 
-                    "Thông tin chưa đầy đủ/không hợp lệ!\nVui lòng điền đầy đủ và chính xác thông tin.", 
-                    "Đăng kí thất bại!", 
-                    JOptionPane.WARNING_MESSAGE);
+        return true;
+    }
+
+    private boolean checkValidNumber(String ageStr, String phoneNumberStr) {
+        if (ageStr.isBlank() || phoneNumberStr.isBlank()) {
+            return false;
+        } else if (cautions.checkIfANumberSequenceForGUI(ageStr) && cautions.checkIfANumberSequenceForGUI(phoneNumberStr)) {
+            return true;
         }
-    }//GEN-LAST:event_CreateNewCardButtonActionPerformed
+        return false;
+    }
+
+    private void createNewMemberCard() {
+
+    }
+
+    /**
+     * @param args the command line arguments
+     */
+    public static void main(String args[]) {
+        /* Set the Nimbus look and feel */
+        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
+        /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
+         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
+         */
+        try {
+            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
+                if ("Nimbus".equals(info.getName())) {
+                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
+                    break;
+                }
+            }
+        } catch (ClassNotFoundException ex) {
+            java.util.logging.Logger.getLogger(CardTest.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+        } catch (InstantiationException ex) {
+            java.util.logging.Logger.getLogger(CardTest.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+        } catch (IllegalAccessException ex) {
+            java.util.logging.Logger.getLogger(CardTest.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
+            java.util.logging.Logger.getLogger(CardTest.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+        }
+        //</editor-fold>
+
+        /* Create and display the form */
+        java.awt.EventQueue.invokeLater(new Runnable() {
+            public void run() {
+                new CardTest().setVisible(true);
+            }
+        });
+    }
 
     public void passData(CustomerCardList cardList, IDGenerator idGenerator, History history) {
         this.cardList = cardList;
@@ -750,9 +799,10 @@ public class CustomerCardPanel extends javax.swing.JPanel {
     private IDGenerator idGenerator;
     private History history;
     private Cautions cautions = new Cautions();
-
+    
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JPanel AddMemberPanel;
+    private javax.swing.JTextPane AddressTextPane;
     private javax.swing.JTextField CardIDTextField;
     private javax.swing.JPanel CardInforPanel;
     private javax.swing.JTextField CardRankTextField;
@@ -780,12 +830,10 @@ public class CustomerCardPanel extends javax.swing.JPanel {
     private javax.swing.JLabel jLabel17;
     private javax.swing.JLabel jLabel18;
     private javax.swing.JLabel jLabel19;
-    private javax.swing.JLabel jLabel20;
     private javax.swing.JLabel jLabel21;
     private javax.swing.JLabel jLabel22;
     private javax.swing.JLabel jLabel23;
     private javax.swing.JLabel jLabel24;
-    private javax.swing.JLabel jLabel25;
     private javax.swing.JLabel jLabel26;
     private javax.swing.JLabel jLabel27;
     private javax.swing.JLabel jLabel28;
@@ -806,6 +854,7 @@ public class CustomerCardPanel extends javax.swing.JPanel {
     private javax.swing.JLabel jLabel7;
     private javax.swing.JLabel jLabel8;
     private javax.swing.JLabel jLabel9;
+    private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel6;
     private javax.swing.JPanel jPanel8;
     private javax.swing.JScrollPane jScrollPane1;
@@ -813,16 +862,15 @@ public class CustomerCardPanel extends javax.swing.JPanel {
     private javax.swing.JScrollPane jScrollPane3;
     private javax.swing.JSeparator jSeparator1;
     private javax.swing.JTable jTable1;
-    private javax.swing.JTextPane memberAddressTextPane;
-    private javax.swing.JTextField memberAgeTextField;
-    private javax.swing.JTextField memberFirstNameTextField;
-    private javax.swing.JTextField memberLastNameTextField;
-    private javax.swing.JTextField memberPhoneNumberTextField;
     private javax.swing.JLabel morePayToNextRank;
     private javax.swing.JTextPane newMemberAddressTextPane;
     private javax.swing.JTextField newMemberAgeTextField;
+    private javax.swing.JTextField newMemberAgeTextField1;
     private javax.swing.JTextField newMemberFirstNameTextField;
+    private javax.swing.JTextField newMemberFirstNameTextField1;
     private javax.swing.JTextField newMemberLastNameTextField;
+    private javax.swing.JTextField newMemberLastNameTextField1;
     private javax.swing.JTextField newMemberPhoneNumberTextField;
+    private javax.swing.JTextField newMemberPhoneNumberTextField1;
     // End of variables declaration//GEN-END:variables
 }
