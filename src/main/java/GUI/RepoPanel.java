@@ -3,9 +3,9 @@ package GUI;
 import Controllers.GoodsListController;
 import Models.Goods;
 import Models.GoodsList;
+import Models.Units;
 import java.math.BigDecimal;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.stream.Collectors;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 
@@ -384,18 +384,18 @@ public class RepoPanel extends javax.swing.JPanel {
             if (unit == null) {
                 return;
             }
-            if (unitsList.isEmpty()) {
+            if (unitsList.getBucket().isEmpty()) {
                 if (unit.isBlank()) {
                     JOptionPane.showMessageDialog(null, "Invalid Unit!", "Oh no!", JOptionPane.WARNING_MESSAGE);
                     return;
                 }
-                unitsList.add(unit);
+                unitsList.getBucket().add(unit);
                 unitComboBox.addItem(unit);
                 unitComboBox.setPrototypeDisplayValue("                           ");
             } else {
-                long similar = unitsList.stream().filter(x -> x.equalsIgnoreCase(unit)).count();
+                long similar = unitsList.getBucket().stream().filter(x -> x.equalsIgnoreCase(unit)).count();
                 if (similar == 0) {
-                    unitsList.add(unit);
+                    unitsList.getBucket().add(unit);
                     unitComboBox.addItem(unit);
                     unitComboBox.setPrototypeDisplayValue("                           ");
                 } else if (similar != 0 && unit.isBlank()) {
@@ -477,11 +477,15 @@ public class RepoPanel extends javax.swing.JPanel {
         if (jTable1.getSelectedRow() != -1) {
             
         } else {
-            unitsList = unitsList.stream().filter(x->!x.equalsIgnoreCase(unitComboBox.getSelectedItem().toString())).toList();
+            unitsList.setBucket(unitsList.getBucket().stream().filter(x->!x.equalsIgnoreCase(unitComboBox.getSelectedItem().toString())).collect(Collectors.toList()));
             unitComboBox.removeItem(unitComboBox.getSelectedItem());
             unitComboBox.setSelectedIndex(-1);
             deleteButton.setEnabled(false);
         }
+        addCheck();
+        deleteCheck();
+        editCheck();
+        cancelCheck();
     }//GEN-LAST:event_deleteButtonActionPerformed
 
     private void IDTextFieldKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_IDTextFieldKeyReleased
@@ -506,12 +510,13 @@ public class RepoPanel extends javax.swing.JPanel {
             
         } else {
             String unitChanged = JOptionPane.showInputDialog(null, "Vui lòng nhập tên đơn vị:", "Thay đổi đơn vị", JOptionPane.QUESTION_MESSAGE);
-            unitsList.set(unitComboBox.getSelectedIndex()-1, unitChanged);
+            unitsList.getBucket().set(unitComboBox.getSelectedIndex()-1, unitChanged);
             reloadUnitList();
             unitComboBox.setSelectedIndex(-1);
             addCheck();
             deleteCheck();
             editCheck();
+            cancelCheck();
         }
     }//GEN-LAST:event_editButtonActionPerformed
 
@@ -521,7 +526,7 @@ public class RepoPanel extends javax.swing.JPanel {
         } else {
             if (findUnit((String) goodTableModel.getValueAt(jTable1.getSelectedRow(), 2)) == 0) {
                 JOptionPane.showMessageDialog(null, "Đơn vị không tồn tại. Tiến hành thêm dơn vị...", "Uh oh!", JOptionPane.ERROR_MESSAGE);
-                unitsList.add((String) goodTableModel.getValueAt(jTable1.getSelectedRow(), 2));
+                unitsList.getBucket().add((String) goodTableModel.getValueAt(jTable1.getSelectedRow(), 2));
                 unitComboBox.addItem((String) goodTableModel.getValueAt(jTable1.getSelectedRow(), 2));
                 unitComboBox.setSelectedItem((String) goodTableModel.getValueAt(jTable1.getSelectedRow(), 2));
             } else {
@@ -609,7 +614,7 @@ public class RepoPanel extends javax.swing.JPanel {
     public void reloadUnitList() {
         unitComboBox.removeAllItems();
         unitComboBox.addItem("Thêm đơn vị");
-        unitsList.stream().forEach(x->unitComboBox.addItem(x));
+        unitsList.getBucket().stream().forEach(x->unitComboBox.addItem(x));
     }
     
     public void reloadTable() {
@@ -632,16 +637,16 @@ public class RepoPanel extends javax.swing.JPanel {
         this.goodsList = goodsList;
     }
 
-    public void setUnitsList(ArrayList<String> unitsList) {
+    public void setUnitsList(Units unitsList) {
         this.unitsList = unitsList;
     }
     
     public int findUnit(String unit) {
-        return (int) unitsList.stream().filter(x->x.equals(unit)).count();
+        return (int) unitsList.getBucket().stream().filter(x->x.equals(unit)).count();
     }
 
     private GoodsList<Goods> goodsList;
-    private List<String> unitsList;
+    private Units unitsList;
     private GoodsListController glc = new GoodsListController();
     
     private String goodName = "";

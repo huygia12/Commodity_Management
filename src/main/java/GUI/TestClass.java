@@ -6,6 +6,7 @@ package GUI;
 
 import Models.Goods;
 import Models.GoodsList;
+import Models.Units;
 import java.util.ArrayList;
 
 /**
@@ -20,7 +21,7 @@ public class TestClass extends javax.swing.JFrame {
     public TestClass() {
         initComponents();
         repoPanel1.setGoodsList(new GoodsList<Goods>());
-        repoPanel1.setUnitsList(new ArrayList<String>());
+        repoPanel1.setUnitsList(new Units());
     }
 
     /**

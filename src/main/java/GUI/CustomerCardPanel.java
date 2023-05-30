@@ -6,7 +6,9 @@ package GUI;
 
 import Models.CustomerCardList;
 import Models.History;
+import Ultility.Cautions;
 import Ultility.IDGenerator;
+import javax.swing.JOptionPane;
 
 /**
  *
@@ -19,6 +21,26 @@ public class CustomerCardPanel extends javax.swing.JPanel {
      */
     public CustomerCardPanel() {
         initComponents();
+    }
+    
+    private boolean checkValidString(String firstNameStr, String lastNameStr, String addressStr) {
+        if (firstNameStr.isBlank() || lastNameStr.isBlank() || addressStr.isBlank()) {
+            return false;
+        }
+        return true;
+    }
+
+    private boolean checkValidNumber(String ageStr, String phoneNumberStr) {
+        if (ageStr.isBlank() || phoneNumberStr.isBlank()) {
+            return false;
+        } else if (cautions.checkIfANumberSequenceForGUI(ageStr) && cautions.checkIfANumberSequenceForGUI(phoneNumberStr)) {
+            return true;
+        }
+        return false;
+    }
+    
+    private void createNewMemberCard() {
+        
     }
 
     /**
@@ -37,7 +59,7 @@ public class CustomerCardPanel extends javax.swing.JPanel {
         CardIDTextField = new javax.swing.JTextField();
         jLabel6 = new javax.swing.JLabel();
         jScrollPane1 = new javax.swing.JScrollPane();
-        AddressTextPane = new javax.swing.JTextPane();
+        memberAddressTextPane = new javax.swing.JTextPane();
         DeleteCardButton = new javax.swing.JButton();
         UpdateCustomerDateButton = new javax.swing.JButton();
         CardInforPanel = new javax.swing.JPanel();
@@ -53,13 +75,13 @@ public class CustomerCardPanel extends javax.swing.JPanel {
         morePayToNextRank = new javax.swing.JLabel();
         jLabel30 = new javax.swing.JLabel();
         jLabel36 = new javax.swing.JLabel();
-        newMemberFirstNameTextField1 = new javax.swing.JTextField();
+        memberFirstNameTextField = new javax.swing.JTextField();
         jLabel37 = new javax.swing.JLabel();
-        newMemberLastNameTextField1 = new javax.swing.JTextField();
+        memberLastNameTextField = new javax.swing.JTextField();
         jLabel38 = new javax.swing.JLabel();
-        newMemberAgeTextField1 = new javax.swing.JTextField();
+        memberAgeTextField = new javax.swing.JTextField();
         jLabel39 = new javax.swing.JLabel();
-        newMemberPhoneNumberTextField1 = new javax.swing.JTextField();
+        memberPhoneNumberTextField = new javax.swing.JTextField();
         jPanel6 = new javax.swing.JPanel();
         ToolsPanel = new javax.swing.JPanel();
         SearchTextField = new javax.swing.JTextField();
@@ -123,8 +145,8 @@ public class CustomerCardPanel extends javax.swing.JPanel {
 
         jLabel6.setText("Địa chỉ:");
 
-        AddressTextPane.setPreferredSize(new java.awt.Dimension(62, 48));
-        jScrollPane1.setViewportView(AddressTextPane);
+        memberAddressTextPane.setPreferredSize(new java.awt.Dimension(62, 48));
+        jScrollPane1.setViewportView(memberAddressTextPane);
 
         DeleteCardButton.setBackground(new java.awt.Color(255, 51, 0));
         DeleteCardButton.setForeground(new java.awt.Color(255, 255, 255));
@@ -227,32 +249,29 @@ public class CustomerCardPanel extends javax.swing.JPanel {
             CardInforPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(CardInforPanelLayout.createSequentialGroup()
                 .addGap(17, 17, 17)
-                .addGroup(CardInforPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel7)
-                    .addComponent(UsagePointTextField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(15, 15, 15)
-                .addGroup(CardInforPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel8)
-                    .addComponent(UsedPointTextField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(15, 15, 15)
-                .addGroup(CardInforPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel9)
-                    .addComponent(TotalPayTextField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(18, 18, 18)
-                .addGroup(CardInforPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel10)
-                    .addComponent(CardRankTextField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGroup(CardInforPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                .addGroup(CardInforPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(morePayToNextRank, javax.swing.GroupLayout.PREFERRED_SIZE, 22, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addGroup(CardInforPanelLayout.createSequentialGroup()
-                        .addGap(12, 12, 12)
-                        .addComponent(jLabel29, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                    .addGroup(CardInforPanelLayout.createSequentialGroup()
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(morePayToNextRank, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, CardInforPanelLayout.createSequentialGroup()
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jLabel30)))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                        .addGroup(CardInforPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(jLabel7)
+                            .addComponent(UsagePointTextField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(15, 15, 15)
+                        .addGroup(CardInforPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(jLabel8)
+                            .addComponent(UsedPointTextField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(15, 15, 15)
+                        .addGroup(CardInforPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(jLabel9)
+                            .addComponent(TotalPayTextField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(18, 18, 18)
+                        .addGroup(CardInforPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(jLabel10)
+                            .addComponent(CardRankTextField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(18, 18, 18)
+                        .addGroup(CardInforPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jLabel29)
+                            .addComponent(jLabel30, javax.swing.GroupLayout.Alignment.TRAILING))))
+                .addContainerGap(29, Short.MAX_VALUE))
         );
 
         jLabel36.setText("Họ:");
@@ -290,18 +309,18 @@ public class CustomerCardPanel extends javax.swing.JPanel {
                                     .addComponent(jLabel36, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE))
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                 .addGroup(CustomerInforPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                    .addComponent(memberAgeTextField)
+                                    .addComponent(memberFirstNameTextField, javax.swing.GroupLayout.DEFAULT_SIZE, 74, Short.MAX_VALUE))
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addGroup(CustomerInforPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, CustomerInforPanelLayout.createSequentialGroup()
-                                        .addComponent(newMemberFirstNameTextField1)
-                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                         .addComponent(jLabel37)
                                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                        .addComponent(newMemberLastNameTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, 141, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                        .addComponent(memberLastNameTextField, javax.swing.GroupLayout.PREFERRED_SIZE, 141, javax.swing.GroupLayout.PREFERRED_SIZE))
                                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, CustomerInforPanelLayout.createSequentialGroup()
-                                        .addComponent(newMemberAgeTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, 72, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                         .addComponent(jLabel39)
                                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                        .addComponent(newMemberPhoneNumberTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, 141, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                                        .addComponent(memberPhoneNumberTextField, javax.swing.GroupLayout.PREFERRED_SIZE, 141, javax.swing.GroupLayout.PREFERRED_SIZE))))
                             .addGroup(CustomerInforPanelLayout.createSequentialGroup()
                                 .addComponent(jLabel1)
                                 .addGap(18, 18, 18)
@@ -318,24 +337,24 @@ public class CustomerCardPanel extends javax.swing.JPanel {
                 .addGap(18, 18, 18)
                 .addGroup(CustomerInforPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel36)
-                    .addComponent(newMemberFirstNameTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(memberFirstNameTextField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel37)
-                    .addComponent(newMemberLastNameTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(memberLastNameTextField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
                 .addGroup(CustomerInforPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel38)
-                    .addComponent(newMemberAgeTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(memberAgeTextField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel39)
-                    .addComponent(newMemberPhoneNumberTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(memberPhoneNumberTextField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
                 .addGroup(CustomerInforPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jLabel6)
                     .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 40, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 52, Short.MAX_VALUE)
                 .addGroup(CustomerInforPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(DeleteCardButton, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(UpdateCustomerDateButton, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(18, 18, 18)
+                .addGap(27, 27, 27)
                 .addComponent(CardInforPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
         );
 
@@ -362,6 +381,7 @@ public class CustomerCardPanel extends javax.swing.JPanel {
         jPanel6.add(ToolsPanel, java.awt.BorderLayout.PAGE_START);
 
         MainPanel.setBackground(new java.awt.Color(255, 255, 255));
+        MainPanel.setPreferredSize(new java.awt.Dimension(652, 557));
 
         CustomerCardTable.setBackground(new java.awt.Color(255, 255, 255));
 
@@ -380,15 +400,13 @@ public class CustomerCardPanel extends javax.swing.JPanel {
         CustomerCardTable.setLayout(CustomerCardTableLayout);
         CustomerCardTableLayout.setHorizontalGroup(
             CustomerCardTableLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, CustomerCardTableLayout.createSequentialGroup()
+            .addGroup(CustomerCardTableLayout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 625, Short.MAX_VALUE))
+                .addComponent(jScrollPane2))
         );
         CustomerCardTableLayout.setVerticalGroup(
             CustomerCardTableLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(CustomerCardTableLayout.createSequentialGroup()
-                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 282, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(0, 0, Short.MAX_VALUE))
+            .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 282, Short.MAX_VALUE)
         );
 
         AddMemberPanel.setBackground(new java.awt.Color(255, 255, 255));
@@ -409,6 +427,11 @@ public class CustomerCardPanel extends javax.swing.JPanel {
 
         CreateNewCardButton.setBackground(new java.awt.Color(153, 255, 255));
         CreateNewCardButton.setText("TẠO THẺ & THÊM THÀNH VIÊN");
+        CreateNewCardButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                CreateNewCardButtonActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout AddMemberPanelLayout = new javax.swing.GroupLayout(AddMemberPanel);
         AddMemberPanel.setLayout(AddMemberPanelLayout);
@@ -429,19 +452,20 @@ public class CustomerCardPanel extends javax.swing.JPanel {
                                 .addContainerGap()
                                 .addComponent(jLabel11, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
                         .addGroup(AddMemberPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, AddMemberPanelLayout.createSequentialGroup()
-                                .addComponent(newMemberFirstNameTextField)
+                            .addComponent(newMemberAgeTextField, javax.swing.GroupLayout.DEFAULT_SIZE, 74, Short.MAX_VALUE)
+                            .addComponent(newMemberFirstNameTextField))
+                        .addGroup(AddMemberPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(AddMemberPanelLayout.createSequentialGroup()
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                 .addComponent(jLabel12)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                 .addComponent(newMemberLastNameTextField, javax.swing.GroupLayout.PREFERRED_SIZE, 141, javax.swing.GroupLayout.PREFERRED_SIZE))
                             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, AddMemberPanelLayout.createSequentialGroup()
-                                .addComponent(newMemberAgeTextField, javax.swing.GroupLayout.PREFERRED_SIZE, 72, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addGap(4, 4, 4)
                                 .addComponent(jLabel14)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                 .addComponent(newMemberPhoneNumberTextField, javax.swing.GroupLayout.PREFERRED_SIZE, 141, javax.swing.GroupLayout.PREFERRED_SIZE)))))
-                .addGap(0, 8, Short.MAX_VALUE))
+                .addGap(0, 2, Short.MAX_VALUE))
             .addGroup(AddMemberPanelLayout.createSequentialGroup()
                 .addGap(35, 35, 35)
                 .addComponent(CreateNewCardButton)
@@ -466,84 +490,80 @@ public class CustomerCardPanel extends javax.swing.JPanel {
                 .addGroup(AddMemberPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jLabel15)
                     .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(CreateNewCardButton, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addContainerGap())
+                .addGap(18, 18, 18)
+                .addComponent(CreateNewCardButton, javax.swing.GroupLayout.PREFERRED_SIZE, 56, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         jPanel8.setBackground(new java.awt.Color(255, 255, 255));
-        jPanel8.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Chính sách & ưu đãi ", javax.swing.border.TitledBorder.RIGHT, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Segoe UI", 2, 14))); // NOI18N
+        jPanel8.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Chính sách & ưu đãi ", javax.swing.border.TitledBorder.RIGHT, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Segoe UI", 2, 18))); // NOI18N
 
-        jLabel17.setFont(new java.awt.Font("Segoe UI", 3, 12)); // NOI18N
+        jLabel17.setFont(new java.awt.Font("Segoe UI", 3, 14)); // NOI18N
         jLabel17.setText("Chi tiêu");
 
         jLabel18.setFont(new java.awt.Font("Segoe UI", 0, 12)); // NOI18N
         jLabel18.setForeground(new java.awt.Color(204, 102, 0));
         jLabel18.setText("Đồng");
 
-        jLabel19.setFont(new java.awt.Font("Segoe UI", 0, 12)); // NOI18N
         jLabel19.setForeground(new java.awt.Color(153, 153, 153));
         jLabel19.setText("Bạc");
 
-        jLabel21.setFont(new java.awt.Font("Segoe UI", 0, 12)); // NOI18N
         jLabel21.setForeground(new java.awt.Color(255, 204, 0));
         jLabel21.setText("Vàng");
 
-        jLabel22.setFont(new java.awt.Font("Segoe UI", 0, 12)); // NOI18N
         jLabel22.setForeground(new java.awt.Color(0, 204, 255));
         jLabel22.setText("Kim");
 
         jSeparator1.setBackground(new java.awt.Color(0, 0, 0));
         jSeparator1.setOrientation(javax.swing.SwingConstants.VERTICAL);
 
-        jLabel23.setFont(new java.awt.Font("Segoe UI", 0, 12)); // NOI18N
         jLabel23.setForeground(new java.awt.Color(0, 204, 255));
         jLabel23.setText("cương");
 
-        jLabel16.setFont(new java.awt.Font("Segoe UI", 2, 12)); // NOI18N
+        jLabel16.setFont(new java.awt.Font("Segoe UI", 2, 14)); // NOI18N
         jLabel16.setForeground(new java.awt.Color(153, 153, 153));
         jLabel16.setText("(từ 70M)");
 
-        jLabel24.setFont(new java.awt.Font("Segoe UI", 2, 12)); // NOI18N
+        jLabel24.setFont(new java.awt.Font("Segoe UI", 2, 14)); // NOI18N
         jLabel24.setForeground(new java.awt.Color(153, 153, 153));
         jLabel24.setText("(từ 30M)");
 
-        jLabel26.setFont(new java.awt.Font("Segoe UI", 2, 12)); // NOI18N
+        jLabel26.setFont(new java.awt.Font("Segoe UI", 2, 14)); // NOI18N
         jLabel26.setForeground(new java.awt.Color(153, 153, 153));
         jLabel26.setText("(từ 10M)");
 
-        jLabel27.setFont(new java.awt.Font("Segoe UI", 3, 12)); // NOI18N
+        jLabel27.setFont(new java.awt.Font("Segoe UI", 3, 14)); // NOI18N
         jLabel27.setText("Thứ hạng");
 
-        jLabel28.setFont(new java.awt.Font("Segoe UI", 2, 12)); // NOI18N
+        jLabel28.setFont(new java.awt.Font("Segoe UI", 2, 14)); // NOI18N
         jLabel28.setForeground(new java.awt.Color(153, 153, 153));
         jLabel28.setText("0");
 
-        jLabel31.setFont(new java.awt.Font("Segoe UI", 2, 12)); // NOI18N
+        jLabel31.setFont(new java.awt.Font("Segoe UI", 2, 14)); // NOI18N
         jLabel31.setForeground(new java.awt.Color(51, 51, 51));
         jLabel31.setText("Giảm 2% hóa đơn từ 1.890.000");
 
-        jLabel32.setFont(new java.awt.Font("Segoe UI", 2, 12)); // NOI18N
+        jLabel32.setFont(new java.awt.Font("Segoe UI", 2, 14)); // NOI18N
         jLabel32.setForeground(new java.awt.Color(51, 51, 51));
         jLabel32.setText("Giảm 3% hóa đơn từ 2.490.000");
 
-        jLabel33.setFont(new java.awt.Font("Segoe UI", 2, 12)); // NOI18N
+        jLabel33.setFont(new java.awt.Font("Segoe UI", 2, 14)); // NOI18N
         jLabel33.setForeground(new java.awt.Color(51, 51, 51));
         jLabel33.setText("Ưu đãi hạng đồng");
 
-        jLabel34.setFont(new java.awt.Font("Segoe UI", 2, 12)); // NOI18N
+        jLabel34.setFont(new java.awt.Font("Segoe UI", 2, 14)); // NOI18N
         jLabel34.setForeground(new java.awt.Color(51, 51, 51));
         jLabel34.setText("Ưu đãi hạng bạc");
 
-        jLabel35.setFont(new java.awt.Font("Segoe UI", 2, 12)); // NOI18N
+        jLabel35.setFont(new java.awt.Font("Segoe UI", 2, 14)); // NOI18N
         jLabel35.setForeground(new java.awt.Color(51, 51, 51));
         jLabel35.setText("Giảm 5% hóa đơn từ 4.490.000");
 
-        jLabel40.setFont(new java.awt.Font("Segoe UI", 2, 12)); // NOI18N
+        jLabel40.setFont(new java.awt.Font("Segoe UI", 2, 14)); // NOI18N
         jLabel40.setForeground(new java.awt.Color(51, 51, 51));
         jLabel40.setText("Giảm 7% hóa đơn từ 6.990.000");
 
-        jLabel41.setFont(new java.awt.Font("Segoe UI", 2, 12)); // NOI18N
+        jLabel41.setFont(new java.awt.Font("Segoe UI", 2, 14)); // NOI18N
         jLabel41.setForeground(new java.awt.Color(51, 51, 51));
         jLabel41.setText("Ưu đãi hạng vàng");
 
@@ -573,22 +593,29 @@ public class CustomerCardPanel extends javax.swing.JPanel {
                     .addComponent(jLabel27)
                     .addGroup(jPanel8Layout.createSequentialGroup()
                         .addGroup(jPanel8Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jLabel22)
-                            .addGroup(jPanel8Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                .addComponent(jLabel18, javax.swing.GroupLayout.PREFERRED_SIZE, 34, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addComponent(jLabel21, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 34, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addComponent(jLabel23)
-                            .addComponent(jLabel19, javax.swing.GroupLayout.PREFERRED_SIZE, 34, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                            .addGroup(jPanel8Layout.createSequentialGroup()
+                                .addGroup(jPanel8Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addGroup(jPanel8Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                        .addComponent(jLabel18, javax.swing.GroupLayout.PREFERRED_SIZE, 34, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addComponent(jLabel21, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 34, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                    .addComponent(jLabel19, javax.swing.GroupLayout.PREFERRED_SIZE, 34, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addGap(11, 11, 11))
+                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel8Layout.createSequentialGroup()
+                                .addGroup(jPanel8Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                                    .addComponent(jLabel23, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                    .addComponent(jLabel22, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)))
                         .addGroup(jPanel8Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jLabel41)
-                            .addComponent(jLabel32)
-                            .addComponent(jLabel31)
-                            .addComponent(jLabel33)
-                            .addComponent(jLabel35)
-                            .addComponent(jLabel34)
-                            .addComponent(jLabel40))))
-                .addContainerGap(33, Short.MAX_VALUE))
+                            .addGroup(jPanel8Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                .addGroup(jPanel8Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(jLabel40)
+                                    .addComponent(jLabel31, javax.swing.GroupLayout.Alignment.TRAILING)
+                                    .addComponent(jLabel41))
+                                .addComponent(jLabel32, javax.swing.GroupLayout.Alignment.TRAILING)
+                                .addComponent(jLabel33))
+                            .addComponent(jLabel35, javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addComponent(jLabel34))))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         jPanel8Layout.setVerticalGroup(
             jPanel8Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -597,36 +624,36 @@ public class CustomerCardPanel extends javax.swing.JPanel {
                 .addComponent(jSeparator1))
             .addGroup(jPanel8Layout.createSequentialGroup()
                 .addGroup(jPanel8Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jLabel27)
-                    .addComponent(jLabel17))
-                .addGroup(jPanel8Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel8Layout.createSequentialGroup()
+                        .addGroup(jPanel8Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jLabel27)
+                            .addComponent(jLabel17))
                         .addGap(18, 18, 18)
                         .addComponent(jLabel16))
                     .addGroup(jPanel8Layout.createSequentialGroup()
-                        .addGap(6, 6, 6)
+                        .addGap(26, 26, 26)
                         .addGroup(jPanel8Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(jLabel22, javax.swing.GroupLayout.PREFERRED_SIZE, 10, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jLabel41))
+                            .addComponent(jLabel41)
+                            .addComponent(jLabel22, javax.swing.GroupLayout.PREFERRED_SIZE, 10, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(jPanel8Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(jLabel23, javax.swing.GroupLayout.PREFERRED_SIZE, 16, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jLabel40))))
-                .addGap(18, 18, 18)
-                .addComponent(jLabel34)
+                            .addComponent(jLabel40)
+                            .addComponent(jLabel23, javax.swing.GroupLayout.PREFERRED_SIZE, 16, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 16, Short.MAX_VALUE)
                 .addGroup(jPanel8Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(jPanel8Layout.createSequentialGroup()
-                        .addGap(0, 0, Short.MAX_VALUE)
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel8Layout.createSequentialGroup()
                         .addComponent(jLabel24)
                         .addGap(43, 43, 43)
                         .addComponent(jLabel26)
                         .addGap(18, 18, 18)
                         .addComponent(jLabel28))
-                    .addGroup(jPanel8Layout.createSequentialGroup()
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel8Layout.createSequentialGroup()
+                        .addComponent(jLabel34)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(jPanel8Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(jLabel35)
                             .addComponent(jLabel21))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addGap(18, 18, 18)
                         .addComponent(jLabel33)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(jPanel8Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
@@ -643,21 +670,21 @@ public class CustomerCardPanel extends javax.swing.JPanel {
         MainPanelLayout.setHorizontalGroup(
             MainPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(MainPanelLayout.createSequentialGroup()
-                .addGroup(MainPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(CustomerCardTable, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addGroup(MainPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                    .addComponent(CustomerCardTable, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addGroup(MainPanelLayout.createSequentialGroup()
                         .addContainerGap()
                         .addComponent(AddMemberPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jPanel8, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
-                .addContainerGap())
+                        .addComponent(jPanel8, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addContainerGap(11, Short.MAX_VALUE))
         );
         MainPanelLayout.setVerticalGroup(
             MainPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(MainPanelLayout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(CustomerCardTable, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGap(18, 18, 18)
                 .addGroup(MainPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(AddMemberPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(jPanel8, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
@@ -688,6 +715,32 @@ public class CustomerCardPanel extends javax.swing.JPanel {
         // TODO add your handling code here:
     }//GEN-LAST:event_CardRankTextFieldActionPerformed
 
+    private void resetNewCardValue() {
+        newMemberAddressTextPane.setText("");
+        newMemberAgeTextField.setText("");
+        newMemberFirstNameTextField.setText("");
+        newMemberLastNameTextField.setText("");
+        newMemberPhoneNumberTextField.setText("");
+    }
+    
+    private void CreateNewCardButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_CreateNewCardButtonActionPerformed
+        // TODO add your handling code here:
+        if (checkValidString(newMemberFirstNameTextField.getText(), newMemberLastNameTextField.getText(), newMemberAddressTextPane.getText())
+            && checkValidNumber(newMemberAgeTextField.getText(), newMemberPhoneNumberTextField.getText())) {
+            resetNewCardValue();
+            createNewMemberCard();
+            JOptionPane.showMessageDialog(CustomerCardPanel.this, 
+                    "Đăng kí thành công!");
+        }
+        else {
+            resetNewCardValue();
+            JOptionPane.showMessageDialog(CustomerCardPanel.this, 
+                    "Thông tin chưa đầy đủ/không hợp lệ!\nVui lòng điền đầy đủ và chính xác thông tin.", 
+                    "Đăng kí thất bại!", 
+                    JOptionPane.WARNING_MESSAGE);
+        }
+    }//GEN-LAST:event_CreateNewCardButtonActionPerformed
+
     public void passData(CustomerCardList cardList, IDGenerator idGenerator, History history) {
         this.cardList = cardList;
         this.idGenerator = idGenerator;
@@ -696,10 +749,10 @@ public class CustomerCardPanel extends javax.swing.JPanel {
     private CustomerCardList cardList;
     private IDGenerator idGenerator;
     private History history;
+    private Cautions cautions = new Cautions();
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JPanel AddMemberPanel;
-    private javax.swing.JTextPane AddressTextPane;
     private javax.swing.JTextField CardIDTextField;
     private javax.swing.JPanel CardInforPanel;
     private javax.swing.JTextField CardRankTextField;
@@ -760,15 +813,16 @@ public class CustomerCardPanel extends javax.swing.JPanel {
     private javax.swing.JScrollPane jScrollPane3;
     private javax.swing.JSeparator jSeparator1;
     private javax.swing.JTable jTable1;
+    private javax.swing.JTextPane memberAddressTextPane;
+    private javax.swing.JTextField memberAgeTextField;
+    private javax.swing.JTextField memberFirstNameTextField;
+    private javax.swing.JTextField memberLastNameTextField;
+    private javax.swing.JTextField memberPhoneNumberTextField;
     private javax.swing.JLabel morePayToNextRank;
     private javax.swing.JTextPane newMemberAddressTextPane;
     private javax.swing.JTextField newMemberAgeTextField;
-    private javax.swing.JTextField newMemberAgeTextField1;
     private javax.swing.JTextField newMemberFirstNameTextField;
-    private javax.swing.JTextField newMemberFirstNameTextField1;
     private javax.swing.JTextField newMemberLastNameTextField;
-    private javax.swing.JTextField newMemberLastNameTextField1;
     private javax.swing.JTextField newMemberPhoneNumberTextField;
-    private javax.swing.JTextField newMemberPhoneNumberTextField1;
     // End of variables declaration//GEN-END:variables
 }
