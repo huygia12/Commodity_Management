@@ -357,7 +357,8 @@ public class RepoPanel extends javax.swing.JPanel {
         long dupedGood = goodsList.getGoodsList().stream().filter(x->x.getGoodsName().equalsIgnoreCase(goodName)&&
                                                                       x.getManufacture().equals(goodManufacturer)&&
                                                                         x.getUnit().equals(goodUnit)).count();
-        if(dupedGood == 0) {
+        long dupedID = goodsList.getGoodsList().stream().filter(x->x.getID().equals(goodID)).count();
+        if(dupedGood == 0 && dupedID == 0) {
             goodTableModel.addRow(new Object[] {
                 goodID,
                 goodName,
@@ -375,7 +376,7 @@ public class RepoPanel extends javax.swing.JPanel {
     
     private void unitComboBoxActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_unitComboBoxActionPerformed
         // TODO add your handling code here:
-        if ((deleteButton.isEnabled()&&jTable1.getSelectedRow()==-1) || unitComboBox.getSelectedItem() == null) {
+        if ((deleteButton.isEnabled()&&jTable1.getSelectedRow()==-1) || unitComboBox.getSelectedItem() == null || isReloadingUnits) {
             return;
         }
         if (unitComboBox.getSelectedIndex() == 0) {
@@ -540,7 +541,7 @@ public class RepoPanel extends javax.swing.JPanel {
             goodID = (String) goodTableModel.getValueAt(jTable1.getSelectedRow(), 0);
             goodListedPrice = (BigDecimal) goodTableModel.getValueAt(jTable1.getSelectedRow(), 4);
             goodManufacturer = (String) goodTableModel.getValueAt(jTable1.getSelectedRow(), 3);
-            goodTotalQuantity = BigDecimal.valueOf(Integer.toUnsignedLong((int) goodTableModel.getValueAt(jTable1.getSelectedRow(), 5)));
+            goodTotalQuantity = new BigDecimal(goodTableModel.getValueAt(jTable1.getSelectedRow(), 5).toString());
             goodUnit = (String) goodTableModel.getValueAt(jTable1.getSelectedRow(), 2);
             goodName = (String) goodTableModel.getValueAt(jTable1.getSelectedRow(), 1);
         }
@@ -612,14 +613,18 @@ public class RepoPanel extends javax.swing.JPanel {
     }
     
     public void reloadUnitList() {
+        isReloadingUnits = true;
         unitComboBox.removeAllItems();
         unitComboBox.addItem("Thêm đơn vị");
         unitsList.getBucket().stream().forEach(x->unitComboBox.addItem(x));
+        unitComboBox.setSelectedIndex(-1);
+        isReloadingUnits = false;
     }
     
     public void reloadTable() {
-        for (int i = 0; i < goodTableModel.getRowCount(); i++) {
-            goodTableModel.removeRow(i);
+        int rowToRemove = goodTableModel.getRowCount();
+        for (int i = 0; i < rowToRemove; i++) {
+            goodTableModel.removeRow(0);
         }
         for (Goods good : goodsList.getGoodsList()) {
             goodTableModel.addRow(new Object[] {
@@ -635,10 +640,12 @@ public class RepoPanel extends javax.swing.JPanel {
     
     public void setGoodsList(GoodsList<Goods> goodsList) {
         this.goodsList = goodsList;
+        reloadTable();
     }
 
     public void setUnitsList(Units unitsList) {
         this.unitsList = unitsList;
+        reloadUnitList();
     }
     
     public int findUnit(String unit) {
@@ -648,6 +655,7 @@ public class RepoPanel extends javax.swing.JPanel {
     private GoodsList<Goods> goodsList;
     private Units unitsList;
     private GoodsListController glc = new GoodsListController();
+    private boolean isReloadingUnits = false;
     
     private String goodName = "";
     private String goodUnit = "";
