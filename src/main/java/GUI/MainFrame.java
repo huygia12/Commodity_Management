@@ -32,7 +32,7 @@ public class MainFrame extends javax.swing.JFrame {
         employJPanel1.passData(employeeList, shift);
         // pass data vào repoPanel
         repoPanel1.setGoodsList(repository);
-//        repoPanel1.setUnitsList(units);
+        repoPanel1.setUnitsList(units);
     }
 
     /**

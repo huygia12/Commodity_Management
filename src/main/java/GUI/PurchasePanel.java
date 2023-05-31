@@ -418,6 +418,7 @@ public class PurchasePanel extends javax.swing.JPanel {
         subFeePanel.setPreferredSize(new java.awt.Dimension(316, 170));
 
         shippingFeeLabel.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
+        shippingFeeLabel.setIcon(new javax.swing.ImageIcon(getClass().getResource("/ImageIcon/icons8-shipping-25.png"))); // NOI18N
         shippingFeeLabel.setText("Phí vận chuyển:");
 
         customerMoneyLabel.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
@@ -560,7 +561,7 @@ public class PurchasePanel extends javax.swing.JPanel {
                         .addGroup(subFeePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(shippingFeeLabel)
                             .addComponent(taxLabel))
-                        .addGap(94, 94, 94)
+                        .addGap(66, 66, 66)
                         .addGroup(subFeePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(taxText, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                             .addComponent(shippingFeeText, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
