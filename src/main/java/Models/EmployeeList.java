@@ -14,6 +14,9 @@ public class EmployeeList extends AbstractHumanList<Employee> {
 
     public EmployeeList() {
     }
+    public Employee getEmployee(int index) {
+    return list.get(index);
+}
 
     public EmployeeList(List<Employee> employeeList) {
         this.list = employeeList;

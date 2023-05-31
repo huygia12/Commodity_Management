@@ -4,10 +4,12 @@
  */
 package GUI;
 
+import static GUI.MainFrame.employeeList;
 import Models.Employee;
 import Models.EmployeeList;
 import Models.Shift;
 import java.util.ArrayList;
+import java.util.List;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 
@@ -59,6 +61,7 @@ public class EmployJPanel extends javax.swing.JPanel {
         removeButton = new javax.swing.JButton();
         searchButton = new javax.swing.JButton();
         searchIDTextField = new javax.swing.JTextField();
+        showAllButton = new javax.swing.JButton();
         displayPanel = new javax.swing.JPanel();
         displayScrollPane = new javax.swing.JScrollPane();
         displayTable = new javax.swing.JTable();
@@ -227,6 +230,14 @@ public class EmployJPanel extends javax.swing.JPanel {
             }
         });
 
+        showAllButton.setFont(new java.awt.Font("Dialog", 0, 14)); // NOI18N
+        showAllButton.setText("Hiện thị thông tin ");
+        showAllButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                showAllButtonActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout functionPanelLayout = new javax.swing.GroupLayout(functionPanel);
         functionPanel.setLayout(functionPanelLayout);
         functionPanelLayout.setHorizontalGroup(
@@ -234,20 +245,22 @@ public class EmployJPanel extends javax.swing.JPanel {
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, functionPanelLayout.createSequentialGroup()
                 .addGroup(functionPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addGroup(functionPanelLayout.createSequentialGroup()
-                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addGap(0, 0, Short.MAX_VALUE)
+                        .addComponent(changeButton, javax.swing.GroupLayout.PREFERRED_SIZE, 72, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(functionPanelLayout.createSequentialGroup()
+                        .addContainerGap(84, Short.MAX_VALUE)
                         .addGroup(functionPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                             .addGroup(functionPanelLayout.createSequentialGroup()
                                 .addComponent(removeButton, javax.swing.GroupLayout.PREFERRED_SIZE, 71, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addGap(1, 1, 1))
                             .addGroup(functionPanelLayout.createSequentialGroup()
-                                .addComponent(searchIDTextField, javax.swing.GroupLayout.PREFERRED_SIZE, 160, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGroup(functionPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                                    .addComponent(searchIDTextField)
+                                    .addComponent(showAllButton, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                                 .addGap(31, 31, 31)
-                                .addComponent(searchButton))))
-                    .addGroup(functionPanelLayout.createSequentialGroup()
-                        .addGap(0, 0, Short.MAX_VALUE)
-                        .addGroup(functionPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addComponent(changeButton, javax.swing.GroupLayout.PREFERRED_SIZE, 72, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(addButton))))
+                                .addGroup(functionPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(searchButton, javax.swing.GroupLayout.Alignment.TRAILING)
+                                    .addComponent(addButton, javax.swing.GroupLayout.Alignment.TRAILING))))))
                 .addGap(38, 38, 38))
         );
         functionPanelLayout.setVerticalGroup(
@@ -258,7 +271,9 @@ public class EmployJPanel extends javax.swing.JPanel {
                     .addComponent(searchButton, javax.swing.GroupLayout.PREFERRED_SIZE, 22, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(searchIDTextField, javax.swing.GroupLayout.PREFERRED_SIZE, 22, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
-                .addComponent(addButton)
+                .addGroup(functionPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(addButton)
+                    .addComponent(showAllButton))
                 .addGap(18, 18, 18)
                 .addComponent(changeButton, javax.swing.GroupLayout.PREFERRED_SIZE, 29, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, Short.MAX_VALUE)
@@ -268,13 +283,13 @@ public class EmployJPanel extends javax.swing.JPanel {
 
         displayTable.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null, null, null}
+                {null, null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null, null}
             },
             new String [] {
-                "ID", "Họ", "Tên", "Tuổi", "Giới tính", "SĐT", "Địa chỉ", "CCCD", "Lương"
+                "Họ", "Tên", "Tuổi", "Giới tính", "SĐT", "Địa chỉ", "CCCD", "Lương"
             }
         ));
         displayTable.addMouseListener(new java.awt.event.MouseAdapter() {
@@ -331,7 +346,14 @@ public class EmployJPanel extends javax.swing.JPanel {
                 .addContainerGap())
         );
     }// </editor-fold>//GEN-END:initComponents
-
+private void showTable(List<Employee> employees) {
+        DefaultTableModel model = (DefaultTableModel) displayTable.getModel();
+        model.setRowCount(0);
+        for (Employee employee : employees) {
+            Object[] rowData = {employee.getFirstName(), employee.getLastName(), employee.getAge(), employee.getGender(), employee.getAddress(), employee.getPhoneNumber(), employee.getCCCD(), employee.getSalaryPerDay()};
+            model.addRow(rowData);
+        }
+    }
     private void inputLastNameTextField1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_inputLastNameTextField1ActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_inputLastNameTextField1ActionPerformed
@@ -363,17 +385,16 @@ public class EmployJPanel extends javax.swing.JPanel {
             gender = "Female";
         } else if (otherRadioButton.isSelected()) {
             gender = "Other";
-        } else {
-            JOptionPane.showMessageDialog(this, "Please select a gender.", "Error", JOptionPane.ERROR_MESSAGE);
-            return;
         }
 
-        // Tạo một đối tượng Employee mới với thông tin được nhập vào
+        // Tạo một đối tượng Employee mới với thông tin được nhập vào và STT mới
         Employee newEmployee = new Employee(firstName, lastName, age, address, cccd, phone, salary, gender);
 
-        // Lấy môt đối tượng DefaultTableModel của bảng hiển thị và thêm một hàng mới vào bảng với thông tin của đối tượng Employee
-        DefaultTableModel model = (DefaultTableModel) displayTable.getModel();
-        model.addRow(new Object[]{newEmployee.getFirstName(), newEmployee.getLastName(), newEmployee.getAge(), newEmployee.getAddress(), newEmployee.getCCCD(), newEmployee.getPhoneNumber(), newEmployee.getSalaryPerDay(), newEmployee.getGender()});
+        // Thêm đối tượng Employee mới vào danh sách nhân viên trong đối tượng EmployeeList
+        employeeList.getList().add(newEmployee);
+
+        // Hiển thị danh sách nhân viên trong bảng
+        showTable(employeeList.getList());
 
         // Xóa các trường nhập để chuẩn bị cho việc nhập thông tin nhân viên tiếp theo
         inputFirstNameTextField.setText("");
@@ -384,6 +405,8 @@ public class EmployJPanel extends javax.swing.JPanel {
         inputPhoneTextField.setText("");
         inputSalaryTextField.setText("");
         genderbuttonGroup.clearSelection();
+
+        JOptionPane.showMessageDialog(this, "Employee added successfully!", "Success", JOptionPane.INFORMATION_MESSAGE);
     }//GEN-LAST:event_addButtonActionPerformed
 
     private void changeButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_changeButtonActionPerformed
@@ -400,31 +423,31 @@ public class EmployJPanel extends javax.swing.JPanel {
             String firstName = model.getValueAt(rowIndex, 0).toString();
             String lastName = model.getValueAt(rowIndex, 1).toString();
             int age = Integer.parseInt(model.getValueAt(rowIndex, 2).toString());
-            String address = model.getValueAt(rowIndex, 3).toString();
-            String cccd = model.getValueAt(rowIndex, 4).toString();
+            String gender = model.getValueAt(rowIndex, 3).toString();
+            String address = model.getValueAt(rowIndex, 4).toString();
             String phone = model.getValueAt(rowIndex, 5).toString();
-            double salary = Double.parseDouble(model.getValueAt(rowIndex, 6).toString());
-            String gender = model.getValueAt(rowIndex, 7).toString();
+            String cccd = model.getValueAt(rowIndex, 6).toString();
+            double salary = Double.parseDouble(model.getValueAt(rowIndex, 7).toString());
 
             // Cập nhật các giá trị của nhân viên với các giá trị mới được nhập từ các trường nhập liệu
             firstName = inputFirstNameTextField.getText();
             lastName = inputLastNameTextField1.getText();
             age = Integer.parseInt(inputAgeTextField.getText());
-            address = inputAdressField.getText();
-            cccd = inputCCCDTextField.getText();
-            phone = inputPhoneTextField.getText();
-            salary = Double.parseDouble(inputSalaryTextField.getText());
             gender = maleButton.isSelected() ? "Male" : femaleRadioButton.isSelected() ? "Female" : "Other";
+            address = inputAdressField.getText();
+            phone = inputPhoneTextField.getText();
+            cccd = inputCCCDTextField.getText();
+            salary = Double.parseDouble(inputSalaryTextField.getText());
 
             // Cập nhật các giá trị của hàng được chọn trong bảng với các giá trị mới
             model.setValueAt(firstName, rowIndex, 0);
             model.setValueAt(lastName, rowIndex, 1);
             model.setValueAt(age, rowIndex, 2);
-            model.setValueAt(address, rowIndex, 3);
-            model.setValueAt(cccd, rowIndex, 4);
+            model.setValueAt(gender, rowIndex, 3);
+            model.setValueAt(address, rowIndex, 4);
             model.setValueAt(phone, rowIndex, 5);
-            model.setValueAt(salary, rowIndex, 6);
-            model.setValueAt(gender, rowIndex, 7);
+            model.setValueAt(cccd, rowIndex, 6);
+            model.setValueAt(salary, rowIndex, 7);
 
             // Hiển thị thông báo cho người dùng để thông báo rằng thông tin nhân viên đã được cập nhật thành công
             JOptionPane.showMessageDialog(this, "Thông tin nhân viên đã được cập nhật thành công!", "Thông báo", JOptionPane.INFORMATION_MESSAGE);
@@ -432,13 +455,17 @@ public class EmployJPanel extends javax.swing.JPanel {
             // Nếu không có hàng nào được chọn, hiển thị một thông báo cho người dùng
             JOptionPane.showMessageDialog(this, "Vui lòng chọn một hàng để cập nhật thông tin!", "Thông báo", JOptionPane.WARNING_MESSAGE);
         }
+
     }//GEN-LAST:event_changeButtonActionPerformed
 
     private void removeButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_removeButtonActionPerformed
         // TODO add your handling code here:
         DefaultTableModel model = (DefaultTableModel) displayTable.getModel();
         int selectedRowIndex = displayTable.getSelectedRow();
+        List<Employee> employee = new ArrayList<>(employeeList.getList());
         if (selectedRowIndex >= 0) {
+
+            employeeList.getList().remove(employee);
             // Xóa dòng được chọn trong bảng
             model.removeRow(selectedRowIndex);
             // Lưu lại các thay đổi
@@ -448,8 +475,40 @@ public class EmployJPanel extends javax.swing.JPanel {
 
     private void searchButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_searchButtonActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_searchButtonActionPerformed
+        String searchValue = searchIDTextField.getText();
 
+        // Tìm kiếm vị trí của nhân viên có ID tương ứng trong danh sách nhân viên
+        int rowIndex = getRowForFieldValue(searchValue);
+
+        if (rowIndex >= 0) {
+            // Nếu tìm thấy, lấy đối tượng Employee tương ứng từ danh sách nhân viên trong đối tượng EmployeeList
+            Employee employee = employeeList.getList().get(rowIndex);
+
+            // Hiển thị danh sách nhân viên trong bảng, chỉ hiển thị thông tin của nhân viên tìm kiếm
+            List<Employee> searchResult = new ArrayList<>();
+            searchResult.add(employee);
+            showTable(searchResult);
+        } else {
+            // Nếu không tìm thấy, hiển thị thông báo lỗi
+
+            JOptionPane.showMessageDialog(null, "Không tìm thấy nhân viên có thông tin tương ứng");
+        }
+    }//GEN-LAST:event_searchButtonActionPerformed
+// Phương thức tìm kiếm dựa trên nhiều trường
+
+    private int getRowForFieldValue(String fieldValue) {
+        DefaultTableModel model = (DefaultTableModel) displayTable.getModel();
+        int rowCount = model.getRowCount();
+        for (int i = 0; i < rowCount; i++) {
+            String firstName = model.getValueAt(i, 1) != null ? model.getValueAt(i, 1).toString() : "";
+            String lastName = model.getValueAt(i, 2) != null ? model.getValueAt(i, 2).toString() : "";
+            String cccd = model.getValueAt(i, 7) != null ? model.getValueAt(i, 7).toString() : "";
+            if (firstName.toLowerCase().contains(fieldValue.toLowerCase()) || lastName.toLowerCase().contains(fieldValue.toLowerCase()) || cccd.contains(fieldValue)) {
+                return i;
+            }
+        }
+        return -1;
+    }
     private void displayTableMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_displayTableMouseClicked
         // TODO add your handling code here:
         // Lấy chỉ số của hàng được chọn trong bảng
@@ -464,11 +523,11 @@ public class EmployJPanel extends javax.swing.JPanel {
             String firstName = model.getValueAt(rowIndex, 0) != null ? model.getValueAt(rowIndex, 0).toString() : "";
             String lastName = model.getValueAt(rowIndex, 1) != null ? model.getValueAt(rowIndex, 1).toString() : "";
             String age = model.getValueAt(rowIndex, 2) != null ? model.getValueAt(rowIndex, 2).toString() : "";
-            String address = model.getValueAt(rowIndex, 3) != null ? model.getValueAt(rowIndex, 3).toString() : "";
-            String cccd = model.getValueAt(rowIndex, 4) != null ? model.getValueAt(rowIndex, 4).toString() : "";
+            String gender = model.getValueAt(rowIndex, 3) != null ? model.getValueAt(rowIndex, 3).toString().trim() : "";
+            String address = model.getValueAt(rowIndex, 4) != null ? model.getValueAt(rowIndex, 4).toString() : "";
             String phone = model.getValueAt(rowIndex, 5) != null ? model.getValueAt(rowIndex, 5).toString() : "";
-            String salary = model.getValueAt(rowIndex, 6) != null ? model.getValueAt(rowIndex, 6).toString() : "";
-            String gender = model.getValueAt(rowIndex, 7) != null ? model.getValueAt(rowIndex, 7).toString() : "";
+            String cccd = model.getValueAt(rowIndex, 6) != null ? model.getValueAt(rowIndex, 6).toString() : "";
+            String salary = model.getValueAt(rowIndex, 7) != null ? model.getValueAt(rowIndex, 7).toString() : "";
 
             // Cập nhật các trường nhập liệu với các giá trị của nhân viên được chọn
             inputFirstNameTextField.setText(firstName);
@@ -480,15 +539,25 @@ public class EmployJPanel extends javax.swing.JPanel {
             inputSalaryTextField.setText(salary);
 
             // Kiểm tra nút radio giới tính tương ứng với giới tính của nhân viên được chọn
-            if (gender.equals("Male")) {
-                maleButton.setSelected(true);
-            } else if (gender.equals("Female")) {
-                femaleRadioButton.setSelected(true);
-            } else if (gender.equals("Other")) {
-                otherRadioButton.setSelected(true);
+            switch (gender) {
+                case "Male":
+                    maleButton.setSelected(true);
+                    break;
+                case "Female":
+                    femaleRadioButton.setSelected(true);
+                    break;
+                default:
+                    otherRadioButton.setSelected(true);
+                    break;
             }
         }
     }//GEN-LAST:event_displayTableMouseClicked
+
+    private void showAllButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_showAllButtonActionPerformed
+        // TODO add your handling code here:
+        // Hiển thị danh sách nhân viên trên bảng
+        showTable(employeeList.getList());
+    }//GEN-LAST:event_showAllButtonActionPerformed
 
     public void passData(EmployeeList employeelist, Shift shift) {
         this.employeelist = employeelist;
@@ -528,5 +597,6 @@ public class EmployJPanel extends javax.swing.JPanel {
     private javax.swing.JButton removeButton;
     private javax.swing.JButton searchButton;
     private javax.swing.JTextField searchIDTextField;
+    private javax.swing.JButton showAllButton;
     // End of variables declaration//GEN-END:variables
 }
