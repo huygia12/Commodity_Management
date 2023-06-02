@@ -617,7 +617,7 @@
                                           <Component id="shippingFeeLabel" min="-2" max="-2" attributes="0"/>
                                           <Component id="taxLabel" alignment="0" min="-2" max="-2" attributes="0"/>
                                       </Group>
-                                      <EmptySpace min="-2" pref="94" max="-2" attributes="0"/>
+                                      <EmptySpace min="-2" pref="66" max="-2" attributes="0"/>
                                       <Group type="103" groupAlignment="0" attributes="0">
                                           <Component id="taxText" max="32767" attributes="0"/>
                                           <Component id="shippingFeeText" max="32767" attributes="0"/>
@@ -671,6 +671,9 @@
                       <Properties>
                         <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
                           <Font name="Segoe UI" size="12" style="1"/>
+                        </Property>
+                        <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
+                          <Image iconType="3" name="/ImageIcon/icons8-shipping-25.png"/>
                         </Property>
                         <Property name="text" type="java.lang.String" value="Ph&#xed; v&#x1ead;n chuy&#x1ec3;n:"/>
                       </Properties>

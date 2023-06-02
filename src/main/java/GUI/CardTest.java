@@ -4,11 +4,14 @@
  */
 package GUI;
 
+import Models.Customer;
+import Models.CustomerCard;
 import Models.CustomerCardList;
 import Models.History;
 import Ultility.Cautions;
 import Ultility.IDGenerator;
 import javax.swing.JOptionPane;
+import javax.swing.table.DefaultTableModel;
 
 /**
  *
@@ -21,6 +24,8 @@ public class CardTest extends javax.swing.JFrame {
      */
     public CardTest() {
         initComponents();
+        customerModel = (DefaultTableModel) customerTable.getModel();
+        System.out.println(cardList.getList().size());
     }
 
     /**
@@ -61,6 +66,8 @@ public class CardTest extends javax.swing.JFrame {
         newMemberAgeTextField1 = new javax.swing.JTextField();
         jLabel39 = new javax.swing.JLabel();
         newMemberPhoneNumberTextField1 = new javax.swing.JTextField();
+        memberGenderComboBox1 = new javax.swing.JComboBox<>();
+        jLabel4 = new javax.swing.JLabel();
         jPanel6 = new javax.swing.JPanel();
         ToolsPanel = new javax.swing.JPanel();
         SearchTextField = new javax.swing.JTextField();
@@ -69,7 +76,7 @@ public class CardTest extends javax.swing.JFrame {
         MainPanel = new javax.swing.JPanel();
         CustomerCardTable = new javax.swing.JPanel();
         jScrollPane2 = new javax.swing.JScrollPane();
-        jTable1 = new javax.swing.JTable();
+        customerTable = new javax.swing.JTable();
         AddMemberPanel = new javax.swing.JPanel();
         jLabel11 = new javax.swing.JLabel();
         newMemberFirstNameTextField = new javax.swing.JTextField();
@@ -83,6 +90,8 @@ public class CardTest extends javax.swing.JFrame {
         jScrollPane3 = new javax.swing.JScrollPane();
         newMemberAddressTextPane = new javax.swing.JTextPane();
         CreateNewCardButton = new javax.swing.JButton();
+        newMemberGenderComboBox = new javax.swing.JComboBox<>();
+        jLabel3 = new javax.swing.JLabel();
         jPanel8 = new javax.swing.JPanel();
         jLabel17 = new javax.swing.JLabel();
         jLabel18 = new javax.swing.JLabel();
@@ -256,6 +265,10 @@ public class CardTest extends javax.swing.JFrame {
 
         jLabel39.setText("SĐT:");
 
+        memberGenderComboBox1.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Nam", "Nữ", "Khác", " " }));
+
+        jLabel4.setText("Giới tính:");
+
         javax.swing.GroupLayout CustomerInforPanelLayout = new javax.swing.GroupLayout(CustomerInforPanel);
         CustomerInforPanel.setLayout(CustomerInforPanelLayout);
         CustomerInforPanelLayout.setHorizontalGroup(
@@ -271,16 +284,21 @@ public class CardTest extends javax.swing.JFrame {
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                                 .addComponent(UpdateCustomerDateButton, javax.swing.GroupLayout.PREFERRED_SIZE, 106, javax.swing.GroupLayout.PREFERRED_SIZE))
                             .addGroup(CustomerInforPanelLayout.createSequentialGroup()
+                                .addGap(0, 0, Short.MAX_VALUE)
                                 .addComponent(jLabel6)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 247, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                                .addGroup(CustomerInforPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(newMemberPhoneNumberTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, 141, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 247, javax.swing.GroupLayout.PREFERRED_SIZE)))))
                     .addGroup(CustomerInforPanelLayout.createSequentialGroup()
                         .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addGroup(CustomerInforPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                             .addGroup(CustomerInforPanelLayout.createSequentialGroup()
                                 .addGroup(CustomerInforPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(jLabel38)
-                                    .addComponent(jLabel36, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                    .addComponent(jLabel36, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addGroup(CustomerInforPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                                        .addComponent(jLabel39)
+                                        .addComponent(jLabel38)))
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                 .addGroup(CustomerInforPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, CustomerInforPanelLayout.createSequentialGroup()
@@ -291,10 +309,10 @@ public class CardTest extends javax.swing.JFrame {
                                         .addComponent(newMemberLastNameTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, 141, javax.swing.GroupLayout.PREFERRED_SIZE))
                                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, CustomerInforPanelLayout.createSequentialGroup()
                                         .addComponent(newMemberAgeTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, 72, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                        .addComponent(jLabel4)
                                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                        .addComponent(jLabel39)
-                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                        .addComponent(newMemberPhoneNumberTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, 141, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                                        .addComponent(memberGenderComboBox1, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
                             .addGroup(CustomerInforPanelLayout.createSequentialGroup()
                                 .addComponent(jLabel1)
                                 .addGap(18, 18, 18)
@@ -315,16 +333,22 @@ public class CardTest extends javax.swing.JFrame {
                     .addComponent(jLabel37)
                     .addComponent(newMemberLastNameTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
+                .addGroup(CustomerInforPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(CustomerInforPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(jLabel4)
+                        .addComponent(memberGenderComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(CustomerInforPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(jLabel38)
+                        .addComponent(newMemberAgeTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 20, Short.MAX_VALUE)
                 .addGroup(CustomerInforPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel38)
-                    .addComponent(newMemberAgeTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel39)
                     .addComponent(newMemberPhoneNumberTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(18, 18, 18)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(CustomerInforPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jLabel6)
-                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 52, Short.MAX_VALUE)
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel6))
+                .addGap(18, 18, 18)
                 .addGroup(CustomerInforPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(DeleteCardButton, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(UpdateCustomerDateButton, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE))
@@ -350,6 +374,11 @@ public class CardTest extends javax.swing.JFrame {
         ShowCardListButton.setBackground(new java.awt.Color(153, 255, 255));
         ShowCardListButton.setText("Hiển thị toàn bộ danh sách");
         ShowCardListButton.setFocusable(false);
+        ShowCardListButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                ShowCardListButtonActionPerformed(evt);
+            }
+        });
         ToolsPanel.add(ShowCardListButton);
 
         jPanel6.add(ToolsPanel, java.awt.BorderLayout.PAGE_START);
@@ -359,16 +388,16 @@ public class CardTest extends javax.swing.JFrame {
 
         CustomerCardTable.setBackground(new java.awt.Color(255, 255, 255));
 
-        jTable1.setModel(new javax.swing.table.DefaultTableModel(
+        customerTable.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
 
             },
             new String [] {
-                "Mã khách/Mã thẻ", "Họ", "Tên", "Tuổi", "Giới tính", "Địa chỉ"
+                "Mã khách/Mã thẻ", "Họ", "Tên", "Tuổi", "Giới tính", "SĐT", "Địa chỉ"
             }
         ));
-        jTable1.setAutoResizeMode(javax.swing.JTable.AUTO_RESIZE_ALL_COLUMNS);
-        jScrollPane2.setViewportView(jTable1);
+        customerTable.setAutoResizeMode(javax.swing.JTable.AUTO_RESIZE_ALL_COLUMNS);
+        jScrollPane2.setViewportView(customerTable);
 
         javax.swing.GroupLayout CustomerCardTableLayout = new javax.swing.GroupLayout(CustomerCardTable);
         CustomerCardTable.setLayout(CustomerCardTableLayout);
@@ -401,48 +430,61 @@ public class CardTest extends javax.swing.JFrame {
 
         CreateNewCardButton.setBackground(new java.awt.Color(153, 255, 255));
         CreateNewCardButton.setText("TẠO THẺ & THÊM THÀNH VIÊN");
+        CreateNewCardButton.setFocusable(false);
         CreateNewCardButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 CreateNewCardButtonActionPerformed(evt);
             }
         });
 
+        newMemberGenderComboBox.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Nam", "Nữ", "Khác", " " }));
+
+        jLabel3.setText("Giới tính:");
+
         javax.swing.GroupLayout AddMemberPanelLayout = new javax.swing.GroupLayout(AddMemberPanel);
         AddMemberPanel.setLayout(AddMemberPanelLayout);
         AddMemberPanelLayout.setHorizontalGroup(
             AddMemberPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(AddMemberPanelLayout.createSequentialGroup()
-                .addGroup(AddMemberPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, AddMemberPanelLayout.createSequentialGroup()
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addGroup(AddMemberPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, AddMemberPanelLayout.createSequentialGroup()
+                        .addComponent(CreateNewCardButton)
+                        .addGap(29, 29, 29))
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, AddMemberPanelLayout.createSequentialGroup()
                         .addComponent(jLabel15)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 235, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, AddMemberPanelLayout.createSequentialGroup()
+                        .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 235, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addContainerGap())))
+            .addGroup(AddMemberPanelLayout.createSequentialGroup()
+                .addGroup(AddMemberPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(AddMemberPanelLayout.createSequentialGroup()
                         .addGroup(AddMemberPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, AddMemberPanelLayout.createSequentialGroup()
                                 .addComponent(jLabel13)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED))
                             .addGroup(AddMemberPanelLayout.createSequentialGroup()
                                 .addContainerGap()
-                                .addComponent(jLabel11, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                                .addComponent(jLabel11, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)))
                         .addGroup(AddMemberPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, AddMemberPanelLayout.createSequentialGroup()
-                                .addComponent(newMemberFirstNameTextField)
+                                .addComponent(newMemberFirstNameTextField, javax.swing.GroupLayout.PREFERRED_SIZE, 74, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                 .addComponent(jLabel12)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                 .addComponent(newMemberLastNameTextField, javax.swing.GroupLayout.PREFERRED_SIZE, 141, javax.swing.GroupLayout.PREFERRED_SIZE))
                             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, AddMemberPanelLayout.createSequentialGroup()
                                 .addComponent(newMemberAgeTextField, javax.swing.GroupLayout.PREFERRED_SIZE, 72, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addComponent(jLabel3)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(jLabel14)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(newMemberPhoneNumberTextField, javax.swing.GroupLayout.PREFERRED_SIZE, 141, javax.swing.GroupLayout.PREFERRED_SIZE)))))
-                .addGap(0, 2, Short.MAX_VALUE))
-            .addGroup(AddMemberPanelLayout.createSequentialGroup()
-                .addGap(35, 35, 35)
-                .addComponent(CreateNewCardButton)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                                .addComponent(newMemberGenderComboBox, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
+                    .addGroup(AddMemberPanelLayout.createSequentialGroup()
+                        .addContainerGap()
+                        .addComponent(jLabel14)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(newMemberPhoneNumberTextField, javax.swing.GroupLayout.PREFERRED_SIZE, 141, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addGap(0, 0, Short.MAX_VALUE))
         );
         AddMemberPanelLayout.setVerticalGroup(
             AddMemberPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -454,18 +496,24 @@ public class CardTest extends javax.swing.JFrame {
                     .addComponent(jLabel12)
                     .addComponent(newMemberLastNameTextField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
+                .addGroup(AddMemberPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(AddMemberPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(jLabel3)
+                        .addComponent(newMemberGenderComboBox, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(AddMemberPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(jLabel13)
+                        .addComponent(newMemberAgeTextField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addGroup(AddMemberPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel13)
-                    .addComponent(newMemberAgeTextField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel14)
                     .addComponent(newMemberPhoneNumberTextField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
                 .addGroup(AddMemberPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jLabel15)
-                    .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel15))
                 .addGap(18, 18, 18)
-                .addComponent(CreateNewCardButton, javax.swing.GroupLayout.PREFERRED_SIZE, 58, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addComponent(CreateNewCardButton, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap())
         );
 
         jPanel8.setBackground(new java.awt.Color(255, 255, 255));
@@ -588,7 +636,7 @@ public class CardTest extends javax.swing.JFrame {
                                 .addComponent(jLabel33))
                             .addComponent(jLabel35, javax.swing.GroupLayout.Alignment.TRAILING)
                             .addComponent(jLabel34))))
-                .addContainerGap(12, Short.MAX_VALUE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         jPanel8Layout.setVerticalGroup(
             jPanel8Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -727,6 +775,11 @@ public class CardTest extends javax.swing.JFrame {
                     JOptionPane.WARNING_MESSAGE);
         }
     }//GEN-LAST:event_CreateNewCardButtonActionPerformed
+
+    private void ShowCardListButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ShowCardListButtonActionPerformed
+        // TODO add your handling code here:
+        addAllDataToTable();
+    }//GEN-LAST:event_ShowCardListButtonActionPerformed
     private void resetNewCardValue() {
         newMemberAddressTextPane.setText("");
         newMemberAgeTextField.setText("");
@@ -788,6 +841,25 @@ public class CardTest extends javax.swing.JFrame {
             }
         });
     }
+    
+    private void addAllDataToTable() {
+        for (int i = 0; i < cardList.getList().size(); i++) {
+            addCustomterToTable(cardList.getList().get(i));
+        }
+    }
+    
+    private void addCustomterToTable(CustomerCard customerCard) {
+        customerModel.addRow(new Object[]{
+                customerCard.getID(),
+                customerCard.getCustomer().getFirstName(),
+                customerCard.getCustomer().getLastName(),
+                customerCard.getCustomer().getAge(),
+                customerCard.getCustomer().getGender(),
+                customerCard.getCustomer().getGender(),
+                customerCard.getCustomer().getPhoneNumber(),
+                customerCard.getCustomer().getAddress()
+            });
+    }
 
     public void passData(CustomerCardList cardList, IDGenerator idGenerator, History history) {
         this.cardList = cardList;
@@ -798,6 +870,7 @@ public class CardTest extends javax.swing.JFrame {
     private IDGenerator idGenerator;
     private History history;
     private Cautions cautions = new Cautions();
+    private DefaultTableModel customerModel;
     
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JPanel AddMemberPanel;
@@ -818,6 +891,7 @@ public class CardTest extends javax.swing.JFrame {
     private javax.swing.JButton UpdateCustomerDateButton;
     private javax.swing.JTextField UsagePointTextField;
     private javax.swing.JTextField UsedPointTextField;
+    private javax.swing.JTable customerTable;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel11;
@@ -837,6 +911,7 @@ public class CardTest extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel27;
     private javax.swing.JLabel jLabel28;
     private javax.swing.JLabel jLabel29;
+    private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel30;
     private javax.swing.JLabel jLabel31;
     private javax.swing.JLabel jLabel32;
@@ -847,6 +922,7 @@ public class CardTest extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel37;
     private javax.swing.JLabel jLabel38;
     private javax.swing.JLabel jLabel39;
+    private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel40;
     private javax.swing.JLabel jLabel41;
     private javax.swing.JLabel jLabel6;
@@ -860,13 +936,14 @@ public class CardTest extends javax.swing.JFrame {
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JScrollPane jScrollPane3;
     private javax.swing.JSeparator jSeparator1;
-    private javax.swing.JTable jTable1;
+    private javax.swing.JComboBox<String> memberGenderComboBox1;
     private javax.swing.JLabel morePayToNextRank;
     private javax.swing.JTextPane newMemberAddressTextPane;
     private javax.swing.JTextField newMemberAgeTextField;
     private javax.swing.JTextField newMemberAgeTextField1;
     private javax.swing.JTextField newMemberFirstNameTextField;
     private javax.swing.JTextField newMemberFirstNameTextField1;
+    private javax.swing.JComboBox<String> newMemberGenderComboBox;
     private javax.swing.JTextField newMemberLastNameTextField;
     private javax.swing.JTextField newMemberLastNameTextField1;
     private javax.swing.JTextField newMemberPhoneNumberTextField;
