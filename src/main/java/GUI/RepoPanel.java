@@ -367,9 +367,14 @@ public class RepoPanel extends javax.swing.JPanel {
             });
             goodsList.getGoodsList().add(new Goods(goodName, goodManufacturer, goodListedPrice, goodID, goodUnit));
             resetVariables();
+            reloadTable();
         } else {
             JOptionPane.showMessageDialog(null, "Mặt hàng đã tồn tại!", "Oh no!", JOptionPane.WARNING_MESSAGE);
         }
+        addCheck();
+        deleteCheck();
+        editCheck();
+        cancelCheck();
     }//GEN-LAST:event_addButtonActionPerformed
     
     private void unitComboBoxActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_unitComboBoxActionPerformed
