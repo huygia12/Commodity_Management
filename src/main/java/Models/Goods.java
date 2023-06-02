@@ -90,6 +90,7 @@ public class Goods {
     }
     
     public BigDecimal getTotalQuantity(){
+        calculateTotalQuantity();
         return this.totalQuantity;
     }
     
@@ -103,5 +104,13 @@ public class Goods {
 
     public void setUnit(String unit) {
         this.unit = unit.trim();
+    }
+    
+    private void calculateTotalQuantity() {
+        BigDecimal totalQuantityToCalculate = BigDecimal.ZERO;
+        for (Shipment shipment : shipments) {
+            totalQuantityToCalculate = totalQuantityToCalculate.add(shipment.getQuantity());
+        }
+        totalQuantity = totalQuantityToCalculate;
     }
 }
