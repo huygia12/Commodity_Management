@@ -126,7 +126,7 @@ public class EmployJPanel extends javax.swing.JPanel {
 
         inputSalaryLabel.setFont(new java.awt.Font("Dialog", 1, 11)); // NOI18N
         inputSalaryLabel.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
-        inputSalaryLabel.setText("Lương:");
+        inputSalaryLabel.setText("Lương/h:");
 
         javax.swing.GroupLayout inputInfoPanelLayout = new javax.swing.GroupLayout(inputInfoPanel);
         inputInfoPanel.setLayout(inputInfoPanelLayout);
@@ -471,7 +471,7 @@ private void showTable(List<Employee> employees) {
 
         String address = inputAdressField.getText();
         String phone = inputPhoneTextField.getText();
-        String reg = "^(0|\\+84)(\\s|\\.)?((3[2-9])|(5[1-9])|(7[06-9])|(8[1-689])|(9[0-46-9]))(\\d)(\\s|\\.)?(\\d{3})(\\s|\\.)?(\\d{3})$";
+        String reg = "^(0|\\+84)(\\s|\\.)?((3[0-9])|(5[0-9])|(7[0-9])|(8[0-689])|(9[0-46-9]))(\\d)(\\s|\\.)?(\\d{3})(\\s|\\.)?(\\d{3})$";
         if (!phone.matches(reg)) {
             JOptionPane.showMessageDialog(this, "Số điện thoại không đúng định dạng! Vui lòng nhập lại .", "Cảnh báo", JOptionPane.WARNING_MESSAGE);
             return;
@@ -511,7 +511,7 @@ private void showTable(List<Employee> employees) {
         // Xóa các trường nhập để chuẩn bị cho việc nhập thông tin nhân viên tiếp theo
         clearInputFields();
 
-        JOptionPane.showMessageDialog(this, "Employee added successfully!", "Success", JOptionPane.INFORMATION_MESSAGE);
+        JOptionPane.showMessageDialog(this, "Chào mừng nhân viên mới", "Thành Công", JOptionPane.INFORMATION_MESSAGE);
         updateEmployeeCount();
     }//GEN-LAST:event_addButtonActionPerformed
 
@@ -541,7 +541,7 @@ private void showTable(List<Employee> employees) {
             String newGender = maleButton.isSelected() ? "MALE" : femaleRadioButton.isSelected() ? "FEMALE" : "OTHER";
             String newAddress = inputAdressField.getText();
             String newPhone = inputPhoneTextField.getText();
-            String reg = "^(0|\\+84)(\\s|\\.)?((3[2-9])|(5[1-9])|(7[06-9])|(8[1-689])|(9[0-46-9]))(\\d)(\\s|\\.)?(\\d{3})(\\s|\\.)?(\\d{3})$";
+            String reg = "^(0|\\+84)(\\s|\\.)?((3[0-9])|(5[0-9])|(7[0-9])|(8[0-689])|(9[0-46-9]))(\\d)(\\s|\\.)?(\\d{3})(\\s|\\.)?(\\d{3})$";
             if (!newPhone.matches(reg)) {
                 JOptionPane.showMessageDialog(this, "Số điện thoại không đúng định dạng! Vui lòng nhập lại .", "Cảnh báo", JOptionPane.WARNING_MESSAGE);
                 return;
