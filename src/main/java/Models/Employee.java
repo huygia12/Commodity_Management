@@ -64,6 +64,18 @@ public class Employee extends AbstractHuman {
         this.salaryPerDay = BigDecimal.valueOf(salary);
         this.gender = Gender.valueOf(gender.toUpperCase());
     }
+      public Employee(String firstName, String lastName, int age, String address, String cccd, String phone, BigDecimal  salary, String gender) {
+
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.age = age;
+        this.address = address;
+        this.CCCD = cccd;
+        this.phoneNumber = phone;
+        this.salaryPerDay =salary;
+        this.gender = Gender.valueOf(gender.toUpperCase());
+    }
+
 
     public int getStt() {
 
