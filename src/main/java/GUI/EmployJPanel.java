@@ -7,7 +7,9 @@ package GUI;
 import static GUI.MainFrame.employeeList;
 import Models.Employee;
 import Models.EmployeeList;
+import Models.Gender;
 import Models.Shift;
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 import javax.swing.JOptionPane;
@@ -62,6 +64,9 @@ public class EmployJPanel extends javax.swing.JPanel {
         searchButton = new javax.swing.JButton();
         searchIDTextField = new javax.swing.JTextField();
         showAllButton = new javax.swing.JButton();
+        cancelButton = new javax.swing.JButton();
+        quantityEmployLabel = new javax.swing.JLabel();
+        quantityEmploytextField = new javax.swing.JTextField();
         displayPanel = new javax.swing.JPanel();
         displayScrollPane = new javax.swing.JScrollPane();
         displayTable = new javax.swing.JTable();
@@ -238,6 +243,18 @@ public class EmployJPanel extends javax.swing.JPanel {
             }
         });
 
+        cancelButton.setFont(new java.awt.Font("Dialog", 0, 14)); // NOI18N
+        cancelButton.setText("HỦY");
+        cancelButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                cancelButtonActionPerformed(evt);
+            }
+        });
+
+        quantityEmployLabel.setText("Số lượng nhân viên: ");
+
+        quantityEmploytextField.setEditable(false);
+
         javax.swing.GroupLayout functionPanelLayout = new javax.swing.GroupLayout(functionPanel);
         functionPanel.setLayout(functionPanelLayout);
         functionPanelLayout.setHorizontalGroup(
@@ -248,11 +265,8 @@ public class EmployJPanel extends javax.swing.JPanel {
                         .addGap(0, 0, Short.MAX_VALUE)
                         .addComponent(changeButton, javax.swing.GroupLayout.PREFERRED_SIZE, 72, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(functionPanelLayout.createSequentialGroup()
-                        .addContainerGap(84, Short.MAX_VALUE)
+                        .addGap(46, 46, 46)
                         .addGroup(functionPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addGroup(functionPanelLayout.createSequentialGroup()
-                                .addComponent(removeButton, javax.swing.GroupLayout.PREFERRED_SIZE, 71, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(1, 1, 1))
                             .addGroup(functionPanelLayout.createSequentialGroup()
                                 .addGroup(functionPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
                                     .addComponent(searchIDTextField)
@@ -260,7 +274,17 @@ public class EmployJPanel extends javax.swing.JPanel {
                                 .addGap(31, 31, 31)
                                 .addGroup(functionPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                     .addComponent(searchButton, javax.swing.GroupLayout.Alignment.TRAILING)
-                                    .addComponent(addButton, javax.swing.GroupLayout.Alignment.TRAILING))))))
+                                    .addComponent(addButton, javax.swing.GroupLayout.Alignment.TRAILING)))
+                            .addGroup(functionPanelLayout.createSequentialGroup()
+                                .addGroup(functionPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                                    .addComponent(removeButton, javax.swing.GroupLayout.PREFERRED_SIZE, 71, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addGroup(functionPanelLayout.createSequentialGroup()
+                                        .addComponent(quantityEmployLabel)
+                                        .addGap(1, 1, 1)
+                                        .addComponent(quantityEmploytextField, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                        .addComponent(cancelButton, javax.swing.GroupLayout.PREFERRED_SIZE, 71, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                                .addGap(1, 1, 1)))))
                 .addGap(38, 38, 38))
         );
         functionPanelLayout.setVerticalGroup(
@@ -275,18 +299,24 @@ public class EmployJPanel extends javax.swing.JPanel {
                     .addComponent(addButton)
                     .addComponent(showAllButton))
                 .addGap(18, 18, 18)
-                .addComponent(changeButton, javax.swing.GroupLayout.PREFERRED_SIZE, 29, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, Short.MAX_VALUE)
-                .addComponent(removeButton)
-                .addGap(75, 75, 75))
+                .addGroup(functionPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(functionPanelLayout.createSequentialGroup()
+                        .addComponent(changeButton, javax.swing.GroupLayout.PREFERRED_SIZE, 29, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(18, 20, Short.MAX_VALUE)
+                        .addComponent(removeButton)
+                        .addGap(18, 18, 18)
+                        .addComponent(cancelButton))
+                    .addGroup(functionPanelLayout.createSequentialGroup()
+                        .addGap(0, 0, Short.MAX_VALUE)
+                        .addGroup(functionPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(quantityEmployLabel)
+                            .addComponent(quantityEmploytextField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                .addGap(30, 30, 30))
         );
 
         displayTable.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null, null}
+
             },
             new String [] {
                 "Họ", "Tên", "Tuổi", "Giới tính", "SĐT", "Địa chỉ", "CCCD", "Lương"
@@ -354,6 +384,42 @@ private void showTable(List<Employee> employees) {
             model.addRow(rowData);
         }
     }
+
+    private void setTextFieldProperties(javax.swing.JTextField textField, int fontSize) {
+        textField.setFont(new java.awt.Font("Segoe UI", 0, fontSize));
+        textField.setForeground(new java.awt.Color(0, 0, 0));
+        textField.setEditable(true);
+    }
+
+    private void clearInputFields() {
+        setTextFieldProperties(inputFirstNameTextField, 11);
+        setTextFieldProperties(inputLastNameTextField1, 11);
+        setTextFieldProperties(inputAgeTextField, 11);
+        setTextFieldProperties(inputAdressField, 11);
+        setTextFieldProperties(inputCCCDTextField, 11);
+        setTextFieldProperties(inputPhoneTextField, 11);
+        setTextFieldProperties(inputSalaryTextField, 11);
+        // genderbuttonGroup.clearSelection();
+
+        inputFirstNameTextField.setText("");
+        inputLastNameTextField1.setText("");
+        inputAgeTextField.setText("");
+        inputAdressField.setText("");
+        inputCCCDTextField.setText("");
+        inputPhoneTextField.setText("");
+        inputSalaryTextField.setText("");
+    }
+
+    private void updateEmployeeCount() {
+        quantityEmploytextField.setText(Integer.toString(employeeList.getList().size()));
+    }
+
+    private void insertWarningToTextField(javax.swing.JTextField textField, String warningText, int size) {
+        textField.setFont(new java.awt.Font("Segoe UI", java.awt.Font.ITALIC, size));
+        textField.setForeground(new java.awt.Color(255, 0, 0));
+        textField.setText(warningText);
+        textField.setEditable(true);
+    }
     private void inputLastNameTextField1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_inputLastNameTextField1ActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_inputLastNameTextField1ActionPerformed
@@ -364,27 +430,73 @@ private void showTable(List<Employee> employees) {
 
     private void addButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_addButtonActionPerformed
         // TODO add your handling code here:
+        // Kiểm tra xem có dữ liệu được nhập vào hay không
+        if (inputFirstNameTextField.getText().isEmpty() && inputLastNameTextField1.getText().isEmpty() && inputAgeTextField.getText().isEmpty()
+                && inputAdressField.getText().isEmpty() && inputCCCDTextField.getText().isEmpty() && inputPhoneTextField.getText().isEmpty()
+                && inputSalaryTextField.getText().isEmpty()) {
+            JOptionPane.showMessageDialog(this, "Bạn chưa thêm gì !", "Cảnh báo", JOptionPane.WARNING_MESSAGE);
+            return;
+        }
+//Những thông tin bắt buộc nhập
+        if (inputCCCDTextField.getText().isEmpty()
+                || inputFirstNameTextField.getText().isEmpty()
+                || inputLastNameTextField1.getText().isEmpty()
+                || inputPhoneTextField.getText().isEmpty()) {
+            insertWarningToTextField(inputCCCDTextField, BAT_BUOC_NHAP, 11);
+            insertWarningToTextField(inputFirstNameTextField, BAT_BUOC_NHAP, 11);
+            insertWarningToTextField(inputLastNameTextField1, BAT_BUOC_NHAP, 11);
+            insertWarningToTextField(inputPhoneTextField, BAT_BUOC_NHAP, 11);
+        }
+
+        BigDecimal salary = BigDecimal.ZERO;
         String firstName = inputFirstNameTextField.getText();
         String lastName = inputLastNameTextField1.getText();
         int age = 0;
-        double salary = 0.0;
+        String cccd = inputCCCDTextField.getText();;
+        long cccdInt;
+
         try {
             age = Integer.parseInt(inputAgeTextField.getText());
-            salary = Double.parseDouble(inputSalaryTextField.getText());
+            salary = new BigDecimal(inputSalaryTextField.getText());
+            cccdInt = Long.parseLong(cccd);
+            // Kiểm tra số âm cho age và salary
+            if (age < 0 || salary.compareTo(BigDecimal.ZERO) < 0 || cccdInt < 0) {
+                JOptionPane.showMessageDialog(this, "Nhập tuổi,lương,cccd số âm! Bạn bị ngu à?", "Cảnh báo", JOptionPane.WARNING_MESSAGE);
+                return;
+            }
         } catch (NumberFormatException e) {
-            JOptionPane.showMessageDialog(this, "Age and Salary must be valid numbers.", "Error", JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(this, "Lương,tuổi,cccd cần là một số.", "Lỗi", JOptionPane.ERROR_MESSAGE);
             return;
         }
+
         String address = inputAdressField.getText();
-        String cccd = inputCCCDTextField.getText();
         String phone = inputPhoneTextField.getText();
+        String reg = "^(0|\\+84)(\\s|\\.)?((3[2-9])|(5[1-9])|(7[06-9])|(8[1-689])|(9[0-46-9]))(\\d)(\\s|\\.)?(\\d{3})(\\s|\\.)?(\\d{3})$";
+        if (!phone.matches(reg)) {
+            JOptionPane.showMessageDialog(this, "Số điện thoại không đúng định dạng! Vui lòng nhập lại .", "Cảnh báo", JOptionPane.WARNING_MESSAGE);
+            return;
+        }
         String gender = "";
+
         if (maleButton.isSelected()) {
-            gender = "Male";
+            gender = "MALE";
         } else if (femaleRadioButton.isSelected()) {
-            gender = "Female";
+            gender = "FEMALE";
         } else if (otherRadioButton.isSelected()) {
-            gender = "Other";
+            gender = "OTHER";
+        }
+        if (firstName.isEmpty()) {
+            System.out.println(BAT_BUOC_NHAP);
+            // Hoặc bạn có thể hiển thị thông báo lỗi lên giao diện người dùng thay vì in ra console
+        }
+
+        // Kiểm tra thông tin nhân viên trùng lặp
+        for (Employee employee : employeeList.getList()) {
+            if (employee.getFirstName().equals(firstName) && employee.getLastName().equals(lastName) || employee.getCCCD().equals(cccd)) {
+                JOptionPane.showMessageDialog(this, "Thông tin nhân viên đã trùng! Mong bạn kiểm tra và nhập lại.\n                      (Không được trùng Họ, Tên,CCCD) ",
+                        "Cảnh báo", JOptionPane.WARNING_MESSAGE);
+                return;
+            }
         }
 
         // Tạo một đối tượng Employee mới với thông tin được nhập vào và STT mới
@@ -397,16 +509,10 @@ private void showTable(List<Employee> employees) {
         showTable(employeeList.getList());
 
         // Xóa các trường nhập để chuẩn bị cho việc nhập thông tin nhân viên tiếp theo
-        inputFirstNameTextField.setText("");
-        inputLastNameTextField1.setText("");
-        inputAgeTextField.setText("");
-        inputAdressField.setText("");
-        inputCCCDTextField.setText("");
-        inputPhoneTextField.setText("");
-        inputSalaryTextField.setText("");
-        genderbuttonGroup.clearSelection();
+        clearInputFields();
 
         JOptionPane.showMessageDialog(this, "Employee added successfully!", "Success", JOptionPane.INFORMATION_MESSAGE);
+        updateEmployeeCount();
     }//GEN-LAST:event_addButtonActionPerformed
 
     private void changeButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_changeButtonActionPerformed
@@ -427,34 +533,101 @@ private void showTable(List<Employee> employees) {
             String address = model.getValueAt(rowIndex, 4).toString();
             String phone = model.getValueAt(rowIndex, 5).toString();
             String cccd = model.getValueAt(rowIndex, 6).toString();
-            double salary = Double.parseDouble(model.getValueAt(rowIndex, 7).toString());
+            BigDecimal salary = new BigDecimal(model.getValueAt(rowIndex, 7).toString());
 
-            // Cập nhật các giá trị của nhân viên với các giá trị mới được nhập từ các trường nhập liệu
-            firstName = inputFirstNameTextField.getText();
-            lastName = inputLastNameTextField1.getText();
-            age = Integer.parseInt(inputAgeTextField.getText());
-            gender = maleButton.isSelected() ? "Male" : femaleRadioButton.isSelected() ? "Female" : "Other";
-            address = inputAdressField.getText();
-            phone = inputPhoneTextField.getText();
-            cccd = inputCCCDTextField.getText();
-            salary = Double.parseDouble(inputSalaryTextField.getText());
+            // Lấy giá trị mới từ các trường nhập liệu
+            String newFirstName = inputFirstNameTextField.getText();
+            String newLastName = inputLastNameTextField1.getText();
+            String newGender = maleButton.isSelected() ? "MALE" : femaleRadioButton.isSelected() ? "FEMALE" : "OTHER";
+            String newAddress = inputAdressField.getText();
+            String newPhone = inputPhoneTextField.getText();
+            String reg = "^(0|\\+84)(\\s|\\.)?((3[2-9])|(5[1-9])|(7[06-9])|(8[1-689])|(9[0-46-9]))(\\d)(\\s|\\.)?(\\d{3})(\\s|\\.)?(\\d{3})$";
+            if (!newPhone.matches(reg)) {
+                JOptionPane.showMessageDialog(this, "Số điện thoại không đúng định dạng! Vui lòng nhập lại .", "Cảnh báo", JOptionPane.WARNING_MESSAGE);
+                return;
+            }
+            String newCCCD = inputCCCDTextField.getText();
+            long cccdInt;
 
-            // Cập nhật các giá trị của hàng được chọn trong bảng với các giá trị mới
-            model.setValueAt(firstName, rowIndex, 0);
-            model.setValueAt(lastName, rowIndex, 1);
-            model.setValueAt(age, rowIndex, 2);
-            model.setValueAt(gender, rowIndex, 3);
-            model.setValueAt(address, rowIndex, 4);
-            model.setValueAt(phone, rowIndex, 5);
-            model.setValueAt(cccd, rowIndex, 6);
-            model.setValueAt(salary, rowIndex, 7);
+            try {
+                int newAge = Integer.parseInt(inputAgeTextField.getText());
 
-            // Hiển thị thông báo cho người dùng để thông báo rằng thông tin nhân viên đã được cập nhật thành công
-            JOptionPane.showMessageDialog(this, "Thông tin nhân viên đã được cập nhật thành công!", "Thông báo", JOptionPane.INFORMATION_MESSAGE);
+                BigDecimal newSalary = new BigDecimal(inputSalaryTextField.getText());
+                cccdInt = Long.parseLong(newCCCD);
+
+                if (newAge < 0 || newSalary.compareTo(BigDecimal.ZERO) < 0 || cccdInt < 0) {
+                    JOptionPane.showMessageDialog(this, "Sửa tuổi ,lương,cccd số âm! Bạn bị ngu à?", "Cảnh báo", JOptionPane.WARNING_MESSAGE);
+                    return;
+                }
+
+                // Kiểm tra xem thông tin nhân viên đã được thay đổi hay không
+                boolean hasChanged = !newFirstName.equals(firstName)
+                        || !newLastName.equals(lastName)
+                        || newAge != age
+                        || !newGender.equals(gender)
+                        || !newAddress.equals(address)
+                        || !newPhone.equals(phone)
+                        || !newCCCD.equals(cccd)
+                        || !newSalary.equals(salary);
+
+                if (hasChanged) {
+                    // Kiểm tra trùng lặp thông tin
+                    for (Employee employee : employeeList.getList()) {
+                        if (employee != employeeList.getList().get(rowIndex) && (employee.getPhoneNumber().equals(newPhone) || employee.getCCCD().equals(newCCCD))) {
+                            // Hiển thị cảnh báo trùng lặp thông tin
+                            JOptionPane.showMessageDialog(this, "CCCD hoặc SĐT này đã trùng lặp với một nhân viên khác!", "Cảnh báo", JOptionPane.WARNING_MESSAGE);
+                            return;
+                        }
+                    }
+                    // Hiển thị thông báo cho người dùng để xác nhận việc chỉnh sửa thông tin
+                    int option = JOptionPane.showOptionDialog(this,
+                            "Bạn có chắc muốn chỉnh sửa thông tin nhân viên ?",
+                            "Xác nhận chỉnh sửa",
+                            JOptionPane.YES_NO_OPTION,
+                            JOptionPane.QUESTION_MESSAGE,
+                            null,
+                            new Object[]{"Yes", "No"},
+                            "No");
+
+                    if (option == JOptionPane.YES_OPTION) {
+                        // Cập nhật các giá trị của hàng được chọn trong bảng với các giá trị mới
+                        model.setValueAt(newFirstName, rowIndex, 0);
+                        model.setValueAt(newLastName, rowIndex, 1);
+                        model.setValueAt(newAge, rowIndex, 2);
+                        model.setValueAt(newGender, rowIndex, 3);
+                        model.setValueAt(newAddress, rowIndex, 4);
+                        model.setValueAt(newPhone, rowIndex, 5);
+                        model.setValueAt(newCCCD, rowIndex, 6);
+                        model.setValueAt(newSalary, rowIndex, 7);
+
+                        // Cập nhật thông tin nhân viên trong employeeList
+                        Employee selectedEmployee = employeeList.getList().get(rowIndex);
+                        selectedEmployee.setFirstName(newFirstName);
+                        selectedEmployee.setLastName(newLastName);
+                        selectedEmployee.setAge(newAge);
+                        selectedEmployee.setGender(Gender.valueOf(newGender.toUpperCase()));
+                        selectedEmployee.setAddress(newAddress);
+                        selectedEmployee.setPhoneNumber(newPhone);
+                        selectedEmployee.setCCCD(newCCCD);
+                        selectedEmployee.setSalaryPerDay(newSalary);
+
+                        // Hiển thị thông báo cho người dùng để thông báo rằng thông tin nhân viên đã được cập nhật thành công
+                        JOptionPane.showMessageDialog(this, "Thông tin nhân viên đã được cập nhật thành công!", "Thông báo", JOptionPane.INFORMATION_MESSAGE);
+                    }
+                } else {
+                    // Hiển thị thông báo cho người dùng rằng không có thay đổi thông tin
+                    JOptionPane.showMessageDialog(this, "Không có thay đổi thông tin nhân viên.", "Thông báo", JOptionPane.INFORMATION_MESSAGE);
+                }
+            } catch (NumberFormatException e) {
+                JOptionPane.showMessageDialog(this, "Lương,tuổi,cccd cần là một số .", "Lỗi", JOptionPane.ERROR_MESSAGE);
+            }
         } else {
             // Nếu không có hàng nào được chọn, hiển thị một thông báo cho người dùng
             JOptionPane.showMessageDialog(this, "Vui lòng chọn một hàng để cập nhật thông tin!", "Thông báo", JOptionPane.WARNING_MESSAGE);
         }
+
+        clearInputFields();
+        updateEmployeeCount();
 
     }//GEN-LAST:event_changeButtonActionPerformed
 
@@ -464,50 +637,71 @@ private void showTable(List<Employee> employees) {
         int selectedRowIndex = displayTable.getSelectedRow();
         List<Employee> employee = new ArrayList<>(employeeList.getList());
         if (selectedRowIndex >= 0) {
-
-            employeeList.getList().remove(employee);
+            // Lấy chỉ số hàng được chọn trong bảng
+            int indexInList = employeeList.getList().indexOf(employee.get(selectedRowIndex));
+            // Xóa đối tượng Employee khỏi danh sách
+            employeeList.getList().remove(indexInList);
             // Xóa dòng được chọn trong bảng
             model.removeRow(selectedRowIndex);
-            // Lưu lại các thay đổi
+            // Cập nhật bảng
             model.fireTableDataChanged();
+            // Hiển thị thông báo cho người dùng
+            JOptionPane.showMessageDialog(this, "Thông tin nhân viên đã được xóa thành công!", "Thông báo", JOptionPane.INFORMATION_MESSAGE);
+        } else {
+            // Hiển thị thông báo khi không có hàng nào được chọn
+            JOptionPane.showMessageDialog(this, "Vui lòng chọn một hàng cần xóa!", "Thông báo", JOptionPane.WARNING_MESSAGE);
         }
+        updateEmployeeCount();
     }//GEN-LAST:event_removeButtonActionPerformed
 
     private void searchButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_searchButtonActionPerformed
         // TODO add your handling code here:
         String searchValue = searchIDTextField.getText();
 
-        // Tìm kiếm vị trí của nhân viên có ID tương ứng trong danh sách nhân viên
-        int rowIndex = getRowForFieldValue(searchValue);
+        if (searchValue.isEmpty()) {
+            JOptionPane.showMessageDialog(null, "Bạn cần nhập thông tin nhân viên tại đây");
+            return;
+        }
 
-        if (rowIndex >= 0) {
-            // Nếu tìm thấy, lấy đối tượng Employee tương ứng từ danh sách nhân viên trong đối tượng EmployeeList
-            Employee employee = employeeList.getList().get(rowIndex);
+        if (searchValue.isEmpty()) {
+            JOptionPane.showMessageDialog(null, "Bạn cần nhập thông tin nhân viên tại đây");
+            return;
+        }
+        // Tìm kiếm vị trí của tất cả các nhân viên có firstName tương ứng trong danh sách nhân viên
+        List<Integer> rowIndexes = getRowsForFieldValue(searchValue);
+
+        if (rowIndexes.size() > 0) {
+            // Nếu tìm thấy, lấy danh sách các đối tượng Employee tương ứng từ danh sách nhân viên trong đối tượng EmployeeList
+            List<Employee> searchResult = new ArrayList<>();
+            for (Integer rowIndex : rowIndexes) {
+                Employee employee = employeeList.getList().get(rowIndex);
+                searchResult.add(employee);
+            }
 
             // Hiển thị danh sách nhân viên trong bảng, chỉ hiển thị thông tin của nhân viên tìm kiếm
-            List<Employee> searchResult = new ArrayList<>();
-            searchResult.add(employee);
             showTable(searchResult);
         } else {
             // Nếu không tìm thấy, hiển thị thông báo lỗi
-
             JOptionPane.showMessageDialog(null, "Không tìm thấy nhân viên có thông tin tương ứng");
         }
     }//GEN-LAST:event_searchButtonActionPerformed
 // Phương thức tìm kiếm dựa trên nhiều trường
 
-    private int getRowForFieldValue(String fieldValue) {
+    private List<Integer> getRowsForFieldValue(String fieldValue) {
         DefaultTableModel model = (DefaultTableModel) displayTable.getModel();
         int rowCount = model.getRowCount();
+        List<Integer> resultRows = new ArrayList<>();
+
         for (int i = 0; i < rowCount; i++) {
-            String firstName = model.getValueAt(i, 1) != null ? model.getValueAt(i, 1).toString() : "";
-            String lastName = model.getValueAt(i, 2) != null ? model.getValueAt(i, 2).toString() : "";
-            String cccd = model.getValueAt(i, 7) != null ? model.getValueAt(i, 7).toString() : "";
+            String firstName = model.getValueAt(i, 0) != null ? model.getValueAt(i, 0).toString() : "";
+            String lastName = model.getValueAt(i, 1) != null ? model.getValueAt(i, 1).toString() : "";
+            String cccd = model.getValueAt(i, 6) != null ? model.getValueAt(i, 6).toString() : "";
             if (firstName.toLowerCase().contains(fieldValue.toLowerCase()) || lastName.toLowerCase().contains(fieldValue.toLowerCase()) || cccd.contains(fieldValue)) {
-                return i;
+                resultRows.add(i);
             }
         }
-        return -1;
+
+        return resultRows;
     }
     private void displayTableMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_displayTableMouseClicked
         // TODO add your handling code here:
@@ -540,10 +734,10 @@ private void showTable(List<Employee> employees) {
 
             // Kiểm tra nút radio giới tính tương ứng với giới tính của nhân viên được chọn
             switch (gender) {
-                case "Male":
+                case "MALE":
                     maleButton.setSelected(true);
                     break;
-                case "Female":
+                case "FEMALE":
                     femaleRadioButton.setSelected(true);
                     break;
                 default:
@@ -557,7 +751,13 @@ private void showTable(List<Employee> employees) {
         // TODO add your handling code here:
         // Hiển thị danh sách nhân viên trên bảng
         showTable(employeeList.getList());
+        updateEmployeeCount();
     }//GEN-LAST:event_showAllButtonActionPerformed
+
+    private void cancelButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cancelButtonActionPerformed
+        // TODO add your handling code here:
+        clearInputFields();
+    }//GEN-LAST:event_cancelButtonActionPerformed
 
     public void passData(EmployeeList employeelist, Shift shift) {
         this.employeelist = employeelist;
@@ -566,9 +766,11 @@ private void showTable(List<Employee> employees) {
     private ArrayList<Employee> employees;
     private EmployeeList employeelist;
     private Shift shift;
+    private final String BAT_BUOC_NHAP = "Bắt buộc phải nhập!";
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton addButton;
+    private javax.swing.JButton cancelButton;
     private javax.swing.JButton changeButton;
     private javax.swing.JPanel displayPanel;
     private javax.swing.JScrollPane displayScrollPane;
@@ -594,6 +796,8 @@ private void showTable(List<Employee> employees) {
     private javax.swing.JTextField inputSalaryTextField;
     private javax.swing.JRadioButton maleButton;
     private javax.swing.JRadioButton otherRadioButton;
+    private javax.swing.JLabel quantityEmployLabel;
+    private javax.swing.JTextField quantityEmploytextField;
     private javax.swing.JButton removeButton;
     private javax.swing.JButton searchButton;
     private javax.swing.JTextField searchIDTextField;
