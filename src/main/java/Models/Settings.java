@@ -32,11 +32,11 @@ public class Settings {
     public Settings() {
     }
 
-    public Store getMyStore() {
+    public Store getStore() {
         return myStore;
     }
 
-    public void setMyStore(Store myStore) {
+    public void setStore(Store myStore) {
         this.myStore = myStore;
     }
 

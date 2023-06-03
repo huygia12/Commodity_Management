@@ -38,10 +38,10 @@ public class SettingsController {
             choice = sc.nextLine();
             switch (choice) {
                 case "1":
-                    storeCtr.getStoreView().showStoreInfor(settings.getMyStore());
+                    storeCtr.getStoreView().showStoreInfor(settings.getStore());
                     break;
                 case "2":
-                    storeCtr.setStoreInfor(currentShift, settings.getMyStore());
+                    storeCtr.setStoreInfor(currentShift, settings.getStore());
                     break;
                 case "3":
                     pointsExchangeMechanism(settings);

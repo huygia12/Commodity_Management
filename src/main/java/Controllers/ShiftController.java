@@ -8,6 +8,7 @@ import Models.Employee;
 import Models.EmployeeList;
 import Models.Goods;
 import Models.History;
+import Models.ImportedGoods;
 import Models.Order;
 import Models.PaymentOptions;
 import Ultility.IDGenerator;
@@ -67,7 +68,7 @@ public class ShiftController {
                         this.shiftView.shiftNotOpenCaution();
                         break;
                     }
-                    this.shiftView.typeInShippingFee(shift);
+                    this.shiftView.typeInSurcharge(shift);
                     break;
                 case "3":
                     if (shift == null) {
@@ -198,7 +199,7 @@ public class ShiftController {
     public BigDecimal getTotalGoodsQuanOfThisShift(Shift shift) {
         BigDecimal result = BigDecimal.ZERO;
         for (Order order : shift.getOrderHisPerShift()) {
-            for (Goods goods : order.getGoodsList()) {
+            for (Goods goods : order.getList()) {
                 result = result.add(goodsCtr.getTotalQuanByShipments(goods));
             }
         }
@@ -210,7 +211,7 @@ public class ShiftController {
         // cua tat ca san pham trong 1 ca lam viec
         Map<String, StaticalItems> consumptions = new HashMap<>();
         for (Order order : shift.getOrderHisPerShift()) {
-            for (Goods goods : order.getGoodsList()) {
+            for (Goods goods : order.getList()) {
                 StaticalItems newStaticalItems = new StaticalItems();
                 newStaticalItems.setName(goods.getGoodsName());
                 newStaticalItems.setQuantity(goodsCtr.getTotalQuanByShipments(goods));
@@ -234,6 +235,24 @@ public class ShiftController {
                     .divide(totalQuan) + ""));
         }
         return consumptions;
+    }
+
+    public Order containOrder(List<Order> orderList, String orderID) {
+        for (Order order : orderList) {
+            if (order.getID().equals(orderID)) {
+                return order;
+            }
+        }
+        return null;
+    }
+
+    public ImportedGoods containImportedGoods(List<ImportedGoods> importedGoodsList, String importedGoodsID) {
+        for (ImportedGoods importedGoods : importedGoodsList) {
+            if (importedGoods.getID().equals(importedGoodsID)) {
+                return importedGoods;
+            }
+        }
+        return null;
     }
 
     private Shift openShift(EmployeeList employeeList, IDGenerator iDGenerator, Store myStore, Shift shift) {
@@ -279,7 +298,7 @@ public class ShiftController {
     }
 
     private void showImportGoodsHistory(Shift shift, HistoryController hisCtr) {
-        if (shift.getImportGoodsHis().getGoodsList().isEmpty()) {
+        if (shift.getImportGoodsHis().getList().isEmpty()) {
             System.out.println("Your current import history is empty!");
             return;
         }
@@ -356,8 +375,8 @@ public class ShiftController {
     }
 
     private boolean endShift(Store myStore, Shift shift) {
-        if (shift.getTransportFee() == BigDecimal.ZERO) {
-            if (this.shiftView.typeInShippingFee(shift) != 1) {
+        if (shift.getSurcharge() == BigDecimal.ZERO) {
+            if (this.shiftView.typeInSurcharge(shift) != 1) {
                 return false;
             }
         }

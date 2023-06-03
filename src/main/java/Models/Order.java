@@ -6,7 +6,9 @@ import com.google.gson.annotations.SerializedName;
 import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.List;
 
 public class Order extends GoodsList<Goods> {
 
@@ -45,6 +47,23 @@ public class Order extends GoodsList<Goods> {
         this.ID = ID.trim();
     }
 
+    public Order(LocalDateTime orderDateTime, String ID, PaymentOptions paymentOptions, CustomerCard customerCard, Employee cashier) {
+        this.orderDateTime = orderDateTime;
+        this.ID = ID;
+        this.paymentOptions = paymentOptions;
+        this.customerCard = customerCard;
+        this.cashier = cashier;
+    }
+
+    public Order(LocalDateTime orderDateTime, String ID, PaymentOptions paymentOptions, CustomerCard customerCard, Employee cashier, List<Goods> goodsList) {
+        super(goodsList);
+        this.orderDateTime = orderDateTime;
+        this.ID = ID;
+        this.paymentOptions = paymentOptions;
+        this.customerCard = customerCard;
+        this.cashier = cashier;
+    }
+
     public Order() {
         super(new ArrayList<>());
     }
@@ -77,8 +96,11 @@ public class Order extends GoodsList<Goods> {
         return this.orderDateTime;
     }
 
-    public void setOrderDateTime(LocalDateTime orderDateTime){
-        this.orderDateTime = orderDateTime;
+    public void setOrderDateTime(){
+        String current = LocalDateTime.now()
+                .format(DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm:ss"));
+        this.orderDateTime = LocalDateTime.parse(current, 
+                DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm:ss"));
     }
     
     public PaymentOptions getPaymentOptions() {

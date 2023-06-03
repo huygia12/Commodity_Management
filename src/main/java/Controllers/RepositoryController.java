@@ -58,7 +58,7 @@ public class RepositoryController {
                         // sau moi lan nhap hang thi add newImportGoods vao ImportGoodsHistory cua shift hien tai
                         if (newImportGoods != null) {
                             shift.getImportGoodsHis()
-                                    .getGoodsList()
+                                    .getList()
                                     .add(newImportGoods);
                         }
                         break;
@@ -128,7 +128,7 @@ public class RepositoryController {
             }
         }
         newGoods.setID(idGenerator.generateID(Goods.class.getName(), 6));
-        repoGoodsList.getGoodsList().add(newGoods);
+        repoGoodsList.getList().add(newGoods);
     }
 
     // Function2
@@ -272,14 +272,14 @@ public class RepositoryController {
     }
 
     private void finishEditGoods(Goods searchGoods, Goods draftGoods, GoodsList<Goods> goodsList) {
-        GoodsList bucket = new GoodsList(new ArrayList<>(goodsList.getGoodsList()
+        GoodsList bucket = new GoodsList(new ArrayList<>(goodsList.getList()
                 .stream()
                 .filter(x -> goodsCtr.twoGoodsIsDup(x, draftGoods))
                 .toList()));
-        if (bucket.getGoodsList().contains(searchGoods)) {
-            bucket.getGoodsList().remove(searchGoods);
+        if (bucket.getList().contains(searchGoods)) {
+            bucket.getList().remove(searchGoods);
         }
-        if (!bucket.getGoodsList().isEmpty()) {
+        if (!bucket.getList().isEmpty()) {
             System.out.print(
                     "Cannot implement your changes cause it make duplicate value with these existed Goods value!");
             goodsListCtr.getView().showGoodsList(bucket);
@@ -415,7 +415,7 @@ public class RepositoryController {
 
     // Function 4.1
     private void delGoodsInRepo(Goods goods, GoodsList<Goods> repoGoodsList) {
-        repoGoodsList.getGoodsList().remove(goods);
+        repoGoodsList.getList().remove(goods);
         System.out.println("Delete succeed...");
     }
 
@@ -434,14 +434,14 @@ public class RepositoryController {
 
         //goodsList se sap xeo theo thu tu uu tien: name -> manufacture
         repoGoodsList
-                .getGoodsList()
+                .getList()
                 .sort(new NameComparator().thenComparing(new ManufacComparator()));
         goodsListCtr.getView().showGoodsList(repoGoodsList);
     }
 
     // Function 6
     private void makeListByRequirement(GoodsList<Goods> repoGoodsList) {
-        if (repoGoodsList.getGoodsList().isEmpty()) {
+        if (repoGoodsList.getList().isEmpty()) {
             System.out.println("Notthing found in repository to make a filter!");
             return;
         }
@@ -492,7 +492,7 @@ public class RepositoryController {
                     manufacNeedToList = listOfManufac.get(choice - 1);
                     final String tmpStr = manufacNeedToList;
                     filterList.setGoodsList(new ArrayList<>(repoGoodsList
-                            .getGoodsList()
+                            .getList()
                             .stream()
                             .filter(x -> x.getManufacture().equalsIgnoreCase(tmpStr))
                             .toList()));
@@ -509,11 +509,11 @@ public class RepositoryController {
 
     // Function 6.2
     private void printTopLeastQuan(GoodsList<Goods> repoGoodsList) {
-        repoGoodsList.getGoodsList()
+        repoGoodsList.getList()
                 .sort(new QuanComparator()
                         .thenComparing(new NameComparator())
                         .thenComparing(new ManufacComparator()));
-        GoodsList filterList = new GoodsList(repoGoodsList.getGoodsList()
+        GoodsList filterList = new GoodsList(repoGoodsList.getList()
                 .stream()
                 .limit(10).toList());
         goodsListCtr.getView().showGoodsList(filterList);
@@ -521,11 +521,11 @@ public class RepositoryController {
 
     // Function 6.3
     private void printTopLargestQuan(GoodsList<Goods> repoGoodsList) {
-        repoGoodsList.getGoodsList()
+        repoGoodsList.getList()
                 .sort(new QuanComparator().reversed()
                         .thenComparing(new NameComparator())
                         .thenComparing(new ManufacComparator()));
-        GoodsList filterList = new GoodsList(repoGoodsList.getGoodsList()
+        GoodsList filterList = new GoodsList(repoGoodsList.getList()
                 .stream()
                 .limit(10)
                 .toList());
@@ -542,7 +542,7 @@ public class RepositoryController {
         // Tao 1 danh sach cac goods chi co 1 shipment moi nhat cua goods do
         // Loai tru cac goods khong chua shipment nao ca
         List<Goods> filterList = new ArrayList<>();
-        for (Goods goods : repoGoodsList.getGoodsList()) {
+        for (Goods goods : repoGoodsList.getList()) {
             if (!goods.getShipments().isEmpty()) {
                 sortShipmentByProducDate(goods);
                 Goods tmpGoods = goodsCtr.cloneGoods(goods);
@@ -558,7 +558,7 @@ public class RepositoryController {
     private void printTopNewestGoods(GoodsList<Goods> repoGoodsList) {
         GoodsList filterList = new GoodsList(listGoodsNewestProducDate(repoGoodsList));
         // Because Goods now only contains 1 shipment, we sort bucket by productionDate
-        Collections.sort(filterList.getGoodsList(), new Comparator<Goods>() {
+        Collections.sort(filterList.getList(), new Comparator<Goods>() {
             @Override
             public int compare(Goods goods1, Goods goods2) {
                 return (-1) * goods1.getShipments().get(0).getNsx()
@@ -567,11 +567,11 @@ public class RepositoryController {
         }.thenComparing(new NameComparator()));
         //If bucket contains less than 10 goods, list them all
         // otherwise, we only take 10 goods with latest Production Date to print out
-        int size = filterList.getGoodsList().size();
+        int size = filterList.getList().size();
         if (size <= 10) {
             goodsListCtr.getView().showGoodsList(filterList);
         } else {
-            GoodsList tmp = new GoodsList(filterList.getGoodsList().subList(0, 10));
+            GoodsList tmp = new GoodsList(filterList.getList().subList(0, 10));
             goodsListCtr.getView().showGoodsList(tmp);
         }
     }
@@ -579,7 +579,7 @@ public class RepositoryController {
     // Function 6.5
     private void printAllExpired(GoodsList<Goods> repoGoodsList) {
         GoodsList filterList = new GoodsList(new ArrayList<>());
-        for (Goods goods : repoGoodsList.getGoodsList()) {
+        for (Goods goods : repoGoodsList.getList()) {
             List<Shipment> tmpShipmentList = goods.getShipments()
                     .stream()
                     .filter(shipment -> shipment.getHsd().isBefore(CURRENT_DATE))
@@ -587,10 +587,10 @@ public class RepositoryController {
             if (!tmpShipmentList.isEmpty()) {
                 Goods tmpGoods = goodsCtr.cloneGoods(goods);
                 tmpGoods.setShipments(tmpShipmentList);
-                filterList.getGoodsList().add(tmpGoods);
+                filterList.getList().add(tmpGoods);
             }
         }
-        if (filterList.getGoodsList().isEmpty()) {
+        if (filterList.getList().isEmpty()) {
             System.out.println("No expired Goods found!");
         } else {
             goodsListCtr.getView().showGoodsList(filterList);

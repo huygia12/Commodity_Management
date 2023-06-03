@@ -94,7 +94,7 @@ public class HistoryController {
         SoldGoods soldGoods = new SoldGoods();
         for (Shift shift : shiftList) {
             for (Order order : shift.getOrderHisPerShift()) {
-                for (Goods goods : order.getGoodsList()) {
+                for (Goods goods : order.getList()) {
                     if (IDBucket.contains(goods.getID())) {
                         soldGoods = goodsListCtr.containGoods(soldGoodsList, goods.getID());
                         // set gia da ban cho khach hang 
@@ -115,7 +115,7 @@ public class HistoryController {
                         soldGoods.setTotalAmountSold(soldGoods.getSoldPrice()
                                 .multiply(soldGoods.getTotalQuantity()));
                         // them vao danh sach cac san pham da ban
-                        soldGoodsList.getGoodsList().add(soldGoods);
+                        soldGoodsList.getList().add(soldGoods);
                         // them id cua soldGoods da ton tai vao trong idbucket
                         IDBucket.add(goods.getID());
                     }
@@ -165,7 +165,7 @@ public class HistoryController {
         Set<String> IDBucket = new HashSet<>();
         ImportedGoods tmpImportGoods = new ImportedGoods();
         for (Shift shift : shiftList) {
-            for (ImportedGoods importGoods : shift.getImportGoodsHis().getGoodsList()) {
+            for (ImportedGoods importGoods : shift.getImportGoodsHis().getList()) {
                 if (IDBucket.contains(importGoods.getID())) {
                     tmpImportGoods = goodsListCtr.containGoods(importGoodsList, importGoods.getID());
                     // tang so luong vao tong so luong
@@ -184,7 +184,7 @@ public class HistoryController {
                             importGoods.getShipments().get(0).getImportPrice()
                                     .multiply(importGoodsCtr.getTotalQuanByShipments(importGoods)));
                     // them vao danh sach cac san pham da nhap
-                    importGoodsList.getGoodsList().add(tmpImportGoods);
+                    importGoodsList.getList().add(tmpImportGoods);
                     // them id cua importGoods da ton tai vao trong idbucket
                     IDBucket.add(importGoods.getID());
                 }
@@ -197,7 +197,7 @@ public class HistoryController {
         List<Shift> shiftList = new ArrayList<>();
         for (Shift shift : history.getShiftHistory()) {
             Shift tempShift = new Shift();
-            for (ImportedGoods importGoods : shift.getImportGoodsHis().getGoodsList()) {
+            for (ImportedGoods importGoods : shift.getImportGoodsHis().getList()) {
                 LocalDate importDateTime = LocalDate
                         .parse(importGoods.getImportDateTime(),
                                 DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm:ss"));
@@ -206,10 +206,10 @@ public class HistoryController {
                         && importDateTime.isBefore(fromToDate.getV()))
                         || importDateTime.isEqual(fromToDate.getK())
                         || importDateTime.isEqual(fromToDate.getV())) {
-                    tempShift.getImportGoodsHis().getGoodsList().add(importGoods);
+                    tempShift.getImportGoodsHis().getList().add(importGoods);
                 }
             }
-            if (!tempShift.getImportGoodsHis().getGoodsList().isEmpty()) {
+            if (!tempShift.getImportGoodsHis().getList().isEmpty()) {
                 tempShift.setID(shift.getID());
                 shiftList.add(tempShift);
             }
@@ -229,9 +229,7 @@ public class HistoryController {
     private List<Shift> shiftBetweenFromToDate(CustomPair<LocalDate, LocalDate> fromToDate, History history) {
         List<Shift> shiftList = new ArrayList<>();
         for (Shift shift : history.getShiftHistory()) {
-            LocalDate importDateTime = LocalDate
-                    .parse(shift.getOpenTime(),
-                            DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm:ss"));
+            LocalDate importDateTime = shift.getOpenTime().toLocalDate();
             // Neu order nam trong khoang cua fromToDate thi them vao tmp
             if ((importDateTime.isAfter(fromToDate.getK())
                     && importDateTime.isBefore(fromToDate.getV()))
@@ -254,7 +252,7 @@ public class HistoryController {
         Order searchingOrder = searchOrder(history);
         if(searchingOrder != null){
             this.view.showAnOrderInDetail(searchingOrder);
-            GoodsList<Goods> orderGoodsList = new GoodsList(searchingOrder.getGoodsList());
+            GoodsList<Goods> orderGoodsList = new GoodsList(searchingOrder.getList());
             goodsListCtr.getView().showGoodsList(orderGoodsList);
         }
     }
@@ -286,7 +284,7 @@ public class HistoryController {
 
     public ImportedGoods containImportedGoods(String ID, History history) {
         for (Shift shift : history.getShiftHistory()) {
-            for (ImportedGoods importGoods : shift.getImportGoodsHis().getGoodsList()) {
+            for (ImportedGoods importGoods : shift.getImportGoodsHis().getList()) {
                 if (importGoods.getID().equals(ID)) {
                     return importGoods;
                 }

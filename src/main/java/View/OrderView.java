@@ -206,8 +206,8 @@ public class OrderView {
         System.out.println("--------------------------------------------------------------------");
         System.out.format("%-25s %-10s %-15s %-15s\n", "Name", "Quantity", "Price", "Total");
         System.out.format("%-25s %-10s %-15s %-15s\n", "-------------------------", "----------", "---------------", "---------------");
-        for (int i = 0; i < order.getGoodsList().size(); i++) {
-            Goods goods = order.getGoodsList().get(i);
+        for (int i = 0; i < order.getList().size(); i++) {
+            Goods goods = order.getList().get(i);
             BigDecimal totalQuantity = goodsCtr.getTotalQuanByShipments(goods);
             BigDecimal price = goods.getListPrice();
             BigDecimal totalPrice = totalQuantity.multiply(price);
@@ -235,8 +235,8 @@ public class OrderView {
         System.out.println("");
         System.out.format("%-25s %-10s %-15s %-15s\n", "Name", "Quantity", "Price", "Total");
         System.out.format("%-25s %-10s %-15s %-15s\n", "-------------------------", "----------", "---------------", "---------------");
-        for (int i = 0; i < order.getGoodsList().size(); i++) {
-            Goods goods = order.getGoodsList().get(i);
+        for (int i = 0; i < order.getList().size(); i++) {
+            Goods goods = order.getList().get(i);
             BigDecimal totalQuantity = goodsCtr.getTotalQuanByShipments(goods);
             BigDecimal price = goods.getListPrice();
             BigDecimal totalPrice = totalQuantity.multiply(price);
@@ -276,8 +276,8 @@ public class OrderView {
             pw.println("");
             pw.format("%-25s %-10s %-15s %-15s\n", "Name", "Quantity", "Price", "Total");
             pw.format("%-25s %-10s %-15s %-15s\n", "-------------------------", "----------", "---------------", "---------------");
-            for (int i = 0; i < order.getGoodsList().size(); i++) {
-                Goods goods = order.getGoodsList().get(i);
+            for (int i = 0; i < order.getList().size(); i++) {
+                Goods goods = order.getList().get(i);
                 BigDecimal totalQuantity = goodsCtr.getTotalQuanByShipments(goods);
                 BigDecimal price = goods.getListPrice();
                 BigDecimal totalPrice = totalQuantity.multiply(price);

@@ -111,7 +111,7 @@ public class RepositoryView {
     public Set<String> printManufacList(GoodsList<Goods> repoGoodsList) {
         // in ra danh sach cac manufacture hien tai(khong in trung lap)
         Set<String> listOfManufac = new HashSet<>();
-        for (Goods goods : repoGoodsList.getGoodsList()) {
+        for (Goods goods : repoGoodsList.getList()) {
             listOfManufac.add(goods.getManufacture());
         }
         if (listOfManufac.isEmpty()) {

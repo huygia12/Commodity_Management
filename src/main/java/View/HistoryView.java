@@ -139,7 +139,7 @@ public class HistoryView {
     }
 
     public void showOrderHistory(GoodsList<SoldGoods> goodsList) {
-        if (goodsList.getGoodsList().isEmpty()) {
+        if (goodsList.getList().isEmpty()) {
             System.out.println("No goods found!");
             return;
         }
@@ -159,7 +159,7 @@ public class HistoryView {
                 "Sold Total(Taxed and Discounted)");
         System.out.println("");
         System.out.println("|" + "-".repeat(borderLength) + "|");
-        for (SoldGoods goods : goodsList.getGoodsList()) {
+        for (SoldGoods goods : goodsList.getList()) {
             System.out.printf("| %-" + String.format(goodsIDMaxSize + "s")
                     + " | %-" + String.format(goodsNameMaxSize + "s")
                     + " | %-" + String.format(goodsTotalQuanMaxSize + ".1f")
@@ -172,7 +172,7 @@ public class HistoryView {
             System.out.println("|" + "-".repeat(borderLength) + "|");
         }
         BigDecimal total = BigDecimal.ZERO;
-        for (SoldGoods goods : goodsList.getGoodsList()) {
+        for (SoldGoods goods : goodsList.getList()) {
             total = total.add(goods.getTotalAmountSold());
         }
         System.out.println(String.format("%" + (totalColSize - totalAmountSoldMaxSize) + "s"
@@ -184,7 +184,7 @@ public class HistoryView {
         goodsNameMaxSize = "Goods Name".length();
         goodsTotalQuanMaxSize = "Quantity".length();
         totalAmountSoldMaxSize = "Sold Total(Taxed and Discounted)".length();
-        for (SoldGoods goods : goodsList.getGoodsList()) {
+        for (SoldGoods goods : goodsList.getList()) {
             if (goods.getID().length() > goodsIDMaxSize) {
                 goodsIDMaxSize = goods.getID().length();
             }
@@ -223,7 +223,7 @@ public class HistoryView {
         System.out.println("");
         System.out.println("|" + "-".repeat(borderLength) + "|");
         for (Shift shift : history.getShiftHistory()) {
-            for (ImportedGoods importGoods : shift.getImportGoodsHis().getGoodsList()) {
+            for (ImportedGoods importGoods : shift.getImportGoodsHis().getList()) {
                 System.out.printf("| %-" + String.format(importGoodsIDMaxSize + "s")
                         + " | %-" + String.format(importDateMaxSize + "s")
                         + " | %-" + String.format(importGoodsNameMaxSize + "s")
@@ -244,7 +244,7 @@ public class HistoryView {
         importGoodsQuanMaxSize = "Quantity".length();
         importGoodsNameMaxSize = "Goods Name".length();
         for (Shift shift : history.getShiftHistory()) {
-            for (ImportedGoods importGoods : shift.getImportGoodsHis().getGoodsList()) {
+            for (ImportedGoods importGoods : shift.getImportGoodsHis().getList()) {
                 if (importGoods.getID().length() > importGoodsIDMaxSize) {
                     importGoodsIDMaxSize = importGoods.getID().length();
                 }
@@ -265,7 +265,7 @@ public class HistoryView {
     }
 
     public void showImportGoodsHistory(GoodsList<ImportedGoods> goodsList) {
-        if (goodsList.getGoodsList().isEmpty()) {
+        if (goodsList.getList().isEmpty()) {
             System.out.println("No goods found!");
             return;
         }
@@ -285,7 +285,7 @@ public class HistoryView {
                 "Total Import Amount");
         System.out.println("");
         System.out.println("|" + "-".repeat(borderLength) + "|");
-        for (ImportedGoods goods : goodsList.getGoodsList()) {
+        for (ImportedGoods goods : goodsList.getList()) {
             System.out.printf("| %-" + String.format(importGoodsIDMaxSize + "s")
                     + " | %-" + String.format(importGoodsNameMaxSize + "s")
                     + " | %-" + String.format(importGoodsQuanMaxSize + ".1f")
@@ -298,7 +298,7 @@ public class HistoryView {
             System.out.println("|" + "-".repeat(borderLength) + "|");
         }
         BigDecimal total = BigDecimal.ZERO;
-        for (ImportedGoods importGoods : goodsList.getGoodsList()) {
+        for (ImportedGoods importGoods : goodsList.getList()) {
             total = total.add(importGoods.getTotalAmountImport());
         }
         System.out.println(String.format("%" + (totalColSize - importGoodsTotalAmountMaxSize) + "s"
@@ -310,7 +310,7 @@ public class HistoryView {
         importGoodsNameMaxSize = "Goods Name".length();
         importGoodsQuanMaxSize = "Imported Quantity".length();
         importGoodsTotalAmountMaxSize = "Total Import Amount".length();
-        for (ImportedGoods goods : goodsList.getGoodsList()) {
+        for (ImportedGoods goods : goodsList.getList()) {
             if (goods.getID().length() > importGoodsIDMaxSize) {
                 importGoodsIDMaxSize = goods.getID().length();
             }
@@ -377,8 +377,8 @@ public class HistoryView {
             if (shift.getID().length() > importGoodsIDMaxSize) {
                 importGoodsIDMaxSize = shift.getID().length();
             }
-            if (shift.getOpenTime().length() > importDateMaxSize) {
-                importDateMaxSize = shift.getOpenTime().length();
+            if (shift.getOpenTime().toString().length() > importDateMaxSize) {
+                importDateMaxSize = shift.getOpenTime().toString().length();
             }
             if ((shift.getEndTime() + "").length() > importGoodsQuanMaxSize) {
                 importGoodsQuanMaxSize = (shift.getEndTime() + "").length();
@@ -407,8 +407,8 @@ public class HistoryView {
     }
 
     public void showAnShiftInDetail(Shift shift) {
-        String openTime = shift.getOpenTime();
-        String endTime = shift.getEndTime();
+        String openTime = shift.getOpenTime().toString();
+        String endTime = shift.getEndTime().toString();
         if (openTime == null) {
             openTime = "";
         }
@@ -425,7 +425,7 @@ public class HistoryView {
         System.out.printf("%s: %-20.1f\n", "Total direct discount", shiftCtr.getTotalDiscountMoney(shift));
         System.out.printf("%s: %-20.1f\n", "Total point discount", shiftCtr.getTotalPointDiscount(shift));
         System.out.printf("%s: %-20s\n", "VAT", shift.getTax() + "%");
-        System.out.printf("%s: %-20.1f\n", "Shipping Fee", shift.getTransportFee());
+        System.out.printf("%s: %-20.1f\n", "Surcharge during Shift", shift.getSurcharge());
         System.out.printf("%s: %-20.1f\n", "Net Revenue", shiftCtr.getNetRevenue(shift));
         System.out.printf("%s: %-20s\n", "Number of Order", shiftCtr.getNumberOfOrder(shift));
         System.out.printf("%s: %-20.1f\n", "Average per Order", shiftCtr.getAveragePerOrder(shift));

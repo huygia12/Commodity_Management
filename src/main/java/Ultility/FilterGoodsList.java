@@ -33,7 +33,7 @@ public class FilterGoodsList {
         this.goodsList = goodsList;
     }
 
-    public GoodsList<Goods> getGoodsList() {
+    public GoodsList<Goods> getList() {
         return goodsList;
     }
 
@@ -44,7 +44,7 @@ public class FilterGoodsList {
     public GoodsList<Goods> withSameUnit(String unit) {
         GoodsList<Goods> filterGoodsList = new GoodsList();
         filterGoodsList.setGoodsList(this.goodsList
-                .getGoodsList()
+                .getList()
                 .stream().filter(x -> x.getUnit().equals(unit))
                 .map(x -> goodsCtr.cloneGoods(x))
                 .collect(Collectors.toList()));
@@ -53,7 +53,7 @@ public class FilterGoodsList {
 
     public GoodsList<Goods> withinProductionDateRange(LocalDate fromDate, LocalDate toDate) {
         GoodsList<Goods> filterGoodsList = new GoodsList();
-        for (Goods goods : this.goodsList.getGoodsList()) {
+        for (Goods goods : this.goodsList.getList()) {
             List<Shipment> shipmentList = new ArrayList<>();
             shipmentList = goods.getShipments()
                     .stream()
@@ -67,7 +67,7 @@ public class FilterGoodsList {
                 Goods filterGoods = goodsCtr.cloneGoods(goods);
                 filterGoods.setShipments(shipmentList);
                 filterGoodsList
-                        .getGoodsList()
+                        .getList()
                         .add(filterGoods);
             }
         }
@@ -77,7 +77,7 @@ public class FilterGoodsList {
 
     public GoodsList<Goods> withinExpirDateRange(LocalDate fromDate, LocalDate toDate) {
         GoodsList<Goods> filterGoodsList = new GoodsList();
-        for (Goods goods : this.goodsList.getGoodsList()) {
+        for (Goods goods : this.goodsList.getList()) {
             List<Shipment> shipmentList = new ArrayList<>();
             shipmentList = goods.getShipments()
                     .stream()
@@ -91,7 +91,7 @@ public class FilterGoodsList {
                 Goods filterGoods = goodsCtr.cloneGoods(goods);
                 filterGoods.setShipments(shipmentList);
                 filterGoodsList
-                        .getGoodsList()
+                        .getList()
                         .add(filterGoods);
             }
         }
@@ -101,7 +101,7 @@ public class FilterGoodsList {
     public GoodsList<Goods> withinPriceRange(BigDecimal fromPrice, BigDecimal toPrice) {
         GoodsList<Goods> filterGoodsList = new GoodsList();
         filterGoodsList.setGoodsList(this.goodsList
-                .getGoodsList()
+                .getList()
                 .stream().filter(x -> (x.getListPrice().compareTo(fromPrice) >= 0
                 && x.getListPrice().compareTo(toPrice) <= 0))
                 .map(x -> goodsCtr.cloneGoods(x))

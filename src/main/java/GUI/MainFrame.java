@@ -33,6 +33,8 @@ public class MainFrame extends javax.swing.JFrame {
         // pass data vào repoPanel
         repoPanel1.setGoodsList(repository);
         repoPanel1.setUnitsList(units);
+        // pass data vào shiftJPanel
+        shiftJPanel1.passData(shift, history, employeeList, settings.getStore(), idGenerator);
     }
 
     /**
@@ -49,6 +51,7 @@ public class MainFrame extends javax.swing.JFrame {
         employJPanel1 = new GUI.EmployJPanel();
         purchasePanel1 = new GUI.PurchasePanel();
         customerCardPanel1 = new GUI.CustomerCardPanel();
+        shiftJPanel1 = new GUI.ShiftJPanel();
         jMenuBar1 = new javax.swing.JMenuBar();
         fileMenu = new javax.swing.JMenu();
         editMenu = new javax.swing.JMenu();
@@ -77,6 +80,7 @@ public class MainFrame extends javax.swing.JFrame {
         tabPanel.addTab("tab3", employJPanel1);
         tabPanel.addTab("Bán Hàng", purchasePanel1);
         tabPanel.addTab("tab4", customerCardPanel1);
+        tabPanel.addTab("Ca Hiện Tại", shiftJPanel1);
 
         jMenuBar1.setMaximumSize(new java.awt.Dimension(171, 20));
         jMenuBar1.setMinimumSize(new java.awt.Dimension(171, 15));
@@ -240,6 +244,7 @@ public class MainFrame extends javax.swing.JFrame {
     private javax.swing.JMenu optionsMenu;
     private GUI.PurchasePanel purchasePanel1;
     private GUI.RepoPanel repoPanel1;
+    private GUI.ShiftJPanel shiftJPanel1;
     private javax.swing.JTabbedPane tabPanel;
     private javax.swing.JCheckBoxMenuItem vatBindWithStoreMenuItem;
     // End of variables declaration//GEN-END:variables

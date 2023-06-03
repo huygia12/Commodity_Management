@@ -91,7 +91,7 @@ public class GoodsController {
         if (ctions.checkIfListEmpty(goods.getShipments())) {
             return null;
         }
-        bucket.getGoodsList().add(goods);
+        bucket.getList().add(goods);
         do {
             new GoodsListController().getView().showGoodsList(bucket);
             System.out.print("Input shipment ID or type BACK to go back: ");

@@ -120,20 +120,20 @@ public class ShiftView {
         }
     }
 
-    public int typeInShippingFee(Shift shift) {
+    public int typeInSurcharge(Shift shift) {
         while (true) {
-            System.out.print("Type in Shipping Fee or type BACK to back: ");
+            System.out.print("Type in surcharge or type BACK to back: ");
             String inputStr = sc.nextLine();
             if ("back".equalsIgnoreCase(inputStr)) {
                 return -1;
             } else if (ctions.checkIfNoInput(inputStr)) {
             } else {
                 try {
-                    BigDecimal openBalance = new BigDecimal(inputStr);
-                    if (ctions.checkIfNumberNegative(openBalance)) {
+                    BigDecimal surcharge = new BigDecimal(inputStr);
+                    if (ctions.checkIfNumberNegative(surcharge)) {
                         continue;
                     }
-                    shift.setTransportFee(openBalance);
+                    shift.setSurcharge(surcharge);
                     return 1;
                 } catch (NumberFormatException nfe) {
                     ctions.wrInput();
@@ -205,7 +205,7 @@ public class ShiftView {
             pw.println(String.format("%21s" + " | " + "%-20.1f", "Total direct discount", shiftCtr.getTotalDiscountMoney(shift)));
             pw.println(String.format("%21s" + " | " + "%-20.1f", "Total point discount", shiftCtr.getTotalPointDiscount(shift)));
             pw.println(String.format("%21s" + " | " + "%-20.1f", "VAT" + shift.getTax() + "%", shiftCtr.getTotalVAT(shift)));
-            pw.println(String.format("%21s" + " | " + "%-20.1f", "Shipping fee", shift.getTransportFee()));
+            pw.println(String.format("%21s" + " | " + "%-20.1f", "Surcharge during Shift", shift.getSurcharge()));
             pw.println(String.format("%21s" + " | " + "%-20.1f", "Net revenue", shiftCtr.getNetRevenue(shift)));
             pw.println(String.format("%21s" + " | " + "%-20s", "Number of orders", shiftCtr.getNumberOfOrder(shift)));
             pw.println(String.format("%21s" + " | " + "%-20.1f", "Average per Order", shiftCtr.getAveragePerOrder(shift)));

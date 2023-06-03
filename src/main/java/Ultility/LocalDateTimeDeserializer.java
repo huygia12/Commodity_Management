@@ -21,7 +21,7 @@ public class LocalDateTimeDeserializer implements JsonDeserializer <LocalDateTim
     @Override
     public LocalDateTime deserialize(JsonElement je, Type type, JsonDeserializationContext jdc) throws JsonParseException {
         return LocalDateTime.parse(je.getAsString(),
-            DateTimeFormatter.ofPattern("d/M/y").withLocale(Locale.ENGLISH));
+            DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm:ss").withLocale(Locale.ENGLISH));
     }
     
 }

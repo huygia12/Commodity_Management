@@ -25,7 +25,7 @@ public class GoodsList <T extends Goods>{
         this.myGoodsList = goodsList;
     }
     
-    public List<T> getGoodsList() {
+    public List<T> getList() {
         return myGoodsList;
     }
 

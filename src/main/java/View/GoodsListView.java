@@ -25,7 +25,7 @@ public class GoodsListView {
     private int quantityMaxSize;
     
     public<T extends Goods> void showGoodsList(GoodsList<T> myGoodsList) {
-        if (myGoodsList.getGoodsList().isEmpty()) {
+        if (myGoodsList.getList().isEmpty()) {
             System.out.println("Nothing found in this List!");
             return;
         }
@@ -54,7 +54,7 @@ public class GoodsListView {
                 "Shipment ID", "Production Date", "Expiration Date", "Import Price",
                 "Quantity");
         System.out.println("|" + "-".repeat(totalColumnsSize + 78) + "|");
-        for (Goods goods : myGoodsList.getGoodsList()) {
+        for (Goods goods : myGoodsList.getList()) {
             System.out.printf("| %-8s | %-" + String.format(nameMaxSize + "s")
                     + " | %-" + String.format(providerMaxSize + "s")
                     + " | %-" + String.format(listPriceMaxSize + ".1f")
@@ -115,7 +115,7 @@ public class GoodsListView {
         totalQuantityMaxSize = "Total Quantity".length();
         importPriceMaxSize = "Import Price".length();
         quantityMaxSize = "Quantity".length();
-        for (T goods : myGoodsList.getGoodsList()) {
+        for (T goods : myGoodsList.getList()) {
             if (goods.getGoodsName().length() > nameMaxSize) {
                 nameMaxSize = goods.getGoodsName().length();
             }

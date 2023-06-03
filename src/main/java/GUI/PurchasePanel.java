@@ -1193,7 +1193,7 @@ public class PurchasePanel extends javax.swing.JPanel {
     private void payBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_payBtnActionPerformed
         keyWarningLabel.setVisible(false);
         // xét các điều kiện
-        if (order.getGoodsList().isEmpty()) { // Kiểm tra xem đã chọn sản phẩm nào chưa
+        if (order.getList().isEmpty()) { // Kiểm tra xem đã chọn sản phẩm nào chưa
             insertWarningToLabel(keyWarningLabel, NOTHING_CHOOSEN_WARNING);
             return;
         } else if (employeeListComboBox.getSelectedIndex() == 0) { // kiểm tra xem đã chọn thu ngân chưa
@@ -1210,7 +1210,7 @@ public class PurchasePanel extends javax.swing.JPanel {
     private void payAnfPrintBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_payAnfPrintBtnActionPerformed
         keyWarningLabel.setVisible(false);
         // xét các điều kiện
-        if (order.getGoodsList().isEmpty()) { // Kiểm tra xem đã chọn sản phẩm nào chưa
+        if (order.getList().isEmpty()) { // Kiểm tra xem đã chọn sản phẩm nào chưa
             insertWarningToLabel(keyWarningLabel, NOTHING_CHOOSEN_WARNING);
             return;
         } else if (employeeListComboBox.getSelectedIndex() == 0) { // kiểm tra xem đã chọn thu ngân chưa
@@ -1221,7 +1221,7 @@ public class PurchasePanel extends javax.swing.JPanel {
         }
         // thực hiện chức năng
         orderCtr.payOrderForGUI(order, shift, repository);
-        orderCtr.getOrderView().printBillToFile(order, settings.getMyStore(), orderCtr);
+        orderCtr.getOrderView().printBillToFile(order, settings.getStore(), orderCtr);
         initNewOrder();
     }//GEN-LAST:event_payAnfPrintBtnActionPerformed
 
@@ -1240,7 +1240,7 @@ public class PurchasePanel extends javax.swing.JPanel {
             goods = orderCtr.containGoodsForGUI(filterGoodsList, shipmentID);
         }
         GoodsList<Goods> bucket = new GoodsList<>();
-        bucket.getGoodsList().add(goods);
+        bucket.getList().add(goods);
         orderSelectedRow = -1;
         insertGoodsListToGoodsListTable(bucket);
     }//GEN-LAST:event_goodsListTableMouseClicked
@@ -1263,7 +1263,7 @@ public class PurchasePanel extends javax.swing.JPanel {
         insertGoodsListToOrderGoodsListTable(order);
         // Hiển thị sản phẩm ở bảng goodsList
         GoodsList<Goods> bucket = new GoodsList<>();
-        bucket.getGoodsList().add(goodsInDraftGoodsList);
+        bucket.getList().add(goodsInDraftGoodsList);
         insertGoodsListToGoodsListTable(bucket);
         insertGoodsListToGoodsListTable(bucket);
     }//GEN-LAST:event_orderGoodsListTableMouseClicked
@@ -1575,7 +1575,7 @@ public class PurchasePanel extends javax.swing.JPanel {
         String keyString = keyWordTextField.getText();
         GoodsList<Goods> goodsList = new GoodsList<>();
         // Kiểm tra điều kiện
-        if (draftGoodsList.getGoodsList().isEmpty()) {
+        if (draftGoodsList.getList().isEmpty()) {
             insertWarningToLabel(keyWarningLabel, EMPTY_LIST_WARNING);
             return;
         }
@@ -1593,7 +1593,7 @@ public class PurchasePanel extends javax.swing.JPanel {
             insertWarningToLabel(keyWarningLabel, NOTHING_FOUND_WARNING);
             return;
         } else if (searchedObject instanceof Goods goods) {
-            goodsList.getGoodsList().add(goods);
+            goodsList.getList().add(goods);
         } else if (searchedObject instanceof GoodsList) {
             goodsList = (GoodsList<Goods>) searchedObject;
         }
@@ -1968,7 +1968,7 @@ public class PurchasePanel extends javax.swing.JPanel {
 
     private void insertGoodsListToGoodsListTable(GoodsList<Goods> goodsList) {
         clearTableModel(goodsListModel);
-        for (Goods goods : goodsList.getGoodsList()) {
+        for (Goods goods : goodsList.getList()) {
             int size = goods.getShipments().size();
             for (int i = 0; i < size; i++) {
                 Shipment shipment = goods.getShipments().get(i);
@@ -2011,7 +2011,7 @@ public class PurchasePanel extends javax.swing.JPanel {
 
     private void insertGoodsListToOrderGoodsListTable(GoodsList<Goods> orderGoodsList) {
         clearTableModel(orderGoodsListModel);
-        for (Goods goods : orderGoodsList.getGoodsList()) {
+        for (Goods goods : orderGoodsList.getList()) {
             int size = goods.getShipments().size();
             for (int i = 0; i < size; i++) {
                 Shipment shipment = goods.getShipments().get(i);
@@ -2202,7 +2202,7 @@ public class PurchasePanel extends javax.swing.JPanel {
         taxText.setEditable(!check);
         taxBindWithShift = check;
         if (check) {
-            taxText.setText(settings.getMyStore().getVAT() + "");
+            taxText.setText(settings.getStore().getVAT() + "");
             tax = shift.getTax();
         }
         taxText.setText(tax + "");

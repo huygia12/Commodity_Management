@@ -4,6 +4,7 @@
  */
 package Models;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 import java.math.BigDecimal;
@@ -17,18 +18,16 @@ import java.util.ArrayList;
  * @author FPTSHOP
  */
 public class Shift {
-    @SerializedName("openDateTime")
-    @Expose
-    private String openDateTime = null;
-    @SerializedName("endDateTime")
-    @Expose
-    private String endDateTime = null;
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd/MM/yyyy HH:mm:ss")
+    private LocalDateTime openDateTime;
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd/MM/yyyy HH:mm:ss")
+    private LocalDateTime endDateTime;
     @SerializedName("openingBalance")
     @Expose
     private BigDecimal openingBalance = BigDecimal.ZERO;
-    @SerializedName("shippingFee")
+    @SerializedName("surCharge")
     @Expose
-    private BigDecimal shippingFee = BigDecimal.ZERO;
+    private BigDecimal surCharge = BigDecimal.ZERO;
     @SerializedName("cashier")
     @Expose
     private Employee cashier;
@@ -80,22 +79,26 @@ public class Shift {
         this.importGoodsHis = importGoodsHis;
     }
 
-    public String getOpenTime() {
+    public LocalDateTime getOpenTime() {
         return this.openDateTime;
     }
 
     public void setOpenTime() {
-        this.openDateTime = LocalDateTime.now()
+        String current = LocalDateTime.now()
                 .format(DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm:ss"));
+        this.openDateTime = LocalDateTime.parse(current, 
+                DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm:ss"));
     }
 
-    public String getEndTime() {
+    public LocalDateTime getEndTime() {
         return this.endDateTime;
     }
 
     public void setEndTime() {
-        this.endDateTime = LocalDateTime.now()
+        String current = LocalDateTime.now()
                 .format(DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm:ss"));
+        this.endDateTime = LocalDateTime.parse(current, 
+                DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm:ss"));
     }
 
     public String getID() {
@@ -114,12 +117,12 @@ public class Shift {
         this.openingBalance = openingBalance;
     }
 
-    public BigDecimal getTransportFee() {
-        return this.shippingFee;
+    public BigDecimal getSurcharge() {
+        return this.surCharge;
     }
 
-    public void setTransportFee(BigDecimal transportFee) {
-        this.shippingFee = transportFee;
+    public void setSurcharge(BigDecimal surCharge) {
+        this.surCharge = surCharge;
     }
 
     public EmployeeList getEmployeeOfThisShift() {

@@ -30,16 +30,16 @@ public class GoodsListController {
 
     public <T extends Goods> int indexOfDupGoods(GoodsList<T> goodsList, T checkingGoods) {
         // tra ve index cua goods dau tien trong goodsList co manufac va name giong voi checkingGoods
-        for (T goods : goodsList.getGoodsList()) {
+        for (T goods : goodsList.getList()) {
             if (goodsCtr.twoGoodsIsDup(goods, checkingGoods)) {
-                return goodsList.getGoodsList().indexOf(goods);
+                return goodsList.getList().indexOf(goods);
             }
         }
         return -1;
     }
 
     public <T extends Goods> T containGoods(GoodsList<T> goodsList, String id) {
-        for (T tmpGoods : goodsList.getGoodsList()) {
+        for (T tmpGoods : goodsList.getList()) {
             if (tmpGoods.getID().equals(id)) {
                 return tmpGoods;
             }
@@ -49,7 +49,7 @@ public class GoodsListController {
 
     public <T extends Goods> T searchGoods(GoodsList<T> goodsList) {
         // tra ve null neu nguoi dung nhap 'back', nguoc lai, tra ve 1 goods duoc tim kiem
-        if (goodsList.getGoodsList().isEmpty()) {
+        if (goodsList.getList().isEmpty()) {
             System.out.println("Cannot search in an empty List!");
             return null;
         }
@@ -74,13 +74,13 @@ public class GoodsListController {
                 // name suggestions for users
                 GoodsList bucket = new GoodsList(new ArrayList<>());
                 String inputToLowerCase = inputStr.toLowerCase();
-                for (Goods tmpGoods : goodsList.getGoodsList()) {
+                for (Goods tmpGoods : goodsList.getList()) {
                     String nameToLowerCase = tmpGoods.getGoodsName().toLowerCase();
                     if (nameToLowerCase.contains(inputToLowerCase)) {
-                        bucket.getGoodsList().add(tmpGoods);
+                        bucket.getList().add(tmpGoods);
                     }
                 }
-                if (bucket.getGoodsList().isEmpty()) {
+                if (bucket.getList().isEmpty()) {
                     System.out.println("No product match with your input!");
                 } else {
                     System.out.print("\nSearching : \"" + inputStr + "\"");
@@ -103,13 +103,13 @@ public class GoodsListController {
             // nếu searchingKey là 1 chuỗi gồm ít nhất 1 ký tự là chữ
             GoodsList<T> bucket = new GoodsList(new ArrayList<>());
             String inputToLowerCase = searchedGoodsID.toLowerCase();
-            for (T tmpGoods : goodsList.getGoodsList()) {
+            for (T tmpGoods : goodsList.getList()) {
                 String nameToLowerCase = tmpGoods.getGoodsName().toLowerCase();
                 if (nameToLowerCase.contains(inputToLowerCase)) {
-                    bucket.getGoodsList().add(tmpGoods);
+                    bucket.getList().add(tmpGoods);
                 }
             }
-            if (bucket.getGoodsList().isEmpty()) {
+            if (bucket.getList().isEmpty()) {
                 return null;
             } else {
                 return bucket;
@@ -118,7 +118,7 @@ public class GoodsListController {
     }
 
     public <T extends Goods> T containGoodsForGUI(GoodsList<T> goodsList, String shipmentID) {
-        for (T tmpGoods : goodsList.getGoodsList()) {
+        for (T tmpGoods : goodsList.getList()) {
             for (Shipment shipment : tmpGoods.getShipments()) {
                 if (shipment.getID().equals(shipmentID)) {
                     return tmpGoods;

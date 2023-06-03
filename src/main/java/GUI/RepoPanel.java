@@ -365,7 +365,7 @@ public class RepoPanel extends javax.swing.JPanel {
                 goodListedPrice,
                 0
             });
-            goodsList.getGoodsList().add(new Goods(goodName, goodManufacturer, goodListedPrice, goodID, goodUnit));
+            goodsList.getList().add(new Goods(goodName, goodManufacturer, goodListedPrice, goodID, goodUnit));
             resetVariables();
             reloadTable();
         } else {
@@ -480,7 +480,7 @@ public class RepoPanel extends javax.swing.JPanel {
         // TODO add your handling code here:
         if (jTable1.getSelectedRow() != -1) {
             String deletedGoodID = jTable1.getModel().getValueAt(jTable1.getSelectedRow(), 0).toString();
-            goodsList.setGoodsList(goodsList.getGoodsList().stream().filter(x->!x.getID().equals(deletedGoodID)).collect(Collectors.toList()));
+            goodsList.setGoodsList(goodsList.getList().stream().filter(x->!x.getID().equals(deletedGoodID)).collect(Collectors.toList()));
             reloadTable();
             resetVariables();
         } else {
@@ -497,7 +497,7 @@ public class RepoPanel extends javax.swing.JPanel {
 
     private void IDTextFieldKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_IDTextFieldKeyReleased
         // TODO add your handling code here:
-        long dupedID = goodsList.getGoodsList().stream().filter(x->x.getID().equalsIgnoreCase(IDTextField.getText())).count();
+        long dupedID = goodsList.getList().stream().filter(x->x.getID().equalsIgnoreCase(IDTextField.getText())).count();
         if (IDTextField.getText().isEmpty()) {
             invalidIDLabel.setVisible(false);
         }
@@ -514,12 +514,12 @@ public class RepoPanel extends javax.swing.JPanel {
     private void editButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_editButtonActionPerformed
         // TODO add your handling code here:
         if (jTable1.getSelectedRow() != -1) {
-            List<Shipment> editedGoodShipments = goodsList.getGoodsList().get(jTable1.getSelectedRow()).getShipments();
-            goodsList.getGoodsList().set(jTable1.getSelectedRow(), new Goods("", "", BigDecimal.ZERO, "", ""));
+            List<Shipment> editedGoodShipments = goodsList.getList().get(jTable1.getSelectedRow()).getShipments();
+            goodsList.getList().set(jTable1.getSelectedRow(), new Goods("", "", BigDecimal.ZERO, "", ""));
             if (dupedGoodCheck()) {
-                goodsList.getGoodsList().set(jTable1.getSelectedRow(), new Goods(nameTextField.getText(), manufacturerTextField.getText(), new BigDecimal(listPriceTextField.getText()), IDTextField.getText(),unitComboBox.getSelectedItem().toString()));
-                goodsList.getGoodsList().get(jTable1.getSelectedRow()).setTotalQuantity(new BigDecimal(totalQuantityTextField.getText()));
-                goodsList.getGoodsList().get(jTable1.getSelectedRow()).setShipments(editedGoodShipments);
+                goodsList.getList().set(jTable1.getSelectedRow(), new Goods(nameTextField.getText(), manufacturerTextField.getText(), new BigDecimal(listPriceTextField.getText()), IDTextField.getText(),unitComboBox.getSelectedItem().toString()));
+                goodsList.getList().get(jTable1.getSelectedRow()).setTotalQuantity(new BigDecimal(totalQuantityTextField.getText()));
+                goodsList.getList().get(jTable1.getSelectedRow()).setShipments(editedGoodShipments);
                 reloadTable();
                 resetVariables();
             } else {
@@ -607,10 +607,10 @@ public class RepoPanel extends javax.swing.JPanel {
     }
     
     public boolean dupedGoodCheck() {
-        long dupedGood = goodsList.getGoodsList().stream().filter(x->x.getGoodsName().equalsIgnoreCase(goodName)&&
+        long dupedGood = goodsList.getList().stream().filter(x->x.getGoodsName().equalsIgnoreCase(goodName)&&
                                                                       x.getManufacture().equals(goodManufacturer)&&
                                                                         x.getUnit().equals(goodUnit)).count();
-        long dupedID = goodsList.getGoodsList().stream().filter(x->x.getID().equals(goodID)).count();
+        long dupedID = goodsList.getList().stream().filter(x->x.getID().equals(goodID)).count();
         return dupedGood == 0 && dupedID == 0;
     }
     
@@ -652,7 +652,7 @@ public class RepoPanel extends javax.swing.JPanel {
         for (int i = 0; i < rowToRemove; i++) {
             goodTableModel.removeRow(0);
         }
-        for (Goods good : goodsList.getGoodsList()) {
+        for (Goods good : goodsList.getList()) {
             goodTableModel.addRow(new Object[] {
                 good.getID(),
                 good.getGoodsName(),
