@@ -320,7 +320,7 @@ public class EmployJPanel extends javax.swing.JPanel {
 
             },
             new String [] {
-                "Họ", "Tên", "Tuổi", "Giới tính", "SĐT", "Địa chỉ", "CCCD", "Lương"
+                "Họ", "Tên", "Tuổi", "Giới tính", "SĐT", "Địa chỉ", "CCCD", "Lương/h"
             }
         ));
         displayTable.addMouseListener(new java.awt.event.MouseAdapter() {
@@ -488,7 +488,6 @@ private void showTable(List<Employee> employees) {
         }
         if (firstName.isEmpty()) {
             System.out.println(BAT_BUOC_NHAP);
-            // Hoặc bạn có thể hiển thị thông báo lỗi lên giao diện người dùng thay vì in ra console
         }
 
         // Kiểm tra thông tin nhân viên trùng lặp
