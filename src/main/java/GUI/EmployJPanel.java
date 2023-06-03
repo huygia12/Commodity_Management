@@ -98,6 +98,7 @@ public class EmployJPanel extends javax.swing.JPanel {
         inputGenderLabel.setText("Giới tính:");
 
         genderbuttonGroup.add(maleButton);
+        maleButton.setSelected(true);
         maleButton.setText("MALE");
         maleButton.setAutoscrolls(true);
 
