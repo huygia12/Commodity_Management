@@ -220,7 +220,7 @@ public class RepoPanel extends javax.swing.JPanel {
                         .addComponent(nameTextField, javax.swing.GroupLayout.PREFERRED_SIZE, 153, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(18, 18, 18)
                         .addComponent(unitComboBox, 0, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 28, Short.MAX_VALUE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 37, Short.MAX_VALUE)
                         .addComponent(listPriceLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 89, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addGroup(controllerPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -330,7 +330,7 @@ public class RepoPanel extends javax.swing.JPanel {
             tablePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(tablePanelLayout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 946, Short.MAX_VALUE)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 956, Short.MAX_VALUE)
                 .addContainerGap())
         );
         tablePanelLayout.setVerticalGroup(
@@ -501,7 +501,13 @@ public class RepoPanel extends javax.swing.JPanel {
         if (IDTextField.getText().isEmpty()) {
             invalidIDLabel.setVisible(false);
         }
-        if (dupedID == 0 || IDTextField.getText().equals(goodTableModel.getValueAt(jTable1.getSelectedRow(), 0).toString())) {
+        boolean dupedIDOnTable = true;
+        try {
+            dupedIDOnTable = IDTextField.getText().equals(goodTableModel.getValueAt(jTable1.getSelectedRow(), 0).toString());
+        } catch (ArrayIndexOutOfBoundsException aioobe) {
+            
+        }
+        if (dupedID == 0 && dupedIDOnTable) {
             goodID = IDTextField.getText();
             addCheck();
             invalidIDLabel.setVisible(false);
