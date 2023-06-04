@@ -35,8 +35,6 @@ public class LogInFrame extends javax.swing.JFrame {
     public LogInFrame() {
         initComponents();
 
-        setIconImage(new ImageIcon("C:\\Users\\ADMIN\\Documents\\cloneProject\\Java_project\\src\\main\\image\\store.png").getImage());
-
         setProperties();
     }
 

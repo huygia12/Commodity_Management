@@ -12,6 +12,8 @@ import Models.Gender;
 import Models.History;
 import Ultility.Cautions;
 import Ultility.IDGenerator;
+import java.math.BigInteger;
+import java.util.List;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 
@@ -28,7 +30,7 @@ public class CustomerCardPanel extends javax.swing.JPanel {
         initComponents();
         customerModel = (DefaultTableModel) customerTable.getModel();
     }
-    
+
     private boolean checkValidString(String firstNameStr, String lastNameStr, String addressStr) {
         if (firstNameStr.isBlank() || lastNameStr.isBlank() || addressStr.isBlank()) {
             return false;
@@ -44,37 +46,61 @@ public class CustomerCardPanel extends javax.swing.JPanel {
         }
         return false;
     }
-    
+
     private void createNewMemberCard() {
         CustomerCard newCard = new CustomerCard();
+        newCard.setID(idGenerator.generateID(CustomerCard.class.getName(), 6));
+        Gender newCustomerGender = castStringToGender(newMemberGenderComboBox.getSelectedItem().toString());
         newCard.setCustomer(new Customer(
-                newMemberFirstNameTextField.getText(), 
-                newMemberLastNameTextField.getText(), 
-                newMemberPhoneNumberTextField.getText(), 
-                newMemberAddressTextPane.getText(), 
-                Integer.parseInt(newMemberAgeTextField.getText()), 
-                Gender.MALE));
+                newMemberFirstNameTextField.getText(),
+                newMemberLastNameTextField.getText(),
+                newMemberPhoneNumberTextField.getText(),
+                newMemberAddressTextPane.getText(),
+                Integer.parseInt(newMemberAgeTextField.getText()),
+                newCustomerGender));
         customerCardList.getList().add(newCard);
     }
-    
+
+    private Gender castStringToGender(String str) {
+        switch (str) {
+            case "Nam":
+                return Gender.MALE;
+            case "Khác":
+                return Gender.OTHER;
+        }
+        return Gender.FEMALE;
+    }
+
+    private String valueOfGenderEnum(Gender g) {
+        switch (g) {
+            case MALE:
+                return "Nam";
+            case FEMALE:
+                return "Nữ";
+        }
+        return "Khác";
+    }
+
     private void addAllCustomerCardToTable() {
+        clearTableModel(customerModel);
         for (int i = 0; i < customerCardList.getList().size(); i++) {
             addNewCustomerCardToTable(customerCardList.getList().get(i));
         }
     }
-    
+
     private void addNewCustomerCardToTable(CustomerCard customerCard) {
+        String customerGender = valueOfGenderEnum(customerCard.getCustomer().getGender());
         customerModel.addRow(new Object[]{
-                customerCard.getID(),
-                customerCard.getCustomer().getFirstName(),
-                customerCard.getCustomer().getLastName(),
-                customerCard.getCustomer().getAge(),
-                customerCard.getCustomer().getGender(),
-                customerCard.getCustomer().getPhoneNumber(),
-                customerCard.getCustomer().getAddress()
-            });
+            customerCard.getID(),
+            customerCard.getCustomer().getFirstName(),
+            customerCard.getCustomer().getLastName(),
+            customerCard.getCustomer().getAge(),
+            customerGender,
+            customerCard.getCustomer().getPhoneNumber(),
+            customerCard.getCustomer().getAddress()
+        });
     }
-    
+
     private void clearTableModel(DefaultTableModel tableModel) {
         int numberOfRow = tableModel.getRowCount();
         for (int i = 0; i < numberOfRow; i++) {
@@ -95,7 +121,7 @@ public class CustomerCardPanel extends javax.swing.JPanel {
         jLabel25 = new javax.swing.JLabel();
         CustomerInforPanel = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
-        CardIDTextField = new javax.swing.JTextField();
+        memberCardIDTextField = new javax.swing.JTextField();
         jLabel6 = new javax.swing.JLabel();
         jScrollPane1 = new javax.swing.JScrollPane();
         memberAddressTextPane = new javax.swing.JTextPane();
@@ -103,16 +129,16 @@ public class CustomerCardPanel extends javax.swing.JPanel {
         UpdateCustomerDateButton = new javax.swing.JButton();
         CardInforPanel = new javax.swing.JPanel();
         jLabel7 = new javax.swing.JLabel();
-        TotalPayTextField = new javax.swing.JTextField();
+        memberTotalPayTextField = new javax.swing.JTextField();
         jLabel8 = new javax.swing.JLabel();
-        UsagePointTextField = new javax.swing.JTextField();
+        memberUsagePointTextField = new javax.swing.JTextField();
         jLabel9 = new javax.swing.JLabel();
-        UsedPointTextField = new javax.swing.JTextField();
+        memberUsedPointTextField = new javax.swing.JTextField();
         jLabel10 = new javax.swing.JLabel();
-        CardRankTextField = new javax.swing.JTextField();
-        jLabel29 = new javax.swing.JLabel();
+        memberCardRankTextField = new javax.swing.JTextField();
+        needMore = new javax.swing.JLabel();
+        toNextRank = new javax.swing.JLabel();
         morePayToNextRank = new javax.swing.JLabel();
-        jLabel30 = new javax.swing.JLabel();
         jLabel36 = new javax.swing.JLabel();
         memberFirstNameTextField = new javax.swing.JTextField();
         jLabel37 = new javax.swing.JLabel();
@@ -125,6 +151,7 @@ public class CustomerCardPanel extends javax.swing.JPanel {
         jLabel3 = new javax.swing.JLabel();
         jPanel6 = new javax.swing.JPanel();
         ToolsPanel = new javax.swing.JPanel();
+        jLabel4 = new javax.swing.JLabel();
         SearchTextField = new javax.swing.JTextField();
         SearchButton = new javax.swing.JButton();
         ShowCardListButton = new javax.swing.JButton();
@@ -183,8 +210,8 @@ public class CustomerCardPanel extends javax.swing.JPanel {
 
         jLabel1.setText("Mã khách/Mã thẻ:");
 
-        CardIDTextField.setEditable(false);
-        CardIDTextField.setFocusable(false);
+        memberCardIDTextField.setEditable(false);
+        memberCardIDTextField.setFocusable(false);
 
         jLabel6.setText("Địa chỉ:");
 
@@ -204,59 +231,71 @@ public class CustomerCardPanel extends javax.swing.JPanel {
         UpdateCustomerDateButton.setBackground(new java.awt.Color(153, 255, 0));
         UpdateCustomerDateButton.setText("CẬP NHẬT");
         UpdateCustomerDateButton.setFocusable(false);
+        UpdateCustomerDateButton.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                UpdateCustomerDateButtonMouseClicked(evt);
+            }
+        });
+        UpdateCustomerDateButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                UpdateCustomerDateButtonActionPerformed(evt);
+            }
+        });
 
         CardInforPanel.setBackground(new java.awt.Color(255, 255, 255));
         CardInforPanel.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Thông tin thẻ", javax.swing.border.TitledBorder.CENTER, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Segoe UI", 1, 18))); // NOI18N
 
         jLabel7.setText("Điểm khả dụng:");
 
-        TotalPayTextField.setEditable(false);
-        TotalPayTextField.setFocusable(false);
-        TotalPayTextField.addActionListener(new java.awt.event.ActionListener() {
+        memberTotalPayTextField.setEditable(false);
+        memberTotalPayTextField.setFocusable(false);
+        memberTotalPayTextField.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                TotalPayTextFieldActionPerformed(evt);
+                memberTotalPayTextFieldActionPerformed(evt);
             }
         });
 
         jLabel8.setText("Điểm đã quy đổi:");
 
-        UsagePointTextField.setEditable(false);
-        UsagePointTextField.setFocusable(false);
-        UsagePointTextField.addActionListener(new java.awt.event.ActionListener() {
+        memberUsagePointTextField.setEditable(false);
+        memberUsagePointTextField.setFocusable(false);
+        memberUsagePointTextField.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                UsagePointTextFieldActionPerformed(evt);
+                memberUsagePointTextFieldActionPerformed(evt);
             }
         });
 
         jLabel9.setText("Tổng chi tiêu:");
 
-        UsedPointTextField.setEditable(false);
-        UsedPointTextField.setFocusable(false);
-        UsedPointTextField.addActionListener(new java.awt.event.ActionListener() {
+        memberUsedPointTextField.setEditable(false);
+        memberUsedPointTextField.setFocusable(false);
+        memberUsedPointTextField.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                UsedPointTextFieldActionPerformed(evt);
+                memberUsedPointTextFieldActionPerformed(evt);
             }
         });
 
         jLabel10.setText("Thứ hạng thẻ:");
 
-        CardRankTextField.setEditable(false);
-        CardRankTextField.setFocusable(false);
-        CardRankTextField.addActionListener(new java.awt.event.ActionListener() {
+        memberCardRankTextField.setEditable(false);
+        memberCardRankTextField.setFocusable(false);
+        memberCardRankTextField.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                CardRankTextFieldActionPerformed(evt);
+                memberCardRankTextFieldActionPerformed(evt);
             }
         });
 
-        jLabel29.setFont(new java.awt.Font("Segoe UI", 2, 12)); // NOI18N
-        jLabel29.setForeground(new java.awt.Color(153, 153, 153));
-        jLabel29.setText("Chi tiêu thêm ");
+        needMore.setFont(new java.awt.Font("Segoe UI", 2, 12)); // NOI18N
+        needMore.setForeground(new java.awt.Color(153, 153, 153));
+        needMore.setText("Cần thêm");
+
+        toNextRank.setFont(new java.awt.Font("Segoe UI", 2, 12)); // NOI18N
+        toNextRank.setForeground(new java.awt.Color(153, 153, 153));
+        toNextRank.setText("điểm để lên thứ hạng tiếp theo");
 
         morePayToNextRank.setFont(new java.awt.Font("Segoe UI", 3, 12)); // NOI18N
-
-        jLabel30.setFont(new java.awt.Font("Segoe UI", 2, 12)); // NOI18N
-        jLabel30.setForeground(new java.awt.Color(153, 153, 153));
-        jLabel30.setText("để lên thứ hạng tiếp theo");
+        morePayToNextRank.setForeground(new java.awt.Color(153, 153, 153));
+        morePayToNextRank.setVerticalAlignment(javax.swing.SwingConstants.TOP);
 
         javax.swing.GroupLayout CardInforPanelLayout = new javax.swing.GroupLayout(CardInforPanel);
         CardInforPanel.setLayout(CardInforPanelLayout);
@@ -265,56 +304,52 @@ public class CustomerCardPanel extends javax.swing.JPanel {
             .addGroup(CardInforPanelLayout.createSequentialGroup()
                 .addGroup(CardInforPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(CardInforPanelLayout.createSequentialGroup()
-                        .addGap(28, 28, 28)
-                        .addComponent(jLabel10))
+                        .addGap(12, 12, 12)
+                        .addComponent(needMore)
+                        .addGap(18, 18, 18)
+                        .addComponent(morePayToNextRank, javax.swing.GroupLayout.PREFERRED_SIZE, 42, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(toNextRank))
                     .addGroup(CardInforPanelLayout.createSequentialGroup()
-                        .addContainerGap()
-                        .addComponent(jLabel29)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(morePayToNextRank, javax.swing.GroupLayout.PREFERRED_SIZE, 83, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jLabel30))
-                    .addGroup(CardInforPanelLayout.createSequentialGroup()
-                        .addGap(28, 28, 28)
+                        .addGap(29, 29, 29)
                         .addGroup(CardInforPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jLabel8)
                             .addComponent(jLabel7)
                             .addComponent(jLabel9)
-                            .addComponent(jLabel8))
-                        .addGap(18, 18, 18)
-                        .addGroup(CardInforPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(UsagePointTextField, javax.swing.GroupLayout.DEFAULT_SIZE, 134, Short.MAX_VALUE)
-                            .addComponent(UsedPointTextField)
-                            .addComponent(TotalPayTextField)
-                            .addComponent(CardRankTextField))))
-                .addContainerGap())
+                            .addComponent(jLabel10))
+                        .addGap(10, 10, 10)
+                        .addGroup(CardInforPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                            .addComponent(memberUsedPointTextField, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 147, Short.MAX_VALUE)
+                            .addComponent(memberTotalPayTextField, javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(memberCardRankTextField, javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(memberUsagePointTextField))))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         CardInforPanelLayout.setVerticalGroup(
             CardInforPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(CardInforPanelLayout.createSequentialGroup()
                 .addGap(17, 17, 17)
-                .addGroup(CardInforPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(morePayToNextRank, javax.swing.GroupLayout.PREFERRED_SIZE, 22, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addGroup(CardInforPanelLayout.createSequentialGroup()
-                        .addGroup(CardInforPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(jLabel7)
-                            .addComponent(UsagePointTextField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGap(15, 15, 15)
-                        .addGroup(CardInforPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(jLabel8)
-                            .addComponent(UsedPointTextField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGap(15, 15, 15)
-                        .addGroup(CardInforPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(jLabel9)
-                            .addComponent(TotalPayTextField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGap(18, 18, 18)
-                        .addGroup(CardInforPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(jLabel10)
-                            .addComponent(CardRankTextField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGap(18, 18, 18)
-                        .addGroup(CardInforPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jLabel29)
-                            .addComponent(jLabel30, javax.swing.GroupLayout.Alignment.TRAILING))))
-                .addContainerGap(29, Short.MAX_VALUE))
+                .addGroup(CardInforPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel7)
+                    .addComponent(memberUsagePointTextField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(15, 15, 15)
+                .addGroup(CardInforPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel8)
+                    .addComponent(memberUsedPointTextField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(15, 15, 15)
+                .addGroup(CardInforPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel9)
+                    .addComponent(memberTotalPayTextField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(18, 18, 18)
+                .addGroup(CardInforPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel10)
+                    .addComponent(memberCardRankTextField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(18, 18, 18)
+                .addGroup(CardInforPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(toNextRank)
+                    .addComponent(needMore)
+                    .addComponent(morePayToNextRank, javax.swing.GroupLayout.PREFERRED_SIZE, 20, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap(25, Short.MAX_VALUE))
         );
 
         jLabel36.setText("Họ:");
@@ -349,35 +384,34 @@ public class CustomerCardPanel extends javax.swing.JPanel {
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 247, javax.swing.GroupLayout.PREFERRED_SIZE))))
                     .addGroup(CustomerInforPanelLayout.createSequentialGroup()
-                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addContainerGap()
                         .addGroup(CustomerInforPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                             .addGroup(CustomerInforPanelLayout.createSequentialGroup()
                                 .addGroup(CustomerInforPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                     .addComponent(jLabel38)
-                                    .addComponent(jLabel36, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(jLabel39))
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                    .addComponent(jLabel39)
+                                    .addComponent(jLabel36))
+                                .addGap(12, 12, 12)
                                 .addGroup(CustomerInforPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                     .addGroup(CustomerInforPanelLayout.createSequentialGroup()
-                                        .addGroup(CustomerInforPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                            .addComponent(memberAgeTextField)
-                                            .addComponent(memberFirstNameTextField, javax.swing.GroupLayout.DEFAULT_SIZE, 74, Short.MAX_VALUE))
-                                        .addGroup(CustomerInforPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                            .addGroup(CustomerInforPanelLayout.createSequentialGroup()
-                                                .addGap(8, 8, 8)
-                                                .addComponent(jLabel37)
-                                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                                .addComponent(memberLastNameTextField, javax.swing.GroupLayout.PREFERRED_SIZE, 141, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                            .addGroup(CustomerInforPanelLayout.createSequentialGroup()
-                                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                                .addComponent(jLabel3)
-                                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                                .addComponent(memberGenderComboBox, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
-                                    .addComponent(memberPhoneNumberTextField, javax.swing.GroupLayout.PREFERRED_SIZE, 141, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                                        .addComponent(memberAgeTextField, javax.swing.GroupLayout.PREFERRED_SIZE, 74, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addGap(19, 19, 19)
+                                        .addComponent(jLabel3)
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                        .addComponent(memberGenderComboBox, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                                    .addGroup(CustomerInforPanelLayout.createSequentialGroup()
+                                        .addComponent(memberPhoneNumberTextField, javax.swing.GroupLayout.PREFERRED_SIZE, 141, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addGap(0, 0, Short.MAX_VALUE))
+                                    .addGroup(CustomerInforPanelLayout.createSequentialGroup()
+                                        .addComponent(memberFirstNameTextField)
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                        .addComponent(jLabel37)
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                        .addComponent(memberLastNameTextField, javax.swing.GroupLayout.PREFERRED_SIZE, 99, javax.swing.GroupLayout.PREFERRED_SIZE))))
                             .addGroup(CustomerInforPanelLayout.createSequentialGroup()
                                 .addComponent(jLabel1)
                                 .addGap(18, 18, 18)
-                                .addComponent(CardIDTextField, javax.swing.GroupLayout.PREFERRED_SIZE, 141, javax.swing.GroupLayout.PREFERRED_SIZE)))))
+                                .addComponent(memberCardIDTextField, javax.swing.GroupLayout.PREFERRED_SIZE, 141, javax.swing.GroupLayout.PREFERRED_SIZE)))))
                 .addGap(12, 12, 12))
         );
         CustomerInforPanelLayout.setVerticalGroup(
@@ -385,7 +419,7 @@ public class CustomerCardPanel extends javax.swing.JPanel {
             .addGroup(CustomerInforPanelLayout.createSequentialGroup()
                 .addGap(21, 21, 21)
                 .addGroup(CustomerInforPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(CardIDTextField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(memberCardIDTextField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel1))
                 .addGap(18, 18, 18)
                 .addGroup(CustomerInforPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
@@ -424,6 +458,10 @@ public class CustomerCardPanel extends javax.swing.JPanel {
         ToolsPanel.setBackground(new java.awt.Color(255, 255, 255));
         ToolsPanel.setLayout(new java.awt.FlowLayout(java.awt.FlowLayout.LEFT));
 
+        jLabel4.setForeground(new java.awt.Color(153, 153, 153));
+        jLabel4.setText("ID/Tên khách hàng:");
+        ToolsPanel.add(jLabel4);
+
         SearchTextField.setPreferredSize(new java.awt.Dimension(200, 26));
         ToolsPanel.add(SearchTextField);
 
@@ -461,8 +499,23 @@ public class CustomerCardPanel extends javax.swing.JPanel {
             new String [] {
                 "Mã khách/Mã thẻ", "Họ", "Tên", "Tuổi", "Giới tính", "SĐT", "Địa chỉ"
             }
-        ));
+        ) {
+            boolean[] canEdit = new boolean [] {
+                false, false, false, false, false, false, false
+            };
+
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
+            }
+        });
         customerTable.setAutoResizeMode(javax.swing.JTable.AUTO_RESIZE_ALL_COLUMNS);
+        customerTable.setColumnSelectionAllowed(true);
+        customerTable.setFocusable(false);
+        customerTable.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                customerTableMouseClicked(evt);
+            }
+        });
         jScrollPane2.setViewportView(customerTable);
 
         javax.swing.GroupLayout CustomerCardTableLayout = new javax.swing.GroupLayout(CustomerCardTable);
@@ -471,7 +524,8 @@ public class CustomerCardPanel extends javax.swing.JPanel {
             CustomerCardTableLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(CustomerCardTableLayout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jScrollPane2))
+                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 628, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         CustomerCardTableLayout.setVerticalGroup(
             CustomerCardTableLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -505,7 +559,7 @@ public class CustomerCardPanel extends javax.swing.JPanel {
 
         jLabel2.setText("Giới tính:");
 
-        newMemberGenderComboBox.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "MALE", "FEMALE", "OTHER", " ", " " }));
+        newMemberGenderComboBox.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Nam", "Nữ ", "Khác", " ", " ", " " }));
 
         javax.swing.GroupLayout AddMemberPanelLayout = new javax.swing.GroupLayout(AddMemberPanel);
         AddMemberPanel.setLayout(AddMemberPanelLayout);
@@ -530,25 +584,24 @@ public class CustomerCardPanel extends javax.swing.JPanel {
                                 .addGroup(AddMemberPanelLayout.createSequentialGroup()
                                     .addContainerGap()
                                     .addComponent(jLabel11, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                            .addGroup(AddMemberPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                .addComponent(newMemberAgeTextField, javax.swing.GroupLayout.PREFERRED_SIZE, 74, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addComponent(newMemberFirstNameTextField, javax.swing.GroupLayout.PREFERRED_SIZE, 74, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                            .addGroup(AddMemberPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(AddMemberPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                                 .addGroup(AddMemberPanelLayout.createSequentialGroup()
-                                    .addComponent(jLabel12)
+                                    .addComponent(newMemberAgeTextField, javax.swing.GroupLayout.PREFERRED_SIZE, 74, javax.swing.GroupLayout.PREFERRED_SIZE)
                                     .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                    .addComponent(newMemberLastNameTextField, javax.swing.GroupLayout.PREFERRED_SIZE, 141, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addGap(0, 0, Short.MAX_VALUE))
-                                .addGroup(AddMemberPanelLayout.createSequentialGroup()
                                     .addComponent(jLabel2)
                                     .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                    .addComponent(newMemberGenderComboBox, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))))
+                                    .addComponent(newMemberGenderComboBox, 0, 123, Short.MAX_VALUE))
+                                .addGroup(AddMemberPanelLayout.createSequentialGroup()
+                                    .addComponent(newMemberFirstNameTextField)
+                                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                    .addComponent(jLabel12)
+                                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                    .addComponent(newMemberLastNameTextField, javax.swing.GroupLayout.PREFERRED_SIZE, 99, javax.swing.GroupLayout.PREFERRED_SIZE))))))
                 .addGap(2, 2, 2))
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, AddMemberPanelLayout.createSequentialGroup()
                 .addGap(0, 0, Short.MAX_VALUE)
                 .addComponent(CreateNewCardButton)
-                .addGap(31, 31, 31))
+                .addGap(38, 38, 38))
         );
         AddMemberPanelLayout.setVerticalGroup(
             AddMemberPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -569,7 +622,7 @@ public class CustomerCardPanel extends javax.swing.JPanel {
                 .addGroup(AddMemberPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel14)
                     .addComponent(newMemberPhoneNumberTextField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 10, Short.MAX_VALUE)
                 .addGroup(AddMemberPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel15))
@@ -582,7 +635,7 @@ public class CustomerCardPanel extends javax.swing.JPanel {
         jPanel8.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Chính sách & ưu đãi ", javax.swing.border.TitledBorder.RIGHT, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Segoe UI", 2, 18))); // NOI18N
 
         jLabel17.setFont(new java.awt.Font("Segoe UI", 3, 14)); // NOI18N
-        jLabel17.setText("Chi tiêu");
+        jLabel17.setText("Điểm");
 
         jLabel18.setFont(new java.awt.Font("Segoe UI", 0, 12)); // NOI18N
         jLabel18.setForeground(new java.awt.Color(204, 102, 0));
@@ -603,50 +656,50 @@ public class CustomerCardPanel extends javax.swing.JPanel {
         jLabel23.setForeground(new java.awt.Color(0, 204, 255));
         jLabel23.setText("cương");
 
-        jLabel16.setFont(new java.awt.Font("Segoe UI", 2, 14)); // NOI18N
+        jLabel16.setFont(new java.awt.Font("Segoe UI", 2, 12)); // NOI18N
         jLabel16.setForeground(new java.awt.Color(153, 153, 153));
-        jLabel16.setText("(từ 70M)");
+        jLabel16.setText("7000");
 
-        jLabel24.setFont(new java.awt.Font("Segoe UI", 2, 14)); // NOI18N
+        jLabel24.setFont(new java.awt.Font("Segoe UI", 2, 12)); // NOI18N
         jLabel24.setForeground(new java.awt.Color(153, 153, 153));
-        jLabel24.setText("(từ 30M)");
+        jLabel24.setText("3000");
 
-        jLabel26.setFont(new java.awt.Font("Segoe UI", 2, 14)); // NOI18N
+        jLabel26.setFont(new java.awt.Font("Segoe UI", 2, 12)); // NOI18N
         jLabel26.setForeground(new java.awt.Color(153, 153, 153));
-        jLabel26.setText("(từ 10M)");
+        jLabel26.setText("1000");
 
         jLabel27.setFont(new java.awt.Font("Segoe UI", 3, 14)); // NOI18N
         jLabel27.setText("Thứ hạng");
 
-        jLabel28.setFont(new java.awt.Font("Segoe UI", 2, 14)); // NOI18N
+        jLabel28.setFont(new java.awt.Font("Segoe UI", 2, 12)); // NOI18N
         jLabel28.setForeground(new java.awt.Color(153, 153, 153));
         jLabel28.setText("0");
 
-        jLabel31.setFont(new java.awt.Font("Segoe UI", 2, 14)); // NOI18N
+        jLabel31.setFont(new java.awt.Font("Segoe UI", 2, 12)); // NOI18N
         jLabel31.setForeground(new java.awt.Color(51, 51, 51));
         jLabel31.setText("Giảm 2% hóa đơn từ 1.890.000");
 
-        jLabel32.setFont(new java.awt.Font("Segoe UI", 2, 14)); // NOI18N
+        jLabel32.setFont(new java.awt.Font("Segoe UI", 2, 12)); // NOI18N
         jLabel32.setForeground(new java.awt.Color(51, 51, 51));
         jLabel32.setText("Giảm 3% hóa đơn từ 2.490.000");
 
-        jLabel33.setFont(new java.awt.Font("Segoe UI", 2, 14)); // NOI18N
+        jLabel33.setFont(new java.awt.Font("Segoe UI", 2, 12)); // NOI18N
         jLabel33.setForeground(new java.awt.Color(51, 51, 51));
         jLabel33.setText("Ưu đãi hạng đồng");
 
-        jLabel34.setFont(new java.awt.Font("Segoe UI", 2, 14)); // NOI18N
+        jLabel34.setFont(new java.awt.Font("Segoe UI", 2, 12)); // NOI18N
         jLabel34.setForeground(new java.awt.Color(51, 51, 51));
         jLabel34.setText("Ưu đãi hạng bạc");
 
-        jLabel35.setFont(new java.awt.Font("Segoe UI", 2, 14)); // NOI18N
+        jLabel35.setFont(new java.awt.Font("Segoe UI", 2, 12)); // NOI18N
         jLabel35.setForeground(new java.awt.Color(51, 51, 51));
         jLabel35.setText("Giảm 5% hóa đơn từ 4.490.000");
 
-        jLabel40.setFont(new java.awt.Font("Segoe UI", 2, 14)); // NOI18N
+        jLabel40.setFont(new java.awt.Font("Segoe UI", 2, 12)); // NOI18N
         jLabel40.setForeground(new java.awt.Color(51, 51, 51));
         jLabel40.setText("Giảm 7% hóa đơn từ 6.990.000");
 
-        jLabel41.setFont(new java.awt.Font("Segoe UI", 2, 14)); // NOI18N
+        jLabel41.setFont(new java.awt.Font("Segoe UI", 2, 12)); // NOI18N
         jLabel41.setForeground(new java.awt.Color(51, 51, 51));
         jLabel41.setText("Ưu đãi hạng vàng");
 
@@ -656,19 +709,18 @@ public class CustomerCardPanel extends javax.swing.JPanel {
             jPanel8Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel8Layout.createSequentialGroup()
                 .addGroup(jPanel8Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(jPanel8Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                        .addGroup(jPanel8Layout.createSequentialGroup()
-                            .addGap(24, 24, 24)
-                            .addComponent(jLabel28, javax.swing.GroupLayout.PREFERRED_SIZE, 27, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGroup(jPanel8Layout.createSequentialGroup()
-                            .addContainerGap()
-                            .addComponent(jLabel16))
-                        .addComponent(jLabel17, javax.swing.GroupLayout.Alignment.TRAILING))
                     .addGroup(jPanel8Layout.createSequentialGroup()
-                        .addContainerGap()
+                        .addGap(24, 24, 24)
+                        .addComponent(jLabel28, javax.swing.GroupLayout.PREFERRED_SIZE, 27, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(jPanel8Layout.createSequentialGroup()
+                        .addGap(15, 15, 15)
                         .addGroup(jPanel8Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jLabel24)
                             .addComponent(jLabel26)
-                            .addComponent(jLabel24))))
+                            .addComponent(jLabel16)))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel8Layout.createSequentialGroup()
+                        .addContainerGap()
+                        .addComponent(jLabel17)))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jSeparator1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -676,75 +728,74 @@ public class CustomerCardPanel extends javax.swing.JPanel {
                     .addComponent(jLabel27)
                     .addGroup(jPanel8Layout.createSequentialGroup()
                         .addGroup(jPanel8Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(jPanel8Layout.createSequentialGroup()
-                                .addGroup(jPanel8Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addGroup(jPanel8Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                        .addComponent(jLabel18, javax.swing.GroupLayout.PREFERRED_SIZE, 34, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addComponent(jLabel21, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 34, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                    .addComponent(jLabel19, javax.swing.GroupLayout.PREFERRED_SIZE, 34, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                .addGap(11, 11, 11))
-                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel8Layout.createSequentialGroup()
-                                .addGroup(jPanel8Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                                    .addComponent(jLabel23, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                    .addComponent(jLabel22, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)))
+                            .addComponent(jLabel18, javax.swing.GroupLayout.PREFERRED_SIZE, 34, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jLabel19, javax.swing.GroupLayout.PREFERRED_SIZE, 34, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addGroup(jPanel8Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                                .addComponent(jLabel23, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addComponent(jLabel22, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                            .addComponent(jLabel21, javax.swing.GroupLayout.PREFERRED_SIZE, 34, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(jPanel8Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(jPanel8Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                 .addGroup(jPanel8Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(jLabel40)
-                                    .addComponent(jLabel31, javax.swing.GroupLayout.Alignment.TRAILING)
-                                    .addComponent(jLabel41))
-                                .addComponent(jLabel32, javax.swing.GroupLayout.Alignment.TRAILING)
-                                .addComponent(jLabel33))
+                                    .addComponent(jLabel31)
+                                    .addComponent(jLabel32, javax.swing.GroupLayout.Alignment.TRAILING)
+                                    .addComponent(jLabel33))
+                                .addComponent(jLabel40, javax.swing.GroupLayout.Alignment.TRAILING)
+                                .addComponent(jLabel41))
                             .addComponent(jLabel35, javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addComponent(jLabel34)))))
+                            .addComponent(jLabel34))))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         jPanel8Layout.setVerticalGroup(
             jPanel8Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel8Layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jSeparator1))
-            .addGroup(jPanel8Layout.createSequentialGroup()
                 .addGroup(jPanel8Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel8Layout.createSequentialGroup()
                         .addGroup(jPanel8Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jLabel27)
-                            .addComponent(jLabel17))
-                        .addGap(18, 18, 18)
-                        .addComponent(jLabel16))
-                    .addGroup(jPanel8Layout.createSequentialGroup()
-                        .addGap(26, 26, 26)
-                        .addGroup(jPanel8Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(jLabel41)
-                            .addComponent(jLabel22, javax.swing.GroupLayout.PREFERRED_SIZE, 10, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addGroup(jPanel8Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(jLabel40)
-                            .addComponent(jLabel23, javax.swing.GroupLayout.PREFERRED_SIZE, 16, javax.swing.GroupLayout.PREFERRED_SIZE))))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 16, Short.MAX_VALUE)
-                .addGroup(jPanel8Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel8Layout.createSequentialGroup()
-                        .addComponent(jLabel24)
-                        .addGap(43, 43, 43)
-                        .addComponent(jLabel26)
-                        .addGap(18, 18, 18)
-                        .addComponent(jLabel28))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel8Layout.createSequentialGroup()
-                        .addComponent(jLabel34)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addGroup(jPanel8Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(jLabel35)
-                            .addComponent(jLabel21))
-                        .addGap(18, 18, 18)
-                        .addComponent(jLabel33)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addGroup(jPanel8Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(jLabel32)
-                            .addComponent(jLabel19))
-                        .addGap(18, 18, 18)
-                        .addGroup(jPanel8Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(jLabel18)
-                            .addComponent(jLabel31)))))
+                            .addGroup(jPanel8Layout.createSequentialGroup()
+                                .addComponent(jLabel27)
+                                .addGap(11, 11, 11)
+                                .addGroup(jPanel8Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                    .addComponent(jLabel41)
+                                    .addComponent(jLabel22, javax.swing.GroupLayout.PREFERRED_SIZE, 10, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addGroup(jPanel8Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                    .addComponent(jLabel40)
+                                    .addComponent(jLabel23, javax.swing.GroupLayout.PREFERRED_SIZE, 16, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                            .addGroup(jPanel8Layout.createSequentialGroup()
+                                .addComponent(jLabel17)
+                                .addGap(18, 18, 18)
+                                .addComponent(jLabel16)))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addGroup(jPanel8Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addGroup(jPanel8Layout.createSequentialGroup()
+                                .addGroup(jPanel8Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                                    .addGroup(jPanel8Layout.createSequentialGroup()
+                                        .addComponent(jLabel34)
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                        .addComponent(jLabel35)
+                                        .addGap(77, 77, 77))
+                                    .addGroup(jPanel8Layout.createSequentialGroup()
+                                        .addComponent(jLabel24)
+                                        .addGap(47, 47, 47)
+                                        .addComponent(jLabel26)
+                                        .addGap(18, 18, 18)))
+                                .addComponent(jLabel28))
+                            .addGroup(jPanel8Layout.createSequentialGroup()
+                                .addComponent(jLabel21)
+                                .addGap(21, 21, 21)
+                                .addComponent(jLabel33)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addGroup(jPanel8Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                    .addComponent(jLabel32)
+                                    .addComponent(jLabel19))
+                                .addGap(18, 18, 18)
+                                .addGroup(jPanel8Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                    .addComponent(jLabel18)
+                                    .addComponent(jLabel31)))))
+                    .addComponent(jSeparator1)))
         );
 
         javax.swing.GroupLayout MainPanelLayout = new javax.swing.GroupLayout(MainPanel);
@@ -752,15 +803,15 @@ public class CustomerCardPanel extends javax.swing.JPanel {
         MainPanelLayout.setHorizontalGroup(
             MainPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(MainPanelLayout.createSequentialGroup()
-                .addGroup(MainPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                    .addComponent(CustomerCardTable, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addGroup(MainPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(CustomerCardTable, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addGroup(MainPanelLayout.createSequentialGroup()
-                        .addContainerGap()
+                        .addGap(7, 7, 7)
                         .addComponent(AddMemberPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(jPanel8, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(6, 6, 6)))
-                .addContainerGap(11, Short.MAX_VALUE))
+                        .addGap(23, 23, 23)))
+                .addContainerGap(7, Short.MAX_VALUE))
         );
         MainPanelLayout.setVerticalGroup(
             MainPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -769,8 +820,9 @@ public class CustomerCardPanel extends javax.swing.JPanel {
                 .addComponent(CustomerCardTable, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
                 .addGroup(MainPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(AddMemberPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jPanel8, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                    .addComponent(jPanel8, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(AddMemberPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap())
         );
 
         jPanel6.add(MainPanel, java.awt.BorderLayout.CENTER);
@@ -780,23 +832,41 @@ public class CustomerCardPanel extends javax.swing.JPanel {
 
     private void DeleteCardButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_DeleteCardButtonActionPerformed
         // TODO add your handling code here:
+        int selectedRow = customerTable.getSelectedRow();
+        if (selectedRow == -1) {
+            JOptionPane.showMessageDialog(CustomerCardPanel.this,
+                    "Vui lòng chọn 1 hàng!");
+            return;
+        } else {
+            int response = JOptionPane.showConfirmDialog(CustomerCardPanel.this,
+                    "Bạn muốn xóa thẻ?",
+                    "Xác nhận",
+                    JOptionPane.YES_NO_OPTION);
+            if (response == JOptionPane.YES_OPTION) {
+                customerModel.removeRow(selectedRow);
+                customerCardList.getList().remove(selectedRow);
+            } else {
+                return;
+            }
+        }
+
     }//GEN-LAST:event_DeleteCardButtonActionPerformed
 
-    private void TotalPayTextFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_TotalPayTextFieldActionPerformed
+    private void memberTotalPayTextFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_memberTotalPayTextFieldActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_TotalPayTextFieldActionPerformed
+    }//GEN-LAST:event_memberTotalPayTextFieldActionPerformed
 
-    private void UsagePointTextFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_UsagePointTextFieldActionPerformed
+    private void memberUsagePointTextFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_memberUsagePointTextFieldActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_UsagePointTextFieldActionPerformed
+    }//GEN-LAST:event_memberUsagePointTextFieldActionPerformed
 
-    private void UsedPointTextFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_UsedPointTextFieldActionPerformed
+    private void memberUsedPointTextFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_memberUsedPointTextFieldActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_UsedPointTextFieldActionPerformed
+    }//GEN-LAST:event_memberUsedPointTextFieldActionPerformed
 
-    private void CardRankTextFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_CardRankTextFieldActionPerformed
+    private void memberCardRankTextFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_memberCardRankTextFieldActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_CardRankTextFieldActionPerformed
+    }//GEN-LAST:event_memberCardRankTextFieldActionPerformed
 
     private void resetNewCardValue() {
         newMemberAddressTextPane.setText("");
@@ -805,40 +875,214 @@ public class CustomerCardPanel extends javax.swing.JPanel {
         newMemberLastNameTextField.setText("");
         newMemberPhoneNumberTextField.setText("");
     }
-    
+
+    private void resetMemberCardValue() {
+        memberAddressTextPane.setText("");
+        memberAgeTextField.setText("");
+        memberCardIDTextField.setText("");
+        memberFirstNameTextField.setText("");
+        memberGenderComboBox.setSelectedIndex(0);
+        memberLastNameTextField.setText("");
+        memberPhoneNumberTextField.setText("");
+        memberUsagePointTextField.setText("");
+        memberTotalPayTextField.setText("");
+        memberUsedPointTextField.setText("");
+        memberCardRankTextField.setText("");
+    }
+
+    private boolean checkInformation() {
+        if (checkValidString(newMemberFirstNameTextField.getText(), newMemberLastNameTextField.getText(), newMemberAddressTextPane.getText())
+                && checkValidNumber(newMemberAgeTextField.getText(), newMemberPhoneNumberTextField.getText())) {
+            return true;
+        }
+        return false;
+    }
+
     private void CreateNewCardButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_CreateNewCardButtonActionPerformed
         // TODO add your handling code here:
         if (checkValidString(newMemberFirstNameTextField.getText(), newMemberLastNameTextField.getText(), newMemberAddressTextPane.getText())
-            && checkValidNumber(newMemberAgeTextField.getText(), newMemberPhoneNumberTextField.getText())) {
+                && checkValidNumber(newMemberAgeTextField.getText(), newMemberPhoneNumberTextField.getText())) {
+            JOptionPane.showMessageDialog(CustomerCardPanel.this,
+                    "Đăng kí thành công!");
             createNewMemberCard();
             resetNewCardValue();
-            JOptionPane.showMessageDialog(CustomerCardPanel.this, 
-                    "Đăng kí thành công!");
-        }
-        else {
+            addAllCustomerCardToTable();
+        } else {
             resetNewCardValue();
-            JOptionPane.showMessageDialog(CustomerCardPanel.this, 
-                    "Thông tin chưa đầy đủ/không hợp lệ!\nVui lòng điền đầy đủ và chính xác thông tin.", 
-                    "Đăng kí thất bại!", 
+            JOptionPane.showMessageDialog(CustomerCardPanel.this,
+                    "Thông tin chưa đầy đủ/không hợp lệ!\nVui lòng điền đầy đủ và chính xác thông tin.",
+                    "Đăng kí thất bại!",
                     JOptionPane.WARNING_MESSAGE);
         }
     }//GEN-LAST:event_CreateNewCardButtonActionPerformed
 
     private void ShowCardListButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ShowCardListButtonActionPerformed
         // TODO add your handling code here:
-        addAllCustomerCardToTable();
+        SearchTextField.setText("");
+        if (customerCardList.getList().isEmpty()) {
+            JOptionPane.showMessageDialog(CustomerCardPanel.this,
+                    "Danh sách trống!");
+        } else {
+            clearTableModel(customerModel);
+            addAllCustomerCardToTable();
+        }
     }//GEN-LAST:event_ShowCardListButtonActionPerformed
 
     private void SearchButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_SearchButtonActionPerformed
-        // TODO add your handling code here:
-        String searchingKey = SearchTextField.getText();
-        
+
+        String searchingKey = SearchTextField.getText().toLowerCase();
+        boolean found = false;
+        if (searchingKey.isBlank()) {
+            return;
+        } else {
+            if (customerCardList.getList().isEmpty()) {
+                JOptionPane.showMessageDialog(CustomerCardPanel.this,
+                        "Danh sách trống!");
+            } else {
+                for (int i = 0; i < customerCardList.getList().size(); i++) {
+                    if (customerCardList.getList().get(i).getID().equals(searchingKey)
+                            || customerCardList.getList().get(i).getCustomer().getFirstName().toLowerCase().contains(searchingKey)
+                            || customerCardList.getList().get(i).getCustomer().getLastName().toLowerCase().contains(searchingKey)) {
+                        clearTableModel(customerModel);
+                        CustomerCard card = customerCardList.getList().get(i);
+                        addNewCustomerCardToTable(card);
+                        found = true;
+                    }
+                }
+                if (!found) {
+                    JOptionPane.showMessageDialog(CustomerCardPanel.this,
+                            "Không tìm thấy!");
+                    SearchTextField.setText("");
+                }
+            }
+        }
     }//GEN-LAST:event_SearchButtonActionPerformed
+
+    private String cardRank(BigInteger point) {
+        int copper = point.compareTo(BigInteger.valueOf(1000));
+        int silve = point.compareTo(BigInteger.valueOf(3000));
+        int golden = point.compareTo(BigInteger.valueOf(7000));
+
+        if (copper == -1) {
+            return "Đồng";
+        } else if (silve == -1) {
+            return "Bạc";
+        } else if (golden == -1) {
+            return "Vàng";
+        }
+        return "Kim Cương";
+    }
+
+    private void setVisibleNeedPoint(boolean b) {
+        needMore.setVisible(b);
+        toNextRank.setVisible(b);
+    }
+
+    private void customerTableMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_customerTableMouseClicked
+        // TODO add your handling code here:
+        int rowIndex = customerTable.getSelectedRow();
+
+        memberCardIDTextField.setText(customerModel.getValueAt(rowIndex, 0).toString());
+        memberFirstNameTextField.setText(customerModel.getValueAt(rowIndex, 1).toString());
+        memberLastNameTextField.setText(customerModel.getValueAt(rowIndex, 2).toString());
+        memberAgeTextField.setText(customerModel.getValueAt(rowIndex, 3).toString());
+        memberGenderComboBox.setSelectedItem(customerModel.getValueAt(rowIndex, 4).toString());
+        memberPhoneNumberTextField.setText(customerModel.getValueAt(rowIndex, 5).toString());
+        memberAddressTextPane.setText(customerModel.getValueAt(rowIndex, 6).toString());
+
+        CustomerCard cc = customerCardList.getList().get(rowIndex);
+        BigInteger usedPoint = BigInteger.valueOf(0);
+        BigInteger usagePoint = cc.getPoint().subtract(usedPoint);
+        String rank = cardRank(cc.getPoint());
+        BigInteger needPoint;
+
+        memberCardRankTextField.setText(rank);
+        memberUsagePointTextField.setText(usagePoint.toString());
+        switch (rank) {
+            case "Đồng":
+                needPoint = BigInteger.valueOf(1000).subtract(usagePoint);
+                morePayToNextRank.setText(needPoint.toString());
+                setVisibleNeedPoint(true);
+                break;
+            case "Bạc":
+                needPoint = BigInteger.valueOf(3000).subtract(usagePoint);
+                morePayToNextRank.setText(needPoint.toString());
+                setVisibleNeedPoint(true);
+                break;
+            case "Vàng":
+                needPoint = BigInteger.valueOf(7000).subtract(usagePoint);
+                morePayToNextRank.setText(needPoint.toString());
+                setVisibleNeedPoint(true);
+                break;
+            case "Kim Cương":
+                setVisibleNeedPoint(false);
+        }
+    }//GEN-LAST:event_customerTableMouseClicked
+
+    private void UpdateCustomerDateButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_UpdateCustomerDateButtonActionPerformed
+        // TODO add your handling code here:
+        int selectedRow = customerTable.getSelectedRow();
+        if (selectedRow == -1) {
+            JOptionPane.showMessageDialog(CustomerCardPanel.this,
+                    "Vui lòng chọn 1 hàng!");
+            return;
+        } else {
+            if (checkValidString(memberFirstNameTextField.getText(), memberLastNameTextField.getText(), memberAddressTextPane.getText())
+                    && checkValidNumber(memberAgeTextField.getText(), memberPhoneNumberTextField.getText())) {
+
+                String firstName = memberFirstNameTextField.getText();
+                String lastName = memberLastNameTextField.getText();
+                int age = Integer.parseInt(memberAgeTextField.getText());
+                String genderStr = memberGenderComboBox.getSelectedItem().toString();
+                Gender genderEnum = castStringToGender(genderStr);
+                String phoneNo = memberPhoneNumberTextField.getText();
+                String address = memberAddressTextPane.getText();
+
+                if (firstName.equalsIgnoreCase(customerCardList.getList().get(selectedRow).getCustomer().getFirstName())
+                        && lastName.equalsIgnoreCase(customerCardList.getList().get(selectedRow).getCustomer().getLastName())
+                        && age == customerCardList.getList().get(selectedRow).getCustomer().getAge()
+                        && genderEnum.equals(customerCardList.getList().get(selectedRow).getCustomer().getGender())
+                        && phoneNo.equals(customerCardList.getList().get(selectedRow).getCustomer().getPhoneNumber())
+                        && address.equals(customerCardList.getList().get(selectedRow).getCustomer().getAddress())) {
+                    JOptionPane.showMessageDialog(CustomerCardPanel.this,
+                            "Bạn chưa thay đổi bất kì thông tin nào!");
+                } else {
+                    int response = JOptionPane.showConfirmDialog(CustomerCardPanel.this,
+                            "Bạn muốn thay đổi thông tin khách hàng?",
+                            "Xác nhận",
+                            JOptionPane.YES_NO_OPTION);
+                    if (response == JOptionPane.YES_OPTION) {
+                        customerCardList.getList().get(selectedRow).getCustomer().setFirstName(firstName);
+                        customerCardList.getList().get(selectedRow).getCustomer().setLastName(lastName);
+                        customerCardList.getList().get(selectedRow).getCustomer().setAge(age);
+                        customerCardList.getList().get(selectedRow).getCustomer().setGender(genderEnum);
+                        customerCardList.getList().get(selectedRow).getCustomer().setPhoneNumber(phoneNo);
+                        customerCardList.getList().get(selectedRow).getCustomer().setAddress(address);
+                        addAllCustomerCardToTable();
+                        resetMemberCardValue();
+                    } else {
+                        return;
+                    }
+                }
+            } else {
+                JOptionPane.showMessageDialog(CustomerCardPanel.this,
+                        "Thông tin chưa đầy đủ/không hợp lệ!\nVui lòng điền đầy đủ và chính xác thông tin.",
+                        "Cập nhật thất bại!",
+                        JOptionPane.WARNING_MESSAGE);
+            }
+        }
+    }//GEN-LAST:event_UpdateCustomerDateButtonActionPerformed
+
+    private void UpdateCustomerDateButtonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_UpdateCustomerDateButtonMouseClicked
+        // TODO add your handling code here:
+    }//GEN-LAST:event_UpdateCustomerDateButtonMouseClicked
 
     public void passData(CustomerCardList customerCardList, IDGenerator idGenerator, History history) {
         this.customerCardList = customerCardList;
         this.idGenerator = idGenerator;
         this.history = history;
+        addAllCustomerCardToTable();
+        setVisibleNeedPoint(false);
     }
     private CustomerCardList customerCardList;
     private IDGenerator idGenerator;
@@ -849,9 +1093,7 @@ public class CustomerCardPanel extends javax.swing.JPanel {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JPanel AddMemberPanel;
-    private javax.swing.JTextField CardIDTextField;
     private javax.swing.JPanel CardInforPanel;
-    private javax.swing.JTextField CardRankTextField;
     private javax.swing.JButton CreateNewCardButton;
     private javax.swing.JPanel CustomerCardTable;
     private javax.swing.JPanel CustomerInforPanel;
@@ -861,10 +1103,7 @@ public class CustomerCardPanel extends javax.swing.JPanel {
     private javax.swing.JTextField SearchTextField;
     private javax.swing.JButton ShowCardListButton;
     private javax.swing.JPanel ToolsPanel;
-    private javax.swing.JTextField TotalPayTextField;
     private javax.swing.JButton UpdateCustomerDateButton;
-    private javax.swing.JTextField UsagePointTextField;
-    private javax.swing.JTextField UsedPointTextField;
     private javax.swing.JTable customerTable;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
@@ -887,9 +1126,7 @@ public class CustomerCardPanel extends javax.swing.JPanel {
     private javax.swing.JLabel jLabel26;
     private javax.swing.JLabel jLabel27;
     private javax.swing.JLabel jLabel28;
-    private javax.swing.JLabel jLabel29;
     private javax.swing.JLabel jLabel3;
-    private javax.swing.JLabel jLabel30;
     private javax.swing.JLabel jLabel31;
     private javax.swing.JLabel jLabel32;
     private javax.swing.JLabel jLabel33;
@@ -899,6 +1136,7 @@ public class CustomerCardPanel extends javax.swing.JPanel {
     private javax.swing.JLabel jLabel37;
     private javax.swing.JLabel jLabel38;
     private javax.swing.JLabel jLabel39;
+    private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel40;
     private javax.swing.JLabel jLabel41;
     private javax.swing.JLabel jLabel6;
@@ -913,16 +1151,23 @@ public class CustomerCardPanel extends javax.swing.JPanel {
     private javax.swing.JSeparator jSeparator1;
     private javax.swing.JTextPane memberAddressTextPane;
     private javax.swing.JTextField memberAgeTextField;
+    private javax.swing.JTextField memberCardIDTextField;
+    private javax.swing.JTextField memberCardRankTextField;
     private javax.swing.JTextField memberFirstNameTextField;
     private javax.swing.JComboBox<String> memberGenderComboBox;
     private javax.swing.JTextField memberLastNameTextField;
     private javax.swing.JTextField memberPhoneNumberTextField;
+    private javax.swing.JTextField memberTotalPayTextField;
+    private javax.swing.JTextField memberUsagePointTextField;
+    private javax.swing.JTextField memberUsedPointTextField;
     private javax.swing.JLabel morePayToNextRank;
+    private javax.swing.JLabel needMore;
     private javax.swing.JTextPane newMemberAddressTextPane;
     private javax.swing.JTextField newMemberAgeTextField;
     private javax.swing.JTextField newMemberFirstNameTextField;
     private javax.swing.JComboBox<String> newMemberGenderComboBox;
     private javax.swing.JTextField newMemberLastNameTextField;
     private javax.swing.JTextField newMemberPhoneNumberTextField;
+    private javax.swing.JLabel toNextRank;
     // End of variables declaration//GEN-END:variables
 }
