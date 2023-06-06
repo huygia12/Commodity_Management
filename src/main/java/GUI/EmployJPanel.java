@@ -26,6 +26,7 @@ public class EmployJPanel extends javax.swing.JPanel {
      */
     public EmployJPanel() {
         initComponents();
+         displayEmployees();
     }
 
     /**
@@ -320,7 +321,7 @@ public class EmployJPanel extends javax.swing.JPanel {
 
             },
             new String [] {
-                "Họ", "Tên", "Tuổi", "Giới tính", "SĐT", "Địa chỉ", "CCCD", "Lương/h"
+                "Họ", "Tên", "Tuổi", "Giới tính", "Địa chỉ", "SĐT", "CCCD", "Lương/h"
             }
         ));
         displayTable.addMouseListener(new java.awt.event.MouseAdapter() {
@@ -377,7 +378,17 @@ public class EmployJPanel extends javax.swing.JPanel {
                 .addContainerGap())
         );
     }// </editor-fold>//GEN-END:initComponents
-private void showTable(List<Employee> employees) {
+ private void displayEmployees() {
+        DefaultTableModel model = (DefaultTableModel) displayTable.getModel();
+        model.setRowCount(0);
+        for (Employee employee : employeeList.getList()) {
+            Object[] rowData = {employee.getFirstName(), employee.getLastName(), employee.getAge(), employee.getGender(), employee.getAddress(), employee.getPhoneNumber(), employee.getCCCD(), employee.getSalaryPerDay()};
+            model.addRow(rowData);
+        }
+        updateEmployeeCount();
+    }
+
+    private void showTable(List<Employee> employees) {
         DefaultTableModel model = (DefaultTableModel) displayTable.getModel();
         model.setRowCount(0);
         for (Employee employee : employees) {
@@ -439,14 +450,30 @@ private void showTable(List<Employee> employees) {
             return;
         }
 //Những thông tin bắt buộc nhập
-        if (inputCCCDTextField.getText().isEmpty()
-                || inputFirstNameTextField.getText().isEmpty()
-                || inputLastNameTextField1.getText().isEmpty()
-                || inputPhoneTextField.getText().isEmpty()) {
+        boolean isAllRequiredFieldsFilled = true;
+
+        if (inputCCCDTextField.getText().isEmpty()) {
             insertWarningToTextField(inputCCCDTextField, BAT_BUOC_NHAP, 11);
+            isAllRequiredFieldsFilled = false;
+
+        }
+
+        if (inputFirstNameTextField.getText().isEmpty()) {
             insertWarningToTextField(inputFirstNameTextField, BAT_BUOC_NHAP, 11);
+            isAllRequiredFieldsFilled = false;
+
+        }
+
+        if (inputLastNameTextField1.getText().isEmpty()) {
             insertWarningToTextField(inputLastNameTextField1, BAT_BUOC_NHAP, 11);
+            isAllRequiredFieldsFilled = false;
+
+        }
+
+        if (inputPhoneTextField.getText().isEmpty()) {
             insertWarningToTextField(inputPhoneTextField, BAT_BUOC_NHAP, 11);
+            isAllRequiredFieldsFilled = false;
+
         }
 
         BigDecimal salary = BigDecimal.ZERO;
@@ -492,8 +519,8 @@ private void showTable(List<Employee> employees) {
 
         // Kiểm tra thông tin nhân viên trùng lặp
         for (Employee employee : employeeList.getList()) {
-            if (employee.getFirstName().equals(firstName) && employee.getLastName().equals(lastName) || employee.getCCCD().equals(cccd)) {
-                JOptionPane.showMessageDialog(this, "Thông tin nhân viên đã trùng! Mong bạn kiểm tra và nhập lại.\n                      (Không được trùng Họ, Tên,CCCD) ",
+            if (/*employee.getFirstName().equals(firstName) && */employee.getLastName().equals(lastName) && employee.getCCCD().equals(cccd)) {
+                JOptionPane.showMessageDialog(this, "Thông tin nhân viên đã trùng! Mong bạn kiểm tra và nhập lại.\n                      (Không được trùng  Tên,CCCD) ",
                         "Cảnh báo", JOptionPane.WARNING_MESSAGE);
                 return;
             }
@@ -633,25 +660,32 @@ private void showTable(List<Employee> employees) {
 
     private void removeButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_removeButtonActionPerformed
         // TODO add your handling code here:
+
         DefaultTableModel model = (DefaultTableModel) displayTable.getModel();
         int selectedRowIndex = displayTable.getSelectedRow();
-        List<Employee> employee = new ArrayList<>(employeeList.getList());
-        if (selectedRowIndex >= 0) {
-            // Lấy chỉ số hàng được chọn trong bảng
-            int indexInList = employeeList.getList().indexOf(employee.get(selectedRowIndex));
+        // Kiểm tra xem người dùng đã chọn hàng nào hay chưa
+        if (selectedRowIndex < 0) {
+            JOptionPane.showMessageDialog(this, "Vui lòng chọn một hàng cần xóa!", "Thông báo", JOptionPane.WARNING_MESSAGE);
+            return;
+        }
+        // Hiển thị thông báo xác nhận việc xóa
+        int reply = JOptionPane.showConfirmDialog(this, "Bạn có chắc muốn xóa thông tin không?", "Xác nhận xóa", JOptionPane.YES_NO_OPTION);
+        if (reply == JOptionPane.YES_OPTION) {
+            // Lấy đối tượng Employee từ dữ liệu bảng
+            Employee employeeToRemove = employeeList.getList().get(selectedRowIndex);
             // Xóa đối tượng Employee khỏi danh sách
-            employeeList.getList().remove(indexInList);
+            employeeList.getList().remove(employeeToRemove);
             // Xóa dòng được chọn trong bảng
             model.removeRow(selectedRowIndex);
             // Cập nhật bảng
             model.fireTableDataChanged();
             // Hiển thị thông báo cho người dùng
             JOptionPane.showMessageDialog(this, "Thông tin nhân viên đã được xóa thành công!", "Thông báo", JOptionPane.INFORMATION_MESSAGE);
-        } else {
-            // Hiển thị thông báo khi không có hàng nào được chọn
-            JOptionPane.showMessageDialog(this, "Vui lòng chọn một hàng cần xóa!", "Thông báo", JOptionPane.WARNING_MESSAGE);
+            // Cập nhật số lượng nhân viên
+            clearInputFields();
+
+            updateEmployeeCount();
         }
-        updateEmployeeCount();
     }//GEN-LAST:event_removeButtonActionPerformed
 
     private void searchButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_searchButtonActionPerformed
