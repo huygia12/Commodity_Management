@@ -73,8 +73,11 @@ public class RepoPanel extends javax.swing.JPanel {
         invalidIDLabel = new javax.swing.JLabel();
         cancelButton = new javax.swing.JButton();
         tablePanel = new javax.swing.JPanel();
+        searchLabel = new javax.swing.JLabel();
         jScrollPane1 = new javax.swing.JScrollPane();
         jTable1 = new javax.swing.JTable();
+        searchTextField = new javax.swing.JTextField();
+        searchTypeComboBox = new javax.swing.JComboBox<>();
 
         setBackground(new java.awt.Color(0, 204, 255));
         setBorder(javax.swing.BorderFactory.createTitledBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 255), 2), "REPOSITORY", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Segoe UI", 3, 24), new java.awt.Color(255, 255, 255))); // NOI18N
@@ -83,7 +86,7 @@ public class RepoPanel extends javax.swing.JPanel {
         setLayout(new java.awt.BorderLayout());
 
         repoManagementPanel.setBackground(new java.awt.Color(0, 204, 255));
-        repoManagementPanel.setLayout(new java.awt.BorderLayout());
+        repoManagementPanel.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
         controllerPanel.setBackground(new java.awt.Color(0, 204, 255));
 
@@ -197,16 +200,16 @@ public class RepoPanel extends javax.swing.JPanel {
         controllerPanelLayout.setHorizontalGroup(
             controllerPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(controllerPanelLayout.createSequentialGroup()
-                .addContainerGap()
-                .addGroup(controllerPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                .addGroup(controllerPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(controllerPanelLayout.createSequentialGroup()
-                        .addGap(3, 3, 3)
+                        .addGap(6, 6, 6)
                         .addComponent(totalQuantityLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 89, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(18, 18, 18)
                         .addComponent(totalQuantityTextField, javax.swing.GroupLayout.PREFERRED_SIZE, 153, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, controllerPanelLayout.createSequentialGroup()
+                        .addContainerGap()
                         .addComponent(IDLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 89, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addGap(18, 18, 18)
                         .addGroup(controllerPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(invalidIDLabel)
                             .addComponent(IDTextField, javax.swing.GroupLayout.PREFERRED_SIZE, 153, javax.swing.GroupLayout.PREFERRED_SIZE))))
@@ -219,7 +222,7 @@ public class RepoPanel extends javax.swing.JPanel {
                     .addGroup(controllerPanelLayout.createSequentialGroup()
                         .addComponent(nameTextField, javax.swing.GroupLayout.PREFERRED_SIZE, 153, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(18, 18, 18)
-                        .addComponent(unitComboBox, 0, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(unitComboBox, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 37, Short.MAX_VALUE)
                         .addComponent(listPriceLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 89, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
@@ -277,12 +280,16 @@ public class RepoPanel extends javax.swing.JPanel {
                                 .addComponent(editButton)
                                 .addComponent(cancelButton))
                             .addComponent(shipmentsButton))))
-                .addContainerGap())
+                .addGap(16, 16, 16))
         );
 
-        repoManagementPanel.add(controllerPanel, java.awt.BorderLayout.PAGE_START);
+        repoManagementPanel.add(controllerPanel, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, -1, -1));
 
         tablePanel.setBackground(new java.awt.Color(0, 204, 255));
+        tablePanel.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
+
+        searchLabel.setText("Tìm kiếm:");
+        tablePanel.add(searchLabel, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 0, 90, 20));
 
         jTable1.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -324,24 +331,14 @@ public class RepoPanel extends javax.swing.JPanel {
             jTable1.getColumnModel().getColumn(5).setHeaderValue("Tổng số lượng");
         }
 
-        javax.swing.GroupLayout tablePanelLayout = new javax.swing.GroupLayout(tablePanel);
-        tablePanel.setLayout(tablePanelLayout);
-        tablePanelLayout.setHorizontalGroup(
-            tablePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(tablePanelLayout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 956, Short.MAX_VALUE)
-                .addContainerGap())
-        );
-        tablePanelLayout.setVerticalGroup(
-            tablePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, tablePanelLayout.createSequentialGroup()
-                .addContainerGap(12, Short.MAX_VALUE)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 399, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap())
-        );
+        tablePanel.add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(6, 29, 956, 430));
+        tablePanel.add(searchTextField, new org.netbeans.lib.awtextra.AbsoluteConstraints(110, 0, 153, -1));
 
-        repoManagementPanel.add(tablePanel, java.awt.BorderLayout.CENTER);
+        searchTypeComboBox.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Mã SP", "Tên SP", "Đơn vị", "Nhà sản xuất", "Giá SP", "Tổng số lượng" }));
+        searchTypeComboBox.setSelectedIndex(-1);
+        tablePanel.add(searchTypeComboBox, new org.netbeans.lib.awtextra.AbsoluteConstraints(270, 0, 100, -1));
+
+        repoManagementPanel.add(tablePanel, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 129, -1, 440));
 
         add(repoManagementPanel, java.awt.BorderLayout.PAGE_START);
     }// </editor-fold>//GEN-END:initComponents
@@ -716,6 +713,9 @@ public class RepoPanel extends javax.swing.JPanel {
     private javax.swing.JLabel nameLabel;
     private javax.swing.JTextField nameTextField;
     private javax.swing.JPanel repoManagementPanel;
+    private javax.swing.JLabel searchLabel;
+    private javax.swing.JTextField searchTextField;
+    private javax.swing.JComboBox<String> searchTypeComboBox;
     private javax.swing.JButton shipmentsButton;
     private javax.swing.JPanel tablePanel;
     private javax.swing.JLabel totalQuantityLabel;
