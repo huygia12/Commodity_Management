@@ -13,6 +13,7 @@ import Ultility.Cautions;
 import Ultility.CustomPair;
 import Ultility.FilterGoodsList;
 import Ultility.IDGenerator;
+import java.awt.Dimension;
 import java.awt.event.KeyEvent;
 import java.math.BigDecimal;
 import java.math.BigInteger;
@@ -21,6 +22,7 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.ScrollPaneConstants;
 import javax.swing.table.DefaultTableModel;
 
 /**
@@ -1203,7 +1205,8 @@ public class PurchasePanel extends javax.swing.JPanel {
             return;
         }
         // thực hiện chức năng
-        orderCtr.payOrderForGUI(order, shift, repository);
+        System.out.println(order.getPointDiscount());
+        orderCtr.payOrderForGUI(order, shift, repository, settings.getStore());
         initNewOrder();
     }//GEN-LAST:event_payBtnActionPerformed
 
@@ -1220,7 +1223,7 @@ public class PurchasePanel extends javax.swing.JPanel {
             return;
         }
         // thực hiện chức năng
-        orderCtr.payOrderForGUI(order, shift, repository);
+        orderCtr.payOrderForGUI(order, shift, repository, settings.getStore());
         orderCtr.getOrderView().printBillToFile(order, settings.getStore(), orderCtr);
         initNewOrder();
     }//GEN-LAST:event_payAnfPrintBtnActionPerformed
@@ -1945,7 +1948,7 @@ public class PurchasePanel extends javax.swing.JPanel {
 
     private boolean insufficientCustomerMoneyCheck(BigDecimal customerMoney) {
         if (paymentOptionCombobox.getSelectedIndex() == 0) {
-            if (orderCtr.getTotal(order).compareTo(customerMoney) == 1) {
+            if (orderCtr.getTotal(order, settings.getStore()).compareTo(customerMoney) == 1) {
                 insertWarningToTextField(customerMoneyText, INSUFFICIENT_MONEY, 12);
                 customerMoneyWarningCheck = false;
                 return true;
@@ -2108,10 +2111,11 @@ public class PurchasePanel extends javax.swing.JPanel {
         subTotalTextField.setText(String.format("%.1f", orderCtr.getSubTotal(order)));
         taxAmountTextField.setText(String.format("%.1f", orderCtr.getTaxAmount(order)));
         discountAmountTextField.setText(String.format("%.1f", orderCtr.getDiscountAmount(order)));
-        pointDiscountAmountTextField.setText(String.format("%.1f", orderCtr.getPointDiscountAmount(order)));
-        totalTextField.setText(String.format("%.1f", orderCtr.getTotal(order)));
+        pointDiscountAmountTextField.setText(String.format("%.1f", 
+                orderCtr.getPointDiscountAmount(order, settings.getStore())));
+        totalTextField.setText(String.format("%.1f", orderCtr.getTotal(order, settings.getStore())));
         BigDecimal change = (order.getPaymentOptions().compareTo(PaymentOptions.OTHER_PAYMENT) == 0)
-                ? BigDecimal.ZERO : orderCtr.getChange(order);
+                ? BigDecimal.ZERO : orderCtr.getChange(order, settings.getStore());
         changeAmountTextField.setText(String.format("%.1f", change));
     }
 
@@ -2133,6 +2137,62 @@ public class PurchasePanel extends javax.swing.JPanel {
                         priceRangeComboBox.getItemCount()));
     }
 
+    private void computeSizeOfEachColumnInGoodsListTable() {
+        // duyet tu dau den cuoi mang de tim MAX_SIZE cua giatri input tung thuoc tinh
+        for (Goods goods : draftGoodsList.getList()) {
+            if (goods.getID().length() > goodsIDMaxSize) {
+                goodsIDMaxSize = goods.getID().length();
+            }
+            if (goods.getGoodsName().length() > goodsNameMaxSize) {
+                goodsNameMaxSize = goods.getGoodsName().length();
+            }
+            if (goods.getManufacture().length() > manufactureMaxSize) {
+                manufactureMaxSize = goods.getManufacture().length();
+            }
+            if (goods.getUnit().length() > unitMaxSize) {
+                unitMaxSize = goods.getUnit().length();
+            }
+            if (String.format(".1f", goods.getListPrice()).length() > listPriceMaxSize) {
+                listPriceMaxSize = String.format(".1f", goods.getListPrice()).length();
+            }
+            for (Shipment shipment : goods.getShipments()) {
+                if (shipment.getID().length() > shipmentIDMaxSize) {
+                    shipmentIDMaxSize = shipment.getID().length();
+                }
+                if (shipment.getNsx().format(DateTimeFormatter.ofPattern(OUTPUT_DATE_PATTERN)).length() > productionDateMaxSize) {
+                    productionDateMaxSize = shipment.getNsx().format(DateTimeFormatter.ofPattern(OUTPUT_DATE_PATTERN)).length();
+                }
+                if (shipment.getHsd().format(DateTimeFormatter.ofPattern(OUTPUT_DATE_PATTERN)).length() > expirationDateMaxSize) {
+                    expirationDateMaxSize = shipment.getHsd().format(DateTimeFormatter.ofPattern(OUTPUT_DATE_PATTERN)).length();
+                }
+                if (String.format(".1f", shipment.getQuantity()).length() > shipmentQuantityMaxSize) {
+                    shipmentQuantityMaxSize = String.format(".1f", shipment.getQuantity()).length();
+                }
+            }
+        }
+        int jscrollPaneMaxWidthSize = goodsIDMaxSize + goodsNameMaxSize + manufactureMaxSize + unitMaxSize + listPriceMaxSize + shipmentIDMaxSize + productionDateMaxSize + expirationDateMaxSize + shipmentQuantityMaxSize;
+        goodsListTable.getColumnModel().getColumn(0).setPreferredWidth(goodsIDMaxSize);
+        goodsListTable.getColumnModel().getColumn(1).setPreferredWidth(goodsNameMaxSize);
+        goodsListTable.getColumnModel().getColumn(2).setPreferredWidth(manufactureMaxSize);
+        goodsListTable.getColumnModel().getColumn(3).setPreferredWidth(unitMaxSize);
+        goodsListTable.getColumnModel().getColumn(4).setPreferredWidth(listPriceMaxSize);
+        goodsListTable.getColumnModel().getColumn(5).setPreferredWidth(shipmentIDMaxSize);
+        goodsListTable.getColumnModel().getColumn(6).setPreferredWidth(productionDateMaxSize);
+        goodsListTable.getColumnModel().getColumn(7).setPreferredWidth(expirationDateMaxSize);
+        goodsListTable.getColumnModel().getColumn(8).setPreferredWidth(shipmentQuantityMaxSize);
+        goodsListTable.getColumnModel().getColumn(0).setWidth(goodsIDMaxSize);
+        goodsListTable.getColumnModel().getColumn(1).setWidth(goodsNameMaxSize);
+        goodsListTable.getColumnModel().getColumn(2).setWidth(manufactureMaxSize);
+        goodsListTable.getColumnModel().getColumn(3).setWidth(unitMaxSize);
+        goodsListTable.getColumnModel().getColumn(4).setWidth(listPriceMaxSize);
+        goodsListTable.getColumnModel().getColumn(5).setWidth(shipmentIDMaxSize);
+        goodsListTable.getColumnModel().getColumn(6).setWidth(productionDateMaxSize);
+        goodsListTable.getColumnModel().getColumn(7).setWidth(expirationDateMaxSize);
+        goodsListTable.getColumnModel().getColumn(8).setWidth(shipmentQuantityMaxSize);
+        goodListScrollPane.getViewport().setSize(new Dimension(jscrollPaneMaxWidthSize, 402));
+        goodsListTable.setSize(new Dimension(jscrollPaneMaxWidthSize, 402));
+    }
+
     private void initNewOrder() {
         // Tạo order mới
         order = orderCtr.makeNewOrderForGUI(shift, idGenerator);
@@ -2149,6 +2209,7 @@ public class PurchasePanel extends javax.swing.JPanel {
         orderIDTextField.setText(order.getID());
         setDefaultValuesToAllComponents();
         clearTableModel(orderGoodsListModel);
+        computeSizeOfEachColumnInGoodsListTable();
         insertGoodsListToGoodsListTable(draftGoodsList);
     }
 
@@ -2163,7 +2224,11 @@ public class PurchasePanel extends javax.swing.JPanel {
         filterBtn.setEnabled(false);
         keyWarningLabel.setVisible(false);
         // set các biến khác được sử dụng 
+        goodListScrollPane.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_ALWAYS);
+        goodListScrollPane.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
         goodsListModel = (DefaultTableModel) goodsListTable.getModel();
+        orderGoodsListScrollPane.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_ALWAYS);
+        orderGoodsListScrollPane.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
         orderGoodsListModel = (DefaultTableModel) orderGoodsListTable.getModel();
         orderCtr = new OrderController();
         goodsCtr = new GoodsController();
@@ -2258,7 +2323,15 @@ public class PurchasePanel extends javax.swing.JPanel {
     private CustomerCardListController customerCardListCtr;
     private DefaultTableModel orderGoodsListModel;
     private DefaultTableModel goodsListModel;
-
+    private int goodsIDMaxSize = "Mã SP".length();
+    private int goodsNameMaxSize = "Tên SP".length();
+    private int manufactureMaxSize = "Nhà sx".length();
+    private int unitMaxSize = "ĐV".length();
+    private int listPriceMaxSize = "Giá Bán/ĐV".length();
+    private int shipmentIDMaxSize = "Mã lô".length();
+    private int productionDateMaxSize = "Ngày sx".length();
+    private int expirationDateMaxSize = "Hạn SD".length();
+    private int shipmentQuantityMaxSize = "SL".length();
     private Repository repository;
     private Shift shift;
     private CustomerCardList cutomerCardList;

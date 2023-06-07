@@ -42,7 +42,7 @@ public class ShiftController {
         return this.shiftView;
     }
 
-    public Shift ShiftManagement(EmployeeList employeeList, Store myStore, IDGenerator idGenerator, History currentHistory, Shift shift) {
+    public Shift ShiftManagement(EmployeeList employeeList, Store store, IDGenerator idGenerator, History currentHistory, Shift shift) {
         HistoryController hisCtr = new HistoryController();
         if (employeeList.getList().isEmpty()) {
             System.out.println("Please add employees first to open shift!\n(Go to 'Employee Management'->'Add new Employee')");
@@ -58,7 +58,7 @@ public class ShiftController {
                         this.shiftView.shiftNotEndCaution();
                         break;
                     }
-                    shift = openShift(employeeList, idGenerator, myStore, shift);
+                    shift = openShift(employeeList, idGenerator, store, shift);
                     if (shift != null) {
                         currentHistory.getShiftHistory().add(shift);
                     }
@@ -89,7 +89,7 @@ public class ShiftController {
                         this.shiftView.shiftNotOpenCaution();
                         break;
                     }
-                    showorderHistory(shift, hisCtr);
+                    showorderHistory(shift, hisCtr, store);
                     break;
                 case "6":
                     if (shift == null) {
@@ -103,14 +103,14 @@ public class ShiftController {
                         this.shiftView.shiftNotOpenCaution();
                         break;
                     }
-                    hisCtr.getHistoryView().showAnShiftInDetail(shift);
+                    hisCtr.getHistoryView().showAnShiftInDetail(shift, store);
                     break;
                 case "8":
                     if (shift == null) {
                         this.shiftView.shiftNotOpenCaution();
                         break;
                     }
-                    if (endShift(myStore, shift)) {
+                    if (endShift(store, shift)) {
                         shift = null;
                     }
                     break;
@@ -133,10 +133,10 @@ public class ShiftController {
         return result;
     }
 
-    public BigDecimal getNetRevenue(Shift shift) {
+    public BigDecimal getNetRevenue(Shift shift, Store store) {
         BigDecimal result = BigDecimal.ZERO;
         for (Order order : shift.getOrderHisPerShift()) {
-            result = result.add(orderCtr.getTotal(order));
+            result = result.add(orderCtr.getTotal(order, store));
         }
         return result;
     }
@@ -149,21 +149,21 @@ public class ShiftController {
         return result;
     }
 
-    public BigDecimal getTotalPaymentByCash(Shift shift) {
+    public BigDecimal getTotalPaymentByCash(Shift shift, Store store) {
         BigDecimal result = BigDecimal.ZERO;
         for (Order order : shift.getOrderHisPerShift()) {
             if (order.getPaymentOptions().equals(PaymentOptions.CASH_PAYMENT)) {
-                result = result.add(orderCtr.getTotal(order));
+                result = result.add(orderCtr.getTotal(order, store));
             }
         }
         return result;
     }
 
-    public BigDecimal getTotalPaymentByWireTransfer(Shift shift) {
+    public BigDecimal getTotalPaymentByWireTransfer(Shift shift, Store store) {
         BigDecimal result = BigDecimal.ZERO;
         for (Order order : shift.getOrderHisPerShift()) {
             if (order.getPaymentOptions().equals(PaymentOptions.OTHER_PAYMENT)) {
-                result = result.add(orderCtr.getTotal(order));
+                result = result.add(orderCtr.getTotal(order, store));
             }
         }
         return result;
@@ -177,10 +177,10 @@ public class ShiftController {
         return result;
     }
 
-    public BigDecimal getTotalPointDiscount(Shift shift) {
+    public BigDecimal getTotalPointDiscount(Shift shift, Store store) {
         BigDecimal result = BigDecimal.ZERO;
         for (Order order : shift.getOrderHisPerShift()) {
-            result = result.add(orderCtr.getPointDiscountAmount(order));
+            result = result.add(orderCtr.getPointDiscountAmount(order, store));
         }
         return result;
     }
@@ -189,11 +189,11 @@ public class ShiftController {
         return shift.getOrderHisPerShift().stream().count();
     }
 
-    public BigDecimal getAveragePerOrder(Shift shift) {
+    public BigDecimal getAveragePerOrder(Shift shift, Store store) {
         if (getNumberOfOrder(shift) == 0) {
             return BigDecimal.ZERO;
         }
-        return getNetRevenue(shift).divide(new BigDecimal(getNumberOfOrder(shift)));
+        return getNetRevenue(shift, store).divide(new BigDecimal(getNumberOfOrder(shift)));
     }
 
     public BigDecimal getTotalGoodsQuanOfThisShift(Shift shift) {
@@ -285,14 +285,14 @@ public class ShiftController {
         return shift;
     }
 
-    private void showorderHistory(Shift shift, HistoryController hisCtr) {
+    private void showorderHistory(Shift shift, HistoryController hisCtr, Store store) {
         if (shift.getOrderHisPerShift().isEmpty()) {
             System.out.println("Your current order history is empty!");
             return;
         }
         List<Shift> shiftList = new ArrayList<>();
         shiftList.add(shift);
-        hisCtr.getHistoryView().showOrderHistory(new History(shiftList));
+        hisCtr.getHistoryView().showOrderHistory(new History(shiftList), store);
         hisCtr.getHistoryView().showOrderHistory(
                 hisCtr.makeHisoryOrderGoodsList(shiftList));
     }

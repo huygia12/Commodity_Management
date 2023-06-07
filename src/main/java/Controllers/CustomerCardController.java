@@ -6,6 +6,7 @@ package Controllers;
 
 import Models.CustomerCard;
 import Models.CustomerCardList;
+import Models.Store;
 import Ultility.IDGenerator;
 import View.CustomerView;
 import java.math.BigDecimal;
@@ -17,8 +18,9 @@ import java.util.stream.Collectors;
  * @author FPTSHOP
  */
 public class CustomerCardController {
+
     final CustomerView customerView = new CustomerView();
-    
+
     public CustomerCardController() {
     }
 
@@ -26,7 +28,7 @@ public class CustomerCardController {
         return customerView;
     }
 
-    public CustomerCard generateCard(CustomerCardList customerCardList,IDGenerator idGenerator) {
+    public CustomerCard generateCard(CustomerCardList customerCardList, IDGenerator idGenerator) {
         CustomerCard newCustomerCard = new CustomerCard();
         int n = 1;
         int nextProcess;
@@ -60,7 +62,7 @@ public class CustomerCardController {
                     } else if (nextProcess == -1) {
                         n = 3;
                         break;
-                    } else if (new CustomerCardListController().phoneNumAlreadyExisted(customerCardList, 
+                    } else if (new CustomerCardListController().phoneNumAlreadyExisted(customerCardList,
                             newCustomerCard.getCustomer().getPhoneNumber()) != null) {
                         n = 4;
                         System.out.println("This phone number already existed.");
@@ -101,27 +103,28 @@ public class CustomerCardController {
         return cloneCard;
     }
 
-    public void gainPoint(CustomerCard custmomerCard, BigDecimal totalPayment) {
+    public void gainPoint(CustomerCard custmomerCard, BigDecimal totalPayment, Store store) {
         custmomerCard.setPoint(custmomerCard
                 .getPoint()
-                .add(totalPayment.toBigInteger().divide(new BigInteger("10000"))));
+                .add(totalPayment.toBigInteger()
+                        .divide(store.getAmountForOnePoint().toBigInteger())));
     }
 
-    public BigDecimal convertPointToMoney(CustomerCard custmomerCard, BigInteger inputPoint) {
+    public BigDecimal convertPointToMoney(CustomerCard custmomerCard, BigInteger inputPoint, Store store) {
         if (inputPoint.compareTo(BigInteger.ZERO) <= 0) {
             return BigDecimal.ZERO;
         }
         if (inputPoint.compareTo(custmomerCard
                 .getPoint()) >= 0) {
-            custmomerCard.setPoint(BigInteger.ZERO);
             inputPoint = custmomerCard.getPoint();
-        } else {
-            custmomerCard.setPoint(custmomerCard
-                    .getPoint()
-                    .subtract(inputPoint));
         }
         return new BigDecimal(inputPoint
-                .divide(new BigInteger(10 + ""))
-                .multiply(new BigInteger(1000 + "")) + "");
+                .divide(store.getPointsForOneVNDIn())
+                .multiply(store.getAmountForOnePoint().toBigInteger()));
+    }
+
+    public void usePoint(CustomerCard custmomerCard, BigInteger inputPoint) {
+        // chỉ sử dụng khi đã sử dụng phương thức convertPointToMoney
+        custmomerCard.setPoint(custmomerCard.getPoint().subtract(inputPoint));
     }
 }

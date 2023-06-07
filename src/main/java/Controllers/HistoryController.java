@@ -12,6 +12,7 @@ import Models.ImportedGoods;
 import Models.Order;
 import Models.Shift;
 import Models.SoldGoods;
+import Models.Store;
 import Ultility.Cautions;
 import View.HistoryView;
 import java.time.LocalDate;
@@ -42,7 +43,7 @@ public class HistoryController {
     }
     
     
-    public void historyManagement(History history) {
+    public void historyManagement(History history, Store store) {
         if(history.getShiftHistory().isEmpty()){
             System.out.println("Nothing found in history!");
             return;
@@ -55,22 +56,22 @@ public class HistoryController {
                 sc.nextLine();
                 switch (choice) {
                     case 1:
-                        statisticOfOrder(history);
+                        statisticOfOrder(history, store);
                         break;
                     case 2:
                         statisticOfImportGoods(history);
                         break;
                     case 3:
-                        statisticOfShiftGoods(history);
+                        statisticOfShiftGoods(history, store);
                         break;
                     case 4:
-                        searchOrderInDetail(history);
+                        searchOrderInDetail(history, store);
                         break;
                     case 5:
                         searchImportGoodsInDetail(history);
                         break;
                     case 6:
-                        searchShiftInDetail(history);
+                        searchShiftInDetail(history, store);
                         break;
                     case 7:
                         System.out.println("Back...");
@@ -147,13 +148,13 @@ public class HistoryController {
         return shiftList;
     }
 
-    private void statisticOfOrder(History history) {
-        this.view.showOrderHistory(history);
+    private void statisticOfOrder(History history, Store store) {
+        this.view.showOrderHistory(history, store);
         CustomPair<LocalDate, LocalDate> fromToDate = this.view.typeInFromToDate();
         // Nhat tat ca order nam trong khoang fromToDate de cho vao shiftList
         List<Shift> shiftList = ordersBetweenFromToDate(fromToDate, history);
         // Hien thi cac thong tin co ban cua cac order do: orderID, shiftID, orderDateTime, orderTotal
-        this.view.showOrderHistory(new History(shiftList));
+        this.view.showOrderHistory(new History(shiftList), store);
         // Hien thi thong ke so luong va so tien cua tung mat hang duoc ban
         this.view.showOrderHistory(makeHisoryOrderGoodsList(shiftList));
     }
@@ -241,17 +242,17 @@ public class HistoryController {
         return shiftList;
     }
 
-    private void statisticOfShiftGoods(History history) {
+    private void statisticOfShiftGoods(History history, Store store) {
         CustomPair<LocalDate, LocalDate> fromToDate = this.view.typeInFromToDate();
         List<Shift> shiftList = shiftBetweenFromToDate(fromToDate, history);
-        this.view.showShiftHistory(new History(shiftList));
+        this.view.showShiftHistory(new History(shiftList), store);
     }
 
     //function 4
-    private void searchOrderInDetail(History history){
+    private void searchOrderInDetail(History history, Store store){
         Order searchingOrder = searchOrder(history);
         if(searchingOrder != null){
-            this.view.showAnOrderInDetail(searchingOrder);
+            this.view.showAnOrderInDetail(searchingOrder, store);
             GoodsList<Goods> orderGoodsList = new GoodsList(searchingOrder.getList());
             goodsListCtr.getView().showGoodsList(orderGoodsList);
         }
@@ -264,10 +265,10 @@ public class HistoryController {
         }
     }
     
-    private void searchShiftInDetail(History history){
+    private void searchShiftInDetail(History history, Store store){
         Shift searchingShift = searchShift(history);
         if(searchingShift != null){
-            this.view.showAnShiftInDetail(searchingShift);
+            this.view.showAnShiftInDetail(searchingShift, store);
         }
     }
     

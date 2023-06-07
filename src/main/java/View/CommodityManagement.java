@@ -23,7 +23,6 @@ import java.nio.file.Path;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
-import java.util.ArrayList;
 import java.util.Scanner;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -108,7 +107,7 @@ public class CommodityManagement {
                             idGenerator, history, shift);
                     break;
                 case "4":
-                    hisCtr.historyManagement(history);
+                    hisCtr.historyManagement(history, settings.getStore());
                     break;
                 case "5":
                     employeeListCtr.employeeListManagement(employeeList, shift);
@@ -236,8 +235,8 @@ public class CommodityManagement {
         cardList.getList().add(new CustomerCard(idGenerator.generateID(CustomerCard.class.getName(), 6), new Customer("Do Quynh", "Anh", "0733833888", "16 Cau Giay", 22, Gender.FEMALE)));
         cardList.getList().add(new CustomerCard(idGenerator.generateID(CustomerCard.class.getName(), 6), new Customer("Le Duc", "Cuong", "053555133", "41 Minh Khai", 17, Gender.MALE)));
         settings.setStore(new Store("Chang hi", "bonEmMuonAnHotpotWangWang@gmail.com", "112-Nguyen Van Loc", 10, "0705737292"));
-        settings.setPointsForOneVND(new BigInteger("10"));
-        settings.setAmountForOnePoint(new BigDecimal("10000"));
+        settings.getStore().setPointsForOneVNDIn(new BigInteger("10"));
+        settings.getStore().setAmountForOnePoint(new BigDecimal("10000"));
         settings.getPriceAmountList().add("< 100000");
         settings.getPriceAmountList().add("100000 - 300000");
         settings.getPriceAmountList().add("300000 - 500000");
