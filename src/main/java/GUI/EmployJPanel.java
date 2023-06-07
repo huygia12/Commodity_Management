@@ -26,7 +26,7 @@ public class EmployJPanel extends javax.swing.JPanel {
      */
     public EmployJPanel() {
         initComponents();
-         displayEmployees();
+        displayEmployees();
     }
 
     /**
@@ -80,10 +80,21 @@ public class EmployJPanel extends javax.swing.JPanel {
         inputFirstNameLabel.setText("Họ:");
         inputFirstNameLabel.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
 
+        inputFirstNameTextField.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                inputFirstNameTextFieldMouseClicked(evt);
+            }
+        });
+
         inputLastNameLabel.setFont(new java.awt.Font("Dialog", 1, 11)); // NOI18N
         inputLastNameLabel.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
         inputLastNameLabel.setText("Tên:");
 
+        inputLastNameTextField1.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                inputLastNameTextField1MouseClicked(evt);
+            }
+        });
         inputLastNameTextField1.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 inputLastNameTextField1ActionPerformed(evt);
@@ -118,6 +129,12 @@ public class EmployJPanel extends javax.swing.JPanel {
         inputPhoneLabel.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
         inputPhoneLabel.setText("SĐT:");
 
+        inputPhoneTextField.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                inputPhoneTextFieldMouseClicked(evt);
+            }
+        });
+
         inputAdressLabel.setFont(new java.awt.Font("Dialog", 1, 11)); // NOI18N
         inputAdressLabel.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
         inputAdressLabel.setText("Địa chỉ:");
@@ -125,6 +142,12 @@ public class EmployJPanel extends javax.swing.JPanel {
         inputCCCDLabel.setFont(new java.awt.Font("Dialog", 1, 11)); // NOI18N
         inputCCCDLabel.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
         inputCCCDLabel.setText("CCCD:");
+
+        inputCCCDTextField.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                inputCCCDTextFieldMouseClicked(evt);
+            }
+        });
 
         inputSalaryLabel.setFont(new java.awt.Font("Dialog", 1, 11)); // NOI18N
         inputSalaryLabel.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
@@ -431,7 +454,47 @@ public class EmployJPanel extends javax.swing.JPanel {
         textField.setForeground(new java.awt.Color(255, 0, 0));
         textField.setText(warningText);
         textField.setEditable(true);
+
     }
+
+    private void textFieldMouseClick(javax.swing.JTextField textField, int size) {
+        setDefaultOptionToTextField(textField, size);
+        textField.setEditable(true);
+    }
+
+    private void setDefaultOptionToTextField(javax.swing.JTextField textField, int size) {
+        textField.setFont(new java.awt.Font("Segoe UI", 0, size)); // NOI18N
+        textField.setForeground(new java.awt.Color(0, 0, 0));
+        textField.setHorizontalAlignment(javax.swing.JTextField.LEFT);
+        textField.setText("");
+    }
+
+    private boolean validateRequiredFields() {
+        boolean isAllRequiredFieldsFilled = true;
+
+        if (inputCCCDTextField.getText().isBlank()) {
+            insertWarningToTextField(inputCCCDTextField, BAT_BUOC_NHAP, 11);
+            isAllRequiredFieldsFilled = false;
+        }
+
+        if (inputFirstNameTextField.getText().isBlank()) {
+            insertWarningToTextField(inputFirstNameTextField, BAT_BUOC_NHAP, 11);
+            isAllRequiredFieldsFilled = false;
+        }
+
+        if (inputLastNameTextField1.getText().isBlank()) {
+            insertWarningToTextField(inputLastNameTextField1, BAT_BUOC_NHAP, 11);
+            isAllRequiredFieldsFilled = false;
+        }
+
+        if (inputPhoneTextField.getText().isBlank()) {
+            insertWarningToTextField(inputPhoneTextField, BAT_BUOC_NHAP, 11);
+            isAllRequiredFieldsFilled = false;
+        }
+
+        return isAllRequiredFieldsFilled;
+    }
+
     private void inputLastNameTextField1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_inputLastNameTextField1ActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_inputLastNameTextField1ActionPerformed
@@ -449,38 +512,17 @@ public class EmployJPanel extends javax.swing.JPanel {
             JOptionPane.showMessageDialog(this, "Bạn chưa thêm gì !", "Cảnh báo", JOptionPane.WARNING_MESSAGE);
             return;
         }
-//Những thông tin bắt buộc nhập
-        boolean isAllRequiredFieldsFilled = true;
-
-        if (inputCCCDTextField.getText().isEmpty()) {
-            insertWarningToTextField(inputCCCDTextField, BAT_BUOC_NHAP, 11);
-            isAllRequiredFieldsFilled = false;
-
+        // Kiểm tra các trường bắt buộc
+        if (!validateRequiredFields()) {
+            return;
         }
 
-        if (inputFirstNameTextField.getText().isEmpty()) {
-            insertWarningToTextField(inputFirstNameTextField, BAT_BUOC_NHAP, 11);
-            isAllRequiredFieldsFilled = false;
-
-        }
-
-        if (inputLastNameTextField1.getText().isEmpty()) {
-            insertWarningToTextField(inputLastNameTextField1, BAT_BUOC_NHAP, 11);
-            isAllRequiredFieldsFilled = false;
-
-        }
-
-        if (inputPhoneTextField.getText().isEmpty()) {
-            insertWarningToTextField(inputPhoneTextField, BAT_BUOC_NHAP, 11);
-            isAllRequiredFieldsFilled = false;
-
-        }
-
+        // Xử lý khi tất cả các trường bắt buộc đã được điền
         BigDecimal salary = BigDecimal.ZERO;
         String firstName = inputFirstNameTextField.getText();
         String lastName = inputLastNameTextField1.getText();
         int age = 0;
-        String cccd = inputCCCDTextField.getText();;
+        String cccd = inputCCCDTextField.getText();
         long cccdInt;
 
         try {
@@ -489,11 +531,11 @@ public class EmployJPanel extends javax.swing.JPanel {
             cccdInt = Long.parseLong(cccd);
             // Kiểm tra số âm cho age và salary
             if (age < 0 || salary.compareTo(BigDecimal.ZERO) < 0 || cccdInt < 0) {
-                JOptionPane.showMessageDialog(this, "Nhập tuổi,lương,cccd số âm! Bạn bị ngu à?", "Cảnh báo", JOptionPane.WARNING_MESSAGE);
+                JOptionPane.showMessageDialog(this, "Nhập tuổi, lương, CCCD số âm! Bạn bị ngu à?", "Cảnh báo", JOptionPane.WARNING_MESSAGE);
                 return;
             }
         } catch (NumberFormatException e) {
-            JOptionPane.showMessageDialog(this, "Lương,tuổi,cccd cần là một số.", "Lỗi", JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(this, "Lương, tuổi, CCCD cần là một số.", "Lỗi", JOptionPane.ERROR_MESSAGE);
             return;
         }
 
@@ -501,11 +543,11 @@ public class EmployJPanel extends javax.swing.JPanel {
         String phone = inputPhoneTextField.getText();
         String reg = "^(0|\\+84)(\\s|\\.)?((3[0-9])|(5[0-9])|(7[0-9])|(8[0-689])|(9[0-46-9]))(\\d)(\\s|\\.)?(\\d{3})(\\s|\\.)?(\\d{3})$";
         if (!phone.matches(reg)) {
-            JOptionPane.showMessageDialog(this, "Số điện thoại không đúng định dạng! Vui lòng nhập lại .", "Cảnh báo", JOptionPane.WARNING_MESSAGE);
+            JOptionPane.showMessageDialog(this, "Số điện thoại không đúng định dạng! Vui lòng nhập lại.", "Cảnh báo", JOptionPane.WARNING_MESSAGE);
             return;
         }
-        String gender = "";
 
+        String gender = "";
         if (maleButton.isSelected()) {
             gender = "MALE";
         } else if (femaleRadioButton.isSelected()) {
@@ -513,15 +555,11 @@ public class EmployJPanel extends javax.swing.JPanel {
         } else if (otherRadioButton.isSelected()) {
             gender = "OTHER";
         }
-        if (firstName.isEmpty()) {
-            System.out.println(BAT_BUOC_NHAP);
-        }
 
         // Kiểm tra thông tin nhân viên trùng lặp
         for (Employee employee : employeeList.getList()) {
-            if (/*employee.getFirstName().equals(firstName) && */employee.getLastName().equals(lastName) && employee.getCCCD().equals(cccd)) {
-                JOptionPane.showMessageDialog(this, "Thông tin nhân viên đã trùng! Mong bạn kiểm tra và nhập lại.\n                      (Không được trùng  Tên,CCCD) ",
-                        "Cảnh báo", JOptionPane.WARNING_MESSAGE);
+            if (employee.getLastName().equals(lastName) && employee.getCCCD().equals(cccd)) {
+                JOptionPane.showMessageDialog(this, "Thông tin nhân viên đã trùng! Mong bạn kiểm tra và nhập lại.\n(Không được trùng Tên, CCCD)", "Cảnh báo", JOptionPane.WARNING_MESSAGE);
                 return;
             }
         }
@@ -538,7 +576,7 @@ public class EmployJPanel extends javax.swing.JPanel {
         // Xóa các trường nhập để chuẩn bị cho việc nhập thông tin nhân viên tiếp theo
         clearInputFields();
 
-        JOptionPane.showMessageDialog(this, "Chào mừng nhân viên mới", "Thành Công", JOptionPane.INFORMATION_MESSAGE);
+        JOptionPane.showMessageDialog(this, "Chào mừng nhân viên mới", "Thành công", JOptionPane.INFORMATION_MESSAGE);
         updateEmployeeCount();
     }//GEN-LAST:event_addButtonActionPerformed
 
@@ -693,31 +731,28 @@ public class EmployJPanel extends javax.swing.JPanel {
         String searchValue = searchIDTextField.getText();
 
         if (searchValue.isEmpty()) {
-            JOptionPane.showMessageDialog(null, "Bạn cần nhập thông tin nhân viên tại đây");
+            JOptionPane.showMessageDialog(null, "Bạn cần nhập thông tin nhân viên tại thanh tìm kiếm");
             return;
         }
 
-        if (searchValue.isEmpty()) {
-            JOptionPane.showMessageDialog(null, "Bạn cần nhập thông tin nhân viên tại đây");
-            return;
-        }
-        // Tìm kiếm vị trí của tất cả các nhân viên có firstName tương ứng trong danh sách nhân viên
-        List<Integer> rowIndexes = getRowsForFieldValue(searchValue);
-
-        if (rowIndexes.size() > 0) {
-            // Nếu tìm thấy, lấy danh sách các đối tượng Employee tương ứng từ danh sách nhân viên trong đối tượng EmployeeList
-            List<Employee> searchResult = new ArrayList<>();
-            for (Integer rowIndex : rowIndexes) {
-                Employee employee = employeeList.getList().get(rowIndex);
+        // Tìm kiếm vị trí của tất cả các nhân viên có firstName,lastName,CCCD tương ứng trong danh sách nhân viên
+        List<Employee> searchResult = new ArrayList<>();
+        for (Employee employee : employeeList.getList()) {
+            if (employee.getFirstName().toLowerCase().contains(searchValue.toLowerCase())
+                    || employee.getLastName().toLowerCase().contains(searchValue.toLowerCase())
+                    || employee.getCCCD().contains(searchValue)) {
                 searchResult.add(employee);
             }
+        }
 
+        if (searchResult.size() > 0) {
             // Hiển thị danh sách nhân viên trong bảng, chỉ hiển thị thông tin của nhân viên tìm kiếm
             showTable(searchResult);
         } else {
             // Nếu không tìm thấy, hiển thị thông báo lỗi
             JOptionPane.showMessageDialog(null, "Không tìm thấy nhân viên có thông tin tương ứng");
         }
+
     }//GEN-LAST:event_searchButtonActionPerformed
 // Phương thức tìm kiếm dựa trên nhiều trường
 
@@ -740,6 +775,7 @@ public class EmployJPanel extends javax.swing.JPanel {
     private void displayTableMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_displayTableMouseClicked
         // TODO add your handling code here:
         // Lấy chỉ số của hàng được chọn trong bảng
+        clearInputFields();
         int rowIndex = displayTable.getSelectedRow();
 
         // Kiểm tra xem một hàng đã được chọn hay chưa
@@ -792,6 +828,48 @@ public class EmployJPanel extends javax.swing.JPanel {
         // TODO add your handling code here:
         clearInputFields();
     }//GEN-LAST:event_cancelButtonActionPerformed
+
+    private void inputCCCDTextFieldMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_inputCCCDTextFieldMouseClicked
+        // TODO add your handling code here:
+
+        if (!validateRequiredFields()) {
+            return;
+        }
+        textFieldMouseClick(inputCCCDTextField, 11);
+
+
+    }//GEN-LAST:event_inputCCCDTextFieldMouseClicked
+
+    private void inputPhoneTextFieldMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_inputPhoneTextFieldMouseClicked
+        // TODO add your handling code here:
+        if (!validateRequiredFields()) {
+
+            return;
+        }
+        textFieldMouseClick(inputPhoneTextField, 11);
+
+    }//GEN-LAST:event_inputPhoneTextFieldMouseClicked
+
+    private void inputFirstNameTextFieldMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_inputFirstNameTextFieldMouseClicked
+        // TODO add your handling code here:
+        // Kiểm tra các trường bắt buộc
+        if (!validateRequiredFields()) {
+
+            return;
+        }
+        textFieldMouseClick(inputFirstNameTextField, 11);
+
+    }//GEN-LAST:event_inputFirstNameTextFieldMouseClicked
+
+    private void inputLastNameTextField1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_inputLastNameTextField1MouseClicked
+        // TODO add your handling code here:
+        if (!validateRequiredFields()) {
+
+            return;
+        }
+        textFieldMouseClick(inputLastNameTextField1, 11);
+
+    }//GEN-LAST:event_inputLastNameTextField1MouseClicked
 
     public void passData(EmployeeList employeelist, Shift shift) {
         this.employeelist = employeelist;

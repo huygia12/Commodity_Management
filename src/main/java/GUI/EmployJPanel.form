@@ -170,6 +170,9 @@
           </Properties>
         </Component>
         <Component class="javax.swing.JTextField" name="inputFirstNameTextField">
+          <Events>
+            <EventHandler event="mouseClicked" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="inputFirstNameTextFieldMouseClicked"/>
+          </Events>
         </Component>
         <Component class="javax.swing.JLabel" name="inputLastNameLabel">
           <Properties>
@@ -182,6 +185,7 @@
         </Component>
         <Component class="javax.swing.JTextField" name="inputLastNameTextField1">
           <Events>
+            <EventHandler event="mouseClicked" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="inputLastNameTextField1MouseClicked"/>
             <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="inputLastNameTextField1ActionPerformed"/>
           </Events>
         </Component>
@@ -244,6 +248,9 @@
           </Properties>
         </Component>
         <Component class="javax.swing.JTextField" name="inputPhoneTextField">
+          <Events>
+            <EventHandler event="mouseClicked" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="inputPhoneTextFieldMouseClicked"/>
+          </Events>
         </Component>
         <Component class="javax.swing.JLabel" name="inputAdressLabel">
           <Properties>
@@ -266,6 +273,9 @@
           </Properties>
         </Component>
         <Component class="javax.swing.JTextField" name="inputCCCDTextField">
+          <Events>
+            <EventHandler event="mouseClicked" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="inputCCCDTextFieldMouseClicked"/>
+          </Events>
         </Component>
         <Component class="javax.swing.JLabel" name="inputSalaryLabel">
           <Properties>

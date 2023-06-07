@@ -31,20 +31,18 @@ public class CustomerCardPanel extends javax.swing.JPanel {
         customerModel = (DefaultTableModel) customerTable.getModel();
     }
 
-    private boolean checkValidString(String firstNameStr, String lastNameStr, String addressStr) {
-        if (firstNameStr.isBlank() || lastNameStr.isBlank() || addressStr.isBlank()) {
+    private boolean checkString(String str) {
+        if (str.isBlank()) {
             return false;
         }
         return true;
     }
 
-    private boolean checkValidNumber(String ageStr, String phoneNumberStr) {
-        if (ageStr.isBlank() || phoneNumberStr.isBlank()) {
+    private boolean checkAge(String str) {
+        if (str.isBlank()) {
             return false;
-        } else if (cautions.checkIfANumberSequenceForGUI(ageStr) && cautions.checkIfANumberSequenceForGUI(phoneNumberStr)) {
-            if (checkPhoneNumber(phoneNumberStr)) {
-                return true;
-            }
+        } else if (cautions.checkIfANumberSequenceForGUI(str)) {
+            return true;
         }
         return false;
     }
@@ -393,7 +391,8 @@ public class CustomerCardPanel extends javax.swing.JPanel {
                         .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addComponent(jLabel6)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 247, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 247, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(6, 6, 6))
                     .addGroup(CustomerInforPanelLayout.createSequentialGroup()
                         .addContainerGap()
                         .addGroup(CustomerInforPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
@@ -420,15 +419,15 @@ public class CustomerCardPanel extends javax.swing.JPanel {
                                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                         .addComponent(memberLastNameTextField, javax.swing.GroupLayout.PREFERRED_SIZE, 99, javax.swing.GroupLayout.PREFERRED_SIZE))))
                             .addGroup(CustomerInforPanelLayout.createSequentialGroup()
+                                .addGap(0, 0, Short.MAX_VALUE)
                                 .addComponent(jLabel1)
                                 .addGap(18, 18, 18)
-                                .addComponent(memberCardIDTextField, javax.swing.GroupLayout.PREFERRED_SIZE, 141, javax.swing.GroupLayout.PREFERRED_SIZE))))
-                    .addGroup(CustomerInforPanelLayout.createSequentialGroup()
-                        .addGap(21, 21, 21)
-                        .addComponent(DeleteCardButton, javax.swing.GroupLayout.PREFERRED_SIZE, 105, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(UpdateCustomerDateButton, javax.swing.GroupLayout.PREFERRED_SIZE, 106, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addGap(12, 12, 12))
+                                .addComponent(memberCardIDTextField, javax.swing.GroupLayout.PREFERRED_SIZE, 141, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGroup(CustomerInforPanelLayout.createSequentialGroup()
+                                .addComponent(DeleteCardButton)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addComponent(UpdateCustomerDateButton)))))
+                .addContainerGap())
         );
         CustomerInforPanelLayout.setVerticalGroup(
             CustomerInforPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -460,9 +459,9 @@ public class CustomerCardPanel extends javax.swing.JPanel {
                     .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel6))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 11, Short.MAX_VALUE)
-                .addGroup(CustomerInforPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(UpdateCustomerDateButton, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(DeleteCardButton, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGroup(CustomerInforPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(UpdateCustomerDateButton, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(DeleteCardButton, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
                 .addComponent(CardInforPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
         );
@@ -657,7 +656,7 @@ public class CustomerCardPanel extends javax.swing.JPanel {
         );
 
         jPanel8.setBackground(new java.awt.Color(255, 255, 255));
-        jPanel8.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Chính sách & ưu đãi ", javax.swing.border.TitledBorder.RIGHT, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Segoe UI", 2, 18))); // NOI18N
+        jPanel8.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Cài đặt chính sách", javax.swing.border.TitledBorder.RIGHT, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Segoe UI", 2, 18))); // NOI18N
 
         jLabel17.setFont(new java.awt.Font("Segoe UI", 3, 14)); // NOI18N
         jLabel17.setText("Chi tiêu");
@@ -922,35 +921,56 @@ public class CustomerCardPanel extends javax.swing.JPanel {
         setVisibleNeedPoint(false);
     }
 
-    private boolean checkInformation() {
-        if (checkValidString(newMemberFirstNameTextField.getText(), newMemberLastNameTextField.getText(), newMemberAddressTextPane.getText())
-                && checkValidNumber(newMemberAgeTextField.getText(), newMemberPhoneNumberTextField.getText())) {
-            return true;
+    private boolean checkInformation(String firstName, String lastName, String age, String phone, String address) {
+        if (!(checkString(firstName) || checkString(lastName))) {
+            JOptionPane.showMessageDialog(CustomerCardPanel.this,
+                    "Thông tin họ tên không hợp lệ!\nVui lòng thử lại.",
+                    "Đăng kí thất bại!",
+                    JOptionPane.WARNING_MESSAGE);
+            return false;
         }
-        return false;
+        if (!checkAge(age)) {
+            JOptionPane.showMessageDialog(CustomerCardPanel.this,
+                    "Thông tin tuổi không hợp lệ!\nVui lòng thử lại.",
+                    "Đăng kí thất bại!",
+                    JOptionPane.WARNING_MESSAGE);
+            return false;
+        }
+        if (!checkPhoneNumber(phone)) {
+            JOptionPane.showMessageDialog(CustomerCardPanel.this,
+                    "Thông tin số điện thoại không hợp lệ!\nVui lòng thử lại.",
+                    "Đăng kí thất bại!",
+                    JOptionPane.WARNING_MESSAGE);
+            return false;
+        }
+        if (!checkString(address)) {
+            JOptionPane.showMessageDialog(CustomerCardPanel.this,
+                    "Thông tin địa chỉ không hợp lệ!\nVui lòng thử lại.",
+                    "Đăng kí thất bại!",
+                    JOptionPane.WARNING_MESSAGE);
+            return false;
+        }
+        return true;
     }
 
     private void CreateNewCardButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_CreateNewCardButtonActionPerformed
         // TODO add your handling code here:
-        if (checkValidString(newMemberFirstNameTextField.getText(), newMemberLastNameTextField.getText(), newMemberAddressTextPane.getText())
-                && checkValidNumber(newMemberAgeTextField.getText(), newMemberPhoneNumberTextField.getText())) {
-            if (!existedPhoneNumber(newMemberPhoneNumberTextField.getText())) {
-                JOptionPane.showMessageDialog(CustomerCardPanel.this,
-                        "Đăng kí thành công!");
-                createNewMemberCard();
-                resetNewCardValue();
-                addAllCustomerCardToTable();
-            } else {
+        if (checkInformation(
+                newMemberFirstNameTextField.getText(),
+                newMemberLastNameTextField.getText(),
+                newMemberAgeTextField.getText(),
+                newMemberPhoneNumberTextField.getText(),
+                newMemberAddressTextPane.getText())) {
+            if (existedPhoneNumber(newMemberPhoneNumberTextField.getText())) {
                 JOptionPane.showMessageDialog(CustomerCardPanel.this,
                         "Số điện thoại đã được đăng kí!");
-                newMemberPhoneNumberTextField.setText("");
+                return;
             }
-        } else {
-            resetNewCardValue();
             JOptionPane.showMessageDialog(CustomerCardPanel.this,
-                    "Thông tin chưa đầy đủ/không hợp lệ!\nVui lòng điền đầy đủ và chính xác thông tin.",
-                    "Đăng kí thất bại!",
-                    JOptionPane.WARNING_MESSAGE);
+                    "Đăng kí thành công!");
+            createNewMemberCard();
+            resetNewCardValue();
+            addAllCustomerCardToTable();
         }
     }//GEN-LAST:event_CreateNewCardButtonActionPerformed
 
@@ -1018,9 +1038,13 @@ public class CustomerCardPanel extends javax.swing.JPanel {
     }
 
     private boolean checkPhoneNumber(String str) {
-        String reg = "^(0|\\+84)(\\s|\\.)?((3[0-9])|(5[0-9])|(7[0-9])|(8[0-689])|(9[0-46-9]))(\\d)(\\s|\\.)?(\\d{3})(\\s|\\.)?(\\d{3})$";
-        if (!str.matches(reg)) {
+        if (str.isBlank()) {
             return false;
+        } else {
+            String reg = "^(0|\\+84)(\\s|\\.)?((3[0-9])|(5[0-9])|(7[0-9])|(8[0-689])|(9[0-46-9]))(\\d)(\\s|\\.)?(\\d{3})(\\s|\\.)?(\\d{3})$";
+            if (!str.matches(reg)) {
+                return false;
+            }
         }
         return true;
     }
@@ -1083,55 +1107,52 @@ public class CustomerCardPanel extends javax.swing.JPanel {
         if (selectedRow == -1) {
             JOptionPane.showMessageDialog(CustomerCardPanel.this,
                     "Vui lòng chọn 1 hàng!");
-            return;
         } else {
-            if (checkValidString(memberFirstNameTextField.getText(), memberLastNameTextField.getText(), memberAddressTextPane.getText())
-                    && checkValidNumber(memberAgeTextField.getText(), memberPhoneNumberTextField.getText())) {
+            String firstName = memberFirstNameTextField.getText();
+            String lastName = memberLastNameTextField.getText();
+            String ageStr = memberAgeTextField.getText();
+            String genderStr = memberGenderComboBox.getSelectedItem().toString();
+            Gender genderEnum = castStringToGender(genderStr);
+            String phoneNo = memberPhoneNumberTextField.getText();
+            String address = memberAddressTextPane.getText();
 
-                String firstName = memberFirstNameTextField.getText();
-                String lastName = memberLastNameTextField.getText();
-                int age = Integer.parseInt(memberAgeTextField.getText());
-                String genderStr = memberGenderComboBox.getSelectedItem().toString();
-                Gender genderEnum = castStringToGender(genderStr);
-                String phoneNo = memberPhoneNumberTextField.getText();
-                String address = memberAddressTextPane.getText();
-
-                if (firstName.equalsIgnoreCase(customerCardList.getList().get(selectedRow).getCustomer().getFirstName())
-                        && lastName.equalsIgnoreCase(customerCardList.getList().get(selectedRow).getCustomer().getLastName())
-                        && age == customerCardList.getList().get(selectedRow).getCustomer().getAge()
-                        && genderEnum.equals(customerCardList.getList().get(selectedRow).getCustomer().getGender())
-                        && phoneNo.equals(customerCardList.getList().get(selectedRow).getCustomer().getPhoneNumber())
-                        && address.equals(customerCardList.getList().get(selectedRow).getCustomer().getAddress())) {
-                    JOptionPane.showMessageDialog(CustomerCardPanel.this,
-                            "Bạn chưa thay đổi bất kì thông tin nào!");
-                } else {
-                    if (existedPhoneNumber(newMemberPhoneNumberTextField.getText())) {
-                        JOptionPane.showMessageDialog(CustomerCardPanel.this,
-                                "Số điện thoại đã được đăng kí!");
-                        memberPhoneNumberTextField.setText("");
-                    } else {
-                        int response = JOptionPane.showConfirmDialog(CustomerCardPanel.this,
-                                "Bạn muốn thay đổi thông tin khách hàng?",
-                                "Xác nhận",
-                                JOptionPane.YES_NO_OPTION);
-
-                        if (response == JOptionPane.YES_OPTION) {
-                            customerCardList.getList().get(selectedRow).getCustomer().setFirstName(firstName);
-                            customerCardList.getList().get(selectedRow).getCustomer().setLastName(lastName);
-                            customerCardList.getList().get(selectedRow).getCustomer().setAge(age);
-                            customerCardList.getList().get(selectedRow).getCustomer().setGender(genderEnum);
-                            customerCardList.getList().get(selectedRow).getCustomer().setPhoneNumber(phoneNo);
-                            customerCardList.getList().get(selectedRow).getCustomer().setAddress(address);
-                            addAllCustomerCardToTable();
-                            resetMemberCardValue();
-                        }
-                    }
-                }
-            } else {
+            int age = Integer.parseInt(ageStr);
+            if (firstName.equalsIgnoreCase(customerCardList.getList().get(selectedRow).getCustomer().getFirstName())
+                    && lastName.equalsIgnoreCase(customerCardList.getList().get(selectedRow).getCustomer().getLastName())
+                    && age == customerCardList.getList().get(selectedRow).getCustomer().getAge()
+                    && genderEnum.equals(customerCardList.getList().get(selectedRow).getCustomer().getGender())
+                    && phoneNo.equals(customerCardList.getList().get(selectedRow).getCustomer().getPhoneNumber())
+                    && address.equals(customerCardList.getList().get(selectedRow).getCustomer().getAddress())) {
                 JOptionPane.showMessageDialog(CustomerCardPanel.this,
-                        "Thông tin chưa đầy đủ/không hợp lệ!\nVui lòng điền đầy đủ và chính xác thông tin.",
-                        "Cập nhật thất bại!",
-                        JOptionPane.WARNING_MESSAGE);
+                        "Bạn chưa thay đổi bất kì thông tin nào!");
+                return;
+            }
+            if (checkInformation(firstName, lastName, ageStr, phoneNo, address)) {
+                String phone = customerCardList.getList().get(selectedRow).getCustomer().getPhoneNumber();
+                customerCardList.getList().get(selectedRow).getCustomer().setPhoneNumber("0000000000");
+                if (existedPhoneNumber(phoneNo)) {
+                    JOptionPane.showMessageDialog(CustomerCardPanel.this,
+                            "Số điện thoại đã được đăng kí!");
+                    customerCardList.getList().get(selectedRow).getCustomer().setPhoneNumber(phone);
+                    memberPhoneNumberTextField.setText("");
+                    return;
+                }
+                int response = JOptionPane.showConfirmDialog(CustomerCardPanel.this,
+                        "Bạn muốn thay đổi thông tin khách hàng?",
+                        "Xác nhận",
+                        JOptionPane.YES_NO_OPTION);
+
+                if (response == JOptionPane.YES_OPTION) {
+                    customerCardList.getList().get(selectedRow).getCustomer().setFirstName(firstName);
+                    customerCardList.getList().get(selectedRow).getCustomer().setLastName(lastName);
+                    customerCardList.getList().get(selectedRow).getCustomer().setAge(age);
+                    customerCardList.getList().get(selectedRow).getCustomer().setGender(genderEnum);
+                    customerCardList.getList().get(selectedRow).getCustomer().setPhoneNumber(phoneNo);
+                    customerCardList.getList().get(selectedRow).getCustomer().setAddress(address);
+                    addAllCustomerCardToTable();
+                    resetMemberCardValue();
+                }
+
             }
         }
     }//GEN-LAST:event_UpdateCustomerDateButtonActionPerformed
