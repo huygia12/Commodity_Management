@@ -13,7 +13,6 @@ import Models.History;
 import Ultility.Cautions;
 import Ultility.IDGenerator;
 import java.math.BigInteger;
-import java.util.List;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 
@@ -38,13 +37,79 @@ public class CustomerCardPanel extends javax.swing.JPanel {
         return true;
     }
 
-    private boolean checkAge(String str) {
+    private boolean checkInteger(String str) {
         if (str.isBlank()) {
             return false;
         } else if (cautions.checkIfANumberSequenceForGUI(str)) {
             return true;
         }
         return false;
+    }
+
+    private boolean checkDouble(String str) {
+        try {
+            Double.parseDouble(str);
+            return true;
+        } catch (NumberFormatException e) {
+            return false;
+        }
+    }
+
+    private boolean checkInputPayment() {
+        if (!checkInteger(copperPay.getText())) {
+            return false;
+        }
+
+        if (!checkInteger(silvePay.getText())) {
+            return false;
+        }
+
+        if (!checkInteger(goldenPay.getText())) {
+            return false;
+        }
+
+        if (!checkInteger(diamondPay.getText())) {
+            return false;
+        }
+        return true;
+    }
+
+    private boolean checkInputCondition() {
+        if (!checkInteger(copperCondition.getText())) {
+            return false;
+        }
+
+        if (!checkInteger(silveCondition.getText())) {
+            return false;
+        }
+
+        if (!checkInteger(goldenCondition.getText())) {
+            return false;
+        }
+
+        if (!checkInteger(diamondCondition.getText())) {
+            return false;
+        }
+        return true;
+    }
+
+    private boolean checkInputDiscount() {
+        if (!checkDouble(copperDiscount.getText())) {
+            return false;
+        }
+
+        if (!checkDouble(silveDiscount.getText())) {
+            return false;
+        }
+
+        if (!checkDouble(goldenDiscount.getText())) {
+            return false;
+        }
+
+        if (!checkDouble(diamondDiscount.getText())) {
+            return false;
+        }
+        return true;
     }
 
     private void createNewMemberCard() {
@@ -211,6 +276,7 @@ public class CustomerCardPanel extends javax.swing.JPanel {
         jLabel1.setText("Mã khách/Mã thẻ:");
 
         memberCardIDTextField.setEditable(false);
+        memberCardIDTextField.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
         memberCardIDTextField.setHorizontalAlignment(javax.swing.JTextField.CENTER);
         memberCardIDTextField.setFocusable(false);
 
@@ -249,6 +315,7 @@ public class CustomerCardPanel extends javax.swing.JPanel {
         jLabel7.setText("Điểm khả dụng:");
 
         memberTotalPayTextField.setEditable(false);
+        memberTotalPayTextField.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
         memberTotalPayTextField.setHorizontalAlignment(javax.swing.JTextField.CENTER);
         memberTotalPayTextField.setFocusable(false);
         memberTotalPayTextField.addActionListener(new java.awt.event.ActionListener() {
@@ -260,6 +327,7 @@ public class CustomerCardPanel extends javax.swing.JPanel {
         jLabel8.setText("Điểm đã quy đổi:");
 
         memberUsagePointTextField.setEditable(false);
+        memberUsagePointTextField.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
         memberUsagePointTextField.setHorizontalAlignment(javax.swing.JTextField.CENTER);
         memberUsagePointTextField.setFocusable(false);
         memberUsagePointTextField.addActionListener(new java.awt.event.ActionListener() {
@@ -271,6 +339,7 @@ public class CustomerCardPanel extends javax.swing.JPanel {
         jLabel9.setText("Tổng chi tiêu:");
 
         memberUsedPointTextField.setEditable(false);
+        memberUsedPointTextField.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
         memberUsedPointTextField.setHorizontalAlignment(javax.swing.JTextField.CENTER);
         memberUsedPointTextField.setFocusable(false);
         memberUsedPointTextField.addActionListener(new java.awt.event.ActionListener() {
@@ -282,6 +351,7 @@ public class CustomerCardPanel extends javax.swing.JPanel {
         jLabel10.setText("Thứ hạng thẻ:");
 
         memberCardRankTextField.setEditable(false);
+        memberCardRankTextField.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
         memberCardRankTextField.setHorizontalAlignment(javax.swing.JTextField.CENTER);
         memberCardRankTextField.setFocusable(false);
         memberCardRankTextField.addActionListener(new java.awt.event.ActionListener() {
@@ -619,6 +689,7 @@ public class CustomerCardPanel extends javax.swing.JPanel {
         jLabel15.setForeground(new java.awt.Color(153, 255, 255));
         jLabel15.setText("Kim cương");
 
+        copperCondition.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
         copperCondition.setHorizontalAlignment(javax.swing.JTextField.CENTER);
         copperCondition.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -626,26 +697,37 @@ public class CustomerCardPanel extends javax.swing.JPanel {
             }
         });
 
+        copperDiscount.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
         copperDiscount.setHorizontalAlignment(javax.swing.JTextField.CENTER);
 
+        copperPay.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
         copperPay.setHorizontalAlignment(javax.swing.JTextField.CENTER);
 
+        silveCondition.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
         silveCondition.setHorizontalAlignment(javax.swing.JTextField.CENTER);
 
+        silveDiscount.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
         silveDiscount.setHorizontalAlignment(javax.swing.JTextField.CENTER);
 
+        silvePay.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
         silvePay.setHorizontalAlignment(javax.swing.JTextField.CENTER);
 
+        goldenCondition.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
         goldenCondition.setHorizontalAlignment(javax.swing.JTextField.CENTER);
 
+        goldenDiscount.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
         goldenDiscount.setHorizontalAlignment(javax.swing.JTextField.CENTER);
 
+        goldenPay.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
         goldenPay.setHorizontalAlignment(javax.swing.JTextField.CENTER);
 
+        diamondCondition.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
         diamondCondition.setHorizontalAlignment(javax.swing.JTextField.CENTER);
 
+        diamondDiscount.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
         diamondDiscount.setHorizontalAlignment(javax.swing.JTextField.CENTER);
 
+        diamondPay.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
         diamondPay.setHorizontalAlignment(javax.swing.JTextField.CENTER);
 
         jLabel16.setText("VNĐ");
@@ -657,13 +739,41 @@ public class CustomerCardPanel extends javax.swing.JPanel {
 
         changePolicyButton.setBackground(new java.awt.Color(153, 255, 255));
         changePolicyButton.setText("CHỈNH SỬA CHÍNH SÁCH");
+        changePolicyButton.setFocusable(false);
+        changePolicyButton.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                changePolicyButtonMouseClicked(evt);
+            }
+        });
+        changePolicyButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                changePolicyButtonActionPerformed(evt);
+            }
+        });
 
         agreeWithNewPolicy.setBackground(new java.awt.Color(153, 255, 0));
         agreeWithNewPolicy.setText("ĐỒNG Ý");
+        agreeWithNewPolicy.setFocusable(false);
+        agreeWithNewPolicy.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                agreeWithNewPolicyActionPerformed(evt);
+            }
+        });
 
         cancelPolicyChange.setBackground(new java.awt.Color(255, 51, 0));
         cancelPolicyChange.setForeground(new java.awt.Color(255, 255, 255));
         cancelPolicyChange.setText("HỦY");
+        cancelPolicyChange.setFocusable(false);
+        cancelPolicyChange.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                cancelPolicyChangeMouseClicked(evt);
+            }
+        });
+        cancelPolicyChange.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                cancelPolicyChangeActionPerformed(evt);
+            }
+        });
 
         jLabel21.setFont(new java.awt.Font("Segoe UI", 2, 12)); // NOI18N
         jLabel21.setForeground(new java.awt.Color(153, 153, 153));
@@ -679,67 +789,72 @@ public class CustomerCardPanel extends javax.swing.JPanel {
                 .addContainerGap()
                 .addGroup(jPanel8Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel8Layout.createSequentialGroup()
-                        .addGap(0, 0, Short.MAX_VALUE)
+                        .addGroup(jPanel8Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addComponent(jLabel2, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 152, Short.MAX_VALUE)
+                            .addComponent(jLabel5, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                         .addGroup(jPanel8Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel8Layout.createSequentialGroup()
-                                .addComponent(jLabel12)
-                                .addGap(80, 80, 80)
-                                .addComponent(jLabel13)
-                                .addGap(75, 75, 75)
-                                .addComponent(jLabel14)
-                                .addGap(57, 57, 57)
-                                .addComponent(jLabel15)
-                                .addGap(44, 44, 44))
-                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel8Layout.createSequentialGroup()
-                                .addComponent(agreeWithNewPolicy)
-                                .addGap(18, 18, 18)
-                                .addComponent(cancelPolicyChange, javax.swing.GroupLayout.PREFERRED_SIZE, 78, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(15, 15, 15))))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel8Layout.createSequentialGroup()
-                        .addComponent(jLabel11)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(copperCondition, javax.swing.GroupLayout.PREFERRED_SIZE, 90, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(18, 18, 18)
-                        .addComponent(silveCondition, javax.swing.GroupLayout.PREFERRED_SIZE, 90, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(18, 18, 18)
-                        .addComponent(goldenCondition, javax.swing.GroupLayout.PREFERRED_SIZE, 90, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(18, 18, 18)
-                        .addComponent(diamondCondition, javax.swing.GroupLayout.PREFERRED_SIZE, 90, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jLabel16))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel8Layout.createSequentialGroup()
-                        .addGroup(jPanel8Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                            .addComponent(jLabel5, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(jLabel2, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addGroup(jPanel8Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                            .addComponent(copperDiscount, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 90, Short.MAX_VALUE)
-                            .addComponent(copperPay, javax.swing.GroupLayout.Alignment.LEADING))
-                        .addGap(18, 18, 18)
-                        .addGroup(jPanel8Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                            .addComponent(silveDiscount, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 90, Short.MAX_VALUE)
-                            .addComponent(silvePay, javax.swing.GroupLayout.Alignment.LEADING))
-                        .addGap(18, 18, 18)
-                        .addGroup(jPanel8Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                            .addComponent(goldenDiscount, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 90, Short.MAX_VALUE)
-                            .addComponent(goldenPay, javax.swing.GroupLayout.Alignment.LEADING))
-                        .addGap(18, 18, 18)
-                        .addGroup(jPanel8Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                            .addComponent(diamondDiscount, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 90, Short.MAX_VALUE)
-                            .addComponent(diamondPay, javax.swing.GroupLayout.Alignment.LEADING))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addGroup(jPanel8Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jLabel19, javax.swing.GroupLayout.PREFERRED_SIZE, 29, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jLabel17)))
+                            .addGroup(jPanel8Layout.createSequentialGroup()
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addGroup(jPanel8Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                                    .addGroup(jPanel8Layout.createSequentialGroup()
+                                        .addGroup(jPanel8Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                                            .addComponent(copperDiscount, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 90, Short.MAX_VALUE)
+                                            .addComponent(copperPay, javax.swing.GroupLayout.Alignment.LEADING))
+                                        .addGap(18, 18, 18)
+                                        .addGroup(jPanel8Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                                            .addComponent(silveDiscount, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 90, Short.MAX_VALUE)
+                                            .addComponent(silvePay, javax.swing.GroupLayout.Alignment.LEADING))
+                                        .addGap(18, 18, 18)
+                                        .addGroup(jPanel8Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                                            .addComponent(goldenDiscount, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 90, Short.MAX_VALUE)
+                                            .addComponent(goldenPay, javax.swing.GroupLayout.Alignment.LEADING))
+                                        .addGap(18, 18, 18)
+                                        .addGroup(jPanel8Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                                            .addComponent(diamondDiscount, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 90, Short.MAX_VALUE)
+                                            .addComponent(diamondPay, javax.swing.GroupLayout.Alignment.LEADING)))
+                                    .addGroup(jPanel8Layout.createSequentialGroup()
+                                        .addComponent(silveCondition, javax.swing.GroupLayout.PREFERRED_SIZE, 90, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addGap(17, 17, 17)
+                                        .addComponent(goldenCondition, javax.swing.GroupLayout.PREFERRED_SIZE, 90, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addGap(18, 18, 18)
+                                        .addComponent(diamondCondition, javax.swing.GroupLayout.PREFERRED_SIZE, 90, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addGap(2, 2, 2)))
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addGroup(jPanel8Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(jLabel19, javax.swing.GroupLayout.PREFERRED_SIZE, 29, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(jLabel17)
+                                    .addComponent(jLabel16)))
+                            .addGroup(jPanel8Layout.createSequentialGroup()
+                                .addGap(86, 86, 86)
+                                .addComponent(jLabel22))))
                     .addGroup(jPanel8Layout.createSequentialGroup()
                         .addGroup(jPanel8Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(changePolicyButton, javax.swing.GroupLayout.PREFERRED_SIZE, 203, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jLabel21))
-                        .addContainerGap(404, Short.MAX_VALUE))))
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel8Layout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(jLabel22)
-                .addGap(14, 14, 14))
+                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel8Layout.createSequentialGroup()
+                                .addComponent(jLabel11, javax.swing.GroupLayout.PREFERRED_SIZE, 146, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addComponent(copperCondition, javax.swing.GroupLayout.PREFERRED_SIZE, 90, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(234, 234, 234))
+                            .addGroup(jPanel8Layout.createSequentialGroup()
+                                .addComponent(jLabel21)
+                                .addGap(288, 288, 288)))
+                        .addGap(0, 0, Short.MAX_VALUE))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel8Layout.createSequentialGroup()
+                        .addGap(0, 0, Short.MAX_VALUE)
+                        .addComponent(jLabel12)
+                        .addGap(80, 80, 80)
+                        .addComponent(jLabel13)
+                        .addGap(75, 75, 75)
+                        .addComponent(jLabel14)
+                        .addGap(57, 57, 57)
+                        .addComponent(jLabel15)
+                        .addGap(44, 44, 44))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel8Layout.createSequentialGroup()
+                        .addComponent(changePolicyButton, javax.swing.GroupLayout.PREFERRED_SIZE, 203, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(agreeWithNewPolicy)
+                        .addGap(18, 18, 18)
+                        .addComponent(cancelPolicyChange, javax.swing.GroupLayout.PREFERRED_SIZE, 78, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(18, 18, 18))))
         );
         jPanel8Layout.setVerticalGroup(
             jPanel8Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -777,20 +892,16 @@ public class CustomerCardPanel extends javax.swing.JPanel {
                             .addComponent(jLabel19))))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jLabel22)
-                .addGap(12, 12, 12)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jLabel21)
-                .addGroup(jPanel8Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(jPanel8Layout.createSequentialGroup()
-                        .addGap(6, 6, 6)
-                        .addComponent(jLabel11))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel8Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                        .addGroup(jPanel8Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(copperCondition, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(silveCondition, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(goldenCondition, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGroup(jPanel8Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(diamondCondition, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jLabel16))))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(jPanel8Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(diamondCondition, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(goldenCondition, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(silveCondition, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(copperCondition, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel11)
+                    .addComponent(jLabel16))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 28, Short.MAX_VALUE)
                 .addGroup(jPanel8Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(cancelPolicyChange, javax.swing.GroupLayout.PREFERRED_SIZE, 38, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -849,10 +960,41 @@ public class CustomerCardPanel extends javax.swing.JPanel {
 
     }//GEN-LAST:event_DeleteCardButtonActionPerformed
 
-    private void setPolicy() {
-        
+    private void setPolicy(boolean b) {
+        copperPay.setEditable(b);
+        copperDiscount.setEditable(b);
+        copperCondition.setEditable(b);
+        silveCondition.setEditable(b);
+        silvePay.setEditable(b);
+        silveDiscount.setEditable(b);
+        goldenCondition.setEditable(b);
+        goldenDiscount.setEditable(b);
+        goldenPay.setEditable(b);
+        diamondCondition.setEditable(b);
+        diamondDiscount.setEditable(b);
+        diamondPay.setEditable(b);
+        agreeWithNewPolicy.setEnabled(b);
+        cancelPolicyChange.setEnabled(b);
     }
-    
+
+    private void setPolicy(String cp, String cd, String cc,
+            String sp, String sd, String sc,
+            String gp, String gd, String gc,
+            String dp, String dc, String dd) {
+        copperPay.setText(cp);
+        copperCondition.setText(cc);
+        copperDiscount.setText(cd);
+        silveCondition.setText(sc);
+        silveDiscount.setText(sd);
+        silvePay.setText(sp);
+        goldenCondition.setText(gc);
+        goldenDiscount.setText(gd);
+        goldenPay.setText(gp);
+        diamondCondition.setText(dc);
+        diamondDiscount.setText(dd);
+        diamondPay.setText(dp);
+    }
+
     private void resetMemberCardValue() {
         memberAddressTextPane.setText("");
         memberAgeTextField.setText("");
@@ -865,7 +1007,7 @@ public class CustomerCardPanel extends javax.swing.JPanel {
         memberTotalPayTextField.setText("");
         memberUsedPointTextField.setText("");
         memberCardRankTextField.setText("");
-        setVisibleNeedPoint(false);
+        setVisibleNeedPay(false);
     }
 
     private boolean checkInformation(String firstName, String lastName, String age, String phone, String address) {
@@ -876,7 +1018,7 @@ public class CustomerCardPanel extends javax.swing.JPanel {
                     JOptionPane.WARNING_MESSAGE);
             return false;
         }
-        if (!checkAge(age)) {
+        if (!checkInteger(age)) {
             JOptionPane.showMessageDialog(CustomerCardPanel.this,
                     "Thông tin tuổi không hợp lệ!\nVui lòng thử lại.",
                     "Đăng kí thất bại!",
@@ -986,8 +1128,8 @@ public class CustomerCardPanel extends javax.swing.JPanel {
     private void setSearchResult() {
         searchResultQuantity.setText("Kết quả phù hợp: " + customerModel.getRowCount());
     }
-    
-    private void setVisibleNeedPoint(boolean b) {
+
+    private void setVisibleNeedPay(boolean b) {
         needMore.setVisible(b);
         toNextRank.setVisible(b);
         morePayToNextRank.setVisible(b);
@@ -1005,6 +1147,48 @@ public class CustomerCardPanel extends javax.swing.JPanel {
         return true;
     }
 
+    private void showPoint() {
+
+        long copperPay, silvePay, goldenPay;
+        copperPay = Long.parseLong(this.copperPay.getText());
+        silvePay = Long.parseLong(this.silvePay.getText());
+        goldenPay = Long.parseLong(this.goldenPay.getText());
+
+        int rowIndex = customerTable.getSelectedRow();
+
+        CustomerCard cc = customerCardList.getList().get(rowIndex);
+        BigInteger usedPoint = BigInteger.valueOf(0);
+        BigInteger pay = BigInteger.valueOf(0);
+        BigInteger usagePoint = cc.getPoint().subtract(usedPoint);
+        String rank = cardRank(cc.getPoint());
+        BigInteger needPay;
+
+        memberCardRankTextField.setText(rank);
+        memberUsagePointTextField.setText(usagePoint.toString());
+        memberUsedPointTextField.setText(usedPoint.toString());
+        memberTotalPayTextField.setText(pay.toString());
+
+        switch (rank) {
+            case "Đồng":
+                needPay = BigInteger.valueOf(copperPay).subtract(pay);
+                morePayToNextRank.setText(needPay.toString());
+                setVisibleNeedPay(true);
+                break;
+            case "Bạc":
+                needPay = BigInteger.valueOf(silvePay).subtract(pay);
+                morePayToNextRank.setText(needPay.toString());
+                setVisibleNeedPay(true);
+                break;
+            case "Vàng":
+                needPay = BigInteger.valueOf(goldenPay).subtract(pay);
+                morePayToNextRank.setText(needPay.toString());
+                setVisibleNeedPay(true);
+                break;
+            case "Kim Cương":
+                setVisibleNeedPay(false);
+        }
+    }
+
     private void customerTableMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_customerTableMouseClicked
         // TODO add your handling code here:
         int rowIndex = customerTable.getSelectedRow();
@@ -1017,35 +1201,8 @@ public class CustomerCardPanel extends javax.swing.JPanel {
         memberPhoneNumberTextField.setText(customerModel.getValueAt(rowIndex, 5).toString());
         memberAddressTextPane.setText(customerModel.getValueAt(rowIndex, 6).toString());
 
-        CustomerCard cc = customerCardList.getList().get(rowIndex);
-        BigInteger usedPoint = BigInteger.valueOf(0);
-        BigInteger pay = BigInteger.valueOf(0);
-        BigInteger usagePoint = cc.getPoint().subtract(usedPoint);
-        String rank = cardRank(cc.getPoint());
-        BigInteger needPay;
+        showPoint();
 
-        memberCardRankTextField.setText(rank);
-        memberUsagePointTextField.setText(usagePoint.toString());
-        memberUsedPointTextField.setText(usedPoint.toString());
-        switch (rank) {
-            case "Đồng":
-                needPay = BigInteger.valueOf(10000000).subtract(pay);
-                morePayToNextRank.setText(needPay.toString());
-                setVisibleNeedPoint(true);
-                break;
-            case "Bạc":
-                needPay = BigInteger.valueOf(30000000).subtract(pay);
-                morePayToNextRank.setText(needPay.toString());
-                setVisibleNeedPoint(true);
-                break;
-            case "Vàng":
-                needPay = BigInteger.valueOf(70000000).subtract(pay);
-                morePayToNextRank.setText(needPay.toString());
-                setVisibleNeedPoint(true);
-                break;
-            case "Kim Cương":
-                setVisibleNeedPoint(false);
-        }
     }//GEN-LAST:event_customerTableMouseClicked
 
     private boolean existedPhoneNumber(String str) {
@@ -1142,13 +1299,118 @@ public class CustomerCardPanel extends javax.swing.JPanel {
         // TODO add your handling code here:
     }//GEN-LAST:event_copperConditionActionPerformed
 
+    private void changePolicyButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_changePolicyButtonActionPerformed
+        // TODO add your handling code here:
+        setPolicy(true);
+
+    }//GEN-LAST:event_changePolicyButtonActionPerformed
+
+    private void agreeWithNewPolicyActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_agreeWithNewPolicyActionPerformed
+        // TODO add your handling code here:
+        boolean check = true;
+        if (!checkInputPayment()) {
+            JOptionPane.showMessageDialog(CustomerCardPanel.this,
+                    "Thông tin <Chi tiêu tối thiểu> phải là một số nguyên.",
+                    "Không hợp lệ!",
+                    JOptionPane.WARNING_MESSAGE);
+            check = false;
+            return;
+        }
+        if (!checkInputCondition()) {
+            JOptionPane.showMessageDialog(CustomerCardPanel.this,
+                    "Thông tin <Điều kiện nhận ưu đãi> phải là một số nguyên.",
+                    "Không hợp lệ!",
+                    JOptionPane.WARNING_MESSAGE);
+            check = false;
+            return;
+        }
+        if (!checkInputDiscount()) {
+            JOptionPane.showMessageDialog(CustomerCardPanel.this,
+                    "Thông tin <Ưu đãi giảm giá> phải là một số.",
+                    "Không hợp lệ!",
+                    JOptionPane.WARNING_MESSAGE);
+            check = false;
+            return;
+        }
+        if (check) {
+            int response = JOptionPane.showConfirmDialog(CustomerCardPanel.this,
+                    "Bạn có chắc muốn thay đổi chính sách ưu đãi?",
+                    "Xác nhận thao tác",
+                    JOptionPane.YES_NO_OPTION);
+
+            if (response == JOptionPane.YES_OPTION) {
+                getPolicy();
+                setPolicy(String.valueOf(Long.parseLong(copperPayment)),
+                        String.valueOf(Double.parseDouble(copperDis)),
+                        String.valueOf(Long.parseLong(copperCon)),
+                        String.valueOf(Long.parseLong(silvePayment)),
+                        String.valueOf(Double.parseDouble(silveDis)),
+                        String.valueOf(Long.parseLong(silveCon)),
+                        String.valueOf(Long.parseLong(goldenPayment)),
+                        String.valueOf(Double.parseDouble(goldenDis)),
+                        String.valueOf(Long.parseLong(goldenCon)),
+                        String.valueOf(Long.parseLong(diamondPayment)),
+                        String.valueOf(Long.parseLong(diamondCon)),
+                        String.valueOf(Double.parseDouble(diamondDis)));
+                setPolicy(false);
+                JOptionPane.showMessageDialog(CustomerCardPanel.this,
+                        "Thay đổi chính sách ưu đãi thành công!");
+            }
+        }
+    }//GEN-LAST:event_agreeWithNewPolicyActionPerformed
+
+    private void cancelPolicyChangeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cancelPolicyChangeActionPerformed
+        // TODO add your handling code here:
+        int response = JOptionPane.showConfirmDialog(CustomerCardPanel.this,
+                "Bạn có chắc muốn hủy thao tác?",
+                "Xác nhận thao tác",
+                JOptionPane.YES_NO_OPTION);
+
+        if (response == JOptionPane.YES_OPTION) {
+            setPolicy(copperPayment, copperDis, copperCon,
+                    silvePayment, silveDis, silveCon,
+                    goldenPayment, goldenDis, goldenCon,
+                    diamondPayment, diamondCon, diamondDis);
+            setPolicy(false);
+        }
+    }//GEN-LAST:event_cancelPolicyChangeActionPerformed
+
+    private void cancelPolicyChangeMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_cancelPolicyChangeMouseClicked
+        // TODO add your handling code here:
+    }//GEN-LAST:event_cancelPolicyChangeMouseClicked
+
+    private void changePolicyButtonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_changePolicyButtonMouseClicked
+        // TODO add your handling code here:
+        getPolicy();
+    }//GEN-LAST:event_changePolicyButtonMouseClicked
+
+    private void getPolicy() {
+        copperCon = copperCondition.getText();
+        copperDis = copperDiscount.getText();
+        copperPayment = copperPay.getText();
+        silveCon = silveCondition.getText();
+        silveDis = silveDiscount.getText();
+        silvePayment = silvePay.getText();
+        goldenCon = goldenCondition.getText();
+        goldenDis = goldenDiscount.getText();
+        goldenPayment = goldenPay.getText();
+        diamondCon = diamondCondition.getText();
+        diamondDis = diamondDiscount.getText();
+        diamondPayment = diamondPay.getText();
+    }
+
     public void passData(CustomerCardList customerCardList, IDGenerator idGenerator, History history) {
         this.customerCardList = customerCardList;
         this.idGenerator = idGenerator;
         this.history = history;
         addAllCustomerCardToTable();
-        setVisibleNeedPoint(false);
+        setVisibleNeedPay(false);
         totalQuantity.setText(String.valueOf("Tổng số: " + customerCardList.getList().size()));
+        setPolicy(false);
+        setPolicy("0", "0.0", "0",
+                "0", "0.0", "0",
+                "0", "0.0", "0",
+                "0", "0", "0.0");
     }
     private CustomerCardList customerCardList;
     private IDGenerator idGenerator;
@@ -1156,6 +1418,18 @@ public class CustomerCardPanel extends javax.swing.JPanel {
     private Cautions cautions = new Cautions();
     private DefaultTableModel customerModel;
     private CustomerCardListController customerCardListCtl;
+    private String copperPayment;
+    private String copperDis;
+    private String copperCon;
+    private String silvePayment;
+    private String silveDis;
+    private String silveCon;
+    private String goldenPayment;
+    private String goldenDis;
+    private String goldenCon;
+    private String diamondPayment;
+    private String diamondDis;
+    private String diamondCon;
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JPanel CardInforPanel;
