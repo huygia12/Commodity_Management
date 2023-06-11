@@ -1203,7 +1203,7 @@ public class PurchasePanel extends javax.swing.JPanel {
             return;
         }
         // thực hiện chức năng
-        orderCtr.payOrderForGUI(order, shift, repository);
+        orderCtr.payOrder(order, shift, repository, settings.getStore());
         initNewOrder();
     }//GEN-LAST:event_payBtnActionPerformed
 
@@ -1220,8 +1220,8 @@ public class PurchasePanel extends javax.swing.JPanel {
             return;
         }
         // thực hiện chức năng
-        orderCtr.payOrderForGUI(order, shift, repository);
-        orderCtr.getOrderView().printBillToFile(order, settings.getStore(), orderCtr);
+        orderCtr.payOrder(order, shift, repository, settings.getStore());
+        orderCtr.getOrderView().printBillToFile(order, settings.getStore());
         initNewOrder();
     }//GEN-LAST:event_payAnfPrintBtnActionPerformed
 
@@ -1647,7 +1647,7 @@ public class PurchasePanel extends javax.swing.JPanel {
             return;
         }
         // thực hiện chức năng
-        orderCtr.editOrderForGUI(draftGoodsList, order,
+        orderCtr.editOrder(draftGoodsList, order,
                 remainShipment, editedGoods, editedShipment,
                 quantityBefore, quantityAfter, quantityRemain);
         setDefaultValuesToComponentsInMainOrderFunctionPanel();
@@ -1677,7 +1677,7 @@ public class PurchasePanel extends javax.swing.JPanel {
             return;
         }
         // thực hiện chức năng
-        orderCtr.deleteFromOrderForGUI(repository, draftGoodsList,
+        orderCtr.deleteFromOrder(repository, draftGoodsList,
                 order, shipmentID, goodsIDTextField.getText());
         setDefaultValuesToComponentsInMainOrderFunctionPanel();
         insertGoodsListToOrderGoodsListTable(order);
@@ -1712,7 +1712,7 @@ public class PurchasePanel extends javax.swing.JPanel {
             return;
         }
         // thực hiện chức năng
-        orderCtr.addToOrderForGUI(draftGoodsList, order, quantity, goodsID, shipmentID);
+        orderCtr.addToOrder(draftGoodsList, order, quantity, goodsID, shipmentID);
         setDefaultValuesToComponentsInMainOrderFunctionPanel();
         insertGoodsListToOrderGoodsListTable(order);
         if (filterGoodsList != null) {
@@ -1945,7 +1945,7 @@ public class PurchasePanel extends javax.swing.JPanel {
 
     private boolean insufficientCustomerMoneyCheck(BigDecimal customerMoney) {
         if (paymentOptionCombobox.getSelectedIndex() == 0) {
-            if (orderCtr.getTotal(order).compareTo(customerMoney) == 1) {
+            if (orderCtr.getTotal(order, settings.getStore()).compareTo(customerMoney) == 1) {
                 insertWarningToTextField(customerMoneyText, INSUFFICIENT_MONEY, 12);
                 customerMoneyWarningCheck = false;
                 return true;
@@ -2108,10 +2108,10 @@ public class PurchasePanel extends javax.swing.JPanel {
         subTotalTextField.setText(String.format("%.1f", orderCtr.getSubTotal(order)));
         taxAmountTextField.setText(String.format("%.1f", orderCtr.getTaxAmount(order)));
         discountAmountTextField.setText(String.format("%.1f", orderCtr.getDiscountAmount(order)));
-        pointDiscountAmountTextField.setText(String.format("%.1f", orderCtr.getPointDiscountAmount(order)));
-        totalTextField.setText(String.format("%.1f", orderCtr.getTotal(order)));
+        pointDiscountAmountTextField.setText(String.format("%.1f", orderCtr.getPointDiscountAmount(order, settings.getStore())));
+        totalTextField.setText(String.format("%.1f", orderCtr.getTotal(order, settings.getStore())));
         BigDecimal change = (order.getPaymentOptions().compareTo(PaymentOptions.OTHER_PAYMENT) == 0)
-                ? BigDecimal.ZERO : orderCtr.getChange(order);
+                ? BigDecimal.ZERO : orderCtr.getChange(order, settings.getStore());
         changeAmountTextField.setText(String.format("%.1f", change));
     }
 
@@ -2135,7 +2135,7 @@ public class PurchasePanel extends javax.swing.JPanel {
 
     private void initNewOrder() {
         // Tạo order mới
-        order = orderCtr.makeNewOrderForGUI(shift, idGenerator);
+        order = orderCtr.makeNewOrder(shift, idGenerator);
         order.setCashier(cashier);
         order.setTax(tax);
         order.setPaymentOptions(PaymentOptions.CASH_PAYMENT);

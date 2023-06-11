@@ -20,7 +20,7 @@ public class MainFrame extends javax.swing.JFrame {
      * Creates new form MainFrame
      */
     public MainFrame() {
-        setIconImage(new ImageIcon(IMAGE_FOLDER+"icons8-grocery-store-96.png").getImage());
+        setIconImage(new ImageIcon(IMAGE_FOLDER+SEPARATOR+"icons8-grocery-store-96.png").getImage());
         loadData();
         initComponents();
         // pass data vào purchasePanel
@@ -64,7 +64,7 @@ public class MainFrame extends javax.swing.JFrame {
         setTitle("Quản lý bán hàng");
         setAutoRequestFocus(false);
         setFocusable(false);
-        setMinimumSize(new java.awt.Dimension(1080, 640));
+        setMinimumSize(new java.awt.Dimension(1100, 640));
         setResizable(false);
 
         tabPanel.setBackground(new java.awt.Color(0, 204, 255));
@@ -73,9 +73,9 @@ public class MainFrame extends javax.swing.JFrame {
         tabPanel.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
         tabPanel.setFocusable(false);
         tabPanel.setFont(new java.awt.Font("MTO Telephone", 1, 12)); // NOI18N
-        tabPanel.setMaximumSize(new java.awt.Dimension(1100, 650));
-        tabPanel.setMinimumSize(new java.awt.Dimension(970, 610));
-        tabPanel.setPreferredSize(new java.awt.Dimension(1085, 620));
+        tabPanel.setMaximumSize(new java.awt.Dimension(1200, 650));
+        tabPanel.setMinimumSize(new java.awt.Dimension(1100, 610));
+        tabPanel.setPreferredSize(new java.awt.Dimension(1100, 620));
         tabPanel.addTab("tab1", repoPanel1);
         tabPanel.addTab("tab3", employJPanel1);
         tabPanel.addTab("Bán Hàng", purchasePanel1);
@@ -126,7 +126,7 @@ public class MainFrame extends javax.swing.JFrame {
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 1085, Short.MAX_VALUE)
+            .addGap(0, 1100, Short.MAX_VALUE)
             .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                 .addGroup(layout.createSequentialGroup()
                     .addGap(0, 0, Short.MAX_VALUE)
@@ -223,7 +223,7 @@ public class MainFrame extends javax.swing.JFrame {
     private static final String HOME = System.getProperty("user.dir");
     private static final String SEPARATOR = File.separator;
     private static final String DATA_FOLDER = HOME + SEPARATOR + "data" + SEPARATOR;
-    private static final String IMAGE_FOLDER = HOME + SEPARATOR + "src" + SEPARATOR + "main"+ SEPARATOR + "image"+SEPARATOR;
+    private static final String IMAGE_FOLDER = HOME + SEPARATOR + "src" + SEPARATOR + "main"+ SEPARATOR + "java"+SEPARATOR + "ImageIcon";
     private static final String REPOSITORY_PATH = DATA_FOLDER + "repositoryData.json";
     private static final String SHIFT_PATH = DATA_FOLDER + "currentShift.json";
     private static final String HISTORY_PATH = DATA_FOLDER + "historyData.json";

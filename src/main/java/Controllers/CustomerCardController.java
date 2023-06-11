@@ -6,6 +6,7 @@ package Controllers;
 
 import Models.CustomerCard;
 import Models.CustomerCardList;
+import Models.Store;
 import Ultility.IDGenerator;
 import View.CustomerView;
 import java.math.BigDecimal;
@@ -101,27 +102,27 @@ public class CustomerCardController {
         return cloneCard;
     }
 
-    public void gainPoint(CustomerCard custmomerCard, BigDecimal totalPayment) {
+    public void gainPoint(CustomerCard custmomerCard, BigDecimal totalPayment, Store store) {
         custmomerCard.setPoint(custmomerCard
                 .getPoint()
-                .add(totalPayment.toBigInteger().divide(new BigInteger("10000"))));
+                .add(totalPayment.toBigInteger()
+                        .divide(store.getAmountForOnePoint().toBigInteger())));
     }
 
-    public BigDecimal convertPointToMoney(CustomerCard custmomerCard, BigInteger inputPoint) {
+    public BigDecimal convertPointToMoney(CustomerCard custmomerCard, BigInteger inputPoint, Store store) {
         if (inputPoint.compareTo(BigInteger.ZERO) <= 0) {
             return BigDecimal.ZERO;
         }
         if (inputPoint.compareTo(custmomerCard
                 .getPoint()) >= 0) {
-            custmomerCard.setPoint(BigInteger.ZERO);
             inputPoint = custmomerCard.getPoint();
-        } else {
-            custmomerCard.setPoint(custmomerCard
-                    .getPoint()
-                    .subtract(inputPoint));
         }
         return new BigDecimal(inputPoint
-                .divide(new BigInteger(10 + ""))
-                .multiply(new BigInteger(1000 + "")) + "");
+                .divide(store.getPointsForOneVND())
+                .multiply(new BigInteger("1000")));
+    }
+
+    public void usePoint(CustomerCard customerCard, BigInteger usedPoint){
+        customerCard.setPoint(customerCard.getPoint().subtract(usedPoint));
     }
 }

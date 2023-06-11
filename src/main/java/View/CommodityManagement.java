@@ -23,7 +23,6 @@ import java.nio.file.Path;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
-import java.util.ArrayList;
 import java.util.Scanner;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -96,12 +95,6 @@ public class CommodityManagement {
                     repoCtr.repositoryManagement(shift, idGenerator, repo);
                     break;
                 case "2":
-                    if (shift == null) {
-                        shiftCtr.getView().shiftNotOpenCaution();
-                        break;
-                    }
-                    orderCtr.makeNewOrder(repo, cardList,
-                            settings.getStore(), shift, idGenerator);
                     break;
                 case "3":
                     shift = shiftCtr.ShiftManagement(employeeList, settings.getStore(),
@@ -117,7 +110,6 @@ public class CommodityManagement {
                     cardListCtr.customerCardListManagement(cardList, idGenerator);
                     break;
                 case "7":
-                    settingsCtr.settingsManagement(shift, settings);
                     break;
                 case "8":
                     System.out.println("Exiting...");
@@ -230,14 +222,14 @@ public class CommodityManagement {
         employeeList.getList().add(new Employee(new BigDecimal("22000"), "7337593977", "Dao Van", "Tuyen", "0805737293", "220-TrieuKhuc-TanTrieu-ThanhTri", 20, Gender.MALE));
         employeeList.getList().add(new Employee(new BigDecimal("25000"), "3957577777", "Nguyen Thao", "Chi", "0505737293", "141-ChienThang-TanTrieu", 20, Gender.FEMALE));
         employeeList.getList().add(new Employee(new BigDecimal("20000"), "2727495500", "Tran Luu", "Dung", "0903737293", "Vinhome Riverside", 19, Gender.OTHER));
-        cardList.getList().add(new CustomerCard(idGenerator.generateID(CustomerCard.class.getName(), 6), new Customer("Nguyen Duc", "Anh", "0444033022", "34 Nguyen Du", 20, Gender.MALE)));
+        cardList.getList().add(new CustomerCard(idGenerator.generateID(CustomerCard.class.getName(), 6), new Customer("Nguyen Duc", "Anh", "0975268264", "34 Nguyen Du", 20, Gender.MALE)));
         cardList.getList().get(0).setPoint(new BigInteger("100"));
-        cardList.getList().add(new CustomerCard(idGenerator.generateID(CustomerCard.class.getName(), 6), new Customer("Le Van", "Quyet", "0333333222", "26 Do Duc Duc", 20, Gender.OTHER)));
-        cardList.getList().add(new CustomerCard(idGenerator.generateID(CustomerCard.class.getName(), 6), new Customer("Do Quynh", "Anh", "0733833888", "16 Cau Giay", 22, Gender.FEMALE)));
-        cardList.getList().add(new CustomerCard(idGenerator.generateID(CustomerCard.class.getName(), 6), new Customer("Le Duc", "Cuong", "053555133", "41 Minh Khai", 17, Gender.MALE)));
+        cardList.getList().add(new CustomerCard(idGenerator.generateID(CustomerCard.class.getName(), 6), new Customer("Le Van", "Quyet", "0906333164", "26 Do Duc Duc", 20, Gender.OTHER)));
+        cardList.getList().add(new CustomerCard(idGenerator.generateID(CustomerCard.class.getName(), 6), new Customer("Do Quynh", "Anh", "0971345298", "16 Cau Giay", 22, Gender.FEMALE)));
+        cardList.getList().add(new CustomerCard(idGenerator.generateID(CustomerCard.class.getName(), 6), new Customer("Le Duc", "Cuong", "0916254167", "41 Minh Khai", 17, Gender.MALE)));
         settings.setStore(new Store("Chang hi", "bonEmMuonAnHotpotWangWang@gmail.com", "112-Nguyen Van Loc", 10, "0705737292"));
-        settings.setPointsForOneVND(new BigInteger("10"));
-        settings.setAmountForOnePoint(new BigDecimal("10000"));
+        settings.getStore().setPointsForOneVND(new BigInteger("10"));
+        settings.getStore().setAmountForOnePoint(new BigDecimal("10000"));
         settings.getPriceAmountList().add("< 100000");
         settings.getPriceAmountList().add("100000 - 300000");
         settings.getPriceAmountList().add("300000 - 500000");

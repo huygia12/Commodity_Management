@@ -16,7 +16,7 @@
         "customer": {
           "firstName": "Le Van",
           "lastName": "Quyet",
-          "phoneNumber": "0333333222",
+          "phoneNumber": "0906333164",
           "address": "26 Do Duc Duc",
           "age": 20,
           "gender": "OTHER"
@@ -363,7 +363,7 @@
         "customer": {
           "firstName": "Do Quynh",
           "lastName": "Anh",
-          "phoneNumber": "0733833888",
+          "phoneNumber": "0971345298",
           "address": "16 Cau Giay",
           "age": 22,
           "gender": "FEMALE"
@@ -399,7 +399,7 @@
         "customer": {
           "firstName": "Le Duc",
           "lastName": "Cuong",
-          "phoneNumber": "053555133",
+          "phoneNumber": "0916254167",
           "address": "41 Minh Khai",
           "age": 17,
           "gender": "MALE"
@@ -426,7 +426,7 @@
   "importGoodsHis": {
     "myGoodsList": [
       {
-        "importDateTime": "04/06/2023 02:26:52",
+        "importDateTime": "11/06/2023 10:10:46",
         "totalAmountImport": 0,
         "goodsName": "Custard Cake",
         "id": "000000",
@@ -437,7 +437,7 @@
         "shipments": []
       },
       {
-        "importDateTime": "04/06/2023 02:26:52",
+        "importDateTime": "11/06/2023 10:10:46",
         "totalAmountImport": 0,
         "goodsName": "Cup Cake",
         "id": "000001",
@@ -448,7 +448,7 @@
         "shipments": []
       },
       {
-        "importDateTime": "04/06/2023 02:26:52",
+        "importDateTime": "11/06/2023 10:10:46",
         "totalAmountImport": 0,
         "goodsName": "Donut",
         "id": "000002",
@@ -459,7 +459,7 @@
         "shipments": []
       },
       {
-        "importDateTime": "04/06/2023 02:26:52",
+        "importDateTime": "11/06/2023 10:10:46",
         "totalAmountImport": 0,
         "goodsName": "Flan",
         "id": "000003",
@@ -470,7 +470,7 @@
         "shipments": []
       },
       {
-        "importDateTime": "04/06/2023 02:26:52",
+        "importDateTime": "11/06/2023 10:10:46",
         "totalAmountImport": 0,
         "goodsName": "Strawberry ice-cream",
         "id": "000004",
@@ -481,7 +481,7 @@
         "shipments": []
       },
       {
-        "importDateTime": "04/06/2023 02:26:52",
+        "importDateTime": "11/06/2023 10:10:46",
         "totalAmountImport": 0,
         "goodsName": "Pencil",
         "id": "000008",
@@ -492,7 +492,7 @@
         "shipments": []
       },
       {
-        "importDateTime": "04/06/2023 02:26:52",
+        "importDateTime": "11/06/2023 10:10:46",
         "totalAmountImport": 0,
         "goodsName": "Cooking oil",
         "id": "000012",

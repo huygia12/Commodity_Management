@@ -319,7 +319,7 @@ public class ShiftJPanel extends javax.swing.JPanel {
                     .addComponent(toLabel)
                     .addComponent(toTextField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
-                .addGroup(searchPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                .addGroup(searchPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(searchBtn)
                     .addComponent(refreashBtn))
                 .addGap(0, 18, Short.MAX_VALUE))
@@ -626,18 +626,18 @@ public class ShiftJPanel extends javax.swing.JPanel {
         });
     }
     
-    private void insertOrderHistoryToOverViewTable(List<Order> orderHistory) {
+    private void insertOrderHistoryToOverViewTable(List<Order> orderHistory, Store store) {
         clearTableModel(overViewModel);
         for (Order order : orderHistory) {
-            insertNewOrderToOverViewTable(order);
+            insertNewOrderToOverViewTable(order, store);
         }
     }
 
-    private void insertNewOrderToOverViewTable(Order order){
+    private void insertNewOrderToOverViewTable(Order order, Store store){
         overViewModel.addRow(new Object[]{
             order.getID(),
             order.getOrderDateTime(),
-            orderCtr.getTotal(order)
+            orderCtr.getTotal(order, store)
         });
     }
     
@@ -654,7 +654,7 @@ public class ShiftJPanel extends javax.swing.JPanel {
         displayDetailModel = (DefaultTableModel)displayDetailTable.getModel();
         orderCtr = new OrderController();
         shiftCtr = new ShiftController();
-        insertOrderHistoryToOverViewTable(shift.getOrderHisPerShift());
+        insertOrderHistoryToOverViewTable(shift.getOrderHisPerShift(), myStore);
     }
 
     private void realTimeClock() {

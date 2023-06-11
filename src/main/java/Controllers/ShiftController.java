@@ -133,10 +133,10 @@ public class ShiftController {
         return result;
     }
 
-    public BigDecimal getNetRevenue(Shift shift) {
+    public BigDecimal getNetRevenue(Shift shift, Store store) {
         BigDecimal result = BigDecimal.ZERO;
         for (Order order : shift.getOrderHisPerShift()) {
-            result = result.add(orderCtr.getTotal(order));
+            result = result.add(orderCtr.getTotal(order, store));
         }
         return result;
     }
@@ -149,21 +149,21 @@ public class ShiftController {
         return result;
     }
 
-    public BigDecimal getTotalPaymentByCash(Shift shift) {
+    public BigDecimal getTotalPaymentByCash(Shift shift, Store store) {
         BigDecimal result = BigDecimal.ZERO;
         for (Order order : shift.getOrderHisPerShift()) {
             if (order.getPaymentOptions().equals(PaymentOptions.CASH_PAYMENT)) {
-                result = result.add(orderCtr.getTotal(order));
+                result = result.add(orderCtr.getTotal(order, store));
             }
         }
         return result;
     }
 
-    public BigDecimal getTotalPaymentByWireTransfer(Shift shift) {
+    public BigDecimal getTotalPaymentByWireTransfer(Shift shift, Store store) {
         BigDecimal result = BigDecimal.ZERO;
         for (Order order : shift.getOrderHisPerShift()) {
             if (order.getPaymentOptions().equals(PaymentOptions.OTHER_PAYMENT)) {
-                result = result.add(orderCtr.getTotal(order));
+                result = result.add(orderCtr.getTotal(order, store));
             }
         }
         return result;
@@ -177,10 +177,10 @@ public class ShiftController {
         return result;
     }
 
-    public BigDecimal getTotalPointDiscount(Shift shift) {
+    public BigDecimal getTotalPointDiscount(Shift shift, Store store) {
         BigDecimal result = BigDecimal.ZERO;
         for (Order order : shift.getOrderHisPerShift()) {
-            result = result.add(orderCtr.getPointDiscountAmount(order));
+            result = result.add(orderCtr.getPointDiscountAmount(order, store));
         }
         return result;
     }
@@ -189,11 +189,11 @@ public class ShiftController {
         return shift.getOrderHisPerShift().stream().count();
     }
 
-    public BigDecimal getAveragePerOrder(Shift shift) {
+    public BigDecimal getAveragePerOrder(Shift shift, Store store) {
         if (getNumberOfOrder(shift) == 0) {
             return BigDecimal.ZERO;
         }
-        return getNetRevenue(shift).divide(new BigDecimal(getNumberOfOrder(shift)));
+        return getNetRevenue(shift, store).divide(new BigDecimal(getNumberOfOrder(shift)));
     }
 
     public BigDecimal getTotalGoodsQuanOfThisShift(Shift shift) {

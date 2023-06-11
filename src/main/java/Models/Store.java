@@ -6,12 +6,15 @@ package Models;
 
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
+import java.math.BigDecimal;
+import java.math.BigInteger;
 
 /**
  *
  * @author FPTSHOP
  */
 public class Store {
+
     @SerializedName("name")
     @Expose
     private String name = "";
@@ -27,6 +30,12 @@ public class Store {
     @SerializedName("phoneNumber")
     @Expose
     private String phoneNumber = "";
+    @SerializedName("amountForOnePoint")
+    @Expose
+    private BigDecimal amountForOnePoint = BigDecimal.ONE;
+    @SerializedName("pointsForOneVND")
+    @Expose
+    private BigInteger pointsForOneVND = BigInteger.ONE;
 
     public Store(String name, String email, String address, int VAT, String phoneNumber) {
         this.name = name.trim();
@@ -77,5 +86,21 @@ public class Store {
 
     public void setPhoneNumber(String phoneNumber) {
         this.phoneNumber = phoneNumber.trim();
+    }
+    
+    public BigDecimal getAmountForOnePoint() {
+        return amountForOnePoint;
+    }
+
+    public void setAmountForOnePoint(BigDecimal amountForOnePoint) {
+        this.amountForOnePoint = amountForOnePoint;
+    }
+
+    public BigInteger getPointsForOneVND() {
+        return pointsForOneVND;
+    }
+
+    public void setPointsForOneVND(BigInteger pointsForOneVND) {
+        this.pointsForOneVND = pointsForOneVND;
     }
 }

@@ -6,7 +6,7 @@
       "customer": {
         "firstName": "Nguyen Duc",
         "lastName": "Anh",
-        "phoneNumber": "0444033022",
+        "phoneNumber": "0975268264",
         "address": "34 Nguyen Du",
         "age": 20,
         "gender": "MALE"
@@ -19,7 +19,7 @@
       "customer": {
         "firstName": "Le Van",
         "lastName": "Quyet",
-        "phoneNumber": "0333333222",
+        "phoneNumber": "0906333164",
         "address": "26 Do Duc Duc",
         "age": 20,
         "gender": "OTHER"
@@ -32,7 +32,7 @@
       "customer": {
         "firstName": "Do Quynh",
         "lastName": "Anh",
-        "phoneNumber": "0733833888",
+        "phoneNumber": "0971345298",
         "address": "16 Cau Giay",
         "age": 22,
         "gender": "FEMALE"
@@ -45,7 +45,7 @@
       "customer": {
         "firstName": "Le Duc",
         "lastName": "Cuong",
-        "phoneNumber": "053555133",
+        "phoneNumber": "0916254167",
         "address": "41 Minh Khai",
         "age": 17,
         "gender": "MALE"
