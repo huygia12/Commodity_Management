@@ -223,8 +223,7 @@ public class MainFrame extends javax.swing.JFrame {
     private static final String HOME = System.getProperty("user.dir");
     private static final String SEPARATOR = File.separator;
     private static final String DATA_FOLDER = HOME + SEPARATOR + "data" + SEPARATOR;
-    private static final String IMAGE_FOLDER = HOME + SEPARATOR + "src" + SEPARATOR 
-            + "main"+ SEPARATOR + "java"+SEPARATOR+"ImageIcon"+SEPARATOR;
+    private static final String IMAGE_FOLDER = HOME + SEPARATOR + "src" + SEPARATOR + "main"+ SEPARATOR + "image"+SEPARATOR;
     private static final String REPOSITORY_PATH = DATA_FOLDER + "repositoryData.json";
     private static final String SHIFT_PATH = DATA_FOLDER + "currentShift.json";
     private static final String HISTORY_PATH = DATA_FOLDER + "historyData.json";

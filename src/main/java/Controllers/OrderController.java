@@ -16,7 +16,6 @@ import Models.Store;
 import Ultility.Cautions;
 import View.OrderView;
 import java.math.BigDecimal;
-import java.math.BigInteger;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -60,12 +59,12 @@ public class OrderController extends GoodsListController {
         return getSubTotal(order).multiply(new BigDecimal(order.getTax() * 1.0 / 100));
     }
 
-    public BigDecimal getTotal(Order order, Store store) {
+    public BigDecimal getTotal(Order order) {
         // Khoan tien can thanh toan khi da tru di discount va cong them VAT
         return (getSubTotal(order)
                 .add(getTaxAmount(order)))
                 .multiply(new BigDecimal(1.0 - order.getDiscount() * 1.0 / 100))
-                .subtract(getPointDiscountAmount(order, store))
+                .subtract(getPointDiscountAmount(order))
                 .add(order.getShippingFee());
     }
 
@@ -75,17 +74,17 @@ public class OrderController extends GoodsListController {
                 .multiply(new BigDecimal(order.getDiscount() * 1.0 / 100));
     }
 
-    public BigDecimal getChange(Order order, Store store) {
-        return order.getCusMoney().subtract(getTotal(order, store));
+    public BigDecimal getChange(Order order) {
+        return order.getCusMoney().subtract(getTotal(order));
     }
 
-    public BigDecimal getPointDiscountAmount(Order order, Store store) {
+    public BigDecimal getPointDiscountAmount(Order order) {
         return cardCtr
-                .convertPointToMoney(order.getCustomerCard(), order.getPointDiscount(), store);
+                .convertPointToMoney(order.getCustomerCard(), order.getPointDiscount());
     }
 
     public Order makeNewOrder(GoodsList<Goods> repoGoodsList, CustomerCardList customerCardList,
-            Store store, Shift shift, IDGenerator idGenerator) {
+            Store myStore, Shift shift, IDGenerator idGenerator) {
 
         Order order = new Order(idGenerator.generateID(Order.class.getName(), 6));
         // tao mot ban cpy cua repositoryGoodsList la draftGoodsList
@@ -99,13 +98,13 @@ public class OrderController extends GoodsListController {
                 sc.nextLine();
                 switch (choice) {
                     case 1:
-                        addToOrder(order, store);
+                        addToOrder(order);
                         break;
                     case 2:
-                        editOrder(repoGoodsList, order, store);
+                        editOrder(repoGoodsList, order);
                         break;
                     case 3:
-                        if (payOrder(customerCardList, store, order)) {
+                        if (payOrder(customerCardList, myStore, order)) {
                             completed = true;
                         }
                         break;
@@ -162,7 +161,7 @@ public class OrderController extends GoodsListController {
     }
 
     //Function 1
-    private void addToOrder(Order order, Store store) {
+    private void addToOrder(Order order) {
         Shipment orderShipment = new Shipment();
         Goods searchGoods = searchGoods(draftGoodsList);
         // Tim kiem goods va shipment muon them vao order
@@ -218,11 +217,11 @@ public class OrderController extends GoodsListController {
         // sau khi them goods vao order, giam so luong goods do torng draftGoodsList
         BigDecimal quantityBefore = searchShipment.getQuantity();
         searchShipment.setQuantity(quantityBefore.subtract(inputQuantity));
-        this.view.showDraftOrder(order, this, store);
+        this.view.showDraftOrder(order, this);
     }
 
     //Funtion 2
-    private void editOrder(GoodsList repoGoodsList, Order order, Store store) {
+    private void editOrder(GoodsList repoGoodsList, Order order) {
         String choice;
         // Tao mot draftOrder cua curOrder de thao tac, sau khi edit xong moi thay doi vao curOrder
         Order draftOrder = new Order();
@@ -251,15 +250,15 @@ public class OrderController extends GoodsListController {
             switch (choice) {
                 case "1":
                     remainQuan = remainQuan.subtract(IncrQuanInOrder(editShipment, remainQuan));
-                    this.view.showDraftOrder(draftOrder, this, store);
+                    this.view.showDraftOrder(draftOrder, this);
                     break;
                 case "2":
                     remainQuan = remainQuan.add(DecrQuanInOrder(editShipment));
-                    this.view.showDraftOrder(draftOrder, this, store);
+                    this.view.showDraftOrder(draftOrder, this);
                     break;
                 case "3":
                     deleteFromOrder(repoGoodsList, searchOrderGoods, searchOrderShipment, order);
-                    this.view.showDraftOrder(draftOrder, this, store);
+                    this.view.showDraftOrder(draftOrder, this);
                     return;
                 case "4":
                     if (editShipment.getQuantity().compareTo(BigDecimal.ZERO) == 0) {
@@ -342,7 +341,7 @@ public class OrderController extends GoodsListController {
     }
 
     //Funtion 3
-    private boolean payOrder(CustomerCardList customerCardList, Store store, Order order) {
+    private boolean payOrder(CustomerCardList customerCardList, Store myStore, Order order) {
         // tra ve true neu pay thanh cong, false neu list khong co gi hoac user nhap exit
         if (ctions.checkIfListEmpty(order.getList())) {
             return false;
@@ -378,7 +377,7 @@ public class OrderController extends GoodsListController {
                     }
                 case 3:
                     // nhap so tien khach hang tra
-                    nextProcess = this.view.typeInCusMoney(order, this, store);
+                    nextProcess = this.view.typeInCusMoney(order, this);
                     if (nextProcess == 0) {
                         return false;
                     } else if (nextProcess == -1) {
@@ -411,11 +410,11 @@ public class OrderController extends GoodsListController {
             }
         }
         if (order.getCustomerCard() != null) {
-            cardCtr.gainPoint(order.getCustomerCard(), getTotal(order, store), store);
+            cardCtr.gainPoint(order.getCustomerCard(), getTotal(order));
         }
-        this.view.showBill(order, store, this);
+        this.view.showBill(order, myStore, this);
         if (this.view.makeDecisionToPrintOrder()) {
-            this.view.printBillToFile(order, store, this);
+            this.view.printBillToFile(order, myStore, this);
         }
         return true;
     }
@@ -513,13 +512,11 @@ public class OrderController extends GoodsListController {
         }
     }
 
-    public void payOrderForGUI(Order order, Shift shift, GoodsList<Goods> repository, Store store) {
+    public void payOrderForGUI(Order order, Shift shift, GoodsList<Goods> repository) {
         if (order.getCustomerCard() != null) {
-            cardCtr.gainPoint(order.getCustomerCard(), getTotal(order, store), store);
+            cardCtr.gainPoint(order.getCustomerCard(), getTotal(order));
         }
         order.setOrderDateTime();
-        System.out.println(order.getPointDiscount());
-        cardCtr.usePoint(order.getCustomerCard(), order.getPointDiscount());
         shift.getOrderHisPerShift().add(order);
         updateQuanAfterPay(repository, order);
     }

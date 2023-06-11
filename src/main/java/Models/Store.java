@@ -6,8 +6,6 @@ package Models;
 
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
-import java.math.BigDecimal;
-import java.math.BigInteger;
 
 /**
  *
@@ -29,15 +27,7 @@ public class Store {
     @SerializedName("phoneNumber")
     @Expose
     private String phoneNumber = "";
-    @SerializedName("amountForOnePoint")
-    @Expose
-    private BigDecimal amountForOnePoint = BigDecimal.ZERO;
-    @SerializedName("pointsForOneVNDOut")
-    @Expose
-    private BigInteger pointsForOneVNDOut = BigInteger.ZERO;
-    @SerializedName("pointsForOneVNDIn")
-    @Expose
-    private BigInteger pointsForOneVNDIn = BigInteger.ZERO;
+
     public Store(String name, String email, String address, int VAT, String phoneNumber) {
         this.name = name.trim();
         this.email = email.trim();
@@ -56,31 +46,7 @@ public class Store {
     public void setName(String name) {
         this.name = name.trim();
     }
-    
-    public BigDecimal getAmountForOnePoint() {
-        return amountForOnePoint;
-    }
 
-    public void setAmountForOnePoint(BigDecimal amountForOnePoint) {
-        this.amountForOnePoint = amountForOnePoint;
-    }
-
-    public BigInteger getPointsForOneVNDIn() {
-        return pointsForOneVNDIn;
-    }
-
-    public void setPointsForOneVNDIn(BigInteger pointsForOneVNDIn) {
-        this.pointsForOneVNDIn = pointsForOneVNDIn;
-    }
-
-    public BigInteger getPointsForOneVNDOut() {
-        return pointsForOneVNDOut;
-    }
-
-    public void setPointsForOneVNDOut(BigInteger pointsForOneVNDOut) {
-        this.pointsForOneVNDOut = pointsForOneVNDOut;
-    }
-    
     public String getEmail() {
         return email;
     }

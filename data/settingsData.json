@@ -4,10 +4,10 @@
     "email": "bonEmMuonAnHotpotWangWang@gmail.com",
     "address": "112-Nguyen Van Loc",
     "VAT": 10,
-    "phoneNumber": "0705737292",
-    "amountForOnePoint": 10000,
-    "pointsForOneVND": 10
+    "phoneNumber": "0705737292"
   },
+  "amountForOnePoint": 10000,
+  "pointsForOneVND": 10,
   "priceAmountList": [
     "\u003c 100000",
     "100000 - 300000",

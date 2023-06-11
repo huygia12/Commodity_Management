@@ -41,13 +41,13 @@ public class SettingsView {
 
     public int typeInAmountForOnePoint(Settings settings) {
         System.out.printf("The Current amount(VND) to exchange for 1 Point: %.1f\n", 
-                settings.getStore().getAmountForOnePoint());
+                settings.getAmountForOnePoint());
         while (true) {
             System.out.print("Type in amount(VND) or type BACK to go back: ");
             String input = sc.nextLine().trim();
             try {
                 BigDecimal amountForOnePoint = new BigDecimal(input);
-                settings.getStore().setAmountForOnePoint(amountForOnePoint);
+                settings.setAmountForOnePoint(amountForOnePoint);
                 return 1;
             } catch (NumberFormatException nfe) {
                 if (input.equalsIgnoreCase("back")) {
@@ -62,13 +62,13 @@ public class SettingsView {
 
     public int typeInPointsForOneVND(Settings settings) {
         System.out.printf("The Current number of points to exchange for 1000VND: %s\n", 
-                settings.getStore().getPointsForOneVNDIn());
+                settings.getPointsForOneVND());
         while (true) {
             System.out.print("Type in the number of points or type BACK to go back: ");
             String input = sc.nextLine().trim();
             try {
                 BigInteger amountForOnePoint = new BigInteger(input);
-                settings.getStore().setPointsForOneVNDIn(amountForOnePoint);
+                settings.setPointsForOneVND(amountForOnePoint);
                 return 1;
             } catch (NumberFormatException nfe) {
                 if (input.equalsIgnoreCase("back")) {

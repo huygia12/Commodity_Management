@@ -4,7 +4,6 @@
  */
 package GUI;
 
-import Controllers.GoodsController;
 import Controllers.OrderController;
 import Controllers.ShiftController;
 import Models.EmployeeList;
@@ -21,7 +20,6 @@ import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import javax.swing.ScrollPaneConstants;
 import javax.swing.table.DefaultTableModel;
 
 /**
@@ -321,7 +319,7 @@ public class ShiftJPanel extends javax.swing.JPanel {
                     .addComponent(toLabel)
                     .addComponent(toTextField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
-                .addGroup(searchPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(searchPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(searchBtn)
                     .addComponent(refreashBtn))
                 .addGap(0, 18, Short.MAX_VALUE))
@@ -639,7 +637,7 @@ public class ShiftJPanel extends javax.swing.JPanel {
         overViewModel.addRow(new Object[]{
             order.getID(),
             order.getOrderDateTime(),
-            orderCtr.getTotal(order, myStore)
+            orderCtr.getTotal(order)
         });
     }
     
@@ -650,38 +648,8 @@ public class ShiftJPanel extends javax.swing.JPanel {
         }
     }
     
-//    private<T extends Goods> void computeSizeEachColumn(GoodsList<T> myGoodsList) {
-//        // duyet tu dau den cuoi mang de tim MAX_SIZE cua giatri input tung thuoc tinh
-//        for (T goods : myGoodsList.getList()) {
-//            if (goods.getGoodsName().length() > nameMaxSize) {
-//                nameMaxSize = goods.getGoodsName().length();
-//            }
-//            if (goods.getManufacture().length() > providerMaxSize) {
-//                providerMaxSize = goods.getManufacture().length();
-//            }
-//            if (String.format(".1f", goods.getListPrice()).length() > listPriceMaxSize) {
-//                listPriceMaxSize = String.format(".1f", goods.getListPrice()).length();
-//            }
-//            if (String.format(".1f", goodsCtr.getTotalQuanByShipments(goods)).length() > totalQuantityMaxSize) {
-//                totalQuantityMaxSize = String.format(".1f", goodsCtr.getTotalQuanByShipments(goods)).length();
-//            }
-//            for (Shipment shipment : goods.getShipments()) {
-//                if (String.format(".1f", shipment.getImportPrice()).length() > importPriceMaxSize) {
-//                    importPriceMaxSize = String.format(".1f", shipment.getImportPrice()).length();
-//                }
-//                if (String.format(".1f", shipment.getQuantity()).length() > quantityMaxSize) {
-//                    quantityMaxSize = String.format(".1f", shipment.getQuantity()).length();
-//                }
-//            }
-//        }
-//    }
-    
     private void initVariables() {
         realTimeClock();
-        overViewTableJScrollPane.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_ALWAYS);
-        overViewTableJScrollPane.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
-        displayDetailJScrollPane.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_ALWAYS);
-        displayDetailJScrollPane.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
         overViewModel = (DefaultTableModel)overViewTable.getModel();
         displayDetailModel = (DefaultTableModel)displayDetailTable.getModel();
         orderCtr = new OrderController();
@@ -716,16 +684,6 @@ public class ShiftJPanel extends javax.swing.JPanel {
         initVariables();
     }
 
-    
-//    private int goodsIDMaxSize = "Mã SP".length();
-//    private int goodsNameMaxSize = "Tên SP".length();
-//    private int manufactureMaxSize = "Nhà sx".length();
-//    private int unitMaxSize = "ĐV".length();
-//    private int listPrice = "Giá Bán/ĐV".length();
-//    private int shipmentIDMaxSize = "Mã lô".length();
-//    private int productionDateMaxSize = "Ngày sx".length();
-//    private int expirationDateMaxSize = "Hạn SD".length();
-//    private int shipmentQuantityMaxSize = "SL".length();
     private ShiftController shiftCtr;
     private OrderController orderCtr;
     private DefaultTableModel displayDetailModel;

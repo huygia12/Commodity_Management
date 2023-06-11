@@ -92,7 +92,7 @@ public class OrderView {
         }
     }
 
-    public int typeInCusMoney(Order order, OrderController orderCtr, Store store) {
+    public int typeInCusMoney(Order order, OrderController orderCtr) {
         while (true) {
             System.out.print("Please enter the amount of money customer give, \nor type EXIT/BACK to exit/back from payment : ");
             String input = sc.nextLine();
@@ -106,7 +106,7 @@ public class OrderView {
                     order.setCusMoney(new BigDecimal(input));
                     if (ctions.checkIfNumberNegative(order.getCusMoney())) {
                         order.setCusMoney(BigDecimal.ZERO);
-                    } else if (order.getCusMoney().compareTo(orderCtr.getTotal(order, store)) < 0) {
+                    } else if (order.getCusMoney().compareTo(orderCtr.getTotal(order)) < 0) {
                         order.setCusMoney(BigDecimal.ZERO);
                         System.out.println("Insufficient payment! Please pay more.");
                     } else {
@@ -200,7 +200,7 @@ public class OrderView {
         }
     }
 
-    public void showDraftOrder(Order order, OrderController orderCtr, Store store) {
+    public void showDraftOrder(Order order, OrderController orderCtr) {
         System.out.println("");
         System.out.println("-------------------------- YOUR ORDER ------------------------------");
         System.out.println("--------------------------------------------------------------------");
@@ -215,11 +215,11 @@ public class OrderView {
         }
         System.out.println(" ");
         System.out.printf("Total payment: %.1f\n", orderCtr.getSubTotal(order));
-        System.out.printf("Total(Taxed: %s): %.1f\n",order.getTax()+"%",  orderCtr.getTotal(order, store));
+        System.out.printf("Total(Taxed: %s): %.1f\n",order.getTax()+"%",  orderCtr.getTotal(order));
         System.out.println("--------------------------------------------------------------------");
     }
 
-    public void showBill(Order order, Store store, OrderController orderCtr) {
+    public void showBill(Order order, Store myStore, OrderController orderCtr) {
         String customerID = "";
         if (order.getCustomerCard() != null) {
             customerID = order.getCustomerCard().getID();
@@ -227,10 +227,10 @@ public class OrderView {
         System.out.println("");
         System.out.println("-------------- YOUR BILL ---------------");
         System.out.println("----------------------------------------");
-        System.out.println("Store Name: " + store.getName());
-        System.out.println("Email: " + store.getEmail());
-        System.out.println("Address: " + store.getAddress());
-        System.out.println("Phone Number: " + store.getPhoneNumber());
+        System.out.println("Store Name: " + myStore.getName());
+        System.out.println("Email: " + myStore.getEmail());
+        System.out.println("Address: " + myStore.getAddress());
+        System.out.println("Phone Number: " + myStore.getPhoneNumber());
         System.out.println("Date: " + order.getOrderDateTime());
         System.out.println("");
         System.out.format("%-25s %-10s %-15s %-15s\n", "Name", "Quantity", "Price", "Total");
@@ -244,19 +244,19 @@ public class OrderView {
         }
         System.out.printf("SubTotal: %.1f\n", orderCtr.getSubTotal(order));
         System.out.printf("Discount Amount(Discount=%s): %.1f\n", order.getDiscount() + "%", orderCtr.getDiscountAmount(order));
-        System.out.printf("Tax(VAT=%s): %.1f\n", store.getVAT() + "%", orderCtr.getTaxAmount(order));
+        System.out.printf("Tax(VAT=%s): %.1f\n", myStore.getVAT() + "%", orderCtr.getTaxAmount(order));
         System.out.println("Payment Option: " + order.getPaymentOptions());
         System.out.println("Member Card ID: " + customerID);
-        System.out.printf("Point Discount: %.1f\n", orderCtr.getPointDiscountAmount(order, store));
-        System.out.printf("Total: %.1f\n", orderCtr.getTotal(order, store));
+        System.out.printf("Point Discount: %.1f\n", orderCtr.getPointDiscountAmount(order));
+        System.out.printf("Total: %.1f\n", orderCtr.getTotal(order));
         if (order.getPaymentOptions().equals(PaymentOptions.CASH_PAYMENT)) {
             System.out.printf("Customer payment: %.1f\n", order.getCusMoney());
-            System.out.printf("Change: %.1f\n", orderCtr.getChange(order, store));
+            System.out.printf("Change: %.1f\n", orderCtr.getChange(order));
         }
         System.out.println("----------------------------------------");
     }
 
-    public void printBillToFile(Order order, Store store, OrderController orderCtr) {
+    public void printBillToFile(Order order, Store myStore, OrderController orderCtr) {
         try ( PrintWriter pw = new PrintWriter(Files.newBufferedWriter(Path.of(FILE_PRINT),
                 StandardOpenOption.CREATE,
                 StandardOpenOption.WRITE,
@@ -268,10 +268,10 @@ public class OrderView {
             pw.println("");
             pw.println("-------------- YOUR BILL ---------------");
             pw.println("----------------------------------------");
-            pw.println("Store Name: " + store.getName());
-            pw.println("Email: " + store.getEmail());
-            pw.println("Address: " + store.getAddress());
-            pw.println("Phone Number: " + store.getPhoneNumber());
+            pw.println("Store Name: " + myStore.getName());
+            pw.println("Email: " + myStore.getEmail());
+            pw.println("Address: " + myStore.getAddress());
+            pw.println("Phone Number: " + myStore.getPhoneNumber());
             pw.println("Date: " + order.getOrderDateTime().format(DateTimeFormatter.ofPattern(DATE_TIME_FORMAT)));
             pw.println("");
             pw.format("%-25s %-10s %-15s %-15s\n", "Name", "Quantity", "Price", "Total");
@@ -285,14 +285,14 @@ public class OrderView {
             }
             pw.printf("SubTotal: %.1f\n", orderCtr.getSubTotal(order));
             pw.printf("Discount Amount(Discount=%s): %.1f\n", order.getDiscount() + "%", orderCtr.getDiscountAmount(order));
-            pw.printf("Tax(VAT=%s): %.1f\n", store.getVAT() + "%", orderCtr.getTaxAmount(order));
+            pw.printf("Tax(VAT=%s): %.1f\n", myStore.getVAT() + "%", orderCtr.getTaxAmount(order));
             pw.println("Payment Option: " + order.getPaymentOptions());
             pw.println("Member Card ID: " + customerID);
-            pw.printf("Point Discount: \n", orderCtr.getPointDiscountAmount(order, store));
-            pw.printf("Total: %.1f\n", orderCtr.getTotal(order, store));
+            pw.printf("Point Discount: \n", orderCtr.getPointDiscountAmount(order));
+            pw.printf("Total: %.1f\n", orderCtr.getTotal(order));
             if (order.getPaymentOptions().equals(PaymentOptions.CASH_PAYMENT)) {
                 pw.printf("Customer payment: %.1f\n", order.getCusMoney());
-                pw.printf("Change: %.1f\n", orderCtr.getChange(order, store));
+                pw.printf("Change: %.1f\n", orderCtr.getChange(order));
             }
             pw.println("----------------------------------------");
         } catch (IOException ex) {
