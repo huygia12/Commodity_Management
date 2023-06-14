@@ -322,7 +322,7 @@ public class OpenShiftFrame extends javax.swing.JFrame {
         int selectedRow = employeeListTable.getSelectedRow();
         if(selectedRow == -1){
             checkCashier = false;
-            //cashierComboBox.insertItemAt(, WIDTH);
+            cashierComboBox.insertItemAt(, WIDTH);
         }
         if(selectedIndex == 0){
             String phoneNum = employeeListTable.getValueAt(selectedRow, 3).toString();
