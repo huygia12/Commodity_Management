@@ -52,11 +52,12 @@ public class EmployJPanel extends javax.swing.JPanel {
         inputPhoneLabel = new javax.swing.JLabel();
         inputPhoneTextField = new javax.swing.JTextField();
         inputAdressLabel = new javax.swing.JLabel();
-        inputAdressField = new javax.swing.JTextField();
         inputCCCDLabel = new javax.swing.JLabel();
         inputCCCDTextField = new javax.swing.JTextField();
         inputSalaryLabel = new javax.swing.JLabel();
         inputSalaryTextField = new javax.swing.JTextField();
+        jScrollPane1 = new javax.swing.JScrollPane();
+        inputAdressTextPane = new javax.swing.JTextPane();
         functionPanel = new javax.swing.JPanel();
         addButton = new javax.swing.JButton();
         changeButton = new javax.swing.JButton();
@@ -152,6 +153,8 @@ public class EmployJPanel extends javax.swing.JPanel {
         inputSalaryLabel.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
         inputSalaryLabel.setText("Lương/h:");
 
+        jScrollPane1.setViewportView(inputAdressTextPane);
+
         javax.swing.GroupLayout inputInfoPanelLayout = new javax.swing.GroupLayout(inputInfoPanel);
         inputInfoPanel.setLayout(inputInfoPanelLayout);
         inputInfoPanelLayout.setHorizontalGroup(
@@ -171,59 +174,53 @@ public class EmployJPanel extends javax.swing.JPanel {
                     .addComponent(maleButton, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, 91, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(femaleRadioButton, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, 91, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(inputFirstNameTextField, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, 160, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 38, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 40, Short.MAX_VALUE)
                 .addGroup(inputInfoPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, inputInfoPanelLayout.createSequentialGroup()
-                        .addGroup(inputInfoPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(inputAdressLabel, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 59, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(inputCCCDLabel, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 59, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(inputSalaryLabel, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 59, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGap(20, 20, 20))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, inputInfoPanelLayout.createSequentialGroup()
-                        .addComponent(inputPhoneLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 59, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)))
-                .addGroup(inputInfoPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(inputInfoPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                        .addComponent(inputPhoneTextField, javax.swing.GroupLayout.PREFERRED_SIZE, 160, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addComponent(inputAdressField, javax.swing.GroupLayout.PREFERRED_SIZE, 160, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addComponent(inputCCCDTextField, javax.swing.GroupLayout.PREFERRED_SIZE, 160, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addComponent(inputSalaryTextField, javax.swing.GroupLayout.PREFERRED_SIZE, 160, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(inputCCCDLabel, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 59, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(inputPhoneLabel, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 59, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(inputSalaryLabel, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 59, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(inputAdressLabel, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 59, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGroup(inputInfoPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(inputPhoneTextField, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 160, Short.MAX_VALUE)
+                    .addComponent(inputCCCDTextField, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 160, Short.MAX_VALUE)
+                    .addComponent(inputSalaryTextField, javax.swing.GroupLayout.DEFAULT_SIZE, 160, Short.MAX_VALUE)
+                    .addComponent(jScrollPane1))
                 .addContainerGap())
         );
         inputInfoPanelLayout.setVerticalGroup(
             inputInfoPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(inputInfoPanelLayout.createSequentialGroup()
                 .addGap(25, 25, 25)
-                .addGroup(inputInfoPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(inputInfoPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(inputFirstNameLabel)
+                    .addComponent(inputFirstNameTextField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(inputPhoneLabel)
+                    .addComponent(inputPhoneTextField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(18, 18, 18)
+                .addGroup(inputInfoPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(inputLastNameLabel)
+                    .addComponent(inputLastNameTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(inputCCCDLabel)
+                    .addComponent(inputCCCDTextField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(18, 18, 18)
+                .addGroup(inputInfoPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(inputAgeLabel)
+                    .addComponent(inputAgeTextField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(inputSalaryLabel)
+                    .addComponent(inputSalaryTextField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(18, 18, 18)
+                .addGroup(inputInfoPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addGroup(inputInfoPanelLayout.createSequentialGroup()
                         .addGroup(inputInfoPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(inputFirstNameLabel)
-                            .addComponent(inputFirstNameTextField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(inputPhoneLabel)
-                            .addComponent(inputPhoneTextField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGap(18, 18, 18)
-                        .addGroup(inputInfoPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(inputLastNameLabel)
-                            .addComponent(inputLastNameTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(inputAdressField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(inputAdressLabel))
-                        .addGap(18, 18, 18)
-                        .addGroup(inputInfoPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(inputAgeLabel)
-                            .addComponent(inputAgeTextField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(inputCCCDTextField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(inputCCCDLabel))
-                        .addGap(18, 18, 18)
-                        .addGroup(inputInfoPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(inputGenderLabel)
-                            .addComponent(maleButton)))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, inputInfoPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                        .addComponent(inputSalaryLabel)
-                        .addComponent(inputSalaryTextField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(femaleRadioButton)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(otherRadioButton)
+                            .addComponent(maleButton)
+                            .addComponent(inputAdressLabel))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(femaleRadioButton)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(otherRadioButton))
+                    .addComponent(jScrollPane1))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
@@ -326,7 +323,7 @@ public class EmployJPanel extends javax.swing.JPanel {
                 .addGroup(functionPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(functionPanelLayout.createSequentialGroup()
                         .addComponent(changeButton, javax.swing.GroupLayout.PREFERRED_SIZE, 29, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(18, 20, Short.MAX_VALUE)
+                        .addGap(18, 24, Short.MAX_VALUE)
                         .addComponent(removeButton)
                         .addGap(18, 18, 18)
                         .addComponent(cancelButton))
@@ -345,7 +342,15 @@ public class EmployJPanel extends javax.swing.JPanel {
             new String [] {
                 "Họ", "Tên", "Tuổi", "Giới tính", "Địa chỉ", "SĐT", "CCCD", "Lương/h"
             }
-        ));
+        ) {
+            boolean[] canEdit = new boolean [] {
+                false, false, false, false, false, false, false, false
+            };
+
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
+            }
+        });
         displayTable.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 displayTableMouseClicked(evt);
@@ -429,7 +434,7 @@ public class EmployJPanel extends javax.swing.JPanel {
         setTextFieldProperties(inputFirstNameTextField, 11);
         setTextFieldProperties(inputLastNameTextField1, 11);
         setTextFieldProperties(inputAgeTextField, 11);
-        setTextFieldProperties(inputAdressField, 11);
+        // setTextFieldProperties(inputAdressTextPane, 11);
         setTextFieldProperties(inputCCCDTextField, 11);
         setTextFieldProperties(inputPhoneTextField, 11);
         setTextFieldProperties(inputSalaryTextField, 11);
@@ -438,7 +443,7 @@ public class EmployJPanel extends javax.swing.JPanel {
         inputFirstNameTextField.setText("");
         inputLastNameTextField1.setText("");
         inputAgeTextField.setText("");
-        inputAdressField.setText("");
+        inputAdressTextPane.setText("");
         inputCCCDTextField.setText("");
         inputPhoneTextField.setText("");
         inputSalaryTextField.setText("");
@@ -506,13 +511,21 @@ public class EmployJPanel extends javax.swing.JPanel {
         // TODO add your handling code here:
         // Kiểm tra xem có dữ liệu được nhập vào hay không
         if (inputFirstNameTextField.getText().isEmpty() && inputLastNameTextField1.getText().isEmpty() && inputAgeTextField.getText().isEmpty()
-                && inputAdressField.getText().isEmpty() && inputCCCDTextField.getText().isEmpty() && inputPhoneTextField.getText().isEmpty()
+                && inputAdressTextPane.getText().isEmpty() && inputCCCDTextField.getText().isEmpty() && inputPhoneTextField.getText().isEmpty()
                 && inputSalaryTextField.getText().isEmpty()) {
             JOptionPane.showMessageDialog(this, "Bạn chưa thêm gì !", "Cảnh báo", JOptionPane.WARNING_MESSAGE);
             return;
         }
+        if (inputFirstNameTextField.getText().isEmpty() || inputFirstNameTextField.getText().equals("Bắt buộc phải nhập!")
+                || inputLastNameTextField1.getText().isEmpty() || inputLastNameTextField1.getText().equals("Bắt buộc phải nhập!")
+                || inputCCCDTextField.getText().isEmpty() || inputCCCDTextField.getText().equals("Bắt buộc phải nhập!")
+                || inputPhoneTextField.getText().isEmpty() || inputPhoneTextField.getText().equals("Bắt buộc phải nhập!")) {
+            JOptionPane.showMessageDialog(this, "Bạn phải nhập đầy đủ các thông tin bắt buộc(CCCD,SĐT,Họ,Tên)!", "Cảnh báo", JOptionPane.WARNING_MESSAGE);
+            return;
+        }
         // Kiểm tra các trường bắt buộc
         if (!validateRequiredFields()) {
+            JOptionPane.showMessageDialog(this, "Hãy nhập đầy đủ thông tin bắt buộc trước khi thêm nhân viên mới!", "Cảnh báo", JOptionPane.WARNING_MESSAGE);
             return;
         }
 
@@ -538,7 +551,7 @@ public class EmployJPanel extends javax.swing.JPanel {
             return;
         }
 
-        String address = inputAdressField.getText();
+        String address = inputAdressTextPane.getText();
         String phone = inputPhoneTextField.getText();
         String reg = "^(0|\\+84)(\\s|\\.)?((3[0-9])|(5[0-9])|(7[0-9])|(8[0-689])|(9[0-46-9]))(\\d)(\\s|\\.)?(\\d{3})(\\s|\\.)?(\\d{3})$";
         if (!phone.matches(reg)) {
@@ -557,8 +570,8 @@ public class EmployJPanel extends javax.swing.JPanel {
 
         // Kiểm tra thông tin nhân viên trùng lặp
         for (Employee employee : employeeList.getList()) {
-            if (employee.getLastName().equals(lastName) && employee.getCCCD().equals(cccd)) {
-                JOptionPane.showMessageDialog(this, "Thông tin nhân viên đã trùng! Mong bạn kiểm tra và nhập lại.\n(Không được trùng Tên, CCCD)", "Cảnh báo", JOptionPane.WARNING_MESSAGE);
+            if (employee.getCCCD().equals(cccd) || employee.getPhoneNumber().equals(phone) || employee.getLastName().equals(lastName)) {
+                JOptionPane.showMessageDialog(this, "Thông tin nhân viên đã trùng! Mong bạn kiểm tra và nhập lại.\n(Không được trùng Tên, CCCD,SĐT)", "Cảnh báo", JOptionPane.WARNING_MESSAGE);
                 return;
             }
         }
@@ -603,7 +616,7 @@ public class EmployJPanel extends javax.swing.JPanel {
             String newFirstName = inputFirstNameTextField.getText();
             String newLastName = inputLastNameTextField1.getText();
             String newGender = maleButton.isSelected() ? "MALE" : femaleRadioButton.isSelected() ? "FEMALE" : "OTHER";
-            String newAddress = inputAdressField.getText();
+            String newAddress = inputAdressTextPane.getText();
             String newPhone = inputPhoneTextField.getText();
             String reg = "^(0|\\+84)(\\s|\\.)?((3[0-9])|(5[0-9])|(7[0-9])|(8[0-689])|(9[0-46-9]))(\\d)(\\s|\\.)?(\\d{3})(\\s|\\.)?(\\d{3})$";
             if (!newPhone.matches(reg)) {
@@ -796,7 +809,7 @@ public class EmployJPanel extends javax.swing.JPanel {
             inputFirstNameTextField.setText(firstName);
             inputLastNameTextField1.setText(lastName);
             inputAgeTextField.setText(age);
-            inputAdressField.setText(address);
+            inputAdressTextPane.setText(address);
             inputCCCDTextField.setText(cccd);
             inputPhoneTextField.setText(phone);
             inputSalaryTextField.setText(salary);
@@ -832,9 +845,10 @@ public class EmployJPanel extends javax.swing.JPanel {
         // TODO add your handling code here:
 
         if (!validateRequiredFields()) {
+            textFieldMouseClick(inputCCCDTextField, 11);
+
             return;
         }
-        textFieldMouseClick(inputCCCDTextField, 11);
 
 
     }//GEN-LAST:event_inputCCCDTextFieldMouseClicked
@@ -842,10 +856,10 @@ public class EmployJPanel extends javax.swing.JPanel {
     private void inputPhoneTextFieldMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_inputPhoneTextFieldMouseClicked
         // TODO add your handling code here:
         if (!validateRequiredFields()) {
+            textFieldMouseClick(inputPhoneTextField, 11);
 
             return;
         }
-        textFieldMouseClick(inputPhoneTextField, 11);
 
     }//GEN-LAST:event_inputPhoneTextFieldMouseClicked
 
@@ -853,20 +867,20 @@ public class EmployJPanel extends javax.swing.JPanel {
         // TODO add your handling code here:
         // Kiểm tra các trường bắt buộc
         if (!validateRequiredFields()) {
+            textFieldMouseClick(inputFirstNameTextField, 11);
 
             return;
         }
-        textFieldMouseClick(inputFirstNameTextField, 11);
 
     }//GEN-LAST:event_inputFirstNameTextFieldMouseClicked
 
     private void inputLastNameTextField1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_inputLastNameTextField1MouseClicked
         // TODO add your handling code here:
         if (!validateRequiredFields()) {
+            textFieldMouseClick(inputLastNameTextField1, 11);
 
             return;
         }
-        textFieldMouseClick(inputLastNameTextField1, 11);
 
     }//GEN-LAST:event_inputLastNameTextField1MouseClicked
 
@@ -890,8 +904,8 @@ public class EmployJPanel extends javax.swing.JPanel {
     private javax.swing.JRadioButton femaleRadioButton;
     private javax.swing.JPanel functionPanel;
     private javax.swing.ButtonGroup genderbuttonGroup;
-    private javax.swing.JTextField inputAdressField;
     private javax.swing.JLabel inputAdressLabel;
+    private javax.swing.JTextPane inputAdressTextPane;
     private javax.swing.JLabel inputAgeLabel;
     private javax.swing.JTextField inputAgeTextField;
     private javax.swing.JLabel inputCCCDLabel;
@@ -906,6 +920,7 @@ public class EmployJPanel extends javax.swing.JPanel {
     private javax.swing.JTextField inputPhoneTextField;
     private javax.swing.JLabel inputSalaryLabel;
     private javax.swing.JTextField inputSalaryTextField;
+    private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JRadioButton maleButton;
     private javax.swing.JRadioButton otherRadioButton;
     private javax.swing.JLabel quantityEmployLabel;

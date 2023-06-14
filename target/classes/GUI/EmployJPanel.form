@@ -85,28 +85,19 @@
                       <Component id="femaleRadioButton" alignment="0" min="-2" pref="91" max="-2" attributes="0"/>
                       <Component id="inputFirstNameTextField" alignment="0" min="-2" pref="160" max="-2" attributes="0"/>
                   </Group>
-                  <EmptySpace pref="38" max="32767" attributes="0"/>
+                  <EmptySpace pref="40" max="32767" attributes="0"/>
                   <Group type="103" groupAlignment="0" attributes="0">
-                      <Group type="102" alignment="1" attributes="0">
-                          <Group type="103" groupAlignment="0" attributes="0">
-                              <Component id="inputAdressLabel" alignment="1" min="-2" pref="59" max="-2" attributes="0"/>
-                              <Component id="inputCCCDLabel" alignment="1" min="-2" pref="59" max="-2" attributes="0"/>
-                              <Component id="inputSalaryLabel" alignment="1" min="-2" pref="59" max="-2" attributes="0"/>
-                          </Group>
-                          <EmptySpace min="-2" pref="20" max="-2" attributes="0"/>
-                      </Group>
-                      <Group type="102" alignment="1" attributes="0">
-                          <Component id="inputPhoneLabel" min="-2" pref="59" max="-2" attributes="0"/>
-                          <EmptySpace type="unrelated" max="-2" attributes="0"/>
-                      </Group>
+                      <Component id="inputCCCDLabel" alignment="1" min="-2" pref="59" max="-2" attributes="0"/>
+                      <Component id="inputPhoneLabel" alignment="1" min="-2" pref="59" max="-2" attributes="0"/>
+                      <Component id="inputSalaryLabel" alignment="1" min="-2" pref="59" max="-2" attributes="0"/>
+                      <Component id="inputAdressLabel" alignment="1" min="-2" pref="59" max="-2" attributes="0"/>
                   </Group>
-                  <Group type="103" groupAlignment="0" attributes="0">
-                      <Group type="103" alignment="0" groupAlignment="1" attributes="0">
-                          <Component id="inputPhoneTextField" alignment="1" min="-2" pref="160" max="-2" attributes="0"/>
-                          <Component id="inputAdressField" alignment="1" min="-2" pref="160" max="-2" attributes="0"/>
-                          <Component id="inputCCCDTextField" alignment="1" min="-2" pref="160" max="-2" attributes="0"/>
-                      </Group>
-                      <Component id="inputSalaryTextField" alignment="0" min="-2" pref="160" max="-2" attributes="0"/>
+                  <EmptySpace type="unrelated" max="-2" attributes="0"/>
+                  <Group type="103" groupAlignment="0" max="-2" attributes="0">
+                      <Component id="inputPhoneTextField" alignment="1" pref="160" max="32767" attributes="0"/>
+                      <Component id="inputCCCDTextField" alignment="1" pref="160" max="32767" attributes="0"/>
+                      <Component id="inputSalaryTextField" pref="160" max="32767" attributes="0"/>
+                      <Component id="jScrollPane1" max="32767" attributes="0"/>
                   </Group>
                   <EmptySpace max="-2" attributes="0"/>
               </Group>
@@ -116,43 +107,41 @@
           <Group type="103" groupAlignment="0" attributes="0">
               <Group type="102" alignment="0" attributes="0">
                   <EmptySpace min="-2" pref="25" max="-2" attributes="0"/>
-                  <Group type="103" groupAlignment="0" attributes="0">
-                      <Group type="102" alignment="0" attributes="0">
-                          <Group type="103" groupAlignment="3" attributes="0">
-                              <Component id="inputFirstNameLabel" alignment="3" min="-2" max="-2" attributes="0"/>
-                              <Component id="inputFirstNameTextField" alignment="3" min="-2" max="-2" attributes="0"/>
-                              <Component id="inputPhoneLabel" alignment="3" min="-2" max="-2" attributes="0"/>
-                              <Component id="inputPhoneTextField" alignment="3" min="-2" max="-2" attributes="0"/>
-                          </Group>
-                          <EmptySpace type="separate" max="-2" attributes="0"/>
-                          <Group type="103" groupAlignment="3" attributes="0">
-                              <Component id="inputLastNameLabel" alignment="3" min="-2" max="-2" attributes="0"/>
-                              <Component id="inputLastNameTextField1" alignment="3" min="-2" max="-2" attributes="0"/>
-                              <Component id="inputAdressField" alignment="3" min="-2" max="-2" attributes="0"/>
-                              <Component id="inputAdressLabel" alignment="3" min="-2" max="-2" attributes="0"/>
-                          </Group>
-                          <EmptySpace type="separate" max="-2" attributes="0"/>
-                          <Group type="103" groupAlignment="3" attributes="0">
-                              <Component id="inputAgeLabel" alignment="3" min="-2" max="-2" attributes="0"/>
-                              <Component id="inputAgeTextField" alignment="3" min="-2" max="-2" attributes="0"/>
-                              <Component id="inputCCCDTextField" alignment="3" min="-2" max="-2" attributes="0"/>
-                              <Component id="inputCCCDLabel" alignment="3" min="-2" max="-2" attributes="0"/>
-                          </Group>
-                          <EmptySpace type="separate" max="-2" attributes="0"/>
+                  <Group type="103" groupAlignment="3" attributes="0">
+                      <Component id="inputFirstNameLabel" alignment="3" min="-2" max="-2" attributes="0"/>
+                      <Component id="inputFirstNameTextField" alignment="3" min="-2" max="-2" attributes="0"/>
+                      <Component id="inputPhoneLabel" alignment="3" min="-2" max="-2" attributes="0"/>
+                      <Component id="inputPhoneTextField" alignment="3" min="-2" max="-2" attributes="0"/>
+                  </Group>
+                  <EmptySpace type="separate" max="-2" attributes="0"/>
+                  <Group type="103" groupAlignment="3" attributes="0">
+                      <Component id="inputLastNameLabel" alignment="3" min="-2" max="-2" attributes="0"/>
+                      <Component id="inputLastNameTextField1" alignment="3" min="-2" max="-2" attributes="0"/>
+                      <Component id="inputCCCDLabel" alignment="3" min="-2" max="-2" attributes="0"/>
+                      <Component id="inputCCCDTextField" alignment="3" min="-2" max="-2" attributes="0"/>
+                  </Group>
+                  <EmptySpace type="separate" max="-2" attributes="0"/>
+                  <Group type="103" groupAlignment="3" attributes="0">
+                      <Component id="inputAgeLabel" alignment="3" min="-2" max="-2" attributes="0"/>
+                      <Component id="inputAgeTextField" alignment="3" min="-2" max="-2" attributes="0"/>
+                      <Component id="inputSalaryLabel" alignment="3" min="-2" max="-2" attributes="0"/>
+                      <Component id="inputSalaryTextField" alignment="3" min="-2" max="-2" attributes="0"/>
+                  </Group>
+                  <EmptySpace type="separate" max="-2" attributes="0"/>
+                  <Group type="103" groupAlignment="0" max="-2" attributes="0">
+                      <Group type="102" attributes="0">
                           <Group type="103" groupAlignment="3" attributes="0">
                               <Component id="inputGenderLabel" alignment="3" min="-2" max="-2" attributes="0"/>
                               <Component id="maleButton" alignment="3" min="-2" max="-2" attributes="0"/>
+                              <Component id="inputAdressLabel" alignment="3" min="-2" max="-2" attributes="0"/>
                           </Group>
+                          <EmptySpace max="-2" attributes="0"/>
+                          <Component id="femaleRadioButton" min="-2" max="-2" attributes="0"/>
+                          <EmptySpace max="-2" attributes="0"/>
+                          <Component id="otherRadioButton" min="-2" max="-2" attributes="0"/>
                       </Group>
-                      <Group type="103" alignment="1" groupAlignment="3" attributes="0">
-                          <Component id="inputSalaryLabel" alignment="3" min="-2" max="-2" attributes="0"/>
-                          <Component id="inputSalaryTextField" alignment="3" min="-2" max="-2" attributes="0"/>
-                      </Group>
+                      <Component id="jScrollPane1" max="32767" attributes="0"/>
                   </Group>
-                  <EmptySpace max="-2" attributes="0"/>
-                  <Component id="femaleRadioButton" min="-2" max="-2" attributes="0"/>
-                  <EmptySpace max="-2" attributes="0"/>
-                  <Component id="otherRadioButton" min="-2" max="-2" attributes="0"/>
                   <EmptySpace max="32767" attributes="0"/>
               </Group>
           </Group>
@@ -170,6 +159,9 @@
           </Properties>
         </Component>
         <Component class="javax.swing.JTextField" name="inputFirstNameTextField">
+          <Events>
+            <EventHandler event="mouseClicked" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="inputFirstNameTextFieldMouseClicked"/>
+          </Events>
         </Component>
         <Component class="javax.swing.JLabel" name="inputLastNameLabel">
           <Properties>
@@ -182,6 +174,7 @@
         </Component>
         <Component class="javax.swing.JTextField" name="inputLastNameTextField1">
           <Events>
+            <EventHandler event="mouseClicked" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="inputLastNameTextField1MouseClicked"/>
             <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="inputLastNameTextField1ActionPerformed"/>
           </Events>
         </Component>
@@ -210,6 +203,7 @@
             <Property name="buttonGroup" type="javax.swing.ButtonGroup" editor="org.netbeans.modules.form.RADComponent$ButtonGroupPropertyEditor">
               <ComponentRef name="genderbuttonGroup"/>
             </Property>
+            <Property name="selected" type="boolean" value="true"/>
             <Property name="text" type="java.lang.String" value="MALE"/>
             <Property name="autoscrolls" type="boolean" value="true"/>
           </Properties>
@@ -243,6 +237,9 @@
           </Properties>
         </Component>
         <Component class="javax.swing.JTextField" name="inputPhoneTextField">
+          <Events>
+            <EventHandler event="mouseClicked" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="inputPhoneTextFieldMouseClicked"/>
+          </Events>
         </Component>
         <Component class="javax.swing.JLabel" name="inputAdressLabel">
           <Properties>
@@ -252,8 +249,6 @@
             <Property name="horizontalAlignment" type="int" value="4"/>
             <Property name="text" type="java.lang.String" value="&#x110;&#x1ecb;a ch&#x1ec9;:"/>
           </Properties>
-        </Component>
-        <Component class="javax.swing.JTextField" name="inputAdressField">
         </Component>
         <Component class="javax.swing.JLabel" name="inputCCCDLabel">
           <Properties>
@@ -265,6 +260,9 @@
           </Properties>
         </Component>
         <Component class="javax.swing.JTextField" name="inputCCCDTextField">
+          <Events>
+            <EventHandler event="mouseClicked" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="inputCCCDTextFieldMouseClicked"/>
+          </Events>
         </Component>
         <Component class="javax.swing.JLabel" name="inputSalaryLabel">
           <Properties>
@@ -272,11 +270,22 @@
               <Font name="Dialog" size="11" style="1"/>
             </Property>
             <Property name="horizontalAlignment" type="int" value="4"/>
-            <Property name="text" type="java.lang.String" value="L&#x1b0;&#x1a1;ng:"/>
+            <Property name="text" type="java.lang.String" value="L&#x1b0;&#x1a1;ng/h:"/>
           </Properties>
         </Component>
         <Component class="javax.swing.JTextField" name="inputSalaryTextField">
         </Component>
+        <Container class="javax.swing.JScrollPane" name="jScrollPane1">
+          <AuxValues>
+            <AuxValue name="autoScrollPane" type="java.lang.Boolean" value="true"/>
+          </AuxValues>
+
+          <Layout class="org.netbeans.modules.form.compat2.layouts.support.JScrollPaneSupportLayout"/>
+          <SubComponents>
+            <Component class="javax.swing.JTextPane" name="inputAdressTextPane">
+            </Component>
+          </SubComponents>
+        </Container>
       </SubComponents>
     </Container>
     <Container class="javax.swing.JPanel" name="functionPanel">
@@ -291,12 +300,8 @@
                           <Component id="changeButton" min="-2" pref="72" max="-2" attributes="0"/>
                       </Group>
                       <Group type="102" alignment="1" attributes="0">
-                          <EmptySpace pref="84" max="32767" attributes="0"/>
+                          <EmptySpace min="-2" pref="46" max="-2" attributes="0"/>
                           <Group type="103" groupAlignment="1" attributes="0">
-                              <Group type="102" alignment="1" attributes="0">
-                                  <Component id="removeButton" min="-2" pref="71" max="-2" attributes="0"/>
-                                  <EmptySpace min="-2" pref="1" max="-2" attributes="0"/>
-                              </Group>
                               <Group type="102" alignment="1" attributes="0">
                                   <Group type="103" groupAlignment="1" max="-2" attributes="0">
                                       <Component id="searchIDTextField" max="32767" attributes="0"/>
@@ -307,6 +312,19 @@
                                       <Component id="searchButton" alignment="1" min="-2" max="-2" attributes="0"/>
                                       <Component id="addButton" alignment="1" min="-2" max="-2" attributes="0"/>
                                   </Group>
+                              </Group>
+                              <Group type="102" alignment="1" attributes="0">
+                                  <Group type="103" groupAlignment="1" attributes="0">
+                                      <Component id="removeButton" min="-2" pref="71" max="-2" attributes="0"/>
+                                      <Group type="102" alignment="1" attributes="0">
+                                          <Component id="quantityEmployLabel" min="-2" max="-2" attributes="0"/>
+                                          <EmptySpace min="-2" pref="1" max="-2" attributes="0"/>
+                                          <Component id="quantityEmploytextField" min="-2" pref="40" max="-2" attributes="0"/>
+                                          <EmptySpace max="32767" attributes="0"/>
+                                          <Component id="cancelButton" min="-2" pref="71" max="-2" attributes="0"/>
+                                      </Group>
+                                  </Group>
+                                  <EmptySpace min="-2" pref="1" max="-2" attributes="0"/>
                               </Group>
                           </Group>
                       </Group>
@@ -329,10 +347,23 @@
                       <Component id="showAllButton" alignment="3" min="-2" max="-2" attributes="0"/>
                   </Group>
                   <EmptySpace type="separate" max="-2" attributes="0"/>
-                  <Component id="changeButton" min="-2" pref="29" max="-2" attributes="0"/>
-                  <EmptySpace type="separate" max="32767" attributes="0"/>
-                  <Component id="removeButton" min="-2" max="-2" attributes="0"/>
-                  <EmptySpace min="-2" pref="75" max="-2" attributes="0"/>
+                  <Group type="103" groupAlignment="0" attributes="0">
+                      <Group type="102" attributes="0">
+                          <Component id="changeButton" min="-2" pref="29" max="-2" attributes="0"/>
+                          <EmptySpace type="separate" pref="24" max="32767" attributes="0"/>
+                          <Component id="removeButton" min="-2" max="-2" attributes="0"/>
+                          <EmptySpace type="separate" max="-2" attributes="0"/>
+                          <Component id="cancelButton" min="-2" max="-2" attributes="0"/>
+                      </Group>
+                      <Group type="102" attributes="0">
+                          <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
+                          <Group type="103" groupAlignment="3" attributes="0">
+                              <Component id="quantityEmployLabel" alignment="3" min="-2" max="-2" attributes="0"/>
+                              <Component id="quantityEmploytextField" alignment="3" min="-2" max="-2" attributes="0"/>
+                          </Group>
+                      </Group>
+                  </Group>
+                  <EmptySpace min="-2" pref="30" max="-2" attributes="0"/>
               </Group>
           </Group>
         </DimensionLayout>
@@ -395,6 +426,27 @@
             <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="showAllButtonActionPerformed"/>
           </Events>
         </Component>
+        <Component class="javax.swing.JButton" name="cancelButton">
+          <Properties>
+            <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
+              <Font name="Dialog" size="14" style="0"/>
+            </Property>
+            <Property name="text" type="java.lang.String" value="H&#x1ee6;Y"/>
+          </Properties>
+          <Events>
+            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="cancelButtonActionPerformed"/>
+          </Events>
+        </Component>
+        <Component class="javax.swing.JLabel" name="quantityEmployLabel">
+          <Properties>
+            <Property name="text" type="java.lang.String" value="S&#x1ed1; l&#x1b0;&#x1ee3;ng nh&#xe2;n vi&#xea;n: "/>
+          </Properties>
+        </Component>
+        <Component class="javax.swing.JTextField" name="quantityEmploytextField">
+          <Properties>
+            <Property name="editable" type="boolean" value="false"/>
+          </Properties>
+        </Component>
       </SubComponents>
     </Container>
     <Container class="javax.swing.JPanel" name="displayPanel">
@@ -436,15 +488,15 @@
             <Component class="javax.swing.JTable" name="displayTable">
               <Properties>
                 <Property name="model" type="javax.swing.table.TableModel" editor="org.netbeans.modules.form.editors2.TableModelEditor">
-                  <Table columnCount="8" rowCount="4">
-                    <Column editable="true" title="H&#x1ecd;" type="java.lang.Object"/>
-                    <Column editable="true" title="T&#xea;n" type="java.lang.Object"/>
-                    <Column editable="true" title="Tu&#x1ed5;i" type="java.lang.Object"/>
-                    <Column editable="true" title="Gi&#x1edb;i t&#xed;nh" type="java.lang.Object"/>
-                    <Column editable="true" title="S&#x110;T" type="java.lang.Object"/>
-                    <Column editable="true" title="&#x110;&#x1ecb;a ch&#x1ec9;" type="java.lang.Object"/>
-                    <Column editable="true" title="CCCD" type="java.lang.Object"/>
-                    <Column editable="true" title="L&#x1b0;&#x1a1;ng" type="java.lang.Object"/>
+                  <Table columnCount="8" rowCount="0">
+                    <Column editable="false" title="H&#x1ecd;" type="java.lang.Object"/>
+                    <Column editable="false" title="T&#xea;n" type="java.lang.Object"/>
+                    <Column editable="false" title="Tu&#x1ed5;i" type="java.lang.Object"/>
+                    <Column editable="false" title="Gi&#x1edb;i t&#xed;nh" type="java.lang.Object"/>
+                    <Column editable="false" title="&#x110;&#x1ecb;a ch&#x1ec9;" type="java.lang.Object"/>
+                    <Column editable="false" title="S&#x110;T" type="java.lang.Object"/>
+                    <Column editable="false" title="CCCD" type="java.lang.Object"/>
+                    <Column editable="false" title="L&#x1b0;&#x1a1;ng/h" type="java.lang.Object"/>
                   </Table>
                 </Property>
                 <Property name="columnModel" type="javax.swing.table.TableColumnModel" editor="org.netbeans.modules.form.editors2.TableColumnModelEditor">
