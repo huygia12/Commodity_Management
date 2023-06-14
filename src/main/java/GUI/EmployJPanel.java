@@ -517,8 +517,16 @@ public class EmployJPanel extends javax.swing.JPanel {
             JOptionPane.showMessageDialog(this, "Bạn chưa thêm gì !", "Cảnh báo", JOptionPane.WARNING_MESSAGE);
             return;
         }
+        if (inputFirstNameTextField.getText().isEmpty() || inputFirstNameTextField.getText().equals("Bắt buộc phải nhập!")
+                || inputLastNameTextField1.getText().isEmpty() || inputLastNameTextField1.getText().equals("Bắt buộc phải nhập!")
+                || inputCCCDTextField.getText().isEmpty() || inputCCCDTextField.getText().equals("Bắt buộc phải nhập!")
+                || inputPhoneTextField.getText().isEmpty() || inputPhoneTextField.getText().equals("Bắt buộc phải nhập!")) {
+            JOptionPane.showMessageDialog(this, "Bạn phải nhập đầy đủ các thông tin bắt buộc(CCCD,SĐT,Họ,Tên)!", "Cảnh báo", JOptionPane.WARNING_MESSAGE);
+            return;
+        }
         // Kiểm tra các trường bắt buộc
         if (!validateRequiredFields()) {
+            JOptionPane.showMessageDialog(this, "Hãy nhập đầy đủ thông tin bắt buộc trước khi thêm nhân viên mới!", "Cảnh báo", JOptionPane.WARNING_MESSAGE);
             return;
         }
 
@@ -563,8 +571,8 @@ public class EmployJPanel extends javax.swing.JPanel {
 
         // Kiểm tra thông tin nhân viên trùng lặp
         for (Employee employee : employeeList.getList()) {
-            if (employee.getLastName().equals(lastName) && employee.getCCCD().equals(cccd)) {
-                JOptionPane.showMessageDialog(this, "Thông tin nhân viên đã trùng! Mong bạn kiểm tra và nhập lại.\n(Không được trùng Tên, CCCD)", "Cảnh báo", JOptionPane.WARNING_MESSAGE);
+            if (employee.getCCCD().equals(cccd) || employee.getPhoneNumber().equals(phone) || employee.getLastName().equals(lastName)) {
+                JOptionPane.showMessageDialog(this, "Thông tin nhân viên đã trùng! Mong bạn kiểm tra và nhập lại.\n(Không được trùng Tên, CCCD,SĐT)", "Cảnh báo", JOptionPane.WARNING_MESSAGE);
                 return;
             }
         }
