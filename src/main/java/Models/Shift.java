@@ -46,6 +46,9 @@ public class Shift {
     @SerializedName("employeeOfThisShift")
     @Expose
     private EmployeeList employeeOfThisShift = new EmployeeList(new ArrayList());
+    @SerializedName("state")
+    @Expose
+    private ShiftState state = ShiftState.STAGED;
     
     public Shift() {
     }
@@ -141,4 +144,12 @@ public class Shift {
         this.cashier = cashier;
     }
 
+    public ShiftState getState() {
+        return state;
+    }
+
+    public void setState(ShiftState state) {
+        this.state = state;
+    }
+    
 }

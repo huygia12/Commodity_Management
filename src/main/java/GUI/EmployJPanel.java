@@ -26,7 +26,6 @@ public class EmployJPanel extends javax.swing.JPanel {
      */
     public EmployJPanel() {
         initComponents();
-        displayEmployees();
     }
 
     /**
@@ -874,6 +873,7 @@ public class EmployJPanel extends javax.swing.JPanel {
     public void passData(EmployeeList employeelist, Shift shift) {
         this.employeelist = employeelist;
         this.shift = shift;
+        displayEmployees();
     }
     private ArrayList<Employee> employees;
     private EmployeeList employeelist;

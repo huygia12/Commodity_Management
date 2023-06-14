@@ -20,6 +20,8 @@ public class EmployeeListController {
     private final Scanner sc = new Scanner(System.in);
     final EmployeeController employeeCtr = new EmployeeController();
     final HumanController humanCtr = new HumanController();
+    public final int BY_CCCD = 0;
+    public final int BY_PHONE_NUMBER = 1;
     
     public EmployeeListController() {
     }
@@ -278,4 +280,19 @@ public class EmployeeListController {
         return null;
     }
 
+    public Employee containEmployee(EmployeeList employeeList, String key, int keyType) {
+        for (Employee e : employeeList.getList()) {
+            String comparedStr;
+            if(keyType == this.BY_CCCD){
+                comparedStr = e.getCCCD();
+            }else{
+                comparedStr = e.getPhoneNumber();
+            }
+            
+            if (comparedStr.equals(key)) {
+                return e;
+            }
+        }
+        return null;
+    }
 }

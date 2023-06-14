@@ -4,8 +4,10 @@
  */
 package Controllers;
 
+import Models.Employee;
 import Models.Settings;
 import Models.Shift;
+import Models.ShiftState;
 import Ultility.CustomPair;
 import Ultility.JsonDataFile;
 import java.math.BigDecimal;
@@ -30,17 +32,8 @@ public class test {
     static Map<String, Integer> staticalList = new HashMap<>();
 
     public static void main(String[] args) {
-        SettingsController settingsCtr = new SettingsController();
-        Scanner sc = new Scanner(System.in);
-
-        while (true) {
-            CustomPair<BigDecimal, BigDecimal> cus = settingsCtr.convertFromComparisonOperatorToRange(sc.nextLine());
-            if(cus == null){
-                System.out.println("null");
-                continue;
-            }
-            System.out.println(cus.getK() +" "+cus.getV());
-        }
+        Employee e = new Employee();
+        System.out.println(e.toString().equals("n"));
     }
 
 
