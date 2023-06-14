@@ -117,7 +117,6 @@ public class OpenShiftFrame extends javax.swing.JFrame {
         });
 
         shiftEmployeeListComboBox.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
-        shiftEmployeeListComboBox.setSelectedIndex(-1);
         shiftEmployeeListComboBox.setToolTipText("");
         shiftEmployeeListComboBox.setMinimumSize(new java.awt.Dimension(130, 22));
         shiftEmployeeListComboBox.setPreferredSize(new java.awt.Dimension(130, 22));
