@@ -5,12 +5,15 @@
 package GUI;
 
 import Controllers.EmployeeListController;
+import Controllers.ShiftController;
 import Models.Employee;
 import Models.EmployeeList;
 import Models.Shift;
 import Ultility.Cautions;
+import Ultility.IDGenerator;
 import java.awt.Color;
 import java.awt.event.KeyEvent;
+import java.awt.event.WindowEvent;
 import java.io.File;
 import java.math.BigDecimal;
 import java.util.ArrayList;
@@ -18,6 +21,7 @@ import java.util.stream.Collectors;
 import javax.swing.ImageIcon;
 import javax.swing.JComboBox;
 import javax.swing.JOptionPane;
+import javax.swing.JPanel;
 import javax.swing.JTextField;
 import javax.swing.ScrollPaneConstants;
 import javax.swing.table.DefaultTableModel;
@@ -256,6 +260,11 @@ public class OpenShiftFrame extends javax.swing.JFrame {
         acceptBtn.setBackground(new java.awt.Color(0, 255, 0));
         acceptBtn.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
         acceptBtn.setText("Xác nhận");
+        acceptBtn.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                acceptBtnActionPerformed(evt);
+            }
+        });
 
         denyBtn.setBackground(new java.awt.Color(255, 0, 0));
         denyBtn.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
@@ -447,12 +456,20 @@ public class OpenShiftFrame extends javax.swing.JFrame {
     }//GEN-LAST:event_openBalanceTextFieldMouseClicked
 
     private void denyBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_denyBtnActionPerformed
-        //        boolean check = JOptionPane.showConfirmDialog(this, 
-//                SET_DEFAULT_WARNING, "Cảnh báo", JOptionPane.OK_CANCEL_OPTION);
-//        // set các giá trị component hiển thị thành default
-//        openBalanceTextField.setText("0");
-////        openBalanceTextField.
-//        // set các giá trị đã lưu của ca thành default
+        int choice = JOptionPane.showConfirmDialog(this,
+                SET_DEFAULT_WARNING, "Cảnh báo", JOptionPane.OK_CANCEL_OPTION);
+        if (choice == 0) {
+            //set các giá trị đã lưu của ca thành default
+            shiftOpenBalance = BigDecimal.ZERO;
+            shiftTax = 0;
+            shiftCashier = new Employee();
+            shiftEmployeeList.getList().clear();
+            //set các giá trị component hiển thị thành default
+            openBalanceTextField.setText("0");
+            taxTextField.setText("0");
+            passValueToCashierComboBox();
+            passValueToEmployeeListComboBox();
+        }
     }//GEN-LAST:event_denyBtnActionPerformed
 
     private void removeFromEmployeeListComboBoxActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_removeFromEmployeeListComboBoxActionPerformed
@@ -497,6 +514,25 @@ public class OpenShiftFrame extends javax.swing.JFrame {
                     "Lỗi", JOptionPane.WARNING_MESSAGE);
         }
     }//GEN-LAST:event_addToEmployeeListComboBoxActionPerformed
+
+    private void acceptBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_acceptBtnActionPerformed
+        if(shiftEmployeeList.getList().isEmpty() 
+                && shiftCashier.toString().equals(new Employee().toString())){
+            JOptionPane.showMessageDialog(this, BOTH_NOT_SELECTED_WARNING, 
+                    "Lỗi", JOptionPane.WARNING_MESSAGE);
+        }else if(shiftEmployeeList.getList().isEmpty()){
+            JOptionPane.showMessageDialog(this, SHIFT_EMPLOYEE_NOT_SELECTED_WARNING, 
+                    "Lỗi", JOptionPane.WARNING_MESSAGE);
+        }else if(shiftCashier.toString().equals(new Employee().toString())){
+            JOptionPane.showMessageDialog(this, CASHIER_NOT_SELECTED_WARNING, 
+                    "Lỗi", JOptionPane.WARNING_MESSAGE);
+        }else{
+            shiftCtr.openShiftForGUI(shift, iDGenerator, shiftTax, 
+                    shiftOpenBalance, shiftCashier, 
+                    shiftEmployeeList, noteArea.getText());
+        }
+        this.dispose();
+    }//GEN-LAST:event_acceptBtnActionPerformed
 
     /**
      * @param args the command line arguments
@@ -622,41 +658,46 @@ public class OpenShiftFrame extends javax.swing.JFrame {
         noteScrollPane.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_NEVER);
         // Bien Khac
         employeeListCtr = new EmployeeListController();
+        shiftCtr = new ShiftController();
         ctions = new Cautions();
         shiftOpenBalance = BigDecimal.ZERO;
         shiftTax = 0;
         shiftEmployeeList = new EmployeeList(new ArrayList<>());
         shiftCashier = new Employee();
-        shiftNote = "";
         openBalanceTextField.setText("0");
         taxTextField.setText("0");
     }
 
-    public void passData(EmployeeList employeeList, Shift shift) {
+    public void passData(EmployeeList employeeList,Shift shift, IDGenerator iDGenerator, ShiftPanel shiftPanel) {
         this.employeeList = employeeList;
+        this.iDGenerator = iDGenerator;
         this.shift = shift;
+        this.shiftPanel = shiftPanel;
         initVariables(employeeList);
     }
 
     private boolean checkOpenBalance = false;
     private boolean checkTax = false;
-    private boolean checkShiftEmployeeList = true;
-    private boolean checkCashier = true;
     private BigDecimal shiftOpenBalance;
     private int shiftTax;
     private EmployeeList shiftEmployeeList;
     private Employee shiftCashier;
-    private String shiftNote;
     private EmployeeListController employeeListCtr;
+    private ShiftController shiftCtr;
     private final int extraLength = 100;
     private int employeeFirstNameMaxSize = "Ho".length();
     private int employeeLastNameMaxSize = "Ten".length();
     private int employeeGenderMaxSize = "Gioi tinh".length();
     private int employeePhoneNumMaxSize = "SDT".length();
-    private EmployeeList employeeList;
+    private ShiftPanel shiftPanel;
     private Shift shift;
+    private EmployeeList employeeList;
+    private IDGenerator iDGenerator;
     private DefaultTableModel employeeListModel;
     private Cautions ctions;
+    private final String CASHIER_NOT_SELECTED_WARNING = "Thực hiện chọn thu ngân ca!";
+    private final String SHIFT_EMPLOYEE_NOT_SELECTED_WARNING = "Thực hiện thêm nhân viên ca!";
+    private final String BOTH_NOT_SELECTED_WARNING = "Thực hiện thêm nhân viên và thu ngân ca!";
     private final String SET_DEFAULT_WARNING = "Đặt lại giá trị ban đầu cho toàn bộ thay đổi?";
     private final String INVALID_WARNING = "Không hợp lệ!";
     private final String NOTHING_CHOOSEN_FROM_TABLE_WARNING = "Thực hiện chọn ở bảng trước!";

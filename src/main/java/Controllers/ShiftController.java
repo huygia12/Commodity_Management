@@ -385,4 +385,17 @@ public class ShiftController {
         return true;
     }
 
+    public Shift openShiftForGUI(Shift shift,IDGenerator iDGenerator, 
+            int tax, BigDecimal openBalance, 
+            Employee cashier, EmployeeList employeeList,
+            String note) {
+        shift.setID(iDGenerator.generateID(Shift.class.getName(), 6));
+        shift.setOpenTime();
+        shift.setCashier(cashier);
+        shift.setTax(tax);
+        shift.setOpeningBalance(openBalance);
+        shift.setEmployeeOfThisShift(employeeList);
+        return shift;
+    }
+    
 }

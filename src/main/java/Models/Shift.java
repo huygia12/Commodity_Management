@@ -18,6 +18,7 @@ import java.util.ArrayList;
  * @author FPTSHOP
  */
 public class Shift {
+
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd/MM/yyyy HH:mm:ss")
     private LocalDateTime openDateTime;
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd/MM/yyyy HH:mm:ss")
@@ -49,6 +50,9 @@ public class Shift {
     @SerializedName("state")
     @Expose
     private ShiftState state = ShiftState.STAGED;
+    @SerializedName("note")
+    @Expose
+    private String note;
     
     public Shift() {
     }
@@ -56,6 +60,10 @@ public class Shift {
     public Shift(String ID, int VAT) {
         this.ID = ID.trim();
         this.VAT = VAT;
+    }
+
+    public Shift(String ID) {
+        this.ID = ID.trim();
     }
 
     public void setTax(int VAT) {
@@ -89,7 +97,7 @@ public class Shift {
     public void setOpenTime() {
         String current = LocalDateTime.now()
                 .format(DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm:ss"));
-        this.openDateTime = LocalDateTime.parse(current, 
+        this.openDateTime = LocalDateTime.parse(current,
                 DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm:ss"));
     }
 
@@ -100,7 +108,7 @@ public class Shift {
     public void setEndTime() {
         String current = LocalDateTime.now()
                 .format(DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm:ss"));
-        this.endDateTime = LocalDateTime.parse(current, 
+        this.endDateTime = LocalDateTime.parse(current,
                 DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm:ss"));
     }
 
@@ -151,5 +159,12 @@ public class Shift {
     public void setState(ShiftState state) {
         this.state = state;
     }
-    
+
+    public String getNote() {
+        return note;
+    }
+
+    public void setNote(String note) {
+        this.note = note;
+    }
 }

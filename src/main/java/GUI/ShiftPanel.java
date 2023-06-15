@@ -17,11 +17,8 @@ import Models.Shipment;
 import Models.Store;
 import Ultility.Cautions;
 import Ultility.IDGenerator;
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
+import java.awt.event.WindowEvent;
 import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.swing.JOptionPane;
 import javax.swing.JTextField;
 import javax.swing.ScrollPaneConstants;
@@ -703,7 +700,7 @@ public class ShiftPanel extends javax.swing.JPanel {
         passValueToEmployeeListComboBox();
         // open shift frame
         openShiftFrame = new OpenShiftFrame();
-        openShiftFrame.passData(employeeList, shift);
+        openShiftFrame.passData(employeeList, shift, idgenerator, this);
         // Biến khác
         orderCtr = new OrderController();
         shiftCtr = new ShiftController();
@@ -716,8 +713,9 @@ public class ShiftPanel extends javax.swing.JPanel {
         setEnableAllComponents(openShiftCheck);
     }
     
-    public void passData(Shift shift, History history, EmployeeList employeeList,
-            Store myStore, IDGenerator idGenerator) {
+    public void passData(Shift shift, History history, 
+            EmployeeList employeeList, Store myStore, 
+            IDGenerator idGenerator) {
         this.shift = shift;
         this.history = history;
         this.employeeList = employeeList;

@@ -40,7 +40,8 @@ public class MainFrame extends javax.swing.JFrame {
         repoPanel1.setGoodsList(repository);
         repoPanel1.setUnitsList(units);
         // pass data vào shiftJPanel
-        shiftPanel1.passData(shift, history, employeeList, settings.getStore(), idGenerator);
+        shiftPanel1.passData(shift, history, employeeList, 
+                settings.getStore(), idGenerator);
     }
 
     /**
