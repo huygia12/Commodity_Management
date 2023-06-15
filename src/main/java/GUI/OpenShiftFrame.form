@@ -63,9 +63,9 @@
                           <EmptySpace type="separate" max="-2" attributes="0"/>
                           <Group type="103" groupAlignment="0" max="-2" attributes="0">
                               <Group type="102" alignment="1" attributes="0">
-                                  <Component id="jButton2" min="-2" pref="75" max="-2" attributes="0"/>
+                                  <Component id="addToEmployeeListComboBox" min="-2" pref="75" max="-2" attributes="0"/>
                                   <EmptySpace max="-2" attributes="0"/>
-                                  <Component id="jButton3" min="-2" pref="72" max="-2" attributes="0"/>
+                                  <Component id="removeFromEmployeeListComboBox" min="-2" pref="72" max="-2" attributes="0"/>
                               </Group>
                               <Component id="shiftEmployeeListComboBox" max="32767" attributes="0"/>
                               <Component id="cashierComboBox" alignment="1" max="32767" attributes="0"/>
@@ -105,8 +105,8 @@
                           </Group>
                           <EmptySpace min="-2" pref="8" max="-2" attributes="0"/>
                           <Group type="103" groupAlignment="3" attributes="0">
-                              <Component id="jButton3" alignment="3" min="-2" max="-2" attributes="0"/>
-                              <Component id="jButton2" alignment="3" min="-2" max="-2" attributes="0"/>
+                              <Component id="removeFromEmployeeListComboBox" alignment="3" min="-2" max="-2" attributes="0"/>
+                              <Component id="addToEmployeeListComboBox" alignment="3" min="-2" max="-2" attributes="0"/>
                           </Group>
                           <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
                       </Group>
@@ -260,15 +260,21 @@
             <AuxValue name="JavaCodeGenerator_TypeParameters" type="java.lang.String" value="&lt;String&gt;"/>
           </AuxValues>
         </Component>
-        <Component class="javax.swing.JButton" name="jButton2">
+        <Component class="javax.swing.JButton" name="addToEmployeeListComboBox">
           <Properties>
             <Property name="text" type="java.lang.String" value="Th&#xea;m "/>
           </Properties>
+          <Events>
+            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="addToEmployeeListComboBoxActionPerformed"/>
+          </Events>
         </Component>
-        <Component class="javax.swing.JButton" name="jButton3">
+        <Component class="javax.swing.JButton" name="removeFromEmployeeListComboBox">
           <Properties>
             <Property name="text" type="java.lang.String" value="X&#xf3;a"/>
           </Properties>
+          <Events>
+            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="removeFromEmployeeListComboBoxActionPerformed"/>
+          </Events>
         </Component>
       </SubComponents>
     </Container>
