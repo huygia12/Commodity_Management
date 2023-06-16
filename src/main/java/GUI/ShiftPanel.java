@@ -17,7 +17,6 @@ import Models.Shipment;
 import Models.Store;
 import Ultility.Cautions;
 import Ultility.IDGenerator;
-import java.awt.event.WindowEvent;
 import java.util.List;
 import javax.swing.JOptionPane;
 import javax.swing.JTextField;
@@ -700,7 +699,7 @@ public class ShiftPanel extends javax.swing.JPanel {
         passValueToEmployeeListComboBox();
         // open shift frame
         openShiftFrame = new OpenShiftFrame();
-        openShiftFrame.passData(employeeList, shift, idgenerator, this);
+        openShiftFrame.passData(employeeList, shift, idgenerator);
         // Biến khác
         orderCtr = new OrderController();
         shiftCtr = new ShiftController();

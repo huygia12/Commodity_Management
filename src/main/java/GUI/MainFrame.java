@@ -8,12 +8,19 @@ import java.nio.file.Path;
 import Models.*;
 import Ultility.*;
 import java.awt.CardLayout;
+import java.awt.Color;
 import java.io.File;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javaswingdev.drawer.Drawer;
+import javaswingdev.drawer.DrawerController;
+import javaswingdev.drawer.DrawerItem;
+import javaswingdev.drawer.EventDrawer;
 import javax.swing.ImageIcon;
+import javax.swing.JButton;
+import javax.swing.JTextField;
 
 /**
  *
@@ -28,6 +35,7 @@ public class MainFrame extends javax.swing.JFrame {
         loadData();
         initComponents();
         initVariables();
+        initSideBar();
         setUp();
         // pass data vào purchasePanel
         purchasePanel1.passData(repository, idGenerator,
@@ -40,7 +48,7 @@ public class MainFrame extends javax.swing.JFrame {
         repoPanel1.setGoodsList(repository);
         repoPanel1.setUnitsList(units);
         // pass data vào shiftJPanel
-        shiftPanel1.passData(shift, history, employeeList, 
+        shiftPanel1.passData(shift, history, employeeList,
                 settings.getStore(), idGenerator);
     }
 
@@ -60,23 +68,7 @@ public class MainFrame extends javax.swing.JFrame {
         timeLabel = new javax.swing.JLabel();
         dateTextField = new javax.swing.JFormattedTextField();
         timeTextField = new javax.swing.JFormattedTextField();
-        openSideBarPanel = new javax.swing.JLabel();
-        sideBarPanel = new javax.swing.JPanel();
-        storeIconLabel = new javax.swing.JLabel();
-        textLabel = new javax.swing.JLabel();
-        productLabel = new javax.swing.JLabel();
-        shiftLabel = new javax.swing.JLabel();
-        jSeparator2 = new javax.swing.JSeparator();
-        historyLabel = new javax.swing.JLabel();
-        employeeLabel = new javax.swing.JLabel();
-        customerLabel = new javax.swing.JLabel();
-        settingsLabel = new javax.swing.JLabel();
-        purchaseLabel = new javax.swing.JLabel();
-        helpLabel = new javax.swing.JLabel();
-        logOutLabel = new javax.swing.JLabel();
-        introductionLabel = new javax.swing.JLabel();
-        jSeparator4 = new javax.swing.JSeparator();
-        closeSideBarLabel = new javax.swing.JLabel();
+        openSideBarLabel = new javax.swing.JLabel();
         displayPanel = new javax.swing.JPanel();
         purchasePanel1 = new GUI.PurchasePanel();
         repoPanel1 = new GUI.RepoPanel();
@@ -109,13 +101,13 @@ public class MainFrame extends javax.swing.JFrame {
         dateTimeSeparator.setOrientation(javax.swing.SwingConstants.VERTICAL);
 
         dateLabel.setFont(new java.awt.Font("MTO Telephone", 1, 14)); // NOI18N
-        dateLabel.setIcon(new javax.swing.ImageIcon(IMAGE_FOLDER+SEPARATOR+"icons8-calender-30.png"));
+        dateLabel.setIcon(new javax.swing.ImageIcon(getClass().getResource("/ImageIcon/icons8-calender-30.png"))); // NOI18N
         dateLabel.setText("Lịch:");
         dateLabel.setMinimumSize(new java.awt.Dimension(73, 20));
         dateLabel.setPreferredSize(new java.awt.Dimension(73, 20));
 
         timeLabel.setFont(new java.awt.Font("MTO Telephone", 1, 14)); // NOI18N
-        timeLabel.setIcon(new javax.swing.ImageIcon(IMAGE_FOLDER+SEPARATOR+"icons8-history-30.png"));
+        timeLabel.setIcon(new javax.swing.ImageIcon(getClass().getResource("/ImageIcon/icons8-history-30.png"))); // NOI18N
         timeLabel.setText("Giờ :");
         timeLabel.setMinimumSize(new java.awt.Dimension(34, 20));
         timeLabel.setPreferredSize(new java.awt.Dimension(34, 20));
@@ -131,11 +123,10 @@ public class MainFrame extends javax.swing.JFrame {
         timeTextField.setFont(new java.awt.Font("MTO Telephone", 0, 14)); // NOI18N
         timeTextField.setPreferredSize(new java.awt.Dimension(126, 22));
 
-        openSideBarPanel.setIcon(new javax.swing.ImageIcon(IMAGE_FOLDER+SEPARATOR+"icons8-menu-40.png")
-        );
-        openSideBarPanel.addMouseListener(new java.awt.event.MouseAdapter() {
+        openSideBarLabel.setIcon(new javax.swing.ImageIcon(getClass().getResource("/ImageIcon/icons8-menu-40.png"))); // NOI18N
+        openSideBarLabel.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
-                openSideBarPanelMouseClicked(evt);
+                openSideBarLabelMouseClicked(evt);
             }
         });
 
@@ -145,10 +136,10 @@ public class MainFrame extends javax.swing.JFrame {
             toolBarPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(toolBarPanelLayout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(openSideBarPanel)
+                .addComponent(openSideBarLabel)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(shiftIDLabel)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 546, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 516, Short.MAX_VALUE)
                 .addComponent(dateLabel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(dateTextField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -170,169 +161,13 @@ public class MainFrame extends javax.swing.JFrame {
                     .addGroup(toolBarPanelLayout.createSequentialGroup()
                         .addGap(13, 13, 13)
                         .addComponent(shiftIDLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 23, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addComponent(openSideBarPanel, javax.swing.GroupLayout.PREFERRED_SIZE, 24, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(openSideBarLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 24, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addGroup(toolBarPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
                         .addComponent(dateTimeSeparator, javax.swing.GroupLayout.Alignment.LEADING)
                         .addGroup(javax.swing.GroupLayout.Alignment.LEADING, toolBarPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(timeTextField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(timeLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 29, javax.swing.GroupLayout.PREFERRED_SIZE))))
                 .addGap(7, 7, 7))
-        );
-
-        sideBarPanel.setBackground(new java.awt.Color(255, 255, 255));
-        sideBarPanel.setBorder(new javax.swing.border.SoftBevelBorder(javax.swing.border.BevelBorder.RAISED));
-        sideBarPanel.setMaximumSize(new java.awt.Dimension(32767, 630));
-        sideBarPanel.setMinimumSize(new java.awt.Dimension(200, 590));
-        sideBarPanel.setPreferredSize(new java.awt.Dimension(200, 590));
-
-        storeIconLabel.setIcon(new javax.swing.ImageIcon(getClass().getResource("/ImageIcon/icons8-grocery-store-96.png"))); // NOI18N
-
-        textLabel.setFont(new java.awt.Font("Segoe UI", 3, 14)); // NOI18N
-        textLabel.setText("Xin chào quý khách!");
-
-        productLabel.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
-        productLabel.setIcon(new javax.swing.ImageIcon(IMAGE_FOLDER+SEPARATOR+"icons8-product-40.png"));
-        productLabel.setText("Sản Phẩm");
-        productLabel.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
-                productLabelMouseClicked(evt);
-            }
-        });
-
-        shiftLabel.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
-        shiftLabel.setIcon(new javax.swing.ImageIcon(IMAGE_FOLDER+SEPARATOR+"icons8-memo-40.png"));
-        shiftLabel.setText("Ca Hiện Tại");
-        shiftLabel.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
-                shiftLabelMouseClicked(evt);
-            }
-        });
-
-        historyLabel.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
-        historyLabel.setIcon(new javax.swing.ImageIcon(IMAGE_FOLDER+SEPARATOR+"icons8-history-40.png"));
-        historyLabel.setText("Lịch Sử Bán Hàng");
-
-        employeeLabel.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
-        employeeLabel.setIcon(new javax.swing.ImageIcon(IMAGE_FOLDER+SEPARATOR+"icons8-employee-40.png"));
-        employeeLabel.setText("Nhân Viên");
-        employeeLabel.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
-                employeeLabelMouseClicked(evt);
-            }
-        });
-
-        customerLabel.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
-        customerLabel.setIcon(new javax.swing.ImageIcon(IMAGE_FOLDER+SEPARATOR+"icons8-customer-40.png"));
-        customerLabel.setText("Khách Hàng");
-        customerLabel.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
-                customerLabelMouseClicked(evt);
-            }
-        });
-
-        settingsLabel.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
-        settingsLabel.setIcon(new javax.swing.ImageIcon(IMAGE_FOLDER+SEPARATOR+"icons8-settings-40.png"));
-        settingsLabel.setText("Cài Đặt");
-
-        purchaseLabel.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
-        purchaseLabel.setIcon(new javax.swing.ImageIcon(IMAGE_FOLDER+SEPARATOR+"icons8-buy-40.png"));
-        purchaseLabel.setText("Bán Hàng");
-        purchaseLabel.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
-                purchaseLabelMouseClicked(evt);
-            }
-        });
-
-        helpLabel.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
-        helpLabel.setIcon(new javax.swing.ImageIcon(IMAGE_FOLDER+SEPARATOR+"icons8-help-40.png"));
-        helpLabel.setText("  Trợ Giúp");
-
-        logOutLabel.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
-        logOutLabel.setIcon(new javax.swing.ImageIcon(IMAGE_FOLDER+SEPARATOR+"icons8-logout-40.png"));
-        logOutLabel.setText("Đăng Xuất");
-
-        introductionLabel.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
-        introductionLabel.setIcon(new javax.swing.ImageIcon(IMAGE_FOLDER+SEPARATOR+"icons8-typing-40.png"));
-        introductionLabel.setText(" Giới Thiệu");
-
-        closeSideBarLabel.setIcon(new javax.swing.ImageIcon(IMAGE_FOLDER+SEPARATOR+"icons8-exit-40.png"));
-        closeSideBarLabel.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
-                closeSideBarLabelMouseClicked(evt);
-            }
-        });
-
-        javax.swing.GroupLayout sideBarPanelLayout = new javax.swing.GroupLayout(sideBarPanel);
-        sideBarPanel.setLayout(sideBarPanelLayout);
-        sideBarPanelLayout.setHorizontalGroup(
-            sideBarPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(sideBarPanelLayout.createSequentialGroup()
-                .addGap(26, 26, 26)
-                .addComponent(textLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 138, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-            .addGroup(sideBarPanelLayout.createSequentialGroup()
-                .addGroup(sideBarPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(sideBarPanelLayout.createSequentialGroup()
-                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(storeIconLabel)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(closeSideBarLabel))
-                    .addGroup(sideBarPanelLayout.createSequentialGroup()
-                        .addGroup(sideBarPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(sideBarPanelLayout.createSequentialGroup()
-                                .addGap(23, 23, 23)
-                                .addGroup(sideBarPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(purchaseLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 136, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(productLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 119, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(shiftLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 165, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(historyLabel)
-                                    .addComponent(employeeLabel)
-                                    .addComponent(customerLabel)
-                                    .addComponent(settingsLabel)))
-                            .addGroup(sideBarPanelLayout.createSequentialGroup()
-                                .addGap(24, 24, 24)
-                                .addGroup(sideBarPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(introductionLabel)
-                                    .addComponent(logOutLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 139, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(helpLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 139, javax.swing.GroupLayout.PREFERRED_SIZE))))
-                        .addGap(0, 0, Short.MAX_VALUE))
-                    .addComponent(jSeparator4)
-                    .addComponent(jSeparator2))
-                .addContainerGap())
-        );
-        sideBarPanelLayout.setVerticalGroup(
-            sideBarPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(sideBarPanelLayout.createSequentialGroup()
-                .addGroup(sideBarPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(closeSideBarLabel)
-                    .addComponent(storeIconLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 90, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(4, 4, 4)
-                .addComponent(textLabel)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jSeparator2, javax.swing.GroupLayout.PREFERRED_SIZE, 10, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(0, 0, 0)
-                .addComponent(productLabel)
-                .addGap(5, 5, 5)
-                .addComponent(purchaseLabel)
-                .addGap(5, 5, 5)
-                .addComponent(shiftLabel)
-                .addGap(5, 5, 5)
-                .addComponent(historyLabel)
-                .addGap(5, 5, 5)
-                .addComponent(employeeLabel)
-                .addGap(5, 5, 5)
-                .addComponent(customerLabel)
-                .addGap(5, 5, 5)
-                .addComponent(settingsLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 26, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jSeparator4, javax.swing.GroupLayout.PREFERRED_SIZE, 10, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(2, 2, 2)
-                .addComponent(helpLabel)
-                .addGap(5, 5, 5)
-                .addComponent(introductionLabel)
-                .addGap(5, 5, 5)
-                .addComponent(logOutLabel)
-                .addContainerGap(190, Short.MAX_VALUE))
         );
 
         displayPanel.setFocusable(false);
@@ -343,11 +178,6 @@ public class MainFrame extends javax.swing.JFrame {
         displayPanel.setLayout(new java.awt.CardLayout());
 
         purchasePanel1.setBorder(null);
-        purchasePanel1.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
-                purchasePanel1MouseClicked(evt);
-            }
-        });
         displayPanel.add(purchasePanel1, "card4");
         displayPanel.add(repoPanel1, "card7");
 
@@ -401,7 +231,6 @@ public class MainFrame extends javax.swing.JFrame {
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addComponent(toolBarPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-            .addComponent(sideBarPanel, javax.swing.GroupLayout.PREFERRED_SIZE, 0, javax.swing.GroupLayout.PREFERRED_SIZE)
             .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                 .addGroup(layout.createSequentialGroup()
                     .addComponent(displayPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -411,13 +240,11 @@ public class MainFrame extends javax.swing.JFrame {
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                 .addComponent(toolBarPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(0, 0, 0)
-                .addComponent(sideBarPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(590, 590, 590))
             .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                 .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                    .addContainerGap(40, Short.MAX_VALUE)
-                    .addComponent(displayPanel, javax.swing.GroupLayout.PREFERRED_SIZE, 579, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addContainerGap()))
+                    .addGap(0, 36, Short.MAX_VALUE)
+                    .addComponent(displayPanel, javax.swing.GroupLayout.PREFERRED_SIZE, 589, javax.swing.GroupLayout.PREFERRED_SIZE)))
         );
 
         pack();
@@ -431,88 +258,98 @@ public class MainFrame extends javax.swing.JFrame {
         purchasePanel1.setVATBindWithStore(vatBindWithStoreMenuItem.isSelected());
     }//GEN-LAST:event_vatBindWithStoreMenuItemActionPerformed
 
-    private void openSideBarPanelMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_openSideBarPanelMouseClicked
-        openSideBar();
-    }//GEN-LAST:event_openSideBarPanelMouseClicked
-
-    private void closeSideBarLabelMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_closeSideBarLabelMouseClicked
-        closeSideBar();
-    }//GEN-LAST:event_closeSideBarLabelMouseClicked
-
-    private void productLabelMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_productLabelMouseClicked
-        displayPanel.add(this.repoPanel1, "repo");
-        cardLayout.show(displayPanel, "repo");
-        closeSideBar();
-    }//GEN-LAST:event_productLabelMouseClicked
-
-    private void purchaseLabelMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_purchaseLabelMouseClicked
-        displayPanel.add(this.purchasePanel1, "purchase");
-        cardLayout.show(displayPanel, "purchase");
-        closeSideBar();
-    }//GEN-LAST:event_purchaseLabelMouseClicked
-
-    private void employeeLabelMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_employeeLabelMouseClicked
-        displayPanel.add(this.employJPanel1, "employee");
-        cardLayout.show(displayPanel, "employee");
-        closeSideBar();
-    }//GEN-LAST:event_employeeLabelMouseClicked
-
-    private void customerLabelMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_customerLabelMouseClicked
-        displayPanel.add(this.customerCardPanel1, "customer");
-        cardLayout.show(displayPanel, "customer");
-        closeSideBar();
-    }//GEN-LAST:event_customerLabelMouseClicked
-
-    private void purchasePanel1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_purchasePanel1MouseClicked
-        if(shown){
-            closeSideBar();
+    private void openSideBarLabelMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_openSideBarLabelMouseClicked
+        if (drawerCtr.isShow()) {
+            drawerCtr.hide();
+        } else {
+            drawerCtr.show();
         }
-    }//GEN-LAST:event_purchasePanel1MouseClicked
+    }//GEN-LAST:event_openSideBarLabelMouseClicked
 
-    private void shiftLabelMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_shiftLabelMouseClicked
-        displayPanel.add(this.shiftPanel1, "shift");
-        cardLayout.show(displayPanel, "shift");
-        closeSideBar();
-    }//GEN-LAST:event_shiftLabelMouseClicked
-
-    private void openSideBar() {
-        if (shown) {
-            // nếu đã mở thì click tiep se dong
-            closeSideBar();
-            return;
-        }
-        shown = true;
-        new Thread(new Runnable() {
-            @Override
-            public void run() {
-                for (int i = 0; i <= menuWitdh; i++) {
-                    sideBarPanel.setSize(i, menuHeight);
-                    try {
-                        Thread.sleep(1);
-                    } catch (InterruptedException ex) {
-                        Logger.getLogger(MainFrame.class.getName()).log(Level.SEVERE, null, ex);
+    private void initSideBar() {
+        DrawerItem productDrawerItem = new DrawerItem("Sản phẩm").icon(new ImageIcon(getClass().getResource("/ImageIcon/icons8-product-35.png"))).build();
+        productDrawerItem.setFont(new java.awt.Font("Segoe UI", 1, 16));
+        productDrawerItem.setHorizontalAlignment(JButton.LEADING);
+        productDrawerItem.setFocusable(false);
+        DrawerItem purchaseDrawerItem = new DrawerItem("Bán hàng").icon(new ImageIcon(getClass().getResource("/ImageIcon/icons8-add-basket-35.png"))).build();
+        purchaseDrawerItem.setFont(new java.awt.Font("Segoe UI", 1, 16));
+        purchaseDrawerItem.setHorizontalAlignment(JButton.LEADING);
+        purchaseDrawerItem.setFocusable(false);
+        DrawerItem manageDrawerItem = new DrawerItem("Quản lý cửa hàng").icon(new ImageIcon(getClass().getResource("/ImageIcon/icons8-static-35.png"))).build();
+        manageDrawerItem.setFont(new java.awt.Font("Segoe UI", 1, 16));
+        manageDrawerItem.setHorizontalAlignment(JButton.LEADING);
+        manageDrawerItem.setFocusable(false);
+        DrawerItem employeeDrawerItem = new DrawerItem("Nhân viên").icon(new ImageIcon(getClass().getResource("/ImageIcon/icons8-name-tag-35.png"))).build();
+        employeeDrawerItem.setFont(new java.awt.Font("Segoe UI", 1, 16));
+        employeeDrawerItem.setHorizontalAlignment(JButton.LEADING);
+        employeeDrawerItem.setFocusable(false);
+        DrawerItem customerDrawerItem = new DrawerItem("Khách hàng").icon(new ImageIcon(getClass().getResource("/ImageIcon/icons8-customer-35.png"))).build();
+        customerDrawerItem.setFont(new java.awt.Font("Segoe UI", 1, 16));
+        customerDrawerItem.setHorizontalAlignment(JButton.LEADING);
+        customerDrawerItem.setFocusable(false);
+        DrawerItem settingsDrawerItem = new DrawerItem("Cài đặt").icon(new ImageIcon(getClass().getResource("/ImageIcon/icons8-settings-35.png"))).build();
+        settingsDrawerItem.setFont(new java.awt.Font("Segoe UI", 1, 16));
+        settingsDrawerItem.setHorizontalAlignment(JButton.LEADING);
+        settingsDrawerItem.setFocusable(false);
+        DrawerItem logoutDrawerItem = new DrawerItem("Đăng xuất").icon(new ImageIcon(getClass().getResource("/ImageIcon/icons8-logout-30.png"))).build();
+        logoutDrawerItem.setFocusable(false);
+        
+        drawerCtr = Drawer.newDrawer(this)
+                .header(new Header(settings.getStore()))
+                .separator(2, Color.LIGHT_GRAY)
+                .space(10)
+                .duration(250)
+                .drawerWidth(230)
+                .addChild(productDrawerItem)
+                .addChild(purchaseDrawerItem)
+                .addChild(manageDrawerItem)
+                .addChild(employeeDrawerItem)
+                .addChild(customerDrawerItem)
+                .addChild(settingsDrawerItem)
+                .addFooter(logoutDrawerItem)
+                .event(new EventDrawer() {
+                    @Override
+                    public void selected(int i, DrawerItem di) {
+                        switchPanel(i);
                     }
-                }
-            }
-        }).start();
-        displayPanel.setEnabled(false);
+                })
+                .build();
     }
 
-    private void closeSideBar() {
-        shown = false;
-        new Thread(new Runnable() {
-            @Override
-            public void run() {
-                for (int i = menuWitdh; i >= 0; i--) {
-                    sideBarPanel.setSize(i, menuHeight);
-                    try {
-                        Thread.sleep(1);
-                    } catch (InterruptedException ex) {
-                        Logger.getLogger(MainFrame.class.getName()).log(Level.SEVERE, null, ex);
-                    }
-                }
-            }
-        }).start();
+    private void switchPanel(int i) {
+        switch (i) {
+            case 0:
+                displayPanel.add(repoPanel1, "repo");
+                cardLayout.show(displayPanel, "repo");
+                drawerCtr.hide();
+                break;
+            case 1:
+                displayPanel.add(purchasePanel1, "purchase");
+                cardLayout.show(displayPanel, "purchase");
+                drawerCtr.hide();
+                break;
+            case 2:
+                displayPanel.add(shiftPanel1, "shift");
+                cardLayout.show(displayPanel, "shift");
+                drawerCtr.hide();
+                break;
+            case 3:
+                displayPanel.add(employJPanel1, "employee");
+                cardLayout.show(displayPanel, "employee");
+                drawerCtr.hide();
+                break;
+            case 4:
+                displayPanel.add(customerCardPanel1, "customer");
+                cardLayout.show(displayPanel, "customer");
+                drawerCtr.hide();
+                break;
+            case 5:
+//                displayPanel.add(repoPanel1, "repo");
+//                cardLayout.show(repoPanel1, "repo");
+                drawerCtr.hide();
+                break;
+            case 6:
+        }
     }
 
     /**
@@ -566,6 +403,15 @@ public class MainFrame extends javax.swing.JFrame {
         });
     }
 
+//    private ImageIcon setProperImageScale(String pathName) {
+//        ImageIcon imageIcon = null;
+//        try {
+//            imageIcon = new ImageIcon(ImageIO.read(new File((URI)getClass().getResource(pathName)))
+//                    .getScaledInstance(90, 90, Image.SCALE_SMOOTH));
+//        } catch (IOException e) {
+//        }
+//        return imageIcon;
+//    }
     private void realTimeClock() {
         new Thread() {
             @Override
@@ -605,21 +451,18 @@ public class MainFrame extends javax.swing.JFrame {
         myData.save(Path.of(SETTINGS_PATH), settings);
     }
 
-    private void setUp(){
-        setIconImage(new ImageIcon(IMAGE_FOLDER + SEPARATOR + "icons8-grocery-store-96.png").getImage());
+    private void setUp() {
+        setIconImage(new ImageIcon(getClass().getResource("/ImageIcon/icons8-grocery-store-96.png")).getImage());
         this.setLocationRelativeTo(null);
         realTimeClock();
     }
-    
-    private void initVariables(){
+
+    private void initVariables() {
         idGenerator = new IDGenerator();
         cardLayout = (CardLayout) displayPanel.getLayout();
     }
-    
+
     private CardLayout cardLayout;
-    private boolean shown = false;
-    private final int menuWitdh = 200;
-    private final int menuHeight = 615;
     static Units units = new Units();
     static Repository repository;
     static Shift shift = new Shift();
@@ -628,6 +471,7 @@ public class MainFrame extends javax.swing.JFrame {
     static EmployeeList employeeList;
     static IDGenerator idGenerator;
     static Settings settings;
+    private DrawerController drawerCtr;
     private static final JsonDataFile myData = new JsonDataFile();
     private static final String HOME = System.getProperty("user.dir");
     private static final String SEPARATOR = File.separator;
@@ -641,41 +485,24 @@ public class MainFrame extends javax.swing.JFrame {
     private static final String IDGENERATOR_PATH = DATA_FOLDER + "idgenerator.json";
     private static final String SETTINGS_PATH = DATA_FOLDER + "settingsData.json";
     private static final String UNITS_PATH = DATA_FOLDER + "units.json";
-
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JCheckBoxMenuItem cashierBindWithShiftMenuItem;
-    private javax.swing.JLabel closeSideBarLabel;
     private javax.swing.JMenu customOrder;
     private GUI.CustomerCardPanel customerCardPanel1;
-    private javax.swing.JLabel customerLabel;
     private javax.swing.JLabel dateLabel;
     private javax.swing.JFormattedTextField dateTextField;
     private javax.swing.JSeparator dateTimeSeparator;
     private javax.swing.JPanel displayPanel;
     private javax.swing.JMenu editMenu;
     private GUI.EmployJPanel employJPanel1;
-    private javax.swing.JLabel employeeLabel;
     private javax.swing.JMenu fileMenu;
-    private javax.swing.JLabel helpLabel;
-    private javax.swing.JLabel historyLabel;
-    private javax.swing.JLabel introductionLabel;
-    private javax.swing.JSeparator jSeparator2;
-    private javax.swing.JSeparator jSeparator4;
-    private javax.swing.JLabel logOutLabel;
     private javax.swing.JMenuBar menuBar;
-    private javax.swing.JLabel openSideBarPanel;
+    private javax.swing.JLabel openSideBarLabel;
     private javax.swing.JMenu optionsMenu;
-    private javax.swing.JLabel productLabel;
-    private javax.swing.JLabel purchaseLabel;
     private GUI.PurchasePanel purchasePanel1;
     private GUI.RepoPanel repoPanel1;
-    private javax.swing.JLabel settingsLabel;
     private javax.swing.JLabel shiftIDLabel;
-    private javax.swing.JLabel shiftLabel;
     private GUI.ShiftPanel shiftPanel1;
-    private javax.swing.JPanel sideBarPanel;
-    private javax.swing.JLabel storeIconLabel;
-    private javax.swing.JLabel textLabel;
     private javax.swing.JLabel timeLabel;
     private javax.swing.JFormattedTextField timeTextField;
     private javax.swing.JPanel toolBarPanel;

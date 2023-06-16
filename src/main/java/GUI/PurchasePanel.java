@@ -336,9 +336,11 @@ public class PurchasePanel extends javax.swing.JPanel {
         shippingFeeLabel.setText("Phí vận chuyển:");
 
         customerMoneyLabel.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
+        customerMoneyLabel.setIcon(new javax.swing.ImageIcon(getClass().getResource("/ImageIcon/cashMoney.png"))); // NOI18N
         customerMoneyLabel.setText("Tiền mặt khách:");
 
         discountLabel.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
+        discountLabel.setIcon(new javax.swing.ImageIcon(getClass().getResource("/ImageIcon/icons8-discount-24.png"))); // NOI18N
         discountLabel.setText("Chiết khấu(%): ");
 
         shippingFeeText.setHorizontalAlignment(javax.swing.JTextField.CENTER);
@@ -396,6 +398,7 @@ public class PurchasePanel extends javax.swing.JPanel {
         });
 
         pointDiscountLabel.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
+        pointDiscountLabel.setIcon(new javax.swing.ImageIcon(getClass().getResource("/ImageIcon/icons8-loyalty-card-24.png"))); // NOI18N
         pointDiscountLabel.setText("Điểm tích lũy:");
 
         pointDiscountText.setHorizontalAlignment(javax.swing.JTextField.CENTER);
@@ -415,6 +418,7 @@ public class PurchasePanel extends javax.swing.JPanel {
         });
 
         paymentOptionLabel.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
+        paymentOptionLabel.setIcon(new javax.swing.ImageIcon(getClass().getResource("/ImageIcon/icons8-payment-method-24.png"))); // NOI18N
         paymentOptionLabel.setText("PT thanh toán:");
 
         paymentOptionCombobox.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Tiền Mặt", "Chuyển Khoản", "Thẻ Ngân Hàng" }));
@@ -428,6 +432,7 @@ public class PurchasePanel extends javax.swing.JPanel {
         });
 
         taxLabel.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
+        taxLabel.setIcon(new javax.swing.ImageIcon(getClass().getResource("/ImageIcon/icons8-tax-24.png"))); // NOI18N
         taxLabel.setText("Thuế(VAT-%):");
 
         taxText.setHorizontalAlignment(javax.swing.JTextField.CENTER);
@@ -459,7 +464,7 @@ public class PurchasePanel extends javax.swing.JPanel {
                         .addGroup(subFeePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(pointDiscountLabel)
                             .addComponent(discountLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 128, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGap(47, 47, 47)
+                        .addGap(76, 76, 76)
                         .addGroup(subFeePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(discountText, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                             .addComponent(pointDiscountText, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
@@ -469,12 +474,12 @@ public class PurchasePanel extends javax.swing.JPanel {
                             .addComponent(taxLabel)
                             .addComponent(customerMoneyLabel)
                             .addComponent(paymentOptionLabel))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 57, Short.MAX_VALUE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 85, Short.MAX_VALUE)
                         .addGroup(subFeePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(shippingFeeText, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(shippingFeeText, javax.swing.GroupLayout.DEFAULT_SIZE, 125, Short.MAX_VALUE)
                             .addComponent(taxText, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(paymentOptionCombobox, javax.swing.GroupLayout.Alignment.TRAILING, 0, 125, Short.MAX_VALUE)
-                            .addComponent(customerMoneyText, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
+                            .addComponent(customerMoneyText, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(paymentOptionCombobox, javax.swing.GroupLayout.Alignment.TRAILING, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
                 .addContainerGap())
         );
         subFeePanelLayout.setVerticalGroup(
@@ -625,6 +630,7 @@ public class PurchasePanel extends javax.swing.JPanel {
 
         payAnfPrintBtn.setBackground(new java.awt.Color(204, 204, 204));
         payAnfPrintBtn.setFont(new java.awt.Font("MTO Telephone", 1, 14)); // NOI18N
+        payAnfPrintBtn.setIcon(new javax.swing.ImageIcon(getClass().getResource("/ImageIcon/icons8-print-30.png"))); // NOI18N
         payAnfPrintBtn.setText("THANH TOÁN & IN ");
         payAnfPrintBtn.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED, new java.awt.Color(102, 102, 102), new java.awt.Color(51, 51, 51), new java.awt.Color(102, 102, 102), new java.awt.Color(51, 51, 51)));
         payAnfPrintBtn.setFocusable(false);
@@ -636,6 +642,7 @@ public class PurchasePanel extends javax.swing.JPanel {
 
         payBtn.setBackground(new java.awt.Color(204, 204, 204));
         payBtn.setFont(new java.awt.Font("MTO Telephone", 1, 14)); // NOI18N
+        payBtn.setIcon(new javax.swing.ImageIcon(getClass().getResource("/ImageIcon/icons8-paid-bill-30.png"))); // NOI18N
         payBtn.setText("THANH TOÁN ");
         payBtn.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED, new java.awt.Color(102, 102, 102), new java.awt.Color(51, 51, 51), new java.awt.Color(102, 102, 102), new java.awt.Color(51, 51, 51)));
         payBtn.setFocusable(false);
@@ -656,14 +663,13 @@ public class PurchasePanel extends javax.swing.JPanel {
                         .addGroup(mainFeePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(totalLabel)
                             .addComponent(changeAmountLabel))
-                        .addGap(65, 65, 65)
+                        .addGap(60, 60, 60)
                         .addGroup(mainFeePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(totalTextField, javax.swing.GroupLayout.DEFAULT_SIZE, 96, Short.MAX_VALUE)
-                            .addComponent(changeAmountTextField, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                            .addComponent(changeAmountTextField, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(totalTextField, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
                     .addGroup(mainFeePanelLayout.createSequentialGroup()
-                        .addGap(26, 26, 26)
                         .addComponent(payAnfPrintBtn)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 32, Short.MAX_VALUE)
                         .addComponent(payBtn))
                     .addGroup(mainFeePanelLayout.createSequentialGroup()
                         .addGroup(mainFeePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -671,12 +677,12 @@ public class PurchasePanel extends javax.swing.JPanel {
                             .addComponent(discountAmountLabel)
                             .addComponent(taxAmountLabel)
                             .addComponent(subTotalLabel))
-                        .addGap(15, 15, 15)
+                        .addGap(10, 10, 10)
                         .addGroup(mainFeePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(subTotalTextField, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(taxAmountTextField, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(discountAmountTextField, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(pointDiscountAmountTextField, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
+                            .addComponent(subTotalTextField, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(discountAmountTextField, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(pointDiscountAmountTextField, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(taxAmountTextField, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
                 .addContainerGap())
         );
         mainFeePanelLayout.setVerticalGroup(
@@ -976,8 +982,8 @@ public class PurchasePanel extends javax.swing.JPanel {
                             .addComponent(filterSwitchRadioBtn))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addGroup(mainOrderFunctionPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(filterBtn, javax.swing.GroupLayout.DEFAULT_SIZE, 105, Short.MAX_VALUE)
-                            .addComponent(fromDateTextField, javax.swing.GroupLayout.DEFAULT_SIZE, 105, Short.MAX_VALUE)
+                            .addComponent(filterBtn, javax.swing.GroupLayout.DEFAULT_SIZE, 81, Short.MAX_VALUE)
+                            .addComponent(fromDateTextField, javax.swing.GroupLayout.DEFAULT_SIZE, 81, Short.MAX_VALUE)
                             .addComponent(toDateTextField, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jSeparator2, javax.swing.GroupLayout.PREFERRED_SIZE, 7, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -999,7 +1005,7 @@ public class PurchasePanel extends javax.swing.JPanel {
                                         .addComponent(keyWordLabel)
                                         .addGap(28, 28, 28))
                                     .addGroup(mainOrderFunctionPanelLayout.createSequentialGroup()
-                                        .addComponent(keyWordTextField, javax.swing.GroupLayout.DEFAULT_SIZE, 175, Short.MAX_VALUE)
+                                        .addComponent(keyWordTextField)
                                         .addGap(23, 23, 23)))
                                 .addGap(5, 5, 5)
                                 .addGroup(mainOrderFunctionPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)

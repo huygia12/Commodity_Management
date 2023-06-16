@@ -98,14 +98,14 @@ public class HistoryView {
         System.out.println("|" + "-".repeat(borderLength) + "|");
         for (Shift shift : history.getShiftHistory()) {
             for (Order order : shift.getOrderHisPerShift()) {
-                System.out.printf("| %-" + String.format(orderIDMaxSize + "s")
-                        + " | %-" + String.format(orderDateTimeMaxSize + "s")
-                        + " | %-" + String.format(shiftIDMaxSize + "s")
-                        + " | %-" + String.format(totalMaxSize + ".1f")+" |",
-                        order.getID(),
-                        order.getOrderDateTime(),
-                        shift.getID(),
-                        orderCtr.getTotal(order));
+//                System.out.printf("| %-" + String.format(orderIDMaxSize + "s")
+//                        + " | %-" + String.format(orderDateTimeMaxSize + "s")
+//                        + " | %-" + String.format(shiftIDMaxSize + "s")
+//                        + " | %-" + String.format(totalMaxSize + ".1f")+" |",
+//                        order.getID(),
+//                        order.getOrderDateTime(),
+//                        shift.getID(),
+//                        orderCtr.getTotal(order));
                 System.out.println("");
                 System.out.println("|" + "-".repeat(borderLength) + "|");
             }
@@ -128,9 +128,9 @@ public class HistoryView {
                 if (orderDateTimeSize > orderDateTimeMaxSize) {
                     orderDateTimeMaxSize = orderDateTimeSize;
                 }
-                if (String.format("%.1f", orderCtr.getTotal(order)).length() > totalMaxSize) {
-                    totalMaxSize = String.format("%.1f", orderCtr.getTotal(order)).length();
-                }
+//                if (String.format("%.1f", orderCtr.getTotal(order)).length() > totalMaxSize) {
+//                    totalMaxSize = String.format("%.1f", orderCtr.getTotal(order)).length();
+//                }
             }
             if (shift.getID().length() > shiftIDMaxSize) {
                 shiftIDMaxSize = shift.getID().length();
@@ -348,22 +348,22 @@ public class HistoryView {
                 "Net Revenue");
         System.out.println("");
         System.out.println("|" + "-".repeat(borderLength) + "|");
-        for (Shift shift : history.getShiftHistory()) {
-            System.out.printf("| %-" + String.format(shiftIDMaxSize + "s")
-                    + " | %-" + String.format(shiftOpenDateTimeMaxSize + "s")
-                    + " | %-" + String.format(shiftEndDateTimeMaxSize + "s")
-                    + " | %-" + String.format(netRevenueMaxSize + ".1f")+" |",
-                    shift.getID(),
-                    shift.getOpenTime(),
-                    shift.getEndTime(),
-                    shiftCtr.getNetRevenue(shift));
-            System.out.println("");
-            System.out.println("|" + "-".repeat(borderLength) + "|");
-        }
+//        for (Shift shift : history.getShiftHistory()) {
+//            System.out.printf("| %-" + String.format(shiftIDMaxSize + "s")
+//                    + " | %-" + String.format(shiftOpenDateTimeMaxSize + "s")
+//                    + " | %-" + String.format(shiftEndDateTimeMaxSize + "s")
+//                    + " | %-" + String.format(netRevenueMaxSize + ".1f")+" |",
+//                    shift.getID(),
+//                    shift.getOpenTime(),
+//                    shift.getEndTime(),
+//                    shiftCtr.getNetRevenue(shift));
+//            System.out.println("");
+//            System.out.println("|" + "-".repeat(borderLength) + "|");
+//        }
         BigDecimal total = BigDecimal.ZERO;
-        for (Shift shift : history.getShiftHistory()) {
-            total = total.add(shiftCtr.getNetRevenue(shift));
-        }
+//        for (Shift shift : history.getShiftHistory()) {
+//            total = total.add(shiftCtr.getNetRevenue(shift));
+//        }
         System.out.println(String.format("%" + (totalColSize - netRevenueMaxSize) + "s"
                 + "%" + netRevenueMaxSize + ".1f", "Total Net Revenue: ", total));
     }
@@ -383,9 +383,9 @@ public class HistoryView {
             if ((shift.getEndTime() + "").length() > importGoodsQuanMaxSize) {
                 importGoodsQuanMaxSize = (shift.getEndTime() + "").length();
             }
-            if (String.format("%.1f", shiftCtr.getNetRevenue(shift)).length() > netRevenueMaxSize) {
-                netRevenueMaxSize = String.format("%.1f", shiftCtr.getNetRevenue(shift)).length();
-            }
+//            if (String.format("%.1f", shiftCtr.getNetRevenue(shift)).length() > netRevenueMaxSize) {
+//                netRevenueMaxSize = String.format("%.1f", shiftCtr.getNetRevenue(shift)).length();
+//            }
         }
     }
 
@@ -398,12 +398,12 @@ public class HistoryView {
         System.out.printf("%s: %s\n", "Customer Card ID", order.getCustomerCard().getID());
         System.out.printf("%s: %.1f\n", "Point Discount", order.getPointDiscount());
         System.out.printf("%s: %s\n", "Payment Option", order.getPaymentOptions());
-        if (order.getPaymentOptions().equals(PaymentOptions.CASH_PAYMENT)) {
-            System.out.printf("%s: %.1f\n", "Customer money", order.getCusMoney());
-            System.out.printf("%s: %.1f\n", "Change", orderCtr.getChange(order));
-        }
-        System.out.printf("%s: %.1f\n", "SubTotal", orderCtr.getSubTotal(order));
-        System.out.printf("%s: %.1f\n", "Total", orderCtr.getTotal(order));
+//        if (order.getPaymentOptions().equals(PaymentOptions.CASH_PAYMENT)) {
+//            System.out.printf("%s: %.1f\n", "Customer money", order.getCusMoney());
+//            System.out.printf("%s: %.1f\n", "Change", orderCtr.getChange(order));
+//        }
+//        System.out.printf("%s: %.1f\n", "SubTotal", orderCtr.getSubTotal(order));
+//        System.out.printf("%s: %.1f\n", "Total", orderCtr.getTotal(order));
     }
 
     public void showAnShiftInDetail(Shift shift) {
@@ -423,17 +423,17 @@ public class HistoryView {
         System.out.printf("%s: %-20.1f\n", "Opening Balance", shift.getOpeningBalance());
         System.out.printf("%s: %-20.1f\n", "Gross revenue", shiftCtr.getGrossRevenue(shift));
         System.out.printf("%s: %-20.1f\n", "Total direct discount", shiftCtr.getTotalDiscountMoney(shift));
-        System.out.printf("%s: %-20.1f\n", "Total point discount", shiftCtr.getTotalPointDiscount(shift));
-        System.out.printf("%s: %-20s\n", "VAT", shift.getTax() + "%");
-        System.out.printf("%s: %-20.1f\n", "Surcharge during Shift", shift.getSurcharge());
-        System.out.printf("%s: %-20.1f\n", "Net Revenue", shiftCtr.getNetRevenue(shift));
-        System.out.printf("%s: %-20s\n", "Number of Order", shiftCtr.getNumberOfOrder(shift));
-        System.out.printf("%s: %-20.1f\n", "Average per Order", shiftCtr.getAveragePerOrder(shift));
-        System.out.println("OPTIONS PAYMENT:");
-        System.out.printf("%s: %-20.1f\n", "+Cash", shiftCtr.getTotalPaymentByCash(shift));
-        System.out.printf("%s: %-20.1f\n", "+Wire transfer", shiftCtr.getTotalPaymentByWireTransfer(shift));
-        System.out.printf("%s: %-20.1f\n", "+Current CashBox money", shiftCtr.getTotalPaymentByCash(shift)
-                .add(shift.getOpeningBalance()));
+//        System.out.printf("%s: %-20.1f\n", "Total point discount", shiftCtr.getTotalPointDiscount(shift));
+//        System.out.printf("%s: %-20s\n", "VAT", shift.getTax() + "%");
+//        System.out.printf("%s: %-20.1f\n", "Surcharge during Shift", shift.getSurcharge());
+//        System.out.printf("%s: %-20.1f\n", "Net Revenue", shiftCtr.getNetRevenue(shift));
+//        System.out.printf("%s: %-20s\n", "Number of Order", shiftCtr.getNumberOfOrder(shift));
+//        System.out.printf("%s: %-20.1f\n", "Average per Order", shiftCtr.getAveragePerOrder(shift));
+//        System.out.println("OPTIONS PAYMENT:");
+//        System.out.printf("%s: %-20.1f\n", "+Cash", shiftCtr.getTotalPaymentByCash(shift));
+//        System.out.printf("%s: %-20.1f\n", "+Wire transfer", shiftCtr.getTotalPaymentByWireTransfer(shift));
+//        System.out.printf("%s: %-20.1f\n", "+Current CashBox money", shiftCtr.getTotalPaymentByCash(shift)
+//                .add(shift.getOpeningBalance()));
         System.out.println(String.format("%5s", "CONSUMPTIONS:"));
         System.out.println(String.format("%-20s" + " | " + "%-20s" + " | " + "%-20s" + " | " + "%-20s",
                 "Goods Name", "Quantity", "Revenue", "Ratio"));

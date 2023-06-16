@@ -4,6 +4,7 @@
  */
 package GUI;
 
+import java.util.stream.*;
 import Controllers.EmployeeListController;
 import Controllers.ShiftController;
 import Models.Employee;
@@ -11,17 +12,12 @@ import Models.EmployeeList;
 import Models.Shift;
 import Ultility.Cautions;
 import Ultility.IDGenerator;
-import java.awt.Color;
 import java.awt.event.KeyEvent;
-import java.awt.event.WindowEvent;
 import java.io.File;
 import java.math.BigDecimal;
 import java.util.ArrayList;
-import java.util.stream.Collectors;
 import javax.swing.ImageIcon;
-import javax.swing.JComboBox;
 import javax.swing.JOptionPane;
-import javax.swing.JPanel;
 import javax.swing.JTextField;
 import javax.swing.ScrollPaneConstants;
 import javax.swing.table.DefaultTableModel;
@@ -588,7 +584,7 @@ public class OpenShiftFrame extends javax.swing.JFrame {
     }
 
     private void setUp() {
-        setIconImage(new ImageIcon(IMAGE_FOLDER + SEPARATOR + "icons8-grocery-store-96.png").getImage());
+        setIconImage(new ImageIcon(getClass().getResource("/ImageIcon/icons8-grocery-store-96.png")).getImage());
         this.setLocationRelativeTo(null);
     }
 
@@ -668,11 +664,10 @@ public class OpenShiftFrame extends javax.swing.JFrame {
         taxTextField.setText("0");
     }
 
-    public void passData(EmployeeList employeeList,Shift shift, IDGenerator iDGenerator, ShiftPanel shiftPanel) {
+    public void passData(EmployeeList employeeList,Shift shift, IDGenerator iDGenerator) {
         this.employeeList = employeeList;
         this.iDGenerator = iDGenerator;
         this.shift = shift;
-        this.shiftPanel = shiftPanel;
         initVariables(employeeList);
     }
 
@@ -689,7 +684,6 @@ public class OpenShiftFrame extends javax.swing.JFrame {
     private int employeeLastNameMaxSize = "Ten".length();
     private int employeeGenderMaxSize = "Gioi tinh".length();
     private int employeePhoneNumMaxSize = "SDT".length();
-    private ShiftPanel shiftPanel;
     private Shift shift;
     private EmployeeList employeeList;
     private IDGenerator iDGenerator;
