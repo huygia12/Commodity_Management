@@ -5,11 +5,15 @@ import Models.Goods;
 import Models.GoodsList;
 import Models.Shipment;
 import Models.Units;
+import java.awt.Point;
 import java.math.BigDecimal;
 import java.util.List;
 import java.util.stream.Collectors;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
+import org.jdesktop.animation.timing.Animator;
+import org.jdesktop.animation.timing.TimingTargetAdapter;
+import org.jdesktop.animation.timing.interpolation.PropertySetter;
 
 /*
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
@@ -38,9 +42,10 @@ public class RepoPanel extends javax.swing.JPanel {
         addButton.setEnabled(false);
         deleteButton.setEnabled(false);
         editButton.setEnabled(false);
-        shipmentsButton.setEnabled(false);
+        shipmentsButton.setEnabled(true);
         cancelCheck();
         goodTableModel = (DefaultTableModel) jTable1.getModel();
+        Instance = this;
     }
 
     /**
@@ -77,14 +82,15 @@ public class RepoPanel extends javax.swing.JPanel {
         jScrollPane1 = new javax.swing.JScrollPane();
         jTable1 = new javax.swing.JTable();
         searchTextField = new javax.swing.JTextField();
+        shipmentPanel1 = new GUI.ShipmentPanel();
 
         setBackground(new java.awt.Color(0, 204, 255));
-        setBorder(javax.swing.BorderFactory.createTitledBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 255), 2), "REPOSITORY", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Segoe UI", 3, 24), new java.awt.Color(255, 255, 255))); // NOI18N
         setToolTipText("");
         setPreferredSize(new java.awt.Dimension(970, 560));
         setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
         repoManagementPanel.setBackground(new java.awt.Color(0, 204, 255));
+        repoManagementPanel.setBorder(javax.swing.BorderFactory.createTitledBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 255), 2), "REPOSITORY", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Segoe UI", 3, 24), new java.awt.Color(255, 255, 255))); // NOI18N
         repoManagementPanel.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
         controllerPanel.setBackground(new java.awt.Color(0, 204, 255));
@@ -165,6 +171,11 @@ public class RepoPanel extends javax.swing.JPanel {
         shipmentsButton.setMaximumSize(new java.awt.Dimension(117, 23));
         shipmentsButton.setMinimumSize(new java.awt.Dimension(117, 23));
         shipmentsButton.setPreferredSize(new java.awt.Dimension(117, 23));
+        shipmentsButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                shipmentsButtonActionPerformed(evt);
+            }
+        });
         controllerPanel.add(shipmentsButton, new org.netbeans.lib.awtextra.AbsoluteConstraints(841, 79, 118, -1));
 
         IDLabel.setText("Mã sản phẩm:");
@@ -187,7 +198,7 @@ public class RepoPanel extends javax.swing.JPanel {
 
         totalQuantityTextField.setEditable(false);
         totalQuantityTextField.setEnabled(false);
-        controllerPanel.add(totalQuantityTextField, new org.netbeans.lib.awtextra.AbsoluteConstraints(113, 56, 153, -1));
+        controllerPanel.add(totalQuantityTextField, new org.netbeans.lib.awtextra.AbsoluteConstraints(120, 60, 153, -1));
 
         unitComboBox.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Thêm đơn vị" }));
         unitComboBox.setSelectedIndex(-1);
@@ -225,7 +236,7 @@ public class RepoPanel extends javax.swing.JPanel {
         });
         controllerPanel.add(cancelButton, new org.netbeans.lib.awtextra.AbsoluteConstraints(582, 79, 118, -1));
 
-        repoManagementPanel.add(controllerPanel, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, -1, -1));
+        repoManagementPanel.add(controllerPanel, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 32, 950, 100));
 
         tablePanel.setBackground(new java.awt.Color(0, 204, 255));
         tablePanel.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
@@ -273,7 +284,7 @@ public class RepoPanel extends javax.swing.JPanel {
             jTable1.getColumnModel().getColumn(5).setHeaderValue("Tổng số lượng");
         }
 
-        tablePanel.add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(6, 29, 956, 430));
+        tablePanel.add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 30, 940, 410));
 
         searchTextField.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyReleased(java.awt.event.KeyEvent evt) {
@@ -282,9 +293,10 @@ public class RepoPanel extends javax.swing.JPanel {
         });
         tablePanel.add(searchTextField, new org.netbeans.lib.awtextra.AbsoluteConstraints(110, 0, 153, -1));
 
-        repoManagementPanel.add(tablePanel, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 129, -1, 440));
+        repoManagementPanel.add(tablePanel, new org.netbeans.lib.awtextra.AbsoluteConstraints(16, 129, 940, 440));
 
-        add(repoManagementPanel, new org.netbeans.lib.awtextra.AbsoluteConstraints(6, 34, 968, -1));
+        add(repoManagementPanel, new org.netbeans.lib.awtextra.AbsoluteConstraints(4, 3, 970, 610));
+        add(shipmentPanel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(980, 0, 980, 620));
     }// </editor-fold>//GEN-END:initComponents
 
     private void nameTextFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_nameTextFieldActionPerformed
@@ -539,6 +551,42 @@ public class RepoPanel extends javax.swing.JPanel {
         reloadTable(goodsListToSearch);
     }//GEN-LAST:event_searchTextFieldKeyReleased
 
+    private void shipmentsButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_shipmentsButtonActionPerformed
+        // TODO add your handling code here:
+        moveRightToLeft(this.getLocation());
+    }//GEN-LAST:event_shipmentsButtonActionPerformed
+    
+    public void moveRightToLeft (Point location) {
+        if (animator != null && animator.isRunning()) {
+            animator.stop();
+        }
+        if (animator2 != null && animator2.isRunning()) {
+            animator2.stop();
+        }
+        shipmentPanel1.setVisible(true);
+        shipmentPanel1.setLocation(980, 0);
+
+        Point newLocation = new Point(location.x - 980, location.y);
+        Point newLocation2 = new Point(0, location.y);
+        animator = PropertySetter.createAnimator(1500, repoManagementPanel, "location", location, newLocation);
+        animator2 = PropertySetter.createAnimator(1500, shipmentPanel1, "location", shipmentPanel1.getLocation(), newLocation2);
+        animator.addTarget(new TimingTargetAdapter() {
+            @Override
+            public void timingEvent(float fraction) {
+                repaint();
+            }
+        });
+        animator2.addTarget(new TimingTargetAdapter() {
+            @Override
+            public void timingEvent(float fraction) {
+                repaint();
+            }
+        });
+        animator.setResolution(5);
+        animator.start();
+        animator2.setResolution(5);
+        animator2.start();
+    }
     public void addCheck () {
         if(!nameTextField.getText().isBlank() && unitComboBox.getSelectedIndex()!=-1 && !listPriceTextField.getText().isBlank() && !IDTextField.getText().isBlank() && !goodID.isBlank() && goodListedPrice != BigDecimal.valueOf(-1)) {
             addButton.setEnabled(true);
@@ -648,6 +696,10 @@ public class RepoPanel extends javax.swing.JPanel {
     private GoodsListController glc = new GoodsListController();
     private boolean isReloadingUnits = false;
     
+    public RepoPanel Instance;
+    private Animator animator;
+    private Animator animator2;
+    
     private String goodName = "";
     private String goodUnit = "";
     private String goodManufacturer = "";
@@ -677,6 +729,7 @@ public class RepoPanel extends javax.swing.JPanel {
     private javax.swing.JPanel repoManagementPanel;
     private javax.swing.JLabel searchLabel;
     private javax.swing.JTextField searchTextField;
+    private GUI.ShipmentPanel shipmentPanel1;
     private javax.swing.JButton shipmentsButton;
     private javax.swing.JPanel tablePanel;
     private javax.swing.JLabel totalQuantityLabel;
