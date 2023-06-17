@@ -1240,7 +1240,7 @@ public class PurchasePanel extends javax.swing.JPanel {
             textFieldMouseClick(customerMoneyText, 12);
             return;
         }
-        if(customerMoneyText.getText().length()>(customerMoneyText.getSize().getWidth()/11)){
+        if (customerMoneyText.getText().length() > (customerMoneyText.getSize().getWidth() / 11)) {
             JOptionPane.showMessageDialog(mainFeePanel, feePanel, expirDateTo, HEIGHT, new ImageIcon());
         }
     }//GEN-LAST:event_customerMoneyTextMouseClicked
@@ -1312,11 +1312,13 @@ public class PurchasePanel extends javax.swing.JPanel {
     private void employeeListComboBoxItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_employeeListComboBoxItemStateChanged
         setDefaultOptionToTextField(cashierPhoneNumText, 12);
         int selectedItem = employeeListComboBox.getSelectedIndex();
-        if (selectedItem == 0) {
-            insertWarningToTextField(customerPointCheckTextField, NONE_SELECTED_CASHIER, 12);
-        } else {
-            order.setCashier(employeeList.getList().get(selectedItem - 1));
-            cashierPhoneNumText.setText(employeeListComboBox.getSelectedItem().toString());
+        if (selectedItem != -1) {
+            if (selectedItem == 0) {
+                insertWarningToTextField(customerPointCheckTextField, NONE_SELECTED_CASHIER, 12);
+            } else {
+                order.setCashier(employeeList.getList().get(selectedItem - 1));
+                cashierPhoneNumText.setText(employeeListComboBox.getSelectedItem().toString());
+            }
         }
     }//GEN-LAST:event_employeeListComboBoxItemStateChanged
 
@@ -1549,7 +1551,8 @@ public class PurchasePanel extends javax.swing.JPanel {
     }//GEN-LAST:event_keyWordTextFieldKeyPressed
 
     private void unitComboBoxItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_unitComboBoxItemStateChanged
-        unitFilterCheck = unitComboBox.getSelectedIndex() != 0;
+        int selectedIndex = unitComboBox.getSelectedIndex();
+        unitFilterCheck = (selectedIndex != 0) && (selectedIndex != -1);
     }//GEN-LAST:event_unitComboBoxItemStateChanged
 
     private void editBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_editBtnActionPerformed
@@ -1673,7 +1676,8 @@ public class PurchasePanel extends javax.swing.JPanel {
     }//GEN-LAST:event_quantityTextFieldMouseClicked
 
     private void priceRangeComboBoxItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_priceRangeComboBoxItemStateChanged
-        rangeFilterCheck = priceRangeComboBox.getSelectedIndex() != 0;
+        int selectedIndex = priceRangeComboBox.getSelectedIndex();
+        rangeFilterCheck = (selectedIndex != 0) && (selectedIndex != -1);
     }//GEN-LAST:event_priceRangeComboBoxItemStateChanged
 
     private void productionDateRadioBtnItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_productionDateRadioBtnItemStateChanged
@@ -1871,49 +1875,49 @@ public class PurchasePanel extends javax.swing.JPanel {
     }//GEN-LAST:event_filterSwitchRadioBtnActionPerformed
 
     private void totalTextFieldMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_totalTextFieldMouseClicked
-        if(totalTextField.getText().length()>(totalTextField.getSize().getWidth()/9)){
-            JOptionPane.showMessageDialog(this, 
-                    totalTextField.getText(), "Tổng Thanh Toán", 
+        if (totalTextField.getText().length() > (totalTextField.getSize().getWidth() / 9)) {
+            JOptionPane.showMessageDialog(this,
+                    totalTextField.getText(), "Tổng Thanh Toán",
                     JOptionPane.INFORMATION_MESSAGE);
         }
     }//GEN-LAST:event_totalTextFieldMouseClicked
 
     private void pointDiscountAmountTextFieldMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_pointDiscountAmountTextFieldMouseClicked
-        if(pointDiscountAmountTextField.getText().length()>(pointDiscountAmountTextField.getSize().getWidth()/9)){
-            JOptionPane.showMessageDialog(this, 
-                    pointDiscountAmountTextField.getText(), "Khoản Chiết Khấu Điểm", 
+        if (pointDiscountAmountTextField.getText().length() > (pointDiscountAmountTextField.getSize().getWidth() / 9)) {
+            JOptionPane.showMessageDialog(this,
+                    pointDiscountAmountTextField.getText(), "Khoản Chiết Khấu Điểm",
                     JOptionPane.INFORMATION_MESSAGE);
         }
     }//GEN-LAST:event_pointDiscountAmountTextFieldMouseClicked
 
     private void taxAmountTextFieldMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_taxAmountTextFieldMouseClicked
-        if(taxAmountTextField.getText().length()>(taxAmountTextField.getSize().getWidth()/9)){
-            JOptionPane.showMessageDialog(this, 
-                    taxAmountTextField.getText(), "Khoản thuế", 
+        if (taxAmountTextField.getText().length() > (taxAmountTextField.getSize().getWidth() / 9)) {
+            JOptionPane.showMessageDialog(this,
+                    taxAmountTextField.getText(), "Khoản thuế",
                     JOptionPane.INFORMATION_MESSAGE);
         }
     }//GEN-LAST:event_taxAmountTextFieldMouseClicked
 
     private void subTotalTextFieldMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_subTotalTextFieldMouseClicked
-        if(subTotalTextField.getText().length()>(subTotalTextField.getSize().getWidth()/9)){
-            JOptionPane.showMessageDialog(this, 
-                    subTotalTextField.getText(), "Thành Tiền", 
+        if (subTotalTextField.getText().length() > (subTotalTextField.getSize().getWidth() / 9)) {
+            JOptionPane.showMessageDialog(this,
+                    subTotalTextField.getText(), "Thành Tiền",
                     JOptionPane.INFORMATION_MESSAGE);
         }
     }//GEN-LAST:event_subTotalTextFieldMouseClicked
 
     private void discountAmountTextFieldMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_discountAmountTextFieldMouseClicked
-        if(discountAmountTextField.getText().length()>(discountAmountTextField.getSize().getWidth()/9)){
-            JOptionPane.showMessageDialog(this, 
-                    discountAmountTextField.getText(), "Khoản Chiết Khấu Tay", 
+        if (discountAmountTextField.getText().length() > (discountAmountTextField.getSize().getWidth() / 9)) {
+            JOptionPane.showMessageDialog(this,
+                    discountAmountTextField.getText(), "Khoản Chiết Khấu Tay",
                     JOptionPane.INFORMATION_MESSAGE);
         }
     }//GEN-LAST:event_discountAmountTextFieldMouseClicked
 
     private void changeAmountTextFieldMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_changeAmountTextFieldMouseClicked
-        if(changeAmountTextField.getText().length()>(changeAmountTextField.getSize().getWidth()/9)){
-            JOptionPane.showMessageDialog(this, 
-                    changeAmountTextField.getText(), "Tiền Thừa Khách", 
+        if (changeAmountTextField.getText().length() > (changeAmountTextField.getSize().getWidth() / 9)) {
+            JOptionPane.showMessageDialog(this,
+                    changeAmountTextField.getText(), "Tiền Thừa Khách",
                     JOptionPane.INFORMATION_MESSAGE);
         }
     }//GEN-LAST:event_changeAmountTextFieldMouseClicked
@@ -1943,11 +1947,6 @@ public class PurchasePanel extends javax.swing.JPanel {
             }
         }
         return false;
-    }
-
-    private void insertWarningToLabel(javax.swing.JLabel label, String warningText) {
-        label.setText(warningText);
-        label.setVisible(true);
     }
 
     private void insertWarningToTextField(javax.swing.JTextField textField, String warningText, int size) {
@@ -2048,48 +2047,47 @@ public class PurchasePanel extends javax.swing.JPanel {
     private void computeSizeOfEachColumnInGoodsListTable() {
         // duyet tu dau den cuoi mang de tim MAX_SIZE cua giatri input tung thuoc tinh
         for (Goods goods : draftGoodsList.getList()) {
-            if (goods.getID().length()+ extraLength > goodsIDMaxSize) {
-                goodsIDMaxSize = goods.getID().length()+ extraLength;
+            if (goods.getID().length() + extraLength > goodsIDMaxSize) {
+                goodsIDMaxSize = goods.getID().length() + extraLength;
             }
-            if (goods.getGoodsName().length()+ extraLength > goodsNameMaxSize) {
-                goodsNameMaxSize = goods.getGoodsName().length()+ extraLength;
+            if (goods.getGoodsName().length() + extraLength > goodsNameMaxSize) {
+                goodsNameMaxSize = goods.getGoodsName().length() + extraLength;
             }
-            if (goods.getManufacture().length()+ extraLength > manufactureMaxSize) {
-                manufactureMaxSize = goods.getManufacture().length()+ extraLength;
+            if (goods.getManufacture().length() + extraLength > manufactureMaxSize) {
+                manufactureMaxSize = goods.getManufacture().length() + extraLength;
             }
-            if (goods.getUnit().length()+ extraLength > unitMaxSize) {
-                unitMaxSize = goods.getUnit().length()+ extraLength;
+            if (goods.getUnit().length() + extraLength > unitMaxSize) {
+                unitMaxSize = goods.getUnit().length() + extraLength;
             }
-            if (String.format(".1f", goods.getListPrice()).length()+ extraLength > listPriceMaxSize) {
-                listPriceMaxSize = String.format(".1f", goods.getListPrice()).length()+ extraLength;
+            if (String.format(".1f", goods.getListPrice()).length() + extraLength > listPriceMaxSize) {
+                listPriceMaxSize = String.format(".1f", goods.getListPrice()).length() + extraLength;
             }
-            if (String.format(".1f", goods.getTotalQuantity()).length()+ extraLength > totalQuantityMaxSize) {
-                totalQuantityMaxSize = String.format(".1f", goods.getTotalQuantity()).length()+ extraLength;
+            if (String.format(".1f", goods.getTotalQuantity()).length() + extraLength > totalQuantityMaxSize) {
+                totalQuantityMaxSize = String.format(".1f", goods.getTotalQuantity()).length() + extraLength;
             }
             for (Shipment shipment : goods.getShipments()) {
-                if (shipment.getID().length()+ extraLength > shipmentIDMaxSize) {
-                    shipmentIDMaxSize = shipment.getID().length()+ extraLength;
+                if (shipment.getID().length() + extraLength > shipmentIDMaxSize) {
+                    shipmentIDMaxSize = shipment.getID().length() + extraLength;
                 }
                 if (shipment.getNsx()
                         .format(DateTimeFormatter.ofPattern(OUTPUT_DATE_PATTERN))
-                        .length()+ extraLength > productionDateMaxSize) {
+                        .length() + extraLength > productionDateMaxSize) {
                     productionDateMaxSize = shipment.getNsx()
                             .format(DateTimeFormatter.ofPattern(OUTPUT_DATE_PATTERN))
-                            .length()+ extraLength;
+                            .length() + extraLength;
                 }
                 if (shipment.getHsd()
                         .format(DateTimeFormatter.ofPattern(OUTPUT_DATE_PATTERN))
-                        .length()+ extraLength > expirationDateMaxSize) {
+                        .length() + extraLength > expirationDateMaxSize) {
                     expirationDateMaxSize = shipment.getHsd()
                             .format(DateTimeFormatter.ofPattern(OUTPUT_DATE_PATTERN))
-                            .length()+ extraLength;
+                            .length() + extraLength;
                 }
-                if (String.format(".1f", shipment.getQuantity()).length()+ extraLength > shipmentQuantityMaxSize) {
-                    shipmentQuantityMaxSize = String.format(".1f", shipment.getQuantity()).length()+ extraLength;
+                if (String.format(".1f", shipment.getQuantity()).length() + extraLength > shipmentQuantityMaxSize) {
+                    shipmentQuantityMaxSize = String.format(".1f", shipment.getQuantity()).length() + extraLength;
                 }
             }
         }
-//        int jscrollPaneMaxWidthSize = goodsIDMaxSize + goodsNameMaxSize + manufactureMaxSize + unitMaxSize + listPriceMaxSize + shipmentIDMaxSize + productionDateMaxSize + expirationDateMaxSize + shipmentQuantityMaxSize;
         goodsListTable.getColumnModel().getColumn(0).setMinWidth(goodsIDMaxSize);
         goodsListTable.getColumnModel().getColumn(1).setMinWidth(goodsNameMaxSize);
         goodsListTable.getColumnModel().getColumn(2).setMinWidth(manufactureMaxSize);
@@ -2099,12 +2097,9 @@ public class PurchasePanel extends javax.swing.JPanel {
         goodsListTable.getColumnModel().getColumn(6).setMinWidth(productionDateMaxSize);
         goodsListTable.getColumnModel().getColumn(7).setMinWidth(expirationDateMaxSize);
         goodsListTable.getColumnModel().getColumn(8).setMinWidth(shipmentQuantityMaxSize);
-//        goodListScrollPane.getViewport().setSize(new Dimension(jscrollPaneMaxWidthSize, 402));
-//        goodsListTable.setSize(new Dimension(jscrollPaneMaxWidthSize, 402));
     }
 
     private void computeSizeOfEachColumnInOrderGoodsListTable() {
-//        int jscrollPaneMaxWidthSize = goodsIDMaxSize + goodsNameMaxSize + manufactureMaxSize + unitMaxSize + listPriceMaxSize + shipmentIDMaxSize + productionDateMaxSize + expirationDateMaxSize + shipmentQuantityMaxSize;
         orderGoodsListTable.getColumnModel().getColumn(0).setMinWidth(goodsIDMaxSize);
         orderGoodsListTable.getColumnModel().getColumn(1).setMinWidth(goodsNameMaxSize);
         orderGoodsListTable.getColumnModel().getColumn(2).setMinWidth(totalQuantityMaxSize);
@@ -2112,10 +2107,8 @@ public class PurchasePanel extends javax.swing.JPanel {
         orderGoodsListTable.getColumnModel().getColumn(4).setMinWidth(listPriceMaxSize);
         orderGoodsListTable.getColumnModel().getColumn(5).setMinWidth(shipmentIDMaxSize);
         orderGoodsListTable.getColumnModel().getColumn(6).setMinWidth(shipmentIDMaxSize);
-//        goodListScrollPane.getViewport().setSize(new Dimension(jscrollPaneMaxWidthSize, 402));
-//        goodsListTable.setSize(new Dimension(jscrollPaneMaxWidthSize, 402));
     }
-    
+
     private void setDefaultValuesToComponentsInMainOrderFunctionPanel() {
         fromDateTextField.setText("");
         toDateTextField.setText("");
@@ -2178,18 +2171,36 @@ public class PurchasePanel extends javax.swing.JPanel {
     }
 
     private void passValueToEmployeeListComboBox() {
+        int bound = employeeListComboBox.getItemCount();
+        if (bound > 1) {
+            for (int i = 1; i < bound; i++) {
+                employeeListComboBox.removeItemAt(1);
+            }
+        }
         employeeList.getList().stream().forEach(
                 employee -> employeeListComboBox.insertItemAt(employee.toString(),
                         employeeListComboBox.getItemCount()));
     }
 
     private void passValueToUnitCombobox() {
+        int bound = unitComboBox.getItemCount();
+        if (bound > 1) {
+            for (int i = 1; i < bound; i++) {
+                unitComboBox.removeItemAt(1);
+            }
+        }
         units.getBucket().stream().forEach(
                 x -> unitComboBox.insertItemAt(x,
                         unitComboBox.getItemCount()));
     }
 
     private void passValueToPriceRangeComboBox() {
+        int bound = priceRangeComboBox.getItemCount();
+        if (bound > 1) {
+            for (int i = 1; i < bound; i++) {
+                priceRangeComboBox.removeItemAt(1);
+            }
+        }
         settings.getPriceAmountList().stream().forEach(
                 x -> priceRangeComboBox.insertItemAt(x,
                         priceRangeComboBox.getItemCount()));
@@ -2208,8 +2219,8 @@ public class PurchasePanel extends javax.swing.JPanel {
         passValueToUnitCombobox();
         passValueToPriceRangeComboBox();
         passValueToEmployeeListComboBox();
-        TitledBorder tb = (TitledBorder)employeeAndCustomerPanel.getBorder();
-        tb.setTitle(" Mã Hóa Đơn - "+order.getID());
+        TitledBorder tb = (TitledBorder) employeeAndCustomerPanel.getBorder();
+        tb.setTitle(" Mã Hóa Đơn - " + order.getID());
         tb.setTitleFont(new java.awt.Font("Segoe UI", 1, 14));
         tb.setTitlePosition(TitledBorder.CENTER);
         setDefaultValuesToAllComponents();
@@ -2330,16 +2341,16 @@ public class PurchasePanel extends javax.swing.JPanel {
     private final String NONE_SELECTED_CASHIER = "Chưa chọn thu ngân!";
     private final String INSUFFICIENT_MONEY = "Số dư âm!";
     private final int extraLength = 100;
-    private int goodsIDMaxSize = "Mã SP".length()+ extraLength;
-    private int goodsNameMaxSize = "Tên SP".length()+ extraLength;
-    private int manufactureMaxSize = "Nhà sx".length()+ extraLength;
-    private int unitMaxSize = "ĐV".length()+ extraLength;
-    private int listPriceMaxSize = "Giá Bán/ĐV".length()+ extraLength;
-    private int shipmentIDMaxSize = "Mã lô".length()+ extraLength;
-    private int productionDateMaxSize = "Ngày sx".length()+ extraLength;
-    private int expirationDateMaxSize = "Hạn SD".length()+ extraLength;
-    private int shipmentQuantityMaxSize = "SL".length()+ extraLength;
-    private int totalQuantityMaxSize = "Tong SL".length()+extraLength;
+    private int goodsIDMaxSize = "Mã SP".length() + extraLength;
+    private int goodsNameMaxSize = "Tên SP".length() + extraLength;
+    private int manufactureMaxSize = "Nhà sx".length() + extraLength;
+    private int unitMaxSize = "ĐV".length() + extraLength;
+    private int listPriceMaxSize = "Giá Bán/ĐV".length() + extraLength;
+    private int shipmentIDMaxSize = "Mã lô".length() + extraLength;
+    private int productionDateMaxSize = "Ngày sx".length() + extraLength;
+    private int expirationDateMaxSize = "Hạn SD".length() + extraLength;
+    private int shipmentQuantityMaxSize = "SL".length() + extraLength;
+    private int totalQuantityMaxSize = "Tong SL".length() + extraLength;
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JPanel aboutGoodsAndCusPanel;
     private javax.swing.JPanel aboutOrderPanel;

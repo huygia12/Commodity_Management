@@ -246,11 +246,6 @@ public class OpenShiftFrame extends javax.swing.JFrame {
         employeeListTable.setMaximumSize(new java.awt.Dimension(530, 360));
         employeeListTable.setMinimumSize(new java.awt.Dimension(530, 360));
         employeeListTable.setPreferredSize(new java.awt.Dimension(530, 360));
-        employeeListTable.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
-                employeeListTableMouseClicked(evt);
-            }
-        });
         employeeListScrollPane.setViewportView(employeeListTable);
 
         acceptBtn.setBackground(new java.awt.Color(0, 255, 0));
@@ -307,26 +302,6 @@ public class OpenShiftFrame extends javax.swing.JFrame {
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
-
-    private void employeeListTableMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_employeeListTableMouseClicked
-        int selectedRow = employeeListTable.getSelectedRow();
-        if (selectedRow != -1) {
-            String phoneNum = employeeListTable.getValueAt(selectedRow, 3).toString();
-            Employee e = employeeListCtr.containEmployee(employeeList,
-                    phoneNum,
-                    employeeListCtr.BY_PHONE_NUMBER);
-//            if (checkShiftEmployeeList
-//                    && employeeListCtr.containEmployee(shiftEmployeeList,
-//                            phoneNum,
-//                            employeeListCtr.BY_PHONE_NUMBER) == null) {
-//                // nêu đang chọn thêm nhân viên ca và danh sách nhân viên ca chưa có nhân viên này
-//                // thực hiện thêm 
-//                shiftEmployeeList.getList().add(e);
-//                passValueToCashierComboBox();
-//            }
-
-        }
-    }//GEN-LAST:event_employeeListTableMouseClicked
 
     private void cashierComboBoxItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_cashierComboBoxItemStateChanged
         if (cashierComboBox.getSelectedIndex() == 0) {
@@ -455,16 +430,7 @@ public class OpenShiftFrame extends javax.swing.JFrame {
         int choice = JOptionPane.showConfirmDialog(this,
                 SET_DEFAULT_WARNING, "Cảnh báo", JOptionPane.OK_CANCEL_OPTION);
         if (choice == 0) {
-            //set các giá trị đã lưu của ca thành default
-            shiftOpenBalance = BigDecimal.ZERO;
-            shiftTax = 0;
-            shiftCashier = new Employee();
-            shiftEmployeeList.getList().clear();
-            //set các giá trị component hiển thị thành default
-            openBalanceTextField.setText("0");
-            taxTextField.setText("0");
-            passValueToCashierComboBox();
-            passValueToEmployeeListComboBox();
+            reload();
         }
     }//GEN-LAST:event_denyBtnActionPerformed
 
@@ -512,21 +478,25 @@ public class OpenShiftFrame extends javax.swing.JFrame {
     }//GEN-LAST:event_addToEmployeeListComboBoxActionPerformed
 
     private void acceptBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_acceptBtnActionPerformed
-        if(shiftEmployeeList.getList().isEmpty() 
-                && shiftCashier.toString().equals(new Employee().toString())){
-            JOptionPane.showMessageDialog(this, BOTH_NOT_SELECTED_WARNING, 
+        if (shiftEmployeeList.getList().isEmpty()
+                && shiftCashier.toString().equals(new Employee().toString())) {
+            JOptionPane.showMessageDialog(this, BOTH_NOT_SELECTED_WARNING,
                     "Lỗi", JOptionPane.WARNING_MESSAGE);
-        }else if(shiftEmployeeList.getList().isEmpty()){
-            JOptionPane.showMessageDialog(this, SHIFT_EMPLOYEE_NOT_SELECTED_WARNING, 
+            return;
+        } else if (shiftEmployeeList.getList().isEmpty()) {
+            JOptionPane.showMessageDialog(this, SHIFT_EMPLOYEE_NOT_SELECTED_WARNING,
                     "Lỗi", JOptionPane.WARNING_MESSAGE);
-        }else if(shiftCashier.toString().equals(new Employee().toString())){
-            JOptionPane.showMessageDialog(this, CASHIER_NOT_SELECTED_WARNING, 
+            return;
+        } else if (shiftCashier.toString().equals(new Employee().toString())) {
+            JOptionPane.showMessageDialog(this, CASHIER_NOT_SELECTED_WARNING,
                     "Lỗi", JOptionPane.WARNING_MESSAGE);
-        }else{
-            shiftCtr.openShiftForGUI(shift, iDGenerator, shiftTax, 
-                    shiftOpenBalance, shiftCashier, 
+            return;
+        } else {
+            shiftCtr.openShiftForGUI(shift, iDGenerator, shiftTax,
+                    shiftOpenBalance, shiftCashier,
                     shiftEmployeeList, noteArea.getText());
         }
+        shiftPanel.reloadOnShiftMode();
         this.dispose();
     }//GEN-LAST:event_acceptBtnActionPerformed
 
@@ -566,7 +536,7 @@ public class OpenShiftFrame extends javax.swing.JFrame {
         });
     }
 
-    private void passValueToEmployeeListComboBox() {
+   private void passValueToEmployeeListComboBox() {
         shiftEmployeeListComboBox.removeAllItems();
         shiftEmployeeList.getList()
                 .stream()
@@ -586,6 +556,7 @@ public class OpenShiftFrame extends javax.swing.JFrame {
     private void setUp() {
         setIconImage(new ImageIcon(getClass().getResource("/ImageIcon/icons8-grocery-store-96.png")).getImage());
         this.setLocationRelativeTo(null);
+        this.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
     }
 
     private void showCashierComboBoxSelectedItem() {
@@ -641,6 +612,19 @@ public class OpenShiftFrame extends javax.swing.JFrame {
         }));
     }
 
+    public void reload() {
+        //set các giá trị đã lưu của ca thành default
+        shiftOpenBalance = BigDecimal.ZERO;
+        shiftTax = 0;
+        shiftCashier = new Employee();
+        shiftEmployeeList.getList().clear();
+        //set các giá trị component hiển thị thành default
+        openBalanceTextField.setText("0");
+        taxTextField.setText("0");
+        passValueToCashierComboBox();
+        passValueToEmployeeListComboBox();
+    }
+
     private void initVariables(EmployeeList employeeList) {
         this.employeeList = employeeList;
         // Table
@@ -664,10 +648,12 @@ public class OpenShiftFrame extends javax.swing.JFrame {
         taxTextField.setText("0");
     }
 
-    public void passData(EmployeeList employeeList,Shift shift, IDGenerator iDGenerator) {
+    public void passData(EmployeeList employeeList, Shift shift, 
+            IDGenerator iDGenerator, ShiftPanel shiftPanel) {
         this.employeeList = employeeList;
         this.iDGenerator = iDGenerator;
         this.shift = shift;
+        this.shiftPanel = shiftPanel;
         initVariables(employeeList);
     }
 
@@ -684,6 +670,7 @@ public class OpenShiftFrame extends javax.swing.JFrame {
     private int employeeLastNameMaxSize = "Ten".length();
     private int employeeGenderMaxSize = "Gioi tinh".length();
     private int employeePhoneNumMaxSize = "SDT".length();
+    private ShiftPanel shiftPanel;
     private Shift shift;
     private EmployeeList employeeList;
     private IDGenerator iDGenerator;
@@ -696,9 +683,6 @@ public class OpenShiftFrame extends javax.swing.JFrame {
     private final String INVALID_WARNING = "Không hợp lệ!";
     private final String NOTHING_CHOOSEN_FROM_TABLE_WARNING = "Thực hiện chọn ở bảng trước!";
     private final String NOTHING_CHOOSEN_FROM_COMBOBOX_WARNING = "Thực hiện chọn ở hộp chọn trước!";
-    private static final String HOME = System.getProperty("user.dir");
-    private static final String SEPARATOR = File.separator;
-    private static final String IMAGE_FOLDER = HOME + SEPARATOR + "src" + SEPARATOR + "main" + SEPARATOR + "java" + SEPARATOR + "ImageIcon";
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton acceptBtn;
     private javax.swing.JButton addToEmployeeListComboBox;

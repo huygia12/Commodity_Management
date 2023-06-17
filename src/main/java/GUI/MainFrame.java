@@ -37,19 +37,7 @@ public class MainFrame extends javax.swing.JFrame {
         initVariables();
         initSideBar();
         setUp();
-        // pass data vào purchasePanel
-        purchasePanel1.passData(repository, idGenerator,
-                settings, shift, units, customerCardList, employeeList);
-        // pass data vào customerCardPanel
-        customerCardPanel1.passData(customerCardList, idGenerator, history);
-        // pass data vào employPanel
-        employJPanel1.passData(employeeList, shift);
-        // pass data vào repoPanel
-        repoPanel1.setGoodsList(repository);
-        repoPanel1.setUnitsList(units);
-        // pass data vào shiftJPanel
-        shiftPanel1.passData(shift, history, employeeList,
-                settings.getStore(), idGenerator);
+        passDataToComponents();
     }
 
     /**
@@ -266,92 +254,6 @@ public class MainFrame extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_openSideBarLabelMouseClicked
 
-    private void initSideBar() {
-        DrawerItem productDrawerItem = new DrawerItem("Sản phẩm").icon(new ImageIcon(getClass().getResource("/ImageIcon/icons8-product-35.png"))).build();
-        productDrawerItem.setFont(new java.awt.Font("Segoe UI", 1, 16));
-        productDrawerItem.setHorizontalAlignment(JButton.LEADING);
-        productDrawerItem.setFocusable(false);
-        DrawerItem purchaseDrawerItem = new DrawerItem("Bán hàng").icon(new ImageIcon(getClass().getResource("/ImageIcon/icons8-add-basket-35.png"))).build();
-        purchaseDrawerItem.setFont(new java.awt.Font("Segoe UI", 1, 16));
-        purchaseDrawerItem.setHorizontalAlignment(JButton.LEADING);
-        purchaseDrawerItem.setFocusable(false);
-        DrawerItem manageDrawerItem = new DrawerItem("Quản lý cửa hàng").icon(new ImageIcon(getClass().getResource("/ImageIcon/icons8-static-35.png"))).build();
-        manageDrawerItem.setFont(new java.awt.Font("Segoe UI", 1, 16));
-        manageDrawerItem.setHorizontalAlignment(JButton.LEADING);
-        manageDrawerItem.setFocusable(false);
-        DrawerItem employeeDrawerItem = new DrawerItem("Nhân viên").icon(new ImageIcon(getClass().getResource("/ImageIcon/icons8-name-tag-35.png"))).build();
-        employeeDrawerItem.setFont(new java.awt.Font("Segoe UI", 1, 16));
-        employeeDrawerItem.setHorizontalAlignment(JButton.LEADING);
-        employeeDrawerItem.setFocusable(false);
-        DrawerItem customerDrawerItem = new DrawerItem("Khách hàng").icon(new ImageIcon(getClass().getResource("/ImageIcon/icons8-customer-35.png"))).build();
-        customerDrawerItem.setFont(new java.awt.Font("Segoe UI", 1, 16));
-        customerDrawerItem.setHorizontalAlignment(JButton.LEADING);
-        customerDrawerItem.setFocusable(false);
-        DrawerItem settingsDrawerItem = new DrawerItem("Cài đặt").icon(new ImageIcon(getClass().getResource("/ImageIcon/icons8-settings-35.png"))).build();
-        settingsDrawerItem.setFont(new java.awt.Font("Segoe UI", 1, 16));
-        settingsDrawerItem.setHorizontalAlignment(JButton.LEADING);
-        settingsDrawerItem.setFocusable(false);
-        DrawerItem logoutDrawerItem = new DrawerItem("Đăng xuất").icon(new ImageIcon(getClass().getResource("/ImageIcon/icons8-logout-30.png"))).build();
-        logoutDrawerItem.setFocusable(false);
-        
-        drawerCtr = Drawer.newDrawer(this)
-                .header(new Header(settings.getStore()))
-                .separator(2, Color.LIGHT_GRAY)
-                .space(10)
-                .duration(250)
-                .drawerWidth(230)
-                .addChild(productDrawerItem)
-                .addChild(purchaseDrawerItem)
-                .addChild(manageDrawerItem)
-                .addChild(employeeDrawerItem)
-                .addChild(customerDrawerItem)
-                .addChild(settingsDrawerItem)
-                .addFooter(logoutDrawerItem)
-                .event(new EventDrawer() {
-                    @Override
-                    public void selected(int i, DrawerItem di) {
-                        switchPanel(i);
-                    }
-                })
-                .build();
-    }
-
-    private void switchPanel(int i) {
-        switch (i) {
-            case 0:
-                displayPanel.add(repoPanel1, "repo");
-                cardLayout.show(displayPanel, "repo");
-                drawerCtr.hide();
-                break;
-            case 1:
-                displayPanel.add(purchasePanel1, "purchase");
-                cardLayout.show(displayPanel, "purchase");
-                drawerCtr.hide();
-                break;
-            case 2:
-                displayPanel.add(shiftPanel1, "shift");
-                cardLayout.show(displayPanel, "shift");
-                drawerCtr.hide();
-                break;
-            case 3:
-                displayPanel.add(employJPanel1, "employee");
-                cardLayout.show(displayPanel, "employee");
-                drawerCtr.hide();
-                break;
-            case 4:
-                displayPanel.add(customerCardPanel1, "customer");
-                cardLayout.show(displayPanel, "customer");
-                drawerCtr.hide();
-                break;
-            case 5:
-//                displayPanel.add(repoPanel1, "repo");
-//                cardLayout.show(repoPanel1, "repo");
-                drawerCtr.hide();
-                break;
-            case 6:
-        }
-    }
-
     /**
      * @param args the command line arguments
      */
@@ -403,15 +305,105 @@ public class MainFrame extends javax.swing.JFrame {
         });
     }
 
-//    private ImageIcon setProperImageScale(String pathName) {
-//        ImageIcon imageIcon = null;
-//        try {
-//            imageIcon = new ImageIcon(ImageIO.read(new File((URI)getClass().getResource(pathName)))
-//                    .getScaledInstance(90, 90, Image.SCALE_SMOOTH));
-//        } catch (IOException e) {
-//        }
-//        return imageIcon;
-//    }
+    private void passDataToComponents() {
+        // pass data vào purchasePanel
+        purchasePanel1.passData(repository, idGenerator,
+                settings, shift, units, customerCardList, employeeList);
+        // pass data vào customerCardPanel
+        customerCardPanel1.passData(customerCardList, idGenerator, history);
+        // pass data vào employPanel
+        employJPanel1.passData(employeeList, shift);
+        // pass data vào repoPanel
+        repoPanel1.setGoodsList(repository);
+        repoPanel1.setUnitsList(units);
+        // pass data vào shiftJPanel
+        shiftPanel1.passData(shift, history, employeeList,
+                settings.getStore(), idGenerator, this);
+    }
+
+    private void initSideBar() {
+        DrawerItem productDrawerItem = new DrawerItem("Sản phẩm").icon(new ImageIcon(getClass().getResource("/ImageIcon/icons8-product-35.png"))).build();
+        productDrawerItem.setFont(new java.awt.Font("Segoe UI", 1, 16));
+        productDrawerItem.setHorizontalAlignment(JButton.LEADING);
+        productDrawerItem.setFocusable(false);
+        DrawerItem purchaseDrawerItem = new DrawerItem("Bán hàng").icon(new ImageIcon(getClass().getResource("/ImageIcon/icons8-add-basket-35.png"))).build();
+        purchaseDrawerItem.setFont(new java.awt.Font("Segoe UI", 1, 16));
+        purchaseDrawerItem.setHorizontalAlignment(JButton.LEADING);
+        purchaseDrawerItem.setFocusable(false);
+        DrawerItem manageDrawerItem = new DrawerItem("Quản lý cửa hàng").icon(new ImageIcon(getClass().getResource("/ImageIcon/icons8-static-35.png"))).build();
+        manageDrawerItem.setFont(new java.awt.Font("Segoe UI", 1, 16));
+        manageDrawerItem.setHorizontalAlignment(JButton.LEADING);
+        manageDrawerItem.setFocusable(false);
+        DrawerItem employeeDrawerItem = new DrawerItem("Nhân viên").icon(new ImageIcon(getClass().getResource("/ImageIcon/icons8-name-tag-35.png"))).build();
+        employeeDrawerItem.setFont(new java.awt.Font("Segoe UI", 1, 16));
+        employeeDrawerItem.setHorizontalAlignment(JButton.LEADING);
+        employeeDrawerItem.setFocusable(false);
+        DrawerItem customerDrawerItem = new DrawerItem("Khách hàng").icon(new ImageIcon(getClass().getResource("/ImageIcon/icons8-customer-35.png"))).build();
+        customerDrawerItem.setFont(new java.awt.Font("Segoe UI", 1, 16));
+        customerDrawerItem.setHorizontalAlignment(JButton.LEADING);
+        customerDrawerItem.setFocusable(false);
+        DrawerItem settingsDrawerItem = new DrawerItem("Cài đặt").icon(new ImageIcon(getClass().getResource("/ImageIcon/icons8-settings-35.png"))).build();
+        settingsDrawerItem.setFont(new java.awt.Font("Segoe UI", 1, 16));
+        settingsDrawerItem.setHorizontalAlignment(JButton.LEADING);
+        settingsDrawerItem.setFocusable(false);
+        DrawerItem logoutDrawerItem = new DrawerItem("Đăng xuất").icon(new ImageIcon(getClass().getResource("/ImageIcon/icons8-logout-30.png"))).build();
+        logoutDrawerItem.setFocusable(false);
+
+        drawerCtr = Drawer.newDrawer(this)
+                .header(new Header(settings.getStore()))
+                .separator(2, Color.LIGHT_GRAY)
+                .space(10)
+                .duration(300)
+                .backgroundTransparent(0.3f)
+                .drawerWidth(230)
+                .addChild(productDrawerItem)
+                .addChild(purchaseDrawerItem)
+                .addChild(manageDrawerItem)
+                .addChild(employeeDrawerItem)
+                .addChild(customerDrawerItem)
+                .addChild(settingsDrawerItem)
+                .addFooter(logoutDrawerItem)
+                .event((int i, DrawerItem di) -> {
+                    switchPanel(i);
+        })
+                .build();
+    }
+
+    private void switchPanel(int i) {
+        switch (i) {
+            case 0:
+                displayPanel.add(repoPanel1, "repo");
+                cardLayout.show(displayPanel, "repo");
+                drawerCtr.hide();
+                break;
+            case 1:
+                displayPanel.add(purchasePanel1, "purchase");
+                cardLayout.show(displayPanel, "purchase");
+                drawerCtr.hide();
+                break;
+            case 2:
+                displayPanel.add(shiftPanel1, "shift");
+                cardLayout.show(displayPanel, "shift");
+                drawerCtr.hide();
+                shiftPanel1.reload();
+                break;
+            case 3:
+                displayPanel.add(employJPanel1, "employee");
+                cardLayout.show(displayPanel, "employee");
+                drawerCtr.hide();
+                break;
+            case 4:
+                displayPanel.add(customerCardPanel1, "customer");
+                cardLayout.show(displayPanel, "customer");
+                drawerCtr.hide();
+                break;
+            case 5:
+                drawerCtr.hide();
+                break;
+            case 6:
+        }
+    }
+
     private void realTimeClock() {
         new Thread() {
             @Override
@@ -452,14 +444,14 @@ public class MainFrame extends javax.swing.JFrame {
     }
 
     private void setUp() {
-        setIconImage(new ImageIcon(getClass().getResource("/ImageIcon/icons8-grocery-store-96.png")).getImage());
+        setIconImage(new ImageIcon(getClass()
+                .getResource("/ImageIcon/icons8-grocery-store-96.png")).getImage());
         this.setLocationRelativeTo(null);
-        realTimeClock();
     }
 
     private void initVariables() {
-        idGenerator = new IDGenerator();
         cardLayout = (CardLayout) displayPanel.getLayout();
+        realTimeClock();
     }
 
     private CardLayout cardLayout;
@@ -476,7 +468,6 @@ public class MainFrame extends javax.swing.JFrame {
     private static final String HOME = System.getProperty("user.dir");
     private static final String SEPARATOR = File.separator;
     private static final String DATA_FOLDER = HOME + SEPARATOR + "data" + SEPARATOR;
-    private static final String IMAGE_FOLDER = HOME + SEPARATOR + "src" + SEPARATOR + "main" + SEPARATOR + "java" + SEPARATOR + "ImageIcon";
     private static final String REPOSITORY_PATH = DATA_FOLDER + "repositoryData.json";
     private static final String SHIFT_PATH = DATA_FOLDER + "currentShift.json";
     private static final String HISTORY_PATH = DATA_FOLDER + "historyData.json";
