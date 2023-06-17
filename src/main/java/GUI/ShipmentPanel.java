@@ -5,6 +5,11 @@
 package GUI;
 
 import Models.Goods;
+import Models.Shipment;
+import java.math.BigDecimal;
+import java.time.LocalDate;
+import java.util.List;
+import javax.swing.table.DefaultTableModel;
 
 /**
  *
@@ -18,7 +23,7 @@ public class ShipmentPanel extends javax.swing.JPanel {
     public ShipmentPanel() {
         initComponents();
         
-        Instance = this;
+        defaultSettings();
     }
 
     /**
@@ -60,10 +65,10 @@ public class ShipmentPanel extends javax.swing.JPanel {
         editButton = new javax.swing.JButton();
         cancelButton = new javax.swing.JButton();
         returnButton = new javax.swing.JButton();
-        jLabel1 = new javax.swing.JLabel();
-        jLabel4 = new javax.swing.JLabel();
-        jLabel7 = new javax.swing.JLabel();
-        jLabel8 = new javax.swing.JLabel();
+        errorIDLabel = new javax.swing.JLabel();
+        errorPriceLabel = new javax.swing.JLabel();
+        errorQuantityLabel = new javax.swing.JLabel();
+        errorDateLabel = new javax.swing.JLabel();
         shipmentTablePanel = new javax.swing.JPanel();
         jScrollPane1 = new javax.swing.JScrollPane();
         jTable1 = new javax.swing.JTable();
@@ -93,6 +98,12 @@ public class ShipmentPanel extends javax.swing.JPanel {
         shipmentControlPanel.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Lô hàng", javax.swing.border.TitledBorder.CENTER, javax.swing.border.TitledBorder.DEFAULT_POSITION));
 
         shipmentIDLabel.setText("Mã lô hàng:");
+
+        shipmentIDTextField.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                shipmentIDTextFieldKeyReleased(evt);
+            }
+        });
 
         importPriceLabel.setText("Giá nhập hàng:");
 
@@ -134,17 +145,17 @@ public class ShipmentPanel extends javax.swing.JPanel {
 
         returnButton.setText("Trở lại");
 
-        jLabel1.setForeground(new java.awt.Color(255, 51, 51));
-        jLabel1.setText("Mã không hợp lệ!");
+        errorIDLabel.setForeground(new java.awt.Color(255, 51, 51));
+        errorIDLabel.setText("Mã không hợp lệ!");
 
-        jLabel4.setForeground(new java.awt.Color(255, 51, 51));
-        jLabel4.setText("Giá không hợp lệ!");
+        errorPriceLabel.setForeground(new java.awt.Color(255, 51, 51));
+        errorPriceLabel.setText("Giá không hợp lệ!");
 
-        jLabel7.setForeground(new java.awt.Color(255, 51, 51));
-        jLabel7.setText("Số lượng không hợp lệ!");
+        errorQuantityLabel.setForeground(new java.awt.Color(255, 51, 51));
+        errorQuantityLabel.setText("Số lượng không hợp lệ!");
 
-        jLabel8.setForeground(new java.awt.Color(255, 51, 51));
-        jLabel8.setText("Ngày không hợp lệ!");
+        errorDateLabel.setForeground(new java.awt.Color(255, 51, 51));
+        errorDateLabel.setText("Ngày không hợp lệ!");
 
         javax.swing.GroupLayout shipmentControlPanelLayout = new javax.swing.GroupLayout(shipmentControlPanel);
         shipmentControlPanel.setLayout(shipmentControlPanelLayout);
@@ -158,7 +169,7 @@ public class ShipmentPanel extends javax.swing.JPanel {
                         .addComponent(shipmentIDLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 104, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(12, 12, 12)
                         .addGroup(shipmentControlPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jLabel1)
+                            .addComponent(errorIDLabel)
                             .addComponent(shipmentIDTextField, javax.swing.GroupLayout.PREFERRED_SIZE, 123, javax.swing.GroupLayout.PREFERRED_SIZE))))
                 .addGap(5, 5, 5))
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, shipmentControlPanelLayout.createSequentialGroup()
@@ -212,13 +223,13 @@ public class ShipmentPanel extends javax.swing.JPanel {
                         .addComponent(quantityLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 104, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(12, 12, 12)
                         .addGroup(shipmentControlPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jLabel4)
+                            .addComponent(errorPriceLabel)
                             .addComponent(quantityTextField, javax.swing.GroupLayout.PREFERRED_SIZE, 123, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jLabel7)))
+                            .addComponent(errorQuantityLabel)))
                     .addGroup(shipmentControlPanelLayout.createSequentialGroup()
                         .addGap(92, 92, 92)
                         .addGroup(shipmentControlPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jLabel8)
+                            .addComponent(errorDateLabel)
                             .addGroup(shipmentControlPanelLayout.createSequentialGroup()
                                 .addComponent(DayLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addGap(17, 17, 17)
@@ -237,7 +248,7 @@ public class ShipmentPanel extends javax.swing.JPanel {
                         .addComponent(shipmentIDLabel))
                     .addComponent(shipmentIDTextField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jLabel1)
+                .addComponent(errorIDLabel)
                 .addGap(15, 15, 15)
                 .addGroup(shipmentControlPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(shipmentControlPanelLayout.createSequentialGroup()
@@ -245,7 +256,7 @@ public class ShipmentPanel extends javax.swing.JPanel {
                         .addComponent(importPriceLabel))
                     .addComponent(importPriceTextField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(9, 9, 9)
-                .addComponent(jLabel4)
+                .addComponent(errorPriceLabel)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(shipmentControlPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(shipmentControlPanelLayout.createSequentialGroup()
@@ -253,7 +264,7 @@ public class ShipmentPanel extends javax.swing.JPanel {
                         .addComponent(quantityLabel))
                     .addComponent(quantityTextField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(jLabel7)
+                .addComponent(errorQuantityLabel)
                 .addGap(12, 12, 12)
                 .addGroup(shipmentControlPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(doesExpiredToggleBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 16, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -286,7 +297,7 @@ public class ShipmentPanel extends javax.swing.JPanel {
                     .addComponent(MonthLabel)
                     .addComponent(YearLabel))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(jLabel8)
+                .addComponent(errorDateLabel)
                 .addGap(9, 9, 9)
                 .addGroup(shipmentControlPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(addButton)
@@ -337,18 +348,60 @@ public class ShipmentPanel extends javax.swing.JPanel {
 
         add(shipmentTablePanel, new org.netbeans.lib.awtextra.AbsoluteConstraints(290, 200, 670, 400));
     }// </editor-fold>//GEN-END:initComponents
-
+    
+    private void defaultSettings() {
+        Instance = this;
+        shipmentTableModel = (DefaultTableModel) jTable1.getModel();
+    }
     private void NSXDayTextFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_NSXDayTextFieldActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_NSXDayTextFieldActionPerformed
+
+    private void shipmentIDTextFieldKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_shipmentIDTextFieldKeyReleased
+        // TODO add your handling code here:
+        long dupedID = shipments.stream().filter(x->x.getID().equalsIgnoreCase(shipmentIDTextField.getText())).count();
+        if (shipmentIDTextField.getText().isEmpty()) {
+            errorIDLabel.setVisible(false);
+        }
+        boolean dupedIDOnTable = true;
+        try {
+            dupedIDOnTable = shipmentIDTextField.getText().equals(shipmentTableModel.getValueAt(jTable1.getSelectedRow(), 0).toString());
+        } catch (ArrayIndexOutOfBoundsException aioobe) {
+            
+        } catch (NullPointerException npe) {
+            
+        }
+        if (dupedID == 0 || (dupedIDOnTable && jTable1.getSelectedRow() != -1)) {
+            shipmentID = shipmentIDTextField.getText();
+            addCheck();
+            errorIDLabel.setVisible(false);
+            repaint();
+        }  else {
+            errorIDLabel.setVisible(true);
+        }
+    }//GEN-LAST:event_shipmentIDTextFieldKeyReleased
+    
+    private void addCheck() {
+        
+    }
     
     public void attachGood (Goods good) {
         this.attachedGood = good;
+        this.shipments = good.getShipments();
     }
     
     // Custom variables declaration
     private Goods attachedGood;
+    private List<Shipment> shipments;
+    
+    private String shipmentID = "";
+    private BigDecimal shipmentPrice = BigDecimal.ZERO;
+    private BigDecimal shipmentQuantity = BigDecimal.ZERO;
+    private LocalDate manufacturerDate;
+    private LocalDate expiredDate;
+    
     public static ShipmentPanel Instance;
+    private DefaultTableModel shipmentTableModel;
     
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel DayLabel;
@@ -368,17 +421,17 @@ public class ShipmentPanel extends javax.swing.JPanel {
     private javax.swing.JLabel doesExpiredLabel;
     private javax.swing.JToggleButton doesExpiredToggleBtn;
     private javax.swing.JButton editButton;
+    private javax.swing.JLabel errorDateLabel;
+    private javax.swing.JLabel errorIDLabel;
+    private javax.swing.JLabel errorPriceLabel;
+    private javax.swing.JLabel errorQuantityLabel;
     private javax.swing.JPanel goodsInfoPanel;
     private javax.swing.JLabel importPriceLabel;
     private javax.swing.JTextField importPriceTextField;
-    private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
-    private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;
-    private javax.swing.JLabel jLabel7;
-    private javax.swing.JLabel jLabel8;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JTable jTable1;
     private javax.swing.JLabel quantityLabel;

@@ -458,7 +458,7 @@ public class RepoPanel extends javax.swing.JPanel {
         try {
             dupedIDOnTable = IDTextField.getText().equals(goodTableModel.getValueAt(jTable1.getSelectedRow(), 0).toString());
         } catch (ArrayIndexOutOfBoundsException aioobe) {
-            
+
         }
         if (dupedID == 0 || (dupedIDOnTable && jTable1.getSelectedRow() != -1)) {
             goodID = IDTextField.getText();
@@ -553,7 +553,14 @@ public class RepoPanel extends javax.swing.JPanel {
 
     private void shipmentsButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_shipmentsButtonActionPerformed
         // TODO add your handling code here:
+        Goods selectedGood = null;
+        for (Goods good : goodsList.getList()) {
+            if (goodTableModel.getValueAt(jTable1.getSelectedRow(), 0).toString().equals(good.getID())) {
+                selectedGood = good;
+            }
+        }
         moveRightToLeft(this.getLocation());
+        ShipmentPanel.Instance.attachGood(selectedGood);
     }//GEN-LAST:event_shipmentsButtonActionPerformed
     
     public void moveRightToLeft (Point location) {
