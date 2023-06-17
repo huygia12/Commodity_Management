@@ -234,30 +234,30 @@ public class CommodityManagement {
         settings.getPriceAmountList().add("100000 - 300000");
         settings.getPriceAmountList().add("300000 - 500000");
         settings.getPriceAmountList().add("< 500000");
-        GoodsList<Goods> orderGoodsList1 = new GoodsList();
-        orderGoodsList1.getList().add(repo.getList().get(0));
-        orderGoodsList1.getList().add(repo.getList().get(2));
-        orderGoodsList1.getList().add(repo.getList().get(3));
-        orderGoodsList1.getList().add(repo.getList().get(4));
-        shift.getOrderHisPerShift().add(new Order(LocalDateTime.parse("03/01/2023 05:05:05", DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm:ss")), "HD000001", PaymentOptions.CASH_PAYMENT, cardList.getList().get(1), employeeList.getList().get(0), orderGoodsList1.getList()));
-        GoodsList<Goods> orderGoodsList3 = new GoodsList();
-        orderGoodsList1.getList().add(repo.getList().get(4));
-        orderGoodsList1.getList().add(repo.getList().get(1));
-        orderGoodsList1.getList().add(repo.getList().get(7));
-        orderGoodsList1.getList().add(repo.getList().get(5));
-        shift.getOrderHisPerShift().add(new Order(LocalDateTime.parse("03/01/2023 06:25:05", DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm:ss")), "HD000002", PaymentOptions.OTHER_PAYMENT, cardList.getList().get(2), employeeList.getList().get(0), orderGoodsList3.getList()));
-        GoodsList<Goods> orderGoodsList2 = new GoodsList();
-        orderGoodsList1.getList().add(repo.getList().get(0));
-        orderGoodsList1.getList().add(repo.getList().get(2));
-        shift.getOrderHisPerShift().add(new Order(LocalDateTime.parse("03/01/2023 07:33:05", DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm:ss")), "HD000003", PaymentOptions.CASH_PAYMENT, cardList.getList().get(3), employeeList.getList().get(0), orderGoodsList2.getList()));
-        shift.getImportGoodsHis().getList().add(new ImportedGoods(repo.getList().get(0)));
-        shift.getImportGoodsHis().getList().add(new ImportedGoods(repo.getList().get(1)));
-        shift.getImportGoodsHis().getList().add(new ImportedGoods(repo.getList().get(2)));
-        shift.getImportGoodsHis().getList().add(new ImportedGoods(repo.getList().get(3)));
-        shift.getImportGoodsHis().getList().add(new ImportedGoods(repo.getList().get(4)));
-        shift.getImportGoodsHis().getList().add(new ImportedGoods(repo.getList().get(8)));
-        shift.getImportGoodsHis().getList().add(new ImportedGoods(repo.getList().get(12)));
-        
+//        GoodsList<Goods> orderGoodsList1 = new GoodsList();
+//        orderGoodsList1.getList().add(repo.getList().get(0));
+//        orderGoodsList1.getList().add(repo.getList().get(2));
+//        orderGoodsList1.getList().add(repo.getList().get(3));
+//        orderGoodsList1.getList().add(repo.getList().get(4));
+//        shift.getOrderHisPerShift().add(new Order(LocalDateTime.parse("03/01/2023 05:05:05", DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm:ss")), "HD000001", PaymentOptions.CASH_PAYMENT, cardList.getList().get(1), employeeList.getList().get(0), orderGoodsList1.getList()));
+//        GoodsList<Goods> orderGoodsList3 = new GoodsList();
+//        orderGoodsList1.getList().add(repo.getList().get(4));
+//        orderGoodsList1.getList().add(repo.getList().get(1));
+//        orderGoodsList1.getList().add(repo.getList().get(7));
+//        orderGoodsList1.getList().add(repo.getList().get(5));
+//        shift.getOrderHisPerShift().add(new Order(LocalDateTime.parse("03/01/2023 06:25:05", DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm:ss")), "HD000002", PaymentOptions.OTHER_PAYMENT, cardList.getList().get(2), employeeList.getList().get(0), orderGoodsList3.getList()));
+//        GoodsList<Goods> orderGoodsList2 = new GoodsList();
+//        orderGoodsList1.getList().add(repo.getList().get(0));
+//        orderGoodsList1.getList().add(repo.getList().get(2));
+//        shift.getOrderHisPerShift().add(new Order(LocalDateTime.parse("03/01/2023 07:33:05", DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm:ss")), "HD000003", PaymentOptions.CASH_PAYMENT, cardList.getList().get(3), employeeList.getList().get(0), orderGoodsList2.getList()));
+//        shift.getImportGoodsHis().getList().add(new ImportedGoods(repo.getList().get(0)));
+//        shift.getImportGoodsHis().getList().add(new ImportedGoods(repo.getList().get(1)));
+//        shift.getImportGoodsHis().getList().add(new ImportedGoods(repo.getList().get(2)));
+//        shift.getImportGoodsHis().getList().add(new ImportedGoods(repo.getList().get(3)));
+//        shift.getImportGoodsHis().getList().add(new ImportedGoods(repo.getList().get(4)));
+//        shift.getImportGoodsHis().getList().add(new ImportedGoods(repo.getList().get(8)));
+//        shift.getImportGoodsHis().getList().add(new ImportedGoods(repo.getList().get(12)));
+//        
     }
 
     public void clearScreen() {
