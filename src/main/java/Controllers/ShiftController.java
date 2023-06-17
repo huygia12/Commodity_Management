@@ -397,6 +397,7 @@ public class ShiftController {
         shift.setTax(tax);
         shift.setOpeningBalance(openBalance);
         shift.setEmployeeOfThisShift(employeeList);
+        shift.setNote(note);
         return shift;
     }
     

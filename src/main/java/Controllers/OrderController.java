@@ -103,10 +103,12 @@ public class OrderController extends GoodsListController {
         }
     }
 
-    public Order makeNewOrder(Shift shift, IDGenerator idGenerator) {
+    public Order makeNewOrder(Shift shift, IDGenerator idGenerator, 
+            Employee cashier, int tax, PaymentOptions paymentOptions) {
         Order order = new Order(idGenerator.generateID(Order.class.getName(), 6));
-        // thêm order hiện tại vào lịch sử ca hiện tại
-        shift.getOrderHisPerShift().add(order);
+        order.setCashier(cashier);
+        order.setTax(tax);
+        order.setPaymentOptions(paymentOptions);
         return order;
     }
 

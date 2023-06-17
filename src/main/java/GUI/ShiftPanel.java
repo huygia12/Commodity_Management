@@ -21,10 +21,12 @@ import Models.Shipment;
 import Models.Store;
 import Ultility.Cautions;
 import Ultility.IDGenerator;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 import javax.swing.JOptionPane;
 import javax.swing.JTextField;
 import javax.swing.ScrollPaneConstants;
+import javax.swing.border.TitledBorder;
 import javax.swing.table.DefaultTableModel;
 
 /**
@@ -62,13 +64,23 @@ public class ShiftPanel extends javax.swing.JPanel {
         cashierPhoneNumLable = new javax.swing.JLabel();
         cashierPhoneNumTextField = new javax.swing.JTextField();
         fromLabel = new javax.swing.JLabel();
-        fromTextField = new javax.swing.JTextField();
-        toTextField = new javax.swing.JTextField();
+        fromHourTextField = new javax.swing.JTextField();
         toLabel = new javax.swing.JLabel();
         refreashBtn = new javax.swing.JButton();
         searchBtn = new javax.swing.JButton();
+        fromMinuteTextField = new javax.swing.JTextField();
+        fromSecondTextField = new javax.swing.JTextField();
+        separatorLabel4 = new javax.swing.JLabel();
+        separatorLabel3 = new javax.swing.JLabel();
+        toHourTextField = new javax.swing.JTextField();
+        separatorLabel1 = new javax.swing.JLabel();
+        toMinuteTextField = new javax.swing.JTextField();
+        toSecondTextField = new javax.swing.JTextField();
+        separatorLabel2 = new javax.swing.JLabel();
+        orderDateTextField = new javax.swing.JTextField();
+        orderDateLabel = new javax.swing.JLabel();
         overViewTableJScrollPane = new javax.swing.JScrollPane();
-        overViewTable = new javax.swing.JTable();
+        orderListTable = new javax.swing.JTable();
         otherFunctionPanel = new javax.swing.JPanel();
         currentShiftOverViewPanel = new javax.swing.JPanel();
         openBalanceLabel = new javax.swing.JLabel();
@@ -91,8 +103,8 @@ public class ShiftPanel extends javax.swing.JPanel {
         endShiftBtn = new javax.swing.JButton();
         noteScrollPane = new javax.swing.JScrollPane();
         noteArea = new javax.swing.JTextArea();
-        displayDetailJScrollPane = new javax.swing.JScrollPane();
-        displayDetailTable = new javax.swing.JTable();
+        orderDetailJScrollPane = new javax.swing.JScrollPane();
+        orderDetailTable = new javax.swing.JTable();
 
         setMinimumSize(new java.awt.Dimension(977, 645));
         setPreferredSize(new java.awt.Dimension(977, 645));
@@ -141,7 +153,7 @@ public class ShiftPanel extends javax.swing.JPanel {
         searchPanel.setPreferredSize(new java.awt.Dimension(350, 200));
 
         orderIDLabel.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
-        orderIDLabel.setText("Mã HD: ");
+        orderIDLabel.setText("Mã HĐ: ");
 
         orderIDTextField.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         orderIDTextField.setHorizontalAlignment(javax.swing.JTextField.CENTER);
@@ -153,22 +165,22 @@ public class ShiftPanel extends javax.swing.JPanel {
         cashierPhoneNumTextField.setHorizontalAlignment(javax.swing.JTextField.CENTER);
 
         fromLabel.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
-        fromLabel.setText("Từ :");
+        fromLabel.setText("Từ:");
 
-        fromTextField.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
-        fromTextField.setHorizontalAlignment(javax.swing.JTextField.CENTER);
-
-        toTextField.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
-        toTextField.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        fromHourTextField.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        fromHourTextField.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        fromHourTextField.setText("00");
+        fromHourTextField.setMaximumSize(new java.awt.Dimension(64, 26));
 
         toLabel.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
-        toLabel.setText("Đến :");
+        toLabel.setText("Đến:");
 
         refreashBtn.setBackground(new java.awt.Color(255, 0, 0));
         refreashBtn.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
         refreashBtn.setForeground(new java.awt.Color(255, 255, 255));
         refreashBtn.setText("Làm Mới");
         refreashBtn.setMaximumSize(new java.awt.Dimension(107, 27));
+        refreashBtn.setMinimumSize(new java.awt.Dimension(107, 27));
         refreashBtn.setPreferredSize(new java.awt.Dimension(107, 27));
         refreashBtn.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -180,12 +192,52 @@ public class ShiftPanel extends javax.swing.JPanel {
         searchBtn.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
         searchBtn.setText("Tìm Kiếm");
         searchBtn.setMaximumSize(new java.awt.Dimension(107, 27));
+        searchBtn.setMinimumSize(new java.awt.Dimension(107, 27));
         searchBtn.setPreferredSize(new java.awt.Dimension(107, 27));
         searchBtn.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 searchBtnActionPerformed(evt);
             }
         });
+
+        fromMinuteTextField.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        fromMinuteTextField.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        fromMinuteTextField.setText("00");
+        fromMinuteTextField.setMaximumSize(new java.awt.Dimension(64, 26));
+
+        fromSecondTextField.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        fromSecondTextField.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        fromSecondTextField.setText("00");
+
+        separatorLabel4.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
+        separatorLabel4.setText("/");
+
+        separatorLabel3.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
+        separatorLabel3.setText("/");
+
+        toHourTextField.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        toHourTextField.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        toHourTextField.setText("00");
+
+        separatorLabel1.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
+        separatorLabel1.setText("/");
+
+        toMinuteTextField.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        toMinuteTextField.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        toMinuteTextField.setText("00");
+
+        toSecondTextField.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        toSecondTextField.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        toSecondTextField.setText("00");
+
+        separatorLabel2.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
+        separatorLabel2.setText("/");
+
+        orderDateTextField.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        orderDateTextField.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+
+        orderDateLabel.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        orderDateLabel.setText("Ngày lập HĐ:");
 
         javax.swing.GroupLayout searchPanelLayout = new javax.swing.GroupLayout(searchPanel);
         searchPanel.setLayout(searchPanelLayout);
@@ -195,52 +247,76 @@ public class ShiftPanel extends javax.swing.JPanel {
                 .addContainerGap()
                 .addGroup(searchPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(searchPanelLayout.createSequentialGroup()
+                        .addComponent(searchBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 155, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(refreashBtn, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addGroup(searchPanelLayout.createSequentialGroup()
                         .addGap(16, 16, 16)
                         .addGroup(searchPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(cashierPhoneNumLable)
-                            .addComponent(orderIDLabel))
+                            .addComponent(orderIDLabel)
+                            .addComponent(orderDateLabel))
                         .addGap(29, 29, 29)
-                        .addGroup(searchPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addComponent(cashierPhoneNumTextField, javax.swing.GroupLayout.PREFERRED_SIZE, 134, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(orderIDTextField, javax.swing.GroupLayout.PREFERRED_SIZE, 134, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                        .addGroup(searchPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(orderDateTextField, javax.swing.GroupLayout.DEFAULT_SIZE, 152, Short.MAX_VALUE)
+                            .addComponent(cashierPhoneNumTextField)
+                            .addComponent(orderIDTextField)))
                     .addGroup(searchPanelLayout.createSequentialGroup()
-                        .addGroup(searchPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(searchPanelLayout.createSequentialGroup()
-                                .addComponent(fromLabel)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(fromTextField)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                .addComponent(toLabel)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(toTextField, javax.swing.GroupLayout.PREFERRED_SIZE, 123, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, searchPanelLayout.createSequentialGroup()
-                                .addComponent(searchBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 155, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                .addComponent(refreashBtn, javax.swing.GroupLayout.DEFAULT_SIZE, 161, Short.MAX_VALUE)))
-                        .addContainerGap())))
+                        .addComponent(fromLabel)
+                        .addGap(0, 0, 0)
+                        .addComponent(fromHourTextField, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(2, 2, 2)
+                        .addComponent(separatorLabel4, javax.swing.GroupLayout.PREFERRED_SIZE, 8, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(2, 2, 2)
+                        .addComponent(fromMinuteTextField, javax.swing.GroupLayout.PREFERRED_SIZE, 34, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(2, 2, 2)
+                        .addComponent(separatorLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 8, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(2, 2, 2)
+                        .addComponent(fromSecondTextField, javax.swing.GroupLayout.PREFERRED_SIZE, 33, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(26, 26, 26)
+                        .addComponent(toLabel)
+                        .addGap(2, 2, 2)
+                        .addComponent(toHourTextField, javax.swing.GroupLayout.PREFERRED_SIZE, 31, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(2, 2, 2)
+                        .addComponent(separatorLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 8, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(2, 2, 2)
+                        .addComponent(toMinuteTextField, javax.swing.GroupLayout.PREFERRED_SIZE, 31, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(2, 2, 2)
+                        .addComponent(separatorLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 8, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(2, 2, 2)
+                        .addComponent(toSecondTextField, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addContainerGap(16, Short.MAX_VALUE))
         );
         searchPanelLayout.setVerticalGroup(
             searchPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(searchPanelLayout.createSequentialGroup()
-                .addGap(6, 6, 6)
                 .addGroup(searchPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(orderIDTextField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(orderIDLabel))
-                .addGap(15, 15, 15)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(searchPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(cashierPhoneNumLable)
-                    .addComponent(cashierPhoneNumTextField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 15, Short.MAX_VALUE)
-                .addGroup(searchPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(searchPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                        .addComponent(toTextField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addComponent(toLabel))
-                    .addGroup(searchPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                        .addComponent(fromTextField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addComponent(fromLabel)))
-                .addGap(30, 30, 30)
-                .addGroup(searchPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(cashierPhoneNumTextField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(cashierPhoneNumLable))
+                .addGap(6, 6, 6)
+                .addGroup(searchPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(orderDateTextField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(orderDateLabel))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGroup(searchPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(fromLabel)
+                    .addComponent(fromHourTextField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(separatorLabel4)
+                    .addComponent(fromMinuteTextField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(separatorLabel3)
+                    .addComponent(fromSecondTextField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(toLabel)
+                    .addComponent(toHourTextField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(separatorLabel2)
+                    .addComponent(toMinuteTextField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(separatorLabel1)
+                    .addComponent(toSecondTextField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGroup(searchPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(refreashBtn, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(searchBtn, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addContainerGap())
@@ -248,7 +324,7 @@ public class ShiftPanel extends javax.swing.JPanel {
 
         searchAndTablePanel.add(searchPanel, java.awt.BorderLayout.PAGE_START);
 
-        overViewTable.setModel(new javax.swing.table.DefaultTableModel(
+        orderListTable.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
 
             },
@@ -264,14 +340,15 @@ public class ShiftPanel extends javax.swing.JPanel {
                 return canEdit [columnIndex];
             }
         });
-        overViewTable.setPreferredSize(new java.awt.Dimension(350, 80));
-        overViewTable.setShowGrid(true);
-        overViewTable.addMouseListener(new java.awt.event.MouseAdapter() {
+        orderListTable.setAutoResizeMode(javax.swing.JTable.AUTO_RESIZE_OFF);
+        orderListTable.setPreferredSize(new java.awt.Dimension(350, 80));
+        orderListTable.setShowGrid(true);
+        orderListTable.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
-                overViewTableMouseClicked(evt);
+                orderListTableMouseClicked(evt);
             }
         });
-        overViewTableJScrollPane.setViewportView(overViewTable);
+        overViewTableJScrollPane.setViewportView(orderListTable);
 
         searchAndTablePanel.add(overViewTableJScrollPane, java.awt.BorderLayout.CENTER);
 
@@ -281,7 +358,7 @@ public class ShiftPanel extends javax.swing.JPanel {
 
         otherFunctionPanel.setLayout(new java.awt.BorderLayout(0, 10));
 
-        currentShiftOverViewPanel.setBorder(javax.swing.BorderFactory.createTitledBorder("Tổng quan ca làm việc"));
+        currentShiftOverViewPanel.setBorder(javax.swing.BorderFactory.createTitledBorder(""));
         currentShiftOverViewPanel.setPreferredSize(new java.awt.Dimension(617, 234));
 
         openBalanceLabel.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
@@ -302,11 +379,6 @@ public class ShiftPanel extends javax.swing.JPanel {
         shiftEmployeeListComboBox.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         shiftEmployeeListComboBox.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Thay đổi" }));
         shiftEmployeeListComboBox.setAutoscrolls(true);
-        shiftEmployeeListComboBox.addItemListener(new java.awt.event.ItemListener() {
-            public void itemStateChanged(java.awt.event.ItemEvent evt) {
-                shiftEmployeeListComboBoxItemStateChanged(evt);
-            }
-        });
 
         shiftCashierLabel.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         shiftCashierLabel.setText("Thu Ngân Ca:");
@@ -314,11 +386,6 @@ public class ShiftPanel extends javax.swing.JPanel {
         shiftCashierComboBox.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         shiftCashierComboBox.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Thay đổi" }));
         shiftCashierComboBox.setAutoscrolls(true);
-        shiftCashierComboBox.addItemListener(new java.awt.event.ItemListener() {
-            public void itemStateChanged(java.awt.event.ItemEvent evt) {
-                shiftCashierComboBoxItemStateChanged(evt);
-            }
-        });
 
         jSeparator2.setOrientation(javax.swing.SwingConstants.VERTICAL);
 
@@ -366,6 +433,7 @@ public class ShiftPanel extends javax.swing.JPanel {
         });
 
         noteArea.setColumns(20);
+        noteArea.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         noteArea.setRows(5);
         noteArea.setBorder(javax.swing.BorderFactory.createTitledBorder("Ghi chú ca"));
         noteScrollPane.setViewportView(noteArea);
@@ -375,11 +443,7 @@ public class ShiftPanel extends javax.swing.JPanel {
         currentShiftOverViewPanelLayout.setHorizontalGroup(
             currentShiftOverViewPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(currentShiftOverViewPanelLayout.createSequentialGroup()
-                .addGroup(currentShiftOverViewPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addGroup(currentShiftOverViewPanelLayout.createSequentialGroup()
-                        .addContainerGap()
-                        .addComponent(endShiftBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 146, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(78, 78, 78))
+                .addGroup(currentShiftOverViewPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(currentShiftOverViewPanelLayout.createSequentialGroup()
                         .addGap(14, 14, 14)
                         .addGroup(currentShiftOverViewPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -395,7 +459,11 @@ public class ShiftPanel extends javax.swing.JPanel {
                             .addComponent(taxTextField, javax.swing.GroupLayout.Alignment.TRAILING)
                             .addComponent(openBalanceTextField, javax.swing.GroupLayout.Alignment.TRAILING)
                             .addComponent(surchargeTextField))
-                        .addGap(12, 12, 12)))
+                        .addGap(12, 12, 12))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, currentShiftOverViewPanelLayout.createSequentialGroup()
+                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(endShiftBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 146, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(73, 73, 73)))
                 .addComponent(jSeparator2, javax.swing.GroupLayout.PREFERRED_SIZE, 6, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGroup(currentShiftOverViewPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(currentShiftOverViewPanelLayout.createSequentialGroup()
@@ -437,6 +505,7 @@ public class ShiftPanel extends javax.swing.JPanel {
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addComponent(noteScrollPane, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE))
                     .addGroup(currentShiftOverViewPanelLayout.createSequentialGroup()
+                        .addContainerGap()
                         .addGroup(currentShiftOverViewPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(openBalanceTextField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(openBalanceLabel))
@@ -444,26 +513,27 @@ public class ShiftPanel extends javax.swing.JPanel {
                         .addGroup(currentShiftOverViewPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(taxTextField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(taxShiftLabel))
-                        .addGap(6, 6, 6)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(currentShiftOverViewPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(shiftEmployeeListLabel)
-                            .addComponent(shiftEmployeeListComboBox, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGap(6, 6, 6)
+                            .addComponent(shiftEmployeeListComboBox, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(shiftEmployeeListLabel))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(currentShiftOverViewPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(shiftCashierLabel)
-                            .addComponent(shiftCashierComboBox, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGap(6, 6, 6)
+                            .addComponent(shiftCashierComboBox, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(shiftCashierLabel))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(currentShiftOverViewPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(surchargeTextField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(surchargeLabel))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 24, Short.MAX_VALUE)
-                        .addComponent(endShiftBtn, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addGap(15, 15, 15)
+                        .addComponent(endShiftBtn, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(0, 3, Short.MAX_VALUE)))
                 .addContainerGap())
         );
 
         otherFunctionPanel.add(currentShiftOverViewPanel, java.awt.BorderLayout.PAGE_START);
 
-        displayDetailTable.setModel(new javax.swing.table.DefaultTableModel(
+        orderDetailTable.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
 
             },
@@ -479,10 +549,11 @@ public class ShiftPanel extends javax.swing.JPanel {
                 return canEdit [columnIndex];
             }
         });
-        displayDetailTable.setShowGrid(true);
-        displayDetailJScrollPane.setViewportView(displayDetailTable);
+        orderDetailTable.setAutoResizeMode(javax.swing.JTable.AUTO_RESIZE_OFF);
+        orderDetailTable.setShowGrid(true);
+        orderDetailJScrollPane.setViewportView(orderDetailTable);
 
-        otherFunctionPanel.add(displayDetailJScrollPane, java.awt.BorderLayout.CENTER);
+        otherFunctionPanel.add(orderDetailJScrollPane, java.awt.BorderLayout.CENTER);
 
         shiftDetailPanel.add(otherFunctionPanel, java.awt.BorderLayout.CENTER);
 
@@ -497,14 +568,19 @@ public class ShiftPanel extends javax.swing.JPanel {
         // TODO add your handling code here:
     }//GEN-LAST:event_grossRevenueTextFieldActionPerformed
 
-    private void overViewTableMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_overViewTableMouseClicked
-        int selectedRow = overViewTable.getSelectedRow();
+    private void orderListTableMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_orderListTableMouseClicked
+        int selectedRow = orderListTable.getSelectedRow();
         if (selectedRow != -1) {
-            String orderID = overViewTable.getValueAt(selectedRow, 0).toString();
+            String orderID = orderListTable.getValueAt(selectedRow, 0).toString();
             Order selectedOrder = shiftCtr.containOrder(shift.getOrderHisPerShift(), orderID);
             insertorderGoodsListToDisplayDetailTable(selectedOrder);
+            orderIDTextField.setText(orderID);
+            cashierPhoneNumTextField.setText(selectedOrder.getCashier().getPhoneNumber());
+            orderDateTextField.setText(selectedOrder
+                    .getOrderDateTime()
+                    .format(DateTimeFormatter.ofPattern(OUTPUT_DATE_PATTERN)));
         }
-    }//GEN-LAST:event_overViewTableMouseClicked
+    }//GEN-LAST:event_orderListTableMouseClicked
 
     private void endShiftBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_endShiftBtnActionPerformed
         // TODO add your handling code here:
@@ -518,48 +594,29 @@ public class ShiftPanel extends javax.swing.JPanel {
         insertOrderHistoryToOverViewTable(shift.getOrderHisPerShift(), myStore);
     }//GEN-LAST:event_refreashBtnActionPerformed
 
-    private void shiftEmployeeListComboBoxItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_shiftEmployeeListComboBoxItemStateChanged
-//        if (shiftEmployeeListComboBox.getSelectedIndex() == 0) {// thực hiện thêm nhân viên c
-//
-//            String inputStr = JOptionPane.showInputDialog(shiftDetailPanel, "Vui lòng thêm nhân viên vào ca:",
-//                    "Thêm nhân viên", JOptionPane.QUESTION_MESSAGE);
-//            Employee e = employeeListCtr.containEmployee(employeeList, inputStr,
-//                    employeeListCtr.BY_PHONE_NUMBER);
-//            if (e == null) {// kiểm tra xem nhân viên tồn tại hay không 
-//                JOptionPane.showMessageDialog(shiftDetailPanel, INVALID_WARNING,
-//                        "Lỗi", JOptionPane.WARNING_MESSAGE);
-//                return;
-//            }
-//
-//            shift.getEmployeeOfThisShift().getList().add(e);
-//            shiftEmployeeListComboBox.addItem(e.toString());
-//        }
-    }//GEN-LAST:event_shiftEmployeeListComboBoxItemStateChanged
-
-    private void shiftCashierComboBoxItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_shiftCashierComboBoxItemStateChanged
-//        int selectedItem = shiftEmployeeListComboBox.getSelectedIndex();
-//        if (selectedItem == 0) {
-//            JOptionPane.showMessageDialog(shiftDetailPanel, INVALID_CASHIER_WARNING,
-//                    "Lỗi", JOptionPane.WARNING_MESSAGE);
-//        } else {
-//            shift.setCashier(employeeList.getList().get(selectedItem - 1));
-//        }
-    }//GEN-LAST:event_shiftCashierComboBoxItemStateChanged
-
     private void currentShiftBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_currentShiftBtnActionPerformed
         reloadOnShiftMode();
     }//GEN-LAST:event_currentShiftBtnActionPerformed
 
+    private void showComboBoxSelectedItem(javax.swing.JComboBox comboBox) {
+        if (comboBox.getItemCount() > 1) {
+            comboBox.setSelectedIndex(1);
+        } else {
+            comboBox.setSelectedIndex(-1);
+        }
+    }
+
     private void passValueToEmployeeListComboBox() {
-        int bound = shiftCashierComboBox.getItemCount();
+        int bound = shiftEmployeeListComboBox.getItemCount();
         if (bound > 1) {
             for (int i = 1; i < bound; i++) {
-                shiftCashierComboBox.removeItemAt(1);
+                shiftEmployeeListComboBox.removeItemAt(1);
             }
-            shift.getEmployeeOfThisShift().getList().stream().forEach(
-                    e -> shiftEmployeeListComboBox.insertItemAt(e.toString(),
-                            shiftCashierComboBox.getItemCount()));
         }
+        shift.getEmployeeOfThisShift().getList().stream().forEach(
+                e -> shiftEmployeeListComboBox.insertItemAt(e.toString(),
+                        shiftEmployeeListComboBox.getItemCount()));
+        showComboBoxSelectedItem(shiftEmployeeListComboBox);
     }
 
     private void passValueToCashierComboBox() {
@@ -567,8 +624,16 @@ public class ShiftPanel extends javax.swing.JPanel {
             shiftCashierComboBox.removeItemAt(1);
         }
         shiftCashierComboBox.insertItemAt(shift.getCashier().toString(), 1);
+        showComboBoxSelectedItem(shiftCashierComboBox);
     }
 
+    private void clearTableModel(DefaultTableModel tableModel) {
+        int numberOfRow = tableModel.getRowCount();
+        for (int i = 0; i < numberOfRow; i++) {
+            tableModel.removeRow(0);
+        }
+    }
+    
     private void setDefaultOptionToTextField(JTextField textField, int size) {
         textField.setFont(new java.awt.Font("Segoe UI", 0, size));
         textField.setForeground(new java.awt.Color(0, 0, 0));
@@ -584,7 +649,7 @@ public class ShiftPanel extends javax.swing.JPanel {
     }
 
     private void insertorderGoodsListToDisplayDetailTable(Order order) {
-        clearTableModel(overViewModel);
+        clearTableModel(orderDetailModel);
         for (Goods goods : order.getList()) {
             int size = goods.getShipments().size();
             for (int i = 0; i < size; i++) {
@@ -599,7 +664,7 @@ public class ShiftPanel extends javax.swing.JPanel {
     }
 
     private void insertNewOrderGoodsToDisplayDetailTable(Goods goods, Shipment shipment) {
-        displayDetailModel.addRow(new Object[]{
+        orderDetailModel.addRow(new Object[]{
             goods.getID(),
             goods.getGoodsName(),
             goods.getUnit(),
@@ -611,7 +676,7 @@ public class ShiftPanel extends javax.swing.JPanel {
     }
 
     private void insertExistedOrderGoodsToDisplayDetailTable(Shipment shipment) {
-        displayDetailModel.addRow(new Object[]{
+        orderDetailModel.addRow(new Object[]{
             "",
             "",
             "",
@@ -623,25 +688,19 @@ public class ShiftPanel extends javax.swing.JPanel {
     }
 
     private void insertOrderHistoryToOverViewTable(List<Order> orderHistory, Store store) {
-        clearTableModel(overViewModel);
+        clearTableModel(orderListModel);
         for (Order order : orderHistory) {
-            insertNewOrderToOverViewTable(order, store);
+            insertOrderToOverViewTable(order, store);
         }
     }
 
-    private void insertNewOrderToOverViewTable(Order order, Store store) {
-        overViewModel.addRow(new Object[]{
+    private void insertOrderToOverViewTable(Order order, Store store) {
+        orderListModel.addRow(new Object[]{
             order.getID(),
-            order.getOrderDateTime(),
+            order.getOrderDateTime().format(DateTimeFormatter
+            .ofPattern(OUTPUT_DATE_TIME_PATTERN)),
             orderCtr.getTotal(order, store)
         });
-    }
-
-    private void clearTableModel(DefaultTableModel tableModel) {
-        int numberOfRow = tableModel.getRowCount();
-        for (int i = 0; i < numberOfRow; i++) {
-            tableModel.removeRow(0);
-        }
     }
 
     private void setEnableComponentsInSearchPanel(boolean enable) {
@@ -649,10 +708,20 @@ public class ShiftPanel extends javax.swing.JPanel {
         orderIDTextField.setEnabled(enable);
         cashierPhoneNumLable.setEnabled(enable);
         cashierPhoneNumTextField.setEnabled(enable);
+        orderDateLabel.setEnabled(enable);
+        orderDateTextField.setEnabled(enable);
         fromLabel.setEnabled(enable);
-        fromTextField.setEnabled(enable);
+        fromHourTextField.setEnabled(enable);
+        fromMinuteTextField.setEnabled(enable);
+        fromSecondTextField.setEnabled(enable);
         toLabel.setEnabled(enable);
-        toTextField.setEnabled(enable);
+        toHourTextField.setEnabled(enable);
+        toMinuteTextField.setEnabled(enable);
+        toSecondTextField.setEnabled(enable);
+        separatorLabel1.setEnabled(enable);
+        separatorLabel2.setEnabled(enable);
+        separatorLabel3.setEnabled(enable);
+        separatorLabel4.setEnabled(enable);
         searchBtn.setEnabled(enable);
         refreashBtn.setEnabled(enable);
     }
@@ -687,8 +756,61 @@ public class ShiftPanel extends javax.swing.JPanel {
         lastState = enable;
         setEnableComponentsInCurrentShiftOverViewPanel(enable);
         setEnableComponentsInSearchPanel(enable);
-        overViewTable.setEnabled(enable);
-        displayDetailTable.setEnabled(enable);
+        orderListTable.setEnabled(enable);
+        orderDetailTable.setEnabled(enable);
+    }
+
+    private void computeSizeOfEachColumnInTable() {
+        // duyet tu dau den cuoi mang de tim MAX_SIZE cua giatri input tung thuoc tinh
+        for (Order order : shift.getOrderHisPerShift()) {
+            if (order.getID().length() + extraLength > orderIDMaxSize) {
+                goodsIDMaxSize = order.getID().length() + extraLength;
+            }
+            if (order.getOrderDateTime().format(DateTimeFormatter
+                    .ofPattern(OUTPUT_DATE_TIME_PATTERN)).length() + extraLength > orderDateMaxSize) {
+                orderDateMaxSize = order.getOrderDateTime().format(DateTimeFormatter
+                        .ofPattern(OUTPUT_DATE_TIME_PATTERN)).length() + extraLength;
+            }
+            if (String.format(".1f", orderCtr.getTotal(order, myStore)).length() + extraLength
+                    > orderTotalMaxSize) {
+                orderTotalMaxSize = String.format(".1f", orderCtr.getTotal(order, myStore)).length() + extraLength;
+            }
+            for (Goods goods : order.getList()) {
+                if (goods.getID().length() + extraLength > goodsIDMaxSize) {
+                    goodsIDMaxSize = goods.getID().length() + extraLength;
+                }
+                if (goods.getGoodsName().length() + extraLength > goodsNameMaxSize) {
+                    goodsNameMaxSize = goods.getGoodsName().length() + extraLength;
+                }
+                if (goods.getUnit().length() + extraLength > unitMaxSize) {
+                    unitMaxSize = goods.getUnit().length() + extraLength;
+                }
+                if (String.format(".1f", goods.getListPrice()).length() + extraLength > listPriceMaxSize) {
+                    listPriceMaxSize = String.format(".1f", goods.getListPrice()).length() + extraLength;
+                }
+                if (String.format(".1f", goods.getTotalQuantity()).length() + extraLength > totalQuantityMaxSize) {
+                    totalQuantityMaxSize = String.format(".1f", goods.getTotalQuantity()).length() + extraLength;
+                }
+                for (Shipment shipment : goods.getShipments()) {
+                    if (shipment.getID().length() + extraLength > shipmentIDMaxSize) {
+                        shipmentIDMaxSize = shipment.getID().length() + extraLength;
+                    }
+                    if (String.format(".1f", shipment.getQuantity()).length() + extraLength > shipmentQuantityMaxSize) {
+                        shipmentQuantityMaxSize = String.format(".1f", shipment.getQuantity()).length() + extraLength;
+                    }
+                }
+            }
+        }
+        orderListTable.getColumnModel().getColumn(0).setMinWidth(orderIDMaxSize);
+        orderListTable.getColumnModel().getColumn(1).setMinWidth(orderDateMaxSize);
+        orderListTable.getColumnModel().getColumn(2).setMinWidth(orderTotalMaxSize);
+        orderDetailTable.getColumnModel().getColumn(0).setMinWidth(goodsIDMaxSize);
+        orderDetailTable.getColumnModel().getColumn(1).setMinWidth(goodsNameMaxSize);
+        orderDetailTable.getColumnModel().getColumn(2).setMinWidth(unitMaxSize);
+        orderDetailTable.getColumnModel().getColumn(3).setMinWidth(listPriceMaxSize);
+        orderDetailTable.getColumnModel().getColumn(4).setMinWidth(totalQuantityMaxSize);
+        orderDetailTable.getColumnModel().getColumn(5).setMinWidth(shipmentIDMaxSize);
+        orderDetailTable.getColumnModel().getColumn(6).setMinWidth(shipmentQuantityMaxSize);
     }
 
     private void popupOpenShiftFrame() {
@@ -700,6 +822,12 @@ public class ShiftPanel extends javax.swing.JPanel {
         boolean checkOpenShift = shift.getState().equals(ShiftState.OPENED);
         setEnableAllComponents(checkOpenShift);
         if (checkOpenShift) { // nếu đã mở ca thì reload lại các thông số ca
+            TitledBorder tb = (TitledBorder) currentShiftOverViewPanel.getBorder();
+            tb.setTitle(" Mã Ca - " + shift.getID());
+            tb.setTitleFont(new java.awt.Font("Segoe UI", 1, 14));
+            tb.setTitlePosition(TitledBorder.CENTER);
+            computeSizeOfEachColumnInTable();
+            //
             insertOrderHistoryToOverViewTable(shift.getOrderHisPerShift(), myStore);
             numberOfOrderTextField.setText(shiftCtr.getNumberOfOrder(shift) + "");
             grossRevenueTextField.setText(String.format("%.1f", shiftCtr.getGrossRevenue(shift)));
@@ -735,12 +863,12 @@ public class ShiftPanel extends javax.swing.JPanel {
 
     private void initVariables() {
         // Table
-        overViewModel = (DefaultTableModel) overViewTable.getModel();
+        orderListModel = (DefaultTableModel) orderListTable.getModel();
         overViewTableJScrollPane.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_ALWAYS);
         overViewTableJScrollPane.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
-        displayDetailModel = (DefaultTableModel) displayDetailTable.getModel();
-        displayDetailJScrollPane.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_ALWAYS);
-        displayDetailJScrollPane.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
+        orderDetailModel = (DefaultTableModel) orderDetailTable.getModel();
+        orderDetailJScrollPane.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_ALWAYS);
+        orderDetailJScrollPane.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
         // open shift frame
         openShiftFrame = new OpenShiftFrame();
         openShiftFrame.passData(employeeList, shift, idGenerator, this);
@@ -753,13 +881,11 @@ public class ShiftPanel extends javax.swing.JPanel {
     }
 
     public void passData(Shift shift, History history,
-            EmployeeList employeeList, Store myStore,
-            IDGenerator idGenerator, MainFrame mainFrame) {
+            EmployeeList employeeList, Store myStore, MainFrame mainFrame) {
         this.shift = shift;
         this.history = history;
         this.employeeList = employeeList;
         this.myStore = myStore;
-        this.idgenerator = idGenerator;
         this.mainFrame = mainFrame;
         //
         initVariables();
@@ -773,31 +899,42 @@ public class ShiftPanel extends javax.swing.JPanel {
     private ShiftController shiftCtr;
     private EmployeeListController employeeListCtr;
     private OrderController orderCtr;
-    private DefaultTableModel displayDetailModel;
-    private DefaultTableModel overViewModel;
+    private DefaultTableModel orderDetailModel;
+    private DefaultTableModel orderListModel;
     private OpenShiftFrame openShiftFrame;
     private Shift shift;
     private History history;
     private EmployeeList employeeList;
     private Store myStore;
-    private IDGenerator idgenerator;
     private Cautions ctions;
     private MainFrame mainFrame;
-    private final String OUTPUT_DATE_TIME_PATTERN = "dd/MM/yyyy HH:mm:ss";
+    private final String OUTPUT_DATE_PATTERN = "dd/MM/yyyy";
+    private final String OUTPUT_DATE_TIME_PATTERN = "HH:mm:ss dd/MM/yyyy";
     private final String EMPTY_TEXT_FIELD_WARNING = "Ô nhập trống!";
     private final String INVALID_CASHIER_WARNING = "Thu ngân không hợp lệ!";
     private final String INVALID_WARNING = "Không hợp lệ!";
+    private final int extraLength = 100;
+    private int goodsIDMaxSize = "Mã SP".length() + extraLength;
+    private int goodsNameMaxSize = "Tên SP".length() + extraLength;
+    private int unitMaxSize = "ĐV".length() + extraLength;
+    private int listPriceMaxSize = "Đơn giá/ĐV".length() + extraLength;
+    private int shipmentIDMaxSize = "Mã lô".length() + extraLength;
+    private int shipmentQuantityMaxSize = "SL".length() + extraLength;
+    private int totalQuantityMaxSize = "Tong SL".length() + extraLength;
+    private int orderIDMaxSize = "Mã HD".length() + extraLength;
+    private int orderDateMaxSize = "Thời gian lập".length() + extraLength;
+    private int orderTotalMaxSize = "Tổng tiền".length() + extraLength;
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel cashierPhoneNumLable;
     private javax.swing.JTextField cashierPhoneNumTextField;
     private javax.swing.JButton currentShiftBtn;
     private javax.swing.JPanel currentShiftOverViewPanel;
-    private javax.swing.JScrollPane displayDetailJScrollPane;
-    private javax.swing.JTable displayDetailTable;
     private javax.swing.JButton endShiftBtn;
     private javax.swing.JPanel flowBtnPanel;
+    private javax.swing.JTextField fromHourTextField;
     private javax.swing.JLabel fromLabel;
-    private javax.swing.JTextField fromTextField;
+    private javax.swing.JTextField fromMinuteTextField;
+    private javax.swing.JTextField fromSecondTextField;
     private javax.swing.JLabel grossRevenueLabel;
     private javax.swing.JTextField grossRevenueTextField;
     private javax.swing.JSeparator jSeparator2;
@@ -809,17 +946,25 @@ public class ShiftPanel extends javax.swing.JPanel {
     private javax.swing.JTextField numberOfOrderTextField;
     private javax.swing.JLabel openBalanceLabel;
     private javax.swing.JTextField openBalanceTextField;
+    private javax.swing.JLabel orderDateLabel;
+    private javax.swing.JTextField orderDateTextField;
+    private javax.swing.JScrollPane orderDetailJScrollPane;
+    private javax.swing.JTable orderDetailTable;
     private javax.swing.JButton orderHistoryBtn;
     private javax.swing.JLabel orderIDLabel;
     private javax.swing.JTextField orderIDTextField;
+    private javax.swing.JTable orderListTable;
     private javax.swing.JPanel ordersAndShipsHistoryPanel;
     private javax.swing.JPanel otherFunctionPanel;
-    private javax.swing.JTable overViewTable;
     private javax.swing.JScrollPane overViewTableJScrollPane;
     private javax.swing.JButton refreashBtn;
     private javax.swing.JPanel searchAndTablePanel;
     private javax.swing.JButton searchBtn;
     private javax.swing.JPanel searchPanel;
+    private javax.swing.JLabel separatorLabel1;
+    private javax.swing.JLabel separatorLabel2;
+    private javax.swing.JLabel separatorLabel3;
+    private javax.swing.JLabel separatorLabel4;
     private javax.swing.JComboBox<String> shiftCashierComboBox;
     private javax.swing.JLabel shiftCashierLabel;
     private javax.swing.JPanel shiftDetailPanel;
@@ -830,7 +975,9 @@ public class ShiftPanel extends javax.swing.JPanel {
     private javax.swing.JTextField surchargeTextField;
     private javax.swing.JLabel taxShiftLabel;
     private javax.swing.JTextField taxTextField;
+    private javax.swing.JTextField toHourTextField;
     private javax.swing.JLabel toLabel;
-    private javax.swing.JTextField toTextField;
+    private javax.swing.JTextField toMinuteTextField;
+    private javax.swing.JTextField toSecondTextField;
     // End of variables declaration//GEN-END:variables
 }

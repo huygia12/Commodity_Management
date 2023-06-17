@@ -209,6 +209,7 @@
               <Image iconType="3" name="/ImageIcon/icons8-calender-30.png"/>
             </Property>
             <Property name="text" type="java.lang.String" value="L&#x1ecb;ch:"/>
+            <Property name="focusable" type="boolean" value="false"/>
             <Property name="minimumSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
               <Dimension value="[73, 20]"/>
             </Property>
@@ -226,6 +227,7 @@
               <Image iconType="3" name="/ImageIcon/icons8-history-30.png"/>
             </Property>
             <Property name="text" type="java.lang.String" value="Gi&#x1edd; :"/>
+            <Property name="focusable" type="boolean" value="false"/>
             <Property name="minimumSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
               <Dimension value="[34, 20]"/>
             </Property>
@@ -240,6 +242,7 @@
             <Property name="border" type="javax.swing.border.Border" editor="org.netbeans.modules.form.editors2.BorderEditor">
               <Border info="null"/>
             </Property>
+            <Property name="focusable" type="boolean" value="false"/>
             <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
               <Font name="MTO Telephone" size="14" style="0"/>
             </Property>
@@ -257,6 +260,7 @@
             <Property name="formatterFactory" type="javax.swing.JFormattedTextField$AbstractFormatterFactory" editor="org.netbeans.modules.form.editors.AbstractFormatterFactoryEditor">
               <Format subtype="0" type="2"/>
             </Property>
+            <Property name="focusable" type="boolean" value="false"/>
             <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
               <Font name="MTO Telephone" size="14" style="0"/>
             </Property>
