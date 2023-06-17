@@ -13,7 +13,6 @@ import Models.Shift;
 import Ultility.Cautions;
 import Ultility.IDGenerator;
 import java.awt.event.KeyEvent;
-import java.io.File;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import javax.swing.ImageIcon;
@@ -66,8 +65,9 @@ public class OpenShiftFrame extends javax.swing.JFrame {
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Mở Ca Làm Việc");
-        setMinimumSize(new java.awt.Dimension(530, 420));
-        setPreferredSize(new java.awt.Dimension(530, 420));
+        setMaximumSize(new java.awt.Dimension(530, 400));
+        setMinimumSize(new java.awt.Dimension(530, 400));
+        setPreferredSize(new java.awt.Dimension(530, 400));
         setResizable(false);
 
         openBalanceLabel.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
@@ -289,13 +289,14 @@ public class OpenShiftFrame extends javax.swing.JFrame {
             tableAndBtnPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, tableAndBtnPanelLayout.createSequentialGroup()
                 .addGap(153, 153, 153)
-                .addGroup(tableAndBtnPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(denyBtn, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(acceptBtn)))
+                .addGroup(tableAndBtnPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                    .addComponent(denyBtn, javax.swing.GroupLayout.DEFAULT_SIZE, 25, Short.MAX_VALUE)
+                    .addComponent(acceptBtn, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap())
             .addGroup(tableAndBtnPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                 .addGroup(tableAndBtnPanelLayout.createSequentialGroup()
                     .addComponent(employeeListScrollPane, javax.swing.GroupLayout.PREFERRED_SIZE, 148, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addGap(0, 31, Short.MAX_VALUE)))
+                    .addGap(0, 36, Short.MAX_VALUE)))
         );
 
         getContentPane().add(tableAndBtnPanel, java.awt.BorderLayout.CENTER);

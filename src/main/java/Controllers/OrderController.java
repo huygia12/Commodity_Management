@@ -198,9 +198,9 @@ public class OrderController extends GoodsListController {
     public void payOrder(Order order, Shift shift, GoodsList<Goods> repository, Store store) {
         if (order.getCustomerCard() != null) {
             cardCtr.gainPoint(order.getCustomerCard(), getTotal(order, store), store);
+            cardCtr.usePoint(order.getCustomerCard(), order.getPointDiscount());
         }
         order.setOrderDateTime();
-        cardCtr.usePoint(order.getCustomerCard(), order.getPointDiscount());
         shift.getOrderHisPerShift().add(order);
         updateQuanAfterPay(repository, order);
     }
