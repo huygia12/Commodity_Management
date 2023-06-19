@@ -48,11 +48,14 @@ public class OrderController extends GoodsListController {
 
     public BigDecimal getTotal(Order order, Store store) {
         // Khoan tien can thanh toan khi da tru di discount va cong them VAT
-        return (getSubTotal(order)
+        BigDecimal total = (getSubTotal(order)
                 .add(getTaxAmount(order)))
                 .multiply(new BigDecimal(1.0 - order.getDiscount() * 1.0 / 100))
-                .subtract(getPointDiscountAmount(order, store))
                 .add(order.getShippingFee());
+        if(order.getCustomerCard()!=null){
+            total = total.subtract(getPointDiscountAmount(order, store));
+        }
+        return total;
     }
 
     public BigDecimal getDiscountAmount(Order order) {
@@ -66,8 +69,9 @@ public class OrderController extends GoodsListController {
     }
 
     public BigDecimal getPointDiscountAmount(Order order, Store store) {
-        return cardCtr
-                .convertPointToMoney(order.getCustomerCard(), order.getPointDiscount(), store);
+        return (order.getCustomerCard() == null) ? BigDecimal.ZERO : cardCtr
+                .convertPointToMoney(order.getCustomerCard(), 
+                        order.getPointDiscount(), store);
     }
 
     public GoodsList<Goods> makeDraftGoodsList(GoodsList<Goods> repoGoodsList) {

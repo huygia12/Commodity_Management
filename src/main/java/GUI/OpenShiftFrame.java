@@ -150,11 +150,6 @@ public class OpenShiftFrame extends javax.swing.JFrame {
                 cashierComboBoxItemStateChanged(evt);
             }
         });
-        cashierComboBox.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                cashierComboBoxActionPerformed(evt);
-            }
-        });
 
         addToEmployeeListComboBox.setText("Thêm ");
         addToEmployeeListComboBox.setMaximumSize(new java.awt.Dimension(72, 25));
@@ -279,6 +274,7 @@ public class OpenShiftFrame extends javax.swing.JFrame {
 
         denyBtn.setBackground(new java.awt.Color(255, 0, 0));
         denyBtn.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
+        denyBtn.setForeground(new java.awt.Color(255, 255, 255));
         denyBtn.setText("Hủy");
         denyBtn.setMaximumSize(new java.awt.Dimension(83, 25));
         denyBtn.setMinimumSize(new java.awt.Dimension(83, 25));
@@ -377,7 +373,7 @@ public class OpenShiftFrame extends javax.swing.JFrame {
             checkTax = true;
             shiftTax = Math.min(Integer.parseInt(taxStr), 100);
             taxTextField.setText(shiftTax + "");
-            shiftEmployeeListComboBox.requestFocus();
+            cashierComboBox.requestFocus();
         }
     }//GEN-LAST:event_taxTextFieldKeyPressed
 
@@ -409,9 +405,8 @@ public class OpenShiftFrame extends javax.swing.JFrame {
         if (evt.getKeyCode() == KeyEvent.VK_ENTER) {
             String openBalanceStr = openBalanceTextField.getText();
             if (openBalanceStr.isBlank()) { //Kiểm tra ô trống
-                openBalanceTextField.setText("0");
+                openBalanceTextField.setText("0.0");
                 shiftOpenBalance = BigDecimal.ZERO;
-                checkOpenBalance = false;
                 return;
             }
             if (!ctions.checkIfAValidNumberForGUI(openBalanceStr)) {
@@ -421,6 +416,7 @@ public class OpenShiftFrame extends javax.swing.JFrame {
             }
             checkOpenBalance = true;
             shiftOpenBalance = new BigDecimal(openBalanceStr);
+            openBalanceTextField.setText(String.format("%.1f", shiftOpenBalance));
             taxTextField.requestFocus();
         }
     }//GEN-LAST:event_openBalanceTextFieldKeyPressed
@@ -428,9 +424,8 @@ public class OpenShiftFrame extends javax.swing.JFrame {
     private void openBalanceTextFieldMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_openBalanceTextFieldMouseExited
         String openBalanceStr = openBalanceTextField.getText();
         if (openBalanceStr.isBlank()) { //Kiểm tra ô trống
-            openBalanceTextField.setText("0");
+            openBalanceTextField.setText("0.0");
             shiftOpenBalance = BigDecimal.ZERO;
-            checkOpenBalance = false;
             return;
         }
         if (!ctions.checkIfAValidNumberForGUI(openBalanceStr)) {
@@ -440,6 +435,7 @@ public class OpenShiftFrame extends javax.swing.JFrame {
         }
         checkOpenBalance = true;
         shiftOpenBalance = new BigDecimal(openBalanceStr);
+        openBalanceTextField.setText(String.format("%.1f", shiftOpenBalance));
     }//GEN-LAST:event_openBalanceTextFieldMouseExited
 
     private void openBalanceTextFieldMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_openBalanceTextFieldMouseClicked
@@ -452,7 +448,7 @@ public class OpenShiftFrame extends javax.swing.JFrame {
         int choice = JOptionPane.showConfirmDialog(this,
                 SET_DEFAULT_WARNING, "Cảnh báo", JOptionPane.OK_CANCEL_OPTION);
         if (choice == 0) {
-            reload();
+            setDefaultToAllComponents();
         }
     }//GEN-LAST:event_denyBtnActionPerformed
 
@@ -522,10 +518,6 @@ public class OpenShiftFrame extends javax.swing.JFrame {
         this.dispose();
     }//GEN-LAST:event_acceptBtnActionPerformed
 
-    private void cashierComboBoxActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cashierComboBoxActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_cashierComboBoxActionPerformed
-
     /**
      * @param args the command line arguments
      */
@@ -576,6 +568,7 @@ public class OpenShiftFrame extends javax.swing.JFrame {
         }
         if (!shiftCashier.toString().equals(new Employee().toString())) {
             cashierComboBox.insertItemAt(shiftCashier.toString(), 1);
+            cashierComboBox.setSelectedIndex(1);
         }
     }
 
@@ -629,7 +622,15 @@ public class OpenShiftFrame extends javax.swing.JFrame {
         employeeListTable.getColumnModel().getColumn(3).setMinWidth(employeePhoneNumMaxSize);
     }
 
+    private void clearTableModel(DefaultTableModel tableModel) {
+        int numberOfRow = tableModel.getRowCount();
+        for (int i = 0; i < numberOfRow; i++) {
+            tableModel.removeRow(0);
+        }
+    }
+    
     private void insertEmployeeToEmployeeListTable() {
+        clearTableModel(employeeListModel);
         employeeList.getList().stream().forEach(e -> employeeListModel.addRow(new Object[]{
             e.getFirstName(),
             e.getLastName(),
@@ -638,7 +639,7 @@ public class OpenShiftFrame extends javax.swing.JFrame {
         }));
     }
 
-    public void reload() {
+    private void setDefaultToAllComponents(){
         //set các giá trị đã lưu của ca thành default
         shiftOpenBalance = BigDecimal.ZERO;
         shiftTax = 0;
@@ -647,6 +648,21 @@ public class OpenShiftFrame extends javax.swing.JFrame {
         //set các giá trị component hiển thị thành default
         openBalanceTextField.setText("0");
         taxTextField.setText("0");
+        passValueToCashierComboBox();
+        passValueToEmployeeListComboBox();
+    }
+    
+    public void reload() {
+        //set các giá trị đã lưu của ca thành default
+        shiftOpenBalance = shift.getOpeningBalance();
+        shiftTax = shift.getTax();
+        shiftCashier = (shift.getCashier() == null) ? new Employee() : shift.getCashier();
+        shiftEmployeeList = shift.getEmployeeOfThisShift();
+        checkOpenBalance = true;
+        checkTax = true;
+        //set các giá trị component hiển thị thành default
+        openBalanceTextField.setText(String.format("%.1f", shiftOpenBalance));
+        taxTextField.setText(shiftTax+"");
         passValueToCashierComboBox();
         passValueToEmployeeListComboBox();
     }
@@ -666,12 +682,7 @@ public class OpenShiftFrame extends javax.swing.JFrame {
         employeeListCtr = new EmployeeListController();
         shiftCtr = new ShiftController();
         ctions = new Cautions();
-        shiftOpenBalance = BigDecimal.ZERO;
-        shiftTax = 0;
-        shiftEmployeeList = new EmployeeList(new ArrayList<>());
-        shiftCashier = new Employee();
-        openBalanceTextField.setText("0");
-        taxTextField.setText("0");
+        reload();
     }
 
     public void passData(EmployeeList employeeList, Shift shift,

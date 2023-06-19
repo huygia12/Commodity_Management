@@ -227,12 +227,11 @@ public class PurchasePanel extends javax.swing.JPanel {
                         .addGroup(employeeAndCustomerPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                             .addComponent(cashierTextField)
                             .addComponent(employeeListComboBox, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(customerIDText, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                        .addGap(0, 16, Short.MAX_VALUE))
+                            .addComponent(customerIDText, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
                     .addGroup(employeeAndCustomerPanelLayout.createSequentialGroup()
-                        .addGap(35, 35, 35)
-                        .addComponent(customerPointCheckTextField, javax.swing.GroupLayout.PREFERRED_SIZE, 73, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
+                        .addGap(19, 19, 19)
+                        .addComponent(customerPointCheckTextField, javax.swing.GroupLayout.PREFERRED_SIZE, 104, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addGap(0, 16, Short.MAX_VALUE))
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, employeeAndCustomerPanelLayout.createSequentialGroup()
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(checkCustomerIDBtn)
@@ -1016,13 +1015,9 @@ public class PurchasePanel extends javax.swing.JPanel {
                         .addContainerGap())
                     .addGroup(mainOrderFunctionPanelLayout.createSequentialGroup()
                         .addGroup(mainOrderFunctionPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(mainOrderFunctionPanelLayout.createSequentialGroup()
-                                .addComponent(quantityLabel)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, mainOrderFunctionPanelLayout.createSequentialGroup()
-                                .addGap(0, 0, Short.MAX_VALUE)
-                                .addComponent(searchBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 98, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(27, 27, 27)))
+                            .addComponent(quantityLabel)
+                            .addComponent(searchBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 98, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addGroup(mainOrderFunctionPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(addBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 85, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(warningTextField, javax.swing.GroupLayout.PREFERRED_SIZE, 170, javax.swing.GroupLayout.PREFERRED_SIZE))
@@ -1075,8 +1070,9 @@ public class PurchasePanel extends javax.swing.JPanel {
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addGroup(mainOrderFunctionPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(mainOrderFunctionPanelLayout.createSequentialGroup()
+                                .addGap(2, 2, 2)
                                 .addComponent(searchBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(8, 8, 8)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                 .addComponent(quantityLabel))
                             .addGroup(mainOrderFunctionPanelLayout.createSequentialGroup()
                                 .addComponent(warningTextField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -1214,10 +1210,16 @@ public class PurchasePanel extends javax.swing.JPanel {
         if (customerID.isBlank()) { // Kiểm tra xem có trống hay không
             insertWarningToTextField(customerPointCheckTextField, EMPTY_TEXT_FIELD_WARNING, 12);
             customerIDWarningCheck = false;
+            setDefaultOptionToTextField(pointDiscountText, 12);
+            pointDiscountText.setEditable(false);
+            order.setCustomerCard(customerCard);
             return;
         } else if (!ctions.checkIfANumberSequenceForGUI(customerID)) { // kiểm tra xem có phải là số hợp lệ không 
             insertWarningToTextField(customerPointCheckTextField, INVALID_WARNING, 12);
             customerIDWarningCheck = false;
+            setDefaultOptionToTextField(pointDiscountText, 12);
+            pointDiscountText.setEditable(false);
+            order.setCustomerCard(customerCard);
             return;
         }
         // Thực hiện chức năng
@@ -1226,14 +1228,17 @@ public class PurchasePanel extends javax.swing.JPanel {
             insertWarningToTextField(customerPointCheckTextField,
                     CUSTOMER_CARD_NOT_EXIST, 12);
             customerIDWarningCheck = false;
+            setDefaultOptionToTextField(pointDiscountText, 12);
             pointDiscountText.setEditable(false);
         } else {
             customerIDText.setText(customerID);
+            pointDiscountText.setText("0");
             customerIDWarningCheck = true;
             customerPointCheckTextField.setText(customerCard.getPoint() + "");
             pointDiscountText.setEditable(true);
         }
         order.setCustomerCard(customerCard);
+        loadMainFee(order);
     }//GEN-LAST:event_checkCustomerIDBtnActionPerformed
 
     private void customerMoneyTextMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_customerMoneyTextMouseClicked
@@ -1273,10 +1278,12 @@ public class PurchasePanel extends javax.swing.JPanel {
                 return;
             }
             if (shippingFeeStr.isBlank()) {
+                shippingFeeText.setText("0.0");
                 order.setShippingFee(BigDecimal.ZERO);
                 return;
             }
             order.setShippingFee(new BigDecimal(shippingFeeStr));
+            shippingFeeText.setText(String.format("%.1f", order.getShippingFee()));
             shippingFeeWarningCheck = true;
             if (ifCashPayment) {
                 customerMoneyText.requestFocus();
@@ -1288,7 +1295,8 @@ public class PurchasePanel extends javax.swing.JPanel {
     }//GEN-LAST:event_shippingFeeTextKeyPressed
 
     private void customerMoneyTextKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_customerMoneyTextKeyPressed
-        if (evt.getKeyCode() == KeyEvent.VK_ENTER) {
+        if (evt.getKeyCode() == KeyEvent.VK_ENTER 
+                && order.getPaymentOptions().equals(PaymentOptions.CASH_PAYMENT)) {
             String customerMoneyStr = customerMoneyText.getText();
             if (customerMoneyStr.isBlank()) { // kiểm tra xem textField có trống không
                 insertWarningToTextField(customerMoneyText, EMPTY_TEXT_FIELD_WARNING, 12);
@@ -1315,7 +1323,7 @@ public class PurchasePanel extends javax.swing.JPanel {
         int selectedItem = employeeListComboBox.getSelectedIndex();
         if (selectedItem != -1) {
             if (selectedItem == 0) {
-                insertWarningToTextField(customerPointCheckTextField, NONE_SELECTED_CASHIER, 12);
+                insertWarningToTextField(cashierTextField, NONE_SELECTED_CASHIER, 12);
             } else {
                 order.setCashier(employeeList.getList().get(selectedItem - 1));
                 cashierTextField.setText(employeeListComboBox.getSelectedItem().toString());
@@ -1332,12 +1340,14 @@ public class PurchasePanel extends javax.swing.JPanel {
                 return;
             }
             if (discountStr.isBlank()) {
+                discountText.setText("0");
                 order.setDiscount(0);
                 return;
             }
             order.setDiscount(Math.min(100, Integer.parseInt(discountStr)));
+            discountText.setText(order.getDiscount() + "");
             discountWarningCheck = true;
-            if (customerIDWarningCheck) {
+            if (order.getCustomerCard() != null) {
                 pointDiscountText.requestFocus();
             }
             loadMainFee(order);
@@ -1345,7 +1355,7 @@ public class PurchasePanel extends javax.swing.JPanel {
     }//GEN-LAST:event_discountTextKeyPressed
 
     private void pointDiscountTextKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_pointDiscountTextKeyPressed
-        if (evt.getKeyCode() == KeyEvent.VK_ENTER) {
+        if (evt.getKeyCode() == KeyEvent.VK_ENTER && order.getCustomerCard() != null) {
             String pointDiscountStr = pointDiscountText.getText();
             if (!ctions.checkIfANumberSequenceForGUI(pointDiscountStr) && !pointDiscountStr.isBlank()) {// kiểm tra xem có phải số hợp lệ hay không
                 insertWarningToTextField(pointDiscountText, INVALID_WARNING, 12);
@@ -1353,6 +1363,7 @@ public class PurchasePanel extends javax.swing.JPanel {
                 return;
             }
             if (pointDiscountStr.isBlank()) {
+                pointDiscountText.setText("0");
                 order.setPointDiscount(BigInteger.ZERO);
                 return;
             }
@@ -1377,6 +1388,7 @@ public class PurchasePanel extends javax.swing.JPanel {
             order.setPaymentOptions(PaymentOptions.CASH_PAYMENT);
         }
         setDefaultOptionToTextField(customerMoneyText, 12);
+        customerMoneyText.setText((order.getPaymentOptions() == PaymentOptions.CASH_PAYMENT) ? "0.0": "");
         customerMoneyText.setEditable(editable);
         if (!taxBindWithShift) {
             taxText.requestFocus();
@@ -1399,6 +1411,7 @@ public class PurchasePanel extends javax.swing.JPanel {
                 return;
             }
             if (taxStr.isBlank()) {
+                taxText.setText("0");
                 order.setTax(0);
                 return;
             }
@@ -1418,6 +1431,7 @@ public class PurchasePanel extends javax.swing.JPanel {
                     return;
                 }
                 if (taxStr.isBlank()) {
+                    taxText.setText("0");
                     order.setTax(0);
                     return;
                 }
@@ -1445,32 +1459,33 @@ public class PurchasePanel extends javax.swing.JPanel {
             return;
         }
         if (shippingFeeStr.isBlank()) {
+            shippingFeeText.setText("0.0");
             order.setShippingFee(BigDecimal.ZERO);
             return;
         }
         order.setShippingFee(new BigDecimal(shippingFeeStr));
+        shippingFeeText.setText(String.format("%.1f", order.getShippingFee()));
         shippingFeeWarningCheck = true;
         loadMainFee(order);
     }//GEN-LAST:event_shippingFeeTextMouseExited
 
     private void customerMoneyTextMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_customerMoneyTextMouseExited
-        String customerMoneyStr = customerMoneyText.getText();
-        if (customerMoneyStr.isBlank()) { // kiểm tra xemD textField có trống không
-            customerMoneyWarningCheck = false;
-            return;
-        } else if (!ctions.checkIfAValidNumberForGUI(customerMoneyStr)) {// kiểm tra xem có phải số hợp lệ hay không
-            customerMoneyWarningCheck = false;
-            insertWarningToTextField(customerMoneyText, INVALID_WARNING, 12);
-            return;
+        if (order.getPaymentOptions().equals(PaymentOptions.CASH_PAYMENT)) {
+            String customerMoneyStr = customerMoneyText.getText();
+            if (customerMoneyStr.isBlank()) { // kiểm tra xemD textField có trống không
+                customerMoneyText.setText("0.0");
+                customerMoneyWarningCheck = false;
+                return;
+            } else if (!ctions.checkIfAValidNumberForGUI(customerMoneyStr)) {// kiểm tra xem có phải số hợp lệ hay không
+                customerMoneyWarningCheck = false;
+                insertWarningToTextField(customerMoneyText, INVALID_WARNING, 12);
+                return;
+            }
+            BigDecimal customerMoney = new BigDecimal(customerMoneyStr);
+            order.setCusMoney(customerMoney);
+            customerMoneyWarningCheck = true;
+            loadMainFee(order);
         }
-        BigDecimal customerMoney = new BigDecimal(customerMoneyStr);
-        if (insufficientCustomerMoneyCheck(customerMoney)) {
-            return;
-        }
-        order.setCusMoney(customerMoney);
-        customerMoneyWarningCheck = true;
-        discountText.requestFocus();
-        loadMainFee(order);
     }//GEN-LAST:event_customerMoneyTextMouseExited
 
     private void discountTextMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_discountTextMouseExited
@@ -1482,31 +1497,35 @@ public class PurchasePanel extends javax.swing.JPanel {
         }
         if (discountStr.isBlank()) {
             order.setDiscount(0);
+            discountText.setText("0");
             return;
         }
         order.setDiscount(Math.min(100, Integer.parseInt(discountStr)));
+        discountText.setText(order.getDiscount() + "");
         discountWarningCheck = true;
         loadMainFee(order);
         payBtn.requestFocus();
     }//GEN-LAST:event_discountTextMouseExited
 
     private void pointDiscountTextMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_pointDiscountTextMouseExited
-        String pointDiscountStr = pointDiscountText.getText();
-        if (!ctions.checkIfANumberSequenceForGUI(pointDiscountStr) && !pointDiscountStr.isBlank()) {// kiểm tra xem có phải số hợp lệ hay không
-            insertWarningToTextField(pointDiscountText, INVALID_WARNING, 12);
-            pointDiscountWarningCheck = false;
-            return;
+        if (order.getCustomerCard() != null) {
+            String pointDiscountStr = pointDiscountText.getText();
+            if (!ctions.checkIfANumberSequenceForGUI(pointDiscountStr) && !pointDiscountStr.isBlank()) {// kiểm tra xem có phải số hợp lệ hay không
+                insertWarningToTextField(pointDiscountText, INVALID_WARNING, 12);
+                pointDiscountWarningCheck = false;
+                return;
+            }
+            if (pointDiscountStr.isBlank()) {
+                order.setPointDiscount(BigInteger.ZERO);
+                return;
+            }
+            pointDiscountWarningCheck = true;
+            BigInteger usedPoint = new BigInteger(pointDiscountStr);
+            BigInteger customerPoint = order.getCustomerCard().getPoint();
+            order.setPointDiscount(usedPoint.compareTo(customerPoint) >= 0 ? customerPoint : usedPoint);
+            pointDiscountText.setText(order.getPointDiscount() + "");
+            loadMainFee(order);
         }
-        if (pointDiscountStr.isBlank()) {
-            order.setPointDiscount(BigInteger.ZERO);
-            return;
-        }
-        pointDiscountWarningCheck = true;
-        BigInteger usedPoint = new BigInteger(pointDiscountStr);
-        BigInteger customerPoint = order.getCustomerCard().getPoint();
-        order.setPointDiscount(usedPoint.compareTo(customerPoint) >= 0 ? customerPoint : usedPoint);
-        pointDiscountText.setText(order.getPointDiscount() + "");
-        loadMainFee(order);
     }//GEN-LAST:event_pointDiscountTextMouseExited
 
     private void customerIDTextKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_customerIDTextKeyPressed
@@ -2112,12 +2131,11 @@ public class PurchasePanel extends javax.swing.JPanel {
         if (taxBindWithShift) {
             taxText.setText(shift.getTax() + "");
         } else {
-            taxText.setText("");
+            taxText.setText("0");
         }
-        shippingFeeText.setText("");
-        customerMoneyText.setText("");
-        discountText.setText("");
-        pointDiscountText.setText("");
+        shippingFeeText.setText("0.0");
+        customerMoneyText.setText("0.0");
+        discountText.setText("0");
     }
 
     private void setDefaultValuesToComponentsInMainFeePanel() {
@@ -2242,7 +2260,9 @@ public class PurchasePanel extends javax.swing.JPanel {
         subTotalTextField.setText(String.format("%.1f", orderCtr.getSubTotal(order)));
         taxAmountTextField.setText(String.format("%.1f", orderCtr.getTaxAmount(order)));
         discountAmountTextField.setText(String.format("%.1f", orderCtr.getDiscountAmount(order)));
-        pointDiscountAmountTextField.setText(String.format("%.1f", orderCtr.getPointDiscountAmount(order, settings.getStore())));
+        BigDecimal pointDiscountAmount = (!customerIDWarningCheck)
+                ? BigDecimal.ZERO : orderCtr.getPointDiscountAmount(order, settings.getStore());
+        pointDiscountAmountTextField.setText(String.format("%.1f", pointDiscountAmount));
         totalTextField.setText(String.format("%.1f", orderCtr.getTotal(order, settings.getStore())));
         BigDecimal change = (order.getPaymentOptions().compareTo(PaymentOptions.OTHER_PAYMENT) == 0)
                 ? BigDecimal.ZERO : orderCtr.getChange(order, settings.getStore());
@@ -2382,9 +2402,9 @@ public class PurchasePanel extends javax.swing.JPanel {
     private boolean unitFilterCheck = false;
     private boolean pointDiscountWarningCheck = false;
     private boolean discountWarningCheck = false;
+    private boolean customerIDWarningCheck = false;
     private boolean taxWarningCheck = false;
     private boolean shippingFeeWarningCheck = false;
-    private boolean customerIDWarningCheck = false;
     private boolean customerMoneyWarningCheck = false;
     private boolean cashierBindWithShift;
     private boolean taxBindWithShift;

@@ -89,14 +89,14 @@ public class MainFrame extends javax.swing.JFrame {
 
         dateTimeSeparator.setOrientation(javax.swing.SwingConstants.VERTICAL);
 
-        dateLabel.setFont(new java.awt.Font("MTO Telephone", 1, 14)); // NOI18N
+        dateLabel.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
         dateLabel.setIcon(new javax.swing.ImageIcon(getClass().getResource("/ImageIcon/icons8-calender-30.png"))); // NOI18N
         dateLabel.setText("Lịch:");
         dateLabel.setFocusable(false);
         dateLabel.setMinimumSize(new java.awt.Dimension(73, 20));
         dateLabel.setPreferredSize(new java.awt.Dimension(73, 20));
 
-        timeLabel.setFont(new java.awt.Font("MTO Telephone", 1, 14)); // NOI18N
+        timeLabel.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
         timeLabel.setIcon(new javax.swing.ImageIcon(getClass().getResource("/ImageIcon/icons8-history-30.png"))); // NOI18N
         timeLabel.setText("Giờ :");
         timeLabel.setFocusable(false);
@@ -106,14 +106,14 @@ public class MainFrame extends javax.swing.JFrame {
         dateTextField.setEditable(false);
         dateTextField.setBorder(null);
         dateTextField.setFocusable(false);
-        dateTextField.setFont(new java.awt.Font("MTO Telephone", 0, 14)); // NOI18N
+        dateTextField.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         dateTextField.setPreferredSize(new java.awt.Dimension(126, 22));
 
         timeTextField.setEditable(false);
         timeTextField.setBorder(null);
         timeTextField.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.DateFormatter(java.text.DateFormat.getTimeInstance())));
         timeTextField.setFocusable(false);
-        timeTextField.setFont(new java.awt.Font("MTO Telephone", 0, 14)); // NOI18N
+        timeTextField.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         timeTextField.setPreferredSize(new java.awt.Dimension(126, 22));
 
         openSideBarLabel.setIcon(new javax.swing.ImageIcon(getClass().getResource("/ImageIcon/icons8-menu-40.png"))); // NOI18N
@@ -132,10 +132,10 @@ public class MainFrame extends javax.swing.JFrame {
                 .addComponent(openSideBarLabel)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(shiftIDLabel)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 516, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 538, Short.MAX_VALUE)
                 .addComponent(dateLabel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(dateTextField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(dateTextField, javax.swing.GroupLayout.PREFERRED_SIZE, 104, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(dateTimeSeparator, javax.swing.GroupLayout.PREFERRED_SIZE, 11, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -287,14 +287,14 @@ public class MainFrame extends javax.swing.JFrame {
                 settings.getStore(), this);
     }
 
-    private void notOpenShiftWarning(){
-        int choice = JOptionPane.showConfirmDialog(displayPanel, "Thực hiện mở ca ngay?", 
+    private void notOpenShiftWarning() {
+        int choice = JOptionPane.showConfirmDialog(displayPanel, "Thực hiện mở ca ngay?",
                 "Không có ca hiện tại!", JOptionPane.WARNING_MESSAGE);
-        if(choice == JOptionPane.OK_OPTION){
+        if (choice == JOptionPane.OK_OPTION) {
             switchPanel(2);
         }
     }
-    
+
     private void initSideBar() {
         DrawerItem productDrawerItem = new DrawerItem("Sản phẩm").icon(new ImageIcon(getClass().getResource("/ImageIcon/icons8-product-35.png"))).build();
         productDrawerItem.setFont(new java.awt.Font("Segoe UI", 1, 16));
@@ -339,7 +339,7 @@ public class MainFrame extends javax.swing.JFrame {
                 .addFooter(logoutDrawerItem)
                 .event((int i, DrawerItem di) -> {
                     switchPanel(i);
-        })
+                })
                 .build();
     }
 
@@ -355,7 +355,7 @@ public class MainFrame extends javax.swing.JFrame {
                 displayPanel.add(purchasePanel1, "purchase");
                 cardLayout.show(displayPanel, "purchase");
                 drawerCtr.hide();
-                if(!shift.getState().equals(ShiftState.OPENED)){
+                if (!shift.getState().equals(ShiftState.OPENED)) {
                     notOpenShiftWarning();
                 }
                 break;
@@ -389,7 +389,7 @@ public class MainFrame extends javax.swing.JFrame {
                 try {
                     while (true) {
                         LocalDateTime curDateTime = LocalDateTime.now();
-                        timeTextField.setText(curDateTime.format(DateTimeFormatter.ofPattern("h:mm:ss a")));
+                        timeTextField.setText(curDateTime.format(DateTimeFormatter.ofPattern("HH:mm:ss a")));
                         dateTextField.setText(curDateTime.format(DateTimeFormatter.ofPattern("dd/MM/yyyy")));
                         Thread.sleep(1000);
                     }
@@ -425,6 +425,8 @@ public class MainFrame extends javax.swing.JFrame {
         setIconImage(new ImageIcon(getClass()
                 .getResource("/ImageIcon/icons8-grocery-store-96.png")).getImage());
         this.setLocationRelativeTo(null);
+        displayPanel.add(repoPanel1, "repo");
+        cardLayout.show(displayPanel, "repo");
     }
 
     private void initVariables() {
