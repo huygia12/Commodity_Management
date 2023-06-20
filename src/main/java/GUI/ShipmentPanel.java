@@ -22,7 +22,7 @@ public class ShipmentPanel extends javax.swing.JPanel {
      */
     public ShipmentPanel() {
         initComponents();
-        
+
         defaultSettings();
     }
 
@@ -64,7 +64,6 @@ public class ShipmentPanel extends javax.swing.JPanel {
         deleteButton = new javax.swing.JButton();
         editButton = new javax.swing.JButton();
         cancelButton = new javax.swing.JButton();
-        returnButton = new javax.swing.JButton();
         errorIDLabel = new javax.swing.JLabel();
         errorPriceLabel = new javax.swing.JLabel();
         errorQuantityLabel = new javax.swing.JLabel();
@@ -109,6 +108,12 @@ public class ShipmentPanel extends javax.swing.JPanel {
 
         quantityLabel.setText("Số lượng: ");
 
+        doesExpiredToggleBtn.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                doesExpiredToggleBtnActionPerformed(evt);
+            }
+        });
+
         doesExpiredLabel.setText("Có ngày sản xuất, hạn sử dụng?");
 
         NSXLabel.setText("Ngày sản xuất:");
@@ -143,8 +148,6 @@ public class ShipmentPanel extends javax.swing.JPanel {
 
         cancelButton.setText("Hủy");
 
-        returnButton.setText("Trở lại");
-
         errorIDLabel.setForeground(new java.awt.Color(255, 51, 51));
         errorIDLabel.setText("Mã không hợp lệ!");
 
@@ -163,14 +166,11 @@ public class ShipmentPanel extends javax.swing.JPanel {
             shipmentControlPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(shipmentControlPanelLayout.createSequentialGroup()
                 .addGap(6, 6, 6)
+                .addComponent(shipmentIDLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 104, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(12, 12, 12)
                 .addGroup(shipmentControlPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(returnButton, javax.swing.GroupLayout.PREFERRED_SIZE, 86, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addGroup(shipmentControlPanelLayout.createSequentialGroup()
-                        .addComponent(shipmentIDLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 104, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(12, 12, 12)
-                        .addGroup(shipmentControlPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(errorIDLabel)
-                            .addComponent(shipmentIDTextField, javax.swing.GroupLayout.PREFERRED_SIZE, 123, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                    .addComponent(errorIDLabel)
+                    .addComponent(shipmentIDTextField, javax.swing.GroupLayout.PREFERRED_SIZE, 123, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(5, 5, 5))
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, shipmentControlPanelLayout.createSequentialGroup()
                 .addGroup(shipmentControlPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -306,8 +306,7 @@ public class ShipmentPanel extends javax.swing.JPanel {
                 .addGroup(shipmentControlPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(deleteButton)
                     .addComponent(cancelButton))
-                .addGap(81, 81, 81)
-                .addComponent(returnButton))
+                .addGap(118, 118, 118))
         );
 
         add(shipmentControlPanel, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 40, 260, 560));
@@ -348,10 +347,37 @@ public class ShipmentPanel extends javax.swing.JPanel {
 
         add(shipmentTablePanel, new org.netbeans.lib.awtextra.AbsoluteConstraints(290, 200, 670, 400));
     }// </editor-fold>//GEN-END:initComponents
-    
-    private void defaultSettings() {
+
+    public void defaultSettings() {
         Instance = this;
         shipmentTableModel = (DefaultTableModel) jTable1.getModel();
+        updateStatus();
+        errorDateLabel.setVisible(false);
+        errorIDLabel.setVisible(false);
+        errorPriceLabel.setVisible(false);
+        errorQuantityLabel.setVisible(false);
+        setVisibleDate(false);
+    }
+
+    private void setVisibleDate(Boolean isVisible) {
+        NSXLabel.setVisible(isVisible);
+        NSXDayTextField.setVisible(isVisible);
+        NSXMonthTextField.setVisible(isVisible);
+        NSXYearTextField.setVisible(isVisible);
+
+        HSDLabel.setVisible(isVisible);
+        HSDDayTextField.setVisible(isVisible);
+        HSDMonthTextField.setVisible(isVisible);
+        HSDYearTextField.setVisible(isVisible);
+
+        jLabel2.setVisible(isVisible);
+        jLabel3.setVisible(isVisible);
+        jLabel5.setVisible(isVisible);
+        jLabel6.setVisible(isVisible);
+
+        DayLabel.setVisible(isVisible);
+        MonthLabel.setVisible(isVisible);
+        YearLabel.setVisible(isVisible);
     }
     private void NSXDayTextFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_NSXDayTextFieldActionPerformed
         // TODO add your handling code here:
@@ -359,7 +385,7 @@ public class ShipmentPanel extends javax.swing.JPanel {
 
     private void shipmentIDTextFieldKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_shipmentIDTextFieldKeyReleased
         // TODO add your handling code here:
-        long dupedID = shipments.stream().filter(x->x.getID().equalsIgnoreCase(shipmentIDTextField.getText())).count();
+        long dupedID = shipments.stream().filter(x -> x.getID().equalsIgnoreCase(shipmentIDTextField.getText())).count();
         if (shipmentIDTextField.getText().isEmpty()) {
             errorIDLabel.setVisible(false);
         }
@@ -367,42 +393,108 @@ public class ShipmentPanel extends javax.swing.JPanel {
         try {
             dupedIDOnTable = shipmentIDTextField.getText().equals(shipmentTableModel.getValueAt(jTable1.getSelectedRow(), 0).toString());
         } catch (ArrayIndexOutOfBoundsException aioobe) {
-            
+
         } catch (NullPointerException npe) {
-            
+
         }
         if (dupedID == 0 || (dupedIDOnTable && jTable1.getSelectedRow() != -1)) {
             shipmentID = shipmentIDTextField.getText();
             addCheck();
             errorIDLabel.setVisible(false);
-            repaint();
-        }  else {
+        } else {
             errorIDLabel.setVisible(true);
         }
     }//GEN-LAST:event_shipmentIDTextFieldKeyReleased
-    
+
+    private void doesExpiredToggleBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_doesExpiredToggleBtnActionPerformed
+        // TODO add your handling code here:
+        Boolean isOn;
+        if (doesExpiredToggleBtn.getSelectedObjects() == null) {
+            isOn = false;
+        } else {
+            isOn = true;
+        }
+
+        setVisibleDate(isOn);
+    }//GEN-LAST:event_doesExpiredToggleBtnActionPerformed
+
     private void addCheck() {
-        
+
     }
-    
-    public void attachGood (Goods good) {
+
+    public void setOpenButton(Boolean isSelected) {
+        doesExpiredToggleBtn.setSelected(isSelected);
+    }
+
+    public void reloadTable(List<Shipment> shipments) {
+        int rowToRemove = shipmentTableModel.getRowCount();
+        for (int i = 0; i < rowToRemove; i++) {
+            shipmentTableModel.removeRow(0);
+        }
+        try {
+            for (Shipment shipment : shipments) {
+                if (shipment.getNsx() == null) {
+                    shipmentTableModel.addRow(new Object[]{
+                        shipment.getID(),
+                        shipment.getImportPrice(),
+                        shipment.getQuantity(),
+                        "", "",
+                        shipment.calculateStatus()
+                    });
+                } else {
+                    shipmentTableModel.addRow(new Object[]{
+                        shipment.getID(),
+                        shipment.getImportPrice(),
+                        shipment.getQuantity(),
+                        shipment.getNsx(),
+                        shipment.getHsd(),
+                        shipment.calculateStatus()
+                    });
+                }
+            }
+        } catch (NullPointerException npe) {
+
+        }
+    }
+
+    private void updateStatus() {
+        new Thread() {
+            @Override
+            public void run() {
+                try {
+                    while (true) {
+                        try {
+                            reloadTable(shipments);
+                        } catch (NullPointerException npe) {
+
+                        }
+                        Thread.sleep(1000);
+                    }
+                } catch (InterruptedException ex) {
+
+                }
+            }
+        }.start();
+    }
+
+    public void attachGood(Goods good) {
         this.attachedGood = good;
         this.shipments = good.getShipments();
     }
-    
+
     // Custom variables declaration
     private Goods attachedGood;
     private List<Shipment> shipments;
-    
+
     private String shipmentID = "";
     private BigDecimal shipmentPrice = BigDecimal.ZERO;
     private BigDecimal shipmentQuantity = BigDecimal.ZERO;
     private LocalDate manufacturerDate;
     private LocalDate expiredDate;
-    
+
     public static ShipmentPanel Instance;
     private DefaultTableModel shipmentTableModel;
-    
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel DayLabel;
     private javax.swing.JTextField HSDDayTextField;
@@ -436,7 +528,6 @@ public class ShipmentPanel extends javax.swing.JPanel {
     private javax.swing.JTable jTable1;
     private javax.swing.JLabel quantityLabel;
     private javax.swing.JTextField quantityTextField;
-    private javax.swing.JButton returnButton;
     private javax.swing.JPanel shipmentControlPanel;
     private javax.swing.JLabel shipmentIDLabel;
     private javax.swing.JTextField shipmentIDTextField;

@@ -449,12 +449,5 @@
         </Container>
       </SubComponents>
     </Container>
-    <Component class="GUI.ShipmentPanel" name="shipmentPanel1">
-      <Constraints>
-        <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.DesignAbsoluteLayout" value="org.netbeans.modules.form.compat2.layouts.DesignAbsoluteLayout$AbsoluteConstraintsDescription">
-          <AbsoluteConstraints x="980" y="0" width="980" height="620"/>
-        </Constraint>
-      </Constraints>
-    </Component>
   </SubComponents>
 </Form>

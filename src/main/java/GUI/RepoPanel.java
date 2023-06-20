@@ -82,7 +82,6 @@ public class RepoPanel extends javax.swing.JPanel {
         jScrollPane1 = new javax.swing.JScrollPane();
         jTable1 = new javax.swing.JTable();
         searchTextField = new javax.swing.JTextField();
-        shipmentPanel1 = new GUI.ShipmentPanel();
 
         setBackground(new java.awt.Color(0, 204, 255));
         setToolTipText("");
@@ -296,7 +295,6 @@ public class RepoPanel extends javax.swing.JPanel {
         repoManagementPanel.add(tablePanel, new org.netbeans.lib.awtextra.AbsoluteConstraints(16, 129, 940, 440));
 
         add(repoManagementPanel, new org.netbeans.lib.awtextra.AbsoluteConstraints(4, 3, 970, 610));
-        add(shipmentPanel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(980, 0, 980, 620));
     }// </editor-fold>//GEN-END:initComponents
 
     private void nameTextFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_nameTextFieldActionPerformed
@@ -559,41 +557,18 @@ public class RepoPanel extends javax.swing.JPanel {
                 selectedGood = good;
             }
         }
-        moveRightToLeft(this.getLocation());
-        ShipmentPanel.Instance.attachGood(selectedGood);
+        
+        try {
+            PopupShipment shipmentPanel = new PopupShipment();
+            shipmentPanel.setVisible(true);
+            shipmentPanel.getShipmentPanel().attachGood(selectedGood);
+            shipmentPanel.getShipmentPanel().reloadTable(selectedGood.getShipments());
+            shipmentPanel.setDefaultCloseOperation(shipmentPanel.DISPOSE_ON_CLOSE);
+        } catch (NullPointerException npe) {
+            
+        }
     }//GEN-LAST:event_shipmentsButtonActionPerformed
-    
-    public void moveRightToLeft (Point location) {
-        if (animator != null && animator.isRunning()) {
-            animator.stop();
-        }
-        if (animator2 != null && animator2.isRunning()) {
-            animator2.stop();
-        }
-        shipmentPanel1.setVisible(true);
-        shipmentPanel1.setLocation(980, 0);
 
-        Point newLocation = new Point(location.x - 980, location.y);
-        Point newLocation2 = new Point(0, location.y);
-        animator = PropertySetter.createAnimator(1500, repoManagementPanel, "location", location, newLocation);
-        animator2 = PropertySetter.createAnimator(1500, shipmentPanel1, "location", shipmentPanel1.getLocation(), newLocation2);
-        animator.addTarget(new TimingTargetAdapter() {
-            @Override
-            public void timingEvent(float fraction) {
-                repaint();
-            }
-        });
-        animator2.addTarget(new TimingTargetAdapter() {
-            @Override
-            public void timingEvent(float fraction) {
-                repaint();
-            }
-        });
-        animator.setResolution(5);
-        animator.start();
-        animator2.setResolution(5);
-        animator2.start();
-    }
     public void addCheck () {
         if(!nameTextField.getText().isBlank() && unitComboBox.getSelectedIndex()!=-1 && !listPriceTextField.getText().isBlank() && !IDTextField.getText().isBlank() && !goodID.isBlank() && goodListedPrice != BigDecimal.valueOf(-1)) {
             addButton.setEnabled(true);
@@ -736,7 +711,6 @@ public class RepoPanel extends javax.swing.JPanel {
     private javax.swing.JPanel repoManagementPanel;
     private javax.swing.JLabel searchLabel;
     private javax.swing.JTextField searchTextField;
-    private GUI.ShipmentPanel shipmentPanel1;
     private javax.swing.JButton shipmentsButton;
     private javax.swing.JPanel tablePanel;
     private javax.swing.JLabel totalQuantityLabel;

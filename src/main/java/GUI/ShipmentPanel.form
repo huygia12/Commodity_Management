@@ -91,16 +91,11 @@
           <Group type="103" groupAlignment="0" attributes="0">
               <Group type="102" attributes="0">
                   <EmptySpace min="6" pref="6" max="-2" attributes="0"/>
+                  <Component id="shipmentIDLabel" min="-2" pref="104" max="-2" attributes="0"/>
+                  <EmptySpace min="12" pref="12" max="-2" attributes="0"/>
                   <Group type="103" groupAlignment="0" attributes="0">
-                      <Component id="returnButton" min="-2" pref="86" max="-2" attributes="0"/>
-                      <Group type="102" alignment="0" attributes="0">
-                          <Component id="shipmentIDLabel" min="-2" pref="104" max="-2" attributes="0"/>
-                          <EmptySpace min="12" pref="12" max="-2" attributes="0"/>
-                          <Group type="103" groupAlignment="0" attributes="0">
-                              <Component id="errorIDLabel" min="-2" max="-2" attributes="0"/>
-                              <Component id="shipmentIDTextField" min="-2" pref="123" max="-2" attributes="0"/>
-                          </Group>
-                      </Group>
+                      <Component id="errorIDLabel" min="-2" max="-2" attributes="0"/>
+                      <Component id="shipmentIDTextField" min="-2" pref="123" max="-2" attributes="0"/>
                   </Group>
                   <EmptySpace min="-2" pref="5" max="-2" attributes="0"/>
               </Group>
@@ -268,8 +263,7 @@
                       <Component id="deleteButton" min="-2" max="-2" attributes="0"/>
                       <Component id="cancelButton" min="-2" max="-2" attributes="0"/>
                   </Group>
-                  <EmptySpace min="-2" pref="81" max="-2" attributes="0"/>
-                  <Component id="returnButton" min="-2" max="-2" attributes="0"/>
+                  <EmptySpace min="-2" pref="118" max="-2" attributes="0"/>
               </Group>
           </Group>
         </DimensionLayout>
@@ -300,6 +294,9 @@
         <Component class="javax.swing.JTextField" name="quantityTextField">
         </Component>
         <Component class="javax.swing.JToggleButton" name="doesExpiredToggleBtn">
+          <Events>
+            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="doesExpiredToggleBtnActionPerformed"/>
+          </Events>
         </Component>
         <Component class="javax.swing.JLabel" name="doesExpiredLabel">
           <Properties>
@@ -384,11 +381,6 @@
         <Component class="javax.swing.JButton" name="cancelButton">
           <Properties>
             <Property name="text" type="java.lang.String" value="H&#x1ee7;y"/>
-          </Properties>
-        </Component>
-        <Component class="javax.swing.JButton" name="returnButton">
-          <Properties>
-            <Property name="text" type="java.lang.String" value="Tr&#x1edf; l&#x1ea1;i"/>
           </Properties>
         </Component>
         <Component class="javax.swing.JLabel" name="errorIDLabel">
