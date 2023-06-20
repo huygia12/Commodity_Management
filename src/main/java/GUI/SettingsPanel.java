@@ -5,6 +5,7 @@
 package GUI;
 
 import Models.Settings;
+import Models.Store;
 
 /**
  *
@@ -28,17 +29,152 @@ public class SettingsPanel extends javax.swing.JPanel {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
-        this.setLayout(layout);
-        layout.setHorizontalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 400, Short.MAX_VALUE)
+        functionchangerInfoPanel = new javax.swing.JPanel();
+        changeInfoButton = new javax.swing.JButton();
+        inputchangerInfoPanel = new javax.swing.JPanel();
+        inputNameLabel = new javax.swing.JLabel();
+        inputPhoneNumberLabel = new javax.swing.JLabel();
+        inputAndressLabel = new javax.swing.JLabel();
+        inputEmailLabel = new javax.swing.JLabel();
+        inputNameTextField = new javax.swing.JTextField();
+        inputPhoneNumberTextField = new javax.swing.JTextField();
+        inputAndressTextField = new javax.swing.JTextField();
+        inputEmailTextField = new javax.swing.JTextField();
+
+        setLayout(new java.awt.BorderLayout());
+
+        changeInfoButton.setText("Thay đổi");
+        changeInfoButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                changeInfoButtonActionPerformed(evt);
+            }
+        });
+
+        javax.swing.GroupLayout functionchangerInfoPanelLayout = new javax.swing.GroupLayout(functionchangerInfoPanel);
+        functionchangerInfoPanel.setLayout(functionchangerInfoPanelLayout);
+        functionchangerInfoPanelLayout.setHorizontalGroup(
+            functionchangerInfoPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(functionchangerInfoPanelLayout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(changeInfoButton)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
-        layout.setVerticalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 300, Short.MAX_VALUE)
+        functionchangerInfoPanelLayout.setVerticalGroup(
+            functionchangerInfoPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(functionchangerInfoPanelLayout.createSequentialGroup()
+                .addGap(34, 34, 34)
+                .addComponent(changeInfoButton)
+                .addContainerGap(403, Short.MAX_VALUE))
         );
+
+        add(functionchangerInfoPanel, java.awt.BorderLayout.LINE_END);
+
+        inputNameLabel.setFont(new java.awt.Font("Dialog", 0, 14)); // NOI18N
+        inputNameLabel.setText("Tên:");
+
+        inputPhoneNumberLabel.setFont(new java.awt.Font("Dialog", 0, 14)); // NOI18N
+        inputPhoneNumberLabel.setText("SĐT:");
+
+        inputAndressLabel.setFont(new java.awt.Font("Dialog", 0, 14)); // NOI18N
+        inputAndressLabel.setText("Địa chỉ:");
+
+        inputEmailLabel.setFont(new java.awt.Font("Dialog", 0, 14)); // NOI18N
+        inputEmailLabel.setText("Email:");
+
+        inputNameTextField.setFont(new java.awt.Font("Dialog", 0, 14)); // NOI18N
+        inputNameTextField.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                inputNameTextFieldActionPerformed(evt);
+            }
+        });
+
+        inputPhoneNumberTextField.setFont(new java.awt.Font("Dialog", 0, 14)); // NOI18N
+
+        inputAndressTextField.setFont(new java.awt.Font("Dialog", 0, 14)); // NOI18N
+
+        inputEmailTextField.setFont(new java.awt.Font("Dialog", 0, 14)); // NOI18N
+        inputEmailTextField.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                inputEmailTextFieldActionPerformed(evt);
+            }
+        });
+
+        javax.swing.GroupLayout inputchangerInfoPanelLayout = new javax.swing.GroupLayout(inputchangerInfoPanel);
+        inputchangerInfoPanel.setLayout(inputchangerInfoPanelLayout);
+        inputchangerInfoPanelLayout.setHorizontalGroup(
+            inputchangerInfoPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(inputchangerInfoPanelLayout.createSequentialGroup()
+                .addGap(47, 47, 47)
+                .addGroup(inputchangerInfoPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, inputchangerInfoPanelLayout.createSequentialGroup()
+                        .addGroup(inputchangerInfoPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(inputAndressLabel)
+                            .addComponent(inputEmailLabel))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addGroup(inputchangerInfoPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(inputchangerInfoPanelLayout.createSequentialGroup()
+                                .addComponent(inputEmailTextField, javax.swing.GroupLayout.PREFERRED_SIZE, 155, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(0, 0, Short.MAX_VALUE))
+                            .addComponent(inputAndressTextField)))
+                    .addGroup(inputchangerInfoPanelLayout.createSequentialGroup()
+                        .addComponent(inputPhoneNumberLabel)
+                        .addGap(34, 34, 34)
+                        .addComponent(inputPhoneNumberTextField))
+                    .addGroup(inputchangerInfoPanelLayout.createSequentialGroup()
+                        .addComponent(inputNameLabel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(inputNameTextField, javax.swing.GroupLayout.PREFERRED_SIZE, 158, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addGap(88, 88, 88))
+        );
+        inputchangerInfoPanelLayout.setVerticalGroup(
+            inputchangerInfoPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(inputchangerInfoPanelLayout.createSequentialGroup()
+                .addGap(35, 35, 35)
+                .addGroup(inputchangerInfoPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(inputNameLabel)
+                    .addComponent(inputNameTextField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(18, 18, 18)
+                .addGroup(inputchangerInfoPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(inputPhoneNumberLabel)
+                    .addComponent(inputPhoneNumberTextField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(18, 18, 18)
+                .addGroup(inputchangerInfoPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(inputAndressLabel)
+                    .addComponent(inputAndressTextField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(18, 18, 18)
+                .addGroup(inputchangerInfoPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(inputEmailLabel)
+                    .addComponent(inputEmailTextField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap(281, Short.MAX_VALUE))
+        );
+
+        add(inputchangerInfoPanel, java.awt.BorderLayout.CENTER);
     }// </editor-fold>//GEN-END:initComponents
+
+    private void inputEmailTextFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_inputEmailTextFieldActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_inputEmailTextFieldActionPerformed
+
+    private void inputNameTextFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_inputNameTextFieldActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_inputNameTextFieldActionPerformed
+
+    private void changeInfoButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_changeInfoButtonActionPerformed
+        // TODO add your handling code here:
+        // Lấy giá trị từ các JTextField
+    String name = inputNameTextField.getText().trim();
+    String phoneNumber = inputPhoneNumberTextField.getText().trim();
+    String address = inputAndressTextField.getText().trim();
+    
+    // Cập nhật thông tin vào đối tượng Store trong đối tượng Settings
+    Store store = settings.getStore();
+    store.setName(name);
+    store.setPhoneNumber(phoneNumber);
+    store.setAddress(address);
+    
+    // Gọi phương thức hiển thị thông tin mới trên Header
+    header.setStoreInfor();
+    }//GEN-LAST:event_changeInfoButtonActionPerformed
 
 
     
@@ -50,5 +186,16 @@ public class SettingsPanel extends javax.swing.JPanel {
     private Header header;
     private Settings settings;
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton changeInfoButton;
+    private javax.swing.JPanel functionchangerInfoPanel;
+    private javax.swing.JLabel inputAndressLabel;
+    private javax.swing.JTextField inputAndressTextField;
+    private javax.swing.JLabel inputEmailLabel;
+    private javax.swing.JTextField inputEmailTextField;
+    private javax.swing.JLabel inputNameLabel;
+    private javax.swing.JTextField inputNameTextField;
+    private javax.swing.JLabel inputPhoneNumberLabel;
+    private javax.swing.JTextField inputPhoneNumberTextField;
+    private javax.swing.JPanel inputchangerInfoPanel;
     // End of variables declaration//GEN-END:variables
 }
