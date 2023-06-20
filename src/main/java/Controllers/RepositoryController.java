@@ -54,13 +54,6 @@ public class RepositoryController {
                         addGoodsToList(idGenerator, repoGoodsList);
                         break;
                     case 2:
-                        ImportedGoods newImportGoods = importGoods(idGenerator, repoGoodsList);
-                        // sau moi lan nhap hang thi add newImportGoods vao ImportGoodsHistory cua shift hien tai
-                        if (newImportGoods != null) {
-                            shift.getImportGoodsHis()
-                                    .getList()
-                                    .add(newImportGoods);
-                        }
                         break;
                     case 3:
                         editGoodsAndShipmentInfor(repoGoodsList);
@@ -129,71 +122,6 @@ public class RepositoryController {
         }
         newGoods.setID(idGenerator.generateID(Goods.class.getName(), 6));
         repoGoodsList.getList().add(newGoods);
-    }
-
-    // Function2
-    private ImportedGoods importGoods(IDGenerator idGenerator, GoodsList<Goods> repoGoodsList) {
-        Goods searchGoods = goodsListCtr.searchGoods(repoGoodsList);
-        if (searchGoods == null) {
-            return null;
-        }
-        int n = 1;
-        int nextProcess;
-        Shipment newShipment = new Shipment();
-        ImportedGoods newImportedGoods = new ImportedGoods(searchGoods);
-        // copy lay cac thuoc tinh ngoai tru cac list Shipment trong searchGoods
-        newImportedGoods.getShipments().clear();
-        while (n != 4) {
-            switch (n) {
-                case 1:
-                    nextProcess = shipmentCtr.getView().typeInQuan(newShipment);
-                    if (nextProcess == 0 || nextProcess == -1) {
-                        return null;
-                    }
-                case 2:
-                    nextProcess = shipmentCtr.getView().typeInImportPrice(newShipment);
-                    if (nextProcess == 0) {
-                        return null;
-                    } else if (nextProcess == -1) {
-                        break;
-                    }
-                case 3:
-                    nextProcess = shipmentCtr.getView().typeInProDate(newShipment);
-                    if (nextProcess == 0) {
-                        return null;
-                    } else if (nextProcess == -1) {
-                        n = 2;
-                        break;
-                    }
-                case 4:
-                    nextProcess = shipmentCtr.getView().typeInEpirDate(newShipment);
-                    switch (nextProcess) {
-                        case 0:
-                            return null;
-                        case -1:
-                            n = 3;
-                            break;
-                        default:
-                            n = 4;
-                    }
-            }
-        }
-        // kiem tra neu shipment nay da ton tai 
-        int shipmentIndex = goodsCtr.indexOfDupShip(searchGoods, newShipment);
-        if (shipmentIndex != -1) {
-            // neu shipment da ton tai
-            Shipment dupShipment = searchGoods.getShipments().get(shipmentIndex);
-            if (shipmentCtr.getView().gainQuanDecision()) {
-                shipmentCtr.gainQuantity(dupShipment, newShipment.getQuantity());
-                newShipment.setID(dupShipment.getID());
-            }
-        } else {
-            // neu Shipment nay la moi
-            newShipment.setID(idGenerator.generateID(Shipment.class.getName(), 8));
-            searchGoods.getShipments().add(newShipment);
-        }
-        newImportedGoods.getShipments().add(newShipment);
-        return newImportedGoods;
     }
 
     // Function 3

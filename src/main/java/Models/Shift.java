@@ -41,9 +41,6 @@ public class Shift {
     @SerializedName("orderHisPerShift")
     @Expose
     private List<Order> orderHisPerShift = new ArrayList<>();
-    @SerializedName("importGoodsHis")
-    @Expose
-    private GoodsList<ImportedGoods> importGoodsHis = new GoodsList<>();
     @SerializedName("employeeOfThisShift")
     @Expose
     private EmployeeList employeeOfThisShift = new EmployeeList(new ArrayList());
@@ -78,17 +75,11 @@ public class Shift {
         return this.orderHisPerShift;
     }
 
-    public GoodsList<ImportedGoods> getImportGoodsHis() {
-        return this.importGoodsHis;
-    }
 
     public void setOrderHisPerShift(List<Order> orderHisPerShift) {
         this.orderHisPerShift = orderHisPerShift;
     }
 
-    public void setImportGoodsHis(GoodsList<ImportedGoods> importGoodsHis) {
-        this.importGoodsHis = importGoodsHis;
-    }
 
     public LocalDateTime getOpenTime() {
         return this.openDateTime;

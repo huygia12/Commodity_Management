@@ -8,7 +8,6 @@ import Models.Employee;
 import Models.EmployeeList;
 import Models.Goods;
 import Models.History;
-import Models.ImportedGoods;
 import Models.Order;
 import Models.PaymentOptions;
 import Ultility.IDGenerator;
@@ -97,7 +96,6 @@ public class ShiftController {
                         this.shiftView.shiftNotOpenCaution();
                         break;
                     }
-                    showImportGoodsHistory(shift, hisCtr);
                     break;
                 case "7":
                     if (shift == null) {
@@ -247,15 +245,6 @@ public class ShiftController {
         return null;
     }
 
-    public ImportedGoods containImportedGoods(List<ImportedGoods> importedGoodsList, String importedGoodsID) {
-        for (ImportedGoods importedGoods : importedGoodsList) {
-            if (importedGoods.getID().equals(importedGoodsID)) {
-                return importedGoods;
-            }
-        }
-        return null;
-    }
-
     private Shift openShift(EmployeeList employeeList, IDGenerator iDGenerator, Store myStore, Shift shift) {
         shift = new Shift(iDGenerator.generateID(Shift.class.getName(), 6),
                 myStore.getVAT());
@@ -296,18 +285,6 @@ public class ShiftController {
         hisCtr.getHistoryView().showOrderHistory(new History(shiftList));
         hisCtr.getHistoryView().showOrderHistory(
                 hisCtr.makeHisoryOrderGoodsList(shiftList));
-    }
-
-    private void showImportGoodsHistory(Shift shift, HistoryController hisCtr) {
-        if (shift.getImportGoodsHis().getList().isEmpty()) {
-            System.out.println("Your current import history is empty!");
-            return;
-        }
-        List<Shift> shiftList = new ArrayList<>();
-        shiftList.add(shift);
-        hisCtr.getHistoryView().showImportGoodsHistory(new History(shiftList));
-        hisCtr.getHistoryView().showImportGoodsHistory(
-                hisCtr.makeHistoryImportGoodsList(shiftList));
     }
 
     private void addEmployeeToShift(EmployeeList employeeList, Shift shift) {

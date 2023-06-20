@@ -366,6 +366,7 @@ public class MainFrame extends javax.swing.JFrame {
                 displayPanel.add(repoPanel1, "repo");
                 cardLayout.show(displayPanel, "repo");
                 drawerCtr.hide();
+                repoPanel1.externalRefresh();
                 break;
             case 1:
                 purchasePanel1.setEnableToAllPanel(shift.getState().equals(ShiftState.OPENED));

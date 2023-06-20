@@ -29,7 +29,9 @@ public class Shipment {
     private LocalDate nsx;
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd/MM/yyyy")
     private LocalDate hsd;
-
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd/MM/yyyy")
+    private LocalDate importedDate;
+    
     public Shipment() {
     }
 
@@ -79,6 +81,14 @@ public class Shipment {
 
     public void setID(String shipmentID) {
         this.id = shipmentID;
+    }
+
+    public LocalDate getImportedDate() {
+        return importedDate;
+    }
+
+    public void setImportedDate(LocalDate importedDate) {
+        this.importedDate = importedDate;
     }
     
     public String calculateStatus() {

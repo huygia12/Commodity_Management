@@ -41,6 +41,7 @@ public final class Header extends javax.swing.JPanel {
         storeNameLabel = new javax.swing.JLabel();
         storePhoneNumLabel = new javax.swing.JLabel();
         storeAndressLabel = new javax.swing.JLabel();
+        imageAvatar1 = new Models.ImageAvatar();
 
         storeNameLabel.setFont(new java.awt.Font("Segoe UI", 1, 16)); // NOI18N
         storeNameLabel.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
@@ -52,22 +53,27 @@ public final class Header extends javax.swing.JPanel {
         storeAndressLabel.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         storeAndressLabel.setText(" ");
 
+        imageAvatar1.setImage(new javax.swing.ImageIcon(getClass().getResource("/ImageIcon/avtdis.png"))); // NOI18N
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                 .addContainerGap(27, Short.MAX_VALUE)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(storePhoneNumLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 176, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(storeAndressLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 176, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(storeNameLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 176, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(storePhoneNumLabel, javax.swing.GroupLayout.DEFAULT_SIZE, 176, Short.MAX_VALUE)
+                    .addComponent(storeAndressLabel, javax.swing.GroupLayout.DEFAULT_SIZE, 176, Short.MAX_VALUE)
+                    .addComponent(storeNameLabel, javax.swing.GroupLayout.DEFAULT_SIZE, 176, Short.MAX_VALUE)
+                    .addComponent(imageAvatar1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addGap(27, 27, 27))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGap(126, 126, 126)
+                .addGap(14, 14, 14)
+                .addComponent(imageAvatar1, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(storeNameLabel)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(storePhoneNumLabel)
@@ -77,8 +83,10 @@ public final class Header extends javax.swing.JPanel {
         );
     }// </editor-fold>//GEN-END:initComponents
 
+    
     private Store store;
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private Models.ImageAvatar imageAvatar1;
     private javax.swing.JLabel storeAndressLabel;
     private javax.swing.JLabel storeNameLabel;
     private javax.swing.JLabel storePhoneNumLabel;

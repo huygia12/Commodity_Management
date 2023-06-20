@@ -5,26 +5,20 @@
 package View;
 
 import Controllers.EmployeeListController;
-import Controllers.ImportedGoodsController;
 import Controllers.OrderController;
 import Controllers.ShiftController;
 import Ultility.Cautions;
 import Ultility.CustomPair;
 import Models.GoodsList;
 import Models.History;
-import Models.ImportedGoods;
 import Models.Order;
-import Models.PaymentOptions;
 import Models.Shift;
-import Models.Shipment;
 import Models.SoldGoods;
 import Models.StaticalItems;
 import java.math.BigDecimal;
 import java.time.DateTimeException;
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
-import java.time.format.FormatStyle;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
@@ -37,7 +31,6 @@ public class HistoryView {
     final Cautions ctions = new Cautions();
     final Scanner sc = new Scanner(System.in);
     final OrderController orderCtr = new OrderController();
-    final ImportedGoodsController importGoodsCtr = new ImportedGoodsController();
     final EmployeeListController employeeListCtr = new EmployeeListController();
     final ShiftController shiftCtr = new ShiftController();
     final String DATE_FORMAT = "dd/MM/yyyy";
@@ -49,14 +42,9 @@ public class HistoryView {
     private int goodsIDMaxSize;
     private int goodsTotalQuanMaxSize;
     private int totalAmountSoldMaxSize;
-    private int providerMaxSize;
-    private int listPriceMaxSize;
     private int importGoodsIDMaxSize;
     private int importDateMaxSize;
-    private int importGoodsNameMaxSize;
     private int importGoodsQuanMaxSize;
-    private int importGoodsTotalAmountMaxSize;
-    private int importPriceMaxSize;
     private int shiftIDMaxSize;
     private int shiftOpenDateTimeMaxSize;
     private int shiftEndDateTimeMaxSize;
@@ -201,132 +189,6 @@ public class HistoryView {
     }
 
     //
-    public void showImportGoodsHistory(History history) {
-        if (history.getShiftHistory().isEmpty()) {
-            System.out.println("No Imported Goods found!");
-            return;
-        }
-        computeSizeOfEachColumnInImportGoodsHistory(history);
-        int totalColSize = importGoodsIDMaxSize + importDateMaxSize
-                + importGoodsQuanMaxSize + importGoodsNameMaxSize + 3 + 6;
-        final int extraLengthOfBorder = 11;
-        int borderLength = totalColSize + extraLengthOfBorder;
-        System.out.println("|" + "-".repeat(borderLength) + "|");
-        System.out.printf("| %-" + String.format(importGoodsIDMaxSize + "s")
-                + " | %-" + String.format(importDateMaxSize + "s")
-                + " | %-" + String.format(importGoodsNameMaxSize + "s")
-                + " | %-" + String.format(importGoodsQuanMaxSize + "s")+" |",
-                "Goods ID",
-                "Imported Date&Time",
-                "Goods Name",
-                "Quantity");
-        System.out.println("");
-        System.out.println("|" + "-".repeat(borderLength) + "|");
-        for (Shift shift : history.getShiftHistory()) {
-            for (ImportedGoods importGoods : shift.getImportGoodsHis().getList()) {
-                System.out.printf("| %-" + String.format(importGoodsIDMaxSize + "s")
-                        + " | %-" + String.format(importDateMaxSize + "s")
-                        + " | %-" + String.format(importGoodsNameMaxSize + "s")
-                        + " | %-" + String.format(importGoodsQuanMaxSize + ".1f")+" |",
-                        importGoods.getID(),
-                        importGoods.getImportDateTime(),
-                        importGoods.getGoodsName(),
-                        importGoodsCtr.getTotalQuanByShipments(importGoods));
-                System.out.println("");
-                System.out.println("|" + "-".repeat(borderLength) + "|");
-            }
-        }
-    }
-
-    private void computeSizeOfEachColumnInImportGoodsHistory(History history) {
-        importGoodsIDMaxSize = "Goods ID".length();
-        importDateMaxSize = "Imported Date&Time".length();
-        importGoodsQuanMaxSize = "Quantity".length();
-        importGoodsNameMaxSize = "Goods Name".length();
-        for (Shift shift : history.getShiftHistory()) {
-            for (ImportedGoods importGoods : shift.getImportGoodsHis().getList()) {
-                if (importGoods.getID().length() > importGoodsIDMaxSize) {
-                    importGoodsIDMaxSize = importGoods.getID().length();
-                }
-                if (importGoods.getImportDateTime().length() > importDateMaxSize) {
-                    importDateMaxSize = importGoods.getImportDateTime().length();
-                }
-                if (String.format("%.1f", 
-                        importGoodsCtr.getTotalQuanByShipments(importGoods)).length() 
-                        > importGoodsQuanMaxSize) {
-                    importGoodsQuanMaxSize = String.format("%.1f", 
-                            importGoodsCtr.getTotalQuanByShipments(importGoods)).length();
-                }
-                if (importGoods.getGoodsName().length() > importGoodsNameMaxSize) {
-                    importGoodsNameMaxSize = importGoods.getGoodsName().length();
-                }
-            }
-        }
-    }
-
-    public void showImportGoodsHistory(GoodsList<ImportedGoods> goodsList) {
-        if (goodsList.getList().isEmpty()) {
-            System.out.println("No goods found!");
-            return;
-        }
-        computeSizeOfEachColumnInImportGoodsHistory(goodsList);
-        int totalColSize = importGoodsIDMaxSize + importGoodsQuanMaxSize
-                + importGoodsNameMaxSize + importGoodsTotalAmountMaxSize + 3 + 6;
-        final int extraLengthOfBorder = 11;
-        int borderLength = totalColSize + extraLengthOfBorder;
-        System.out.println("|" + "-".repeat(borderLength) + "|");
-        System.out.printf("| %-" + String.format(importGoodsIDMaxSize + "s")
-                + " | %-" + String.format(importGoodsNameMaxSize + "s")
-                + " | %-" + String.format(importGoodsQuanMaxSize + "s")
-                + " | %-" + String.format(importGoodsTotalAmountMaxSize + "s")+" |",
-                "Goods ID",
-                "Goods Name",
-                "Imported Quantity",
-                "Total Import Amount");
-        System.out.println("");
-        System.out.println("|" + "-".repeat(borderLength) + "|");
-        for (ImportedGoods goods : goodsList.getList()) {
-            System.out.printf("| %-" + String.format(importGoodsIDMaxSize + "s")
-                    + " | %-" + String.format(importGoodsNameMaxSize + "s")
-                    + " | %-" + String.format(importGoodsQuanMaxSize + ".1f")
-                    + " | %-" + String.format(importGoodsTotalAmountMaxSize + ".1f")+" |",
-                    goods.getID(),
-                    goods.getGoodsName(),
-                    goods.getTotalQuantity(),
-                    goods.getTotalAmountImport());
-            System.out.println("");
-            System.out.println("|" + "-".repeat(borderLength) + "|");
-        }
-        BigDecimal total = BigDecimal.ZERO;
-        for (ImportedGoods importGoods : goodsList.getList()) {
-            total = total.add(importGoods.getTotalAmountImport());
-        }
-        System.out.println(String.format("%" + (totalColSize - importGoodsTotalAmountMaxSize) + "s"
-                + "%" + importGoodsTotalAmountMaxSize + ".1f", "Total : ", total));
-    }
-
-    private void computeSizeOfEachColumnInImportGoodsHistory(GoodsList<ImportedGoods> goodsList) {
-        importGoodsIDMaxSize = "Order ID".length();
-        importGoodsNameMaxSize = "Goods Name".length();
-        importGoodsQuanMaxSize = "Imported Quantity".length();
-        importGoodsTotalAmountMaxSize = "Total Import Amount".length();
-        for (ImportedGoods goods : goodsList.getList()) {
-            if (goods.getID().length() > importGoodsIDMaxSize) {
-                importGoodsIDMaxSize = goods.getID().length();
-            }
-            if (goods.getGoodsName().length() > importGoodsNameMaxSize) {
-                importGoodsNameMaxSize = goods.getGoodsName().length();
-            }
-            if (String.format(".1f", goods.getTotalQuantity()).length() > importGoodsQuanMaxSize) {
-                importGoodsQuanMaxSize = String.format(".1f", goods.getTotalQuantity()).length();
-            }
-            if (String.format(".1f", goods.getTotalAmountImport()).length() > importGoodsTotalAmountMaxSize) {
-                importGoodsTotalAmountMaxSize = String.format(".1f", goods.getTotalAmountImport()).length();
-            }
-        }
-    }
-
-    //
     public void showShiftHistory(History history) {
         if (history.getShiftHistory().isEmpty()) {
             System.out.println("No shift found!");
@@ -441,101 +303,6 @@ public class HistoryView {
         staticalItemsList.stream().forEach(x -> System.out.println(String.format("%-20s" + " | " + "%-20.1f" + " | " + "%-20.1f" + " | " + "%-20s",
                 x.getName(), x.getQuantity(), x.getRevenue(), String.format("%.1f", x.getRatio())+"%")));
         employeeListCtr.getView().showList(shift.getEmployeeOfThisShift());
-    }
-
-    public void showAnImpotedGoodsInDetail(ImportedGoods importGoods) {
-        System.out.println();
-        this.computeSizeColumnsOfAnImportGoods(importGoods);
-        int totalColumnsSize = goodsNameMaxSize
-                + providerMaxSize
-                + listPriceMaxSize
-                + goodsTotalQuanMaxSize
-                + importPriceMaxSize
-                + importGoodsQuanMaxSize;
-        final int extralengthOfBorder = 85;
-        int borderLength = extralengthOfBorder + totalColumnsSize;
-        System.out.println("|" + "-".repeat(borderLength) + "|");
-        System.out.printf("| %-8s | %-" + String.format(goodsNameMaxSize + "s")
-                + " | %-" + String.format(providerMaxSize + "s")
-                + " | %-" + String.format(listPriceMaxSize + "s")
-                + " | %-" + String.format(goodsTotalQuanMaxSize + "s")
-                + " | %-11s | %-15s | %-15s | %-" + String.format(importPriceMaxSize + "s")
-                + " | %-" + String.format(importGoodsQuanMaxSize + "s")
-                + " | %-19s |\n",
-                "Goods ID", "Name",
-                "Provider",
-                "List Price",
-                "Total Quantity",
-                "Shipment ID", "Production Date", "Expiration Date", "Import Price",
-                "Quantity",
-                "Import Date&Time");
-        System.out.println("|" + "-".repeat(totalColumnsSize + 78) + "|");
-        System.out.printf("| %-8s | %-" + String.format(goodsNameMaxSize + "s")
-                + " | %-" + String.format(providerMaxSize + "s")
-                + " | %-" + String.format(listPriceMaxSize + ".1f")
-                + " | %-" + String.format(goodsTotalQuanMaxSize + ".1f") + " |",
-                importGoods.getID(),
-                importGoods.getGoodsName(),
-                importGoods.getManufacture(),
-                importGoods.getListPrice(),
-                importGoodsCtr.getTotalQuanByShipments(importGoods));
-        if (!importGoods.getShipments().isEmpty()) {
-            // Neu list shipment cua goods da ton tai it nhat 1 shipment, thuc hien in ra shipment do
-            Shipment shipment = importGoods.getShipments().get(0);
-            String productionDateString = shipment.getNsx().format(DateTimeFormatter.ofPattern(DATE_FORMAT));
-            String expirationDateString = shipment.getHsd().format(DateTimeFormatter.ofPattern(DATE_FORMAT));
-            System.out.printf(" %-11s | %-15s | %-15s | %-"
-                    + String.format(importPriceMaxSize + ".1f")
-                    + " | %-" + String.format(importGoodsQuanMaxSize + ".1f")
-                    + " | %-19s |\n",
-                    shipment.getID(), productionDateString, expirationDateString,
-                    shipment.getImportPrice(),
-                    shipment.getQuantity(),
-                    importGoods.getImportDateTime());
-        } else {
-            // Neu chua co shipment nao ton tai, thuc hien in ra khoang trang trong cac cot thuoc tinh
-            System.out.printf(" %-11s | %-15s | %-15s | %-" + String.format(importPriceMaxSize + "s")
-                    + " | %-" + String.format(importGoodsQuanMaxSize + "s") + " | %-19s |\n",
-                    "", "", "", "", "", "");
-        }
-        System.out.println("|" + "-".repeat(borderLength) + "|");
-    }
-
-    private void computeSizeColumnsOfAnImportGoods(ImportedGoods importGoods) {
-        // duyet tu dau den cuoi mang de tim MAX_SIZE cua giatri input tung thuoc tinh
-        goodsNameMaxSize = "Name".length();
-        providerMaxSize = "Provider".length();
-        listPriceMaxSize = "List Price".length();
-        goodsTotalQuanMaxSize = "Total Quantity".length();
-        importPriceMaxSize = "Import Price".length();
-        importGoodsQuanMaxSize = "Quantity".length();
-        if (importGoods.getGoodsName().length() > goodsNameMaxSize) {
-            goodsNameMaxSize = importGoods.getGoodsName().length();
-        }
-        if (importGoods.getManufacture().length() > providerMaxSize) {
-            providerMaxSize = importGoods.getManufacture().length();
-        }
-        if (String.format(".1f", importGoods.getListPrice()).length() > listPriceMaxSize) {
-            listPriceMaxSize = String.format(".1f", importGoods.getListPrice()).length();
-        }
-        if (String.format(".1f", 
-                importGoodsCtr.getTotalQuanByShipments(importGoods)).length()
-                > goodsTotalQuanMaxSize) {
-            goodsTotalQuanMaxSize = String.format(".1f", 
-                    importGoodsCtr.getTotalQuanByShipments(importGoods)).length();
-        }
-        if (String.format(".1f", 
-                importGoods.getShipments().get(0).getImportPrice()).length()
-                > importPriceMaxSize) {
-            importPriceMaxSize = String.format(".1f", 
-                    importGoods.getShipments().get(0).getImportPrice()).length();
-        }
-        if (String.format(".1f", 
-                importGoods.getShipments().get(0).getQuantity()).length()
-                > importGoodsQuanMaxSize) {
-            importGoodsQuanMaxSize = String.format(".1f", 
-                    importGoods.getShipments().get(0).getQuantity()).length();
-        }
     }
 
     //
