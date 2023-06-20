@@ -405,7 +405,12 @@ public class EmployJPanel extends javax.swing.JPanel {
                 .addContainerGap())
         );
     }// </editor-fold>//GEN-END:initComponents
- private void displayEmployees() {
+  public void refreshEmployees() {
+        displayEmployees();
+        clearInputFields();
+    }
+
+    private void displayEmployees() {
         DefaultTableModel model = (DefaultTableModel) displayTable.getModel();
         model.setRowCount(0);
         for (Employee employee : employeeList.getList()) {
