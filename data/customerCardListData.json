@@ -11,7 +11,8 @@
         "age": 20,
         "gender": "MALE"
       },
-      "IDOfBoughtOrders": []
+      "IDOfBoughtOrders": [],
+      "rank": "SILVER"
     },
     {
       "ID": "000001",
@@ -24,7 +25,8 @@
         "age": 20,
         "gender": "OTHER"
       },
-      "IDOfBoughtOrders": []
+      "IDOfBoughtOrders": [],
+      "rank": "NONE"
     },
     {
       "ID": "000002",
@@ -37,7 +39,8 @@
         "age": 22,
         "gender": "FEMALE"
       },
-      "IDOfBoughtOrders": []
+      "IDOfBoughtOrders": [],
+      "rank": "NONE"
     },
     {
       "ID": "000003",
@@ -50,7 +53,8 @@
         "age": 17,
         "gender": "MALE"
       },
-      "IDOfBoughtOrders": []
+      "IDOfBoughtOrders": [],
+      "rank": "NONE"
     }
   ]
 }

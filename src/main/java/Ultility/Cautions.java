@@ -118,4 +118,25 @@ public class Cautions {
         }
         return false;
     }
+    
+    public boolean checkIfValidHours(String str){
+        if(!checkIfANumberSequenceForGUI(str)){
+            return false;
+        }
+        return Integer.parseInt(str) <= 23;
+    }
+    
+    public boolean checkIfValidMinute(String str){
+        if(!checkIfANumberSequenceForGUI(str)){
+            return false;
+        }
+        return Integer.parseInt(str) <= 59;
+    }
+    
+    public boolean checkIfValidSecond(String str){
+        if(!checkIfANumberSequenceForGUI(str)){
+            return false;
+        }
+        return Integer.parseInt(str) <= 59;
+    }
 }

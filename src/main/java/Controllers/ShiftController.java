@@ -390,13 +390,14 @@ public class ShiftController {
             int tax, BigDecimal openBalance, 
             Employee cashier, EmployeeList employeeList,
             String note) {
+        shift.setState(ShiftState.OPENED);
         shift.setID(iDGenerator.generateID(Shift.class.getName(), 6));
         shift.setOpenTime();
         shift.setTax(tax);
         shift.setOpeningBalance(openBalance);
         shift.setCashier(cashier);
         shift.setEmployeeOfThisShift(employeeList);
-        shift.setState(ShiftState.OPENED);
+        shift.setNote(note);
     }
     
 }

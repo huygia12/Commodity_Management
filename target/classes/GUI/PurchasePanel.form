@@ -93,11 +93,12 @@
               <Group type="103" groupAlignment="0" attributes="0">
                   <Group type="102" attributes="0">
                       <Group type="103" groupAlignment="0" attributes="0">
+                          <Component id="customerIDLabel" alignment="1" min="-2" max="-2" attributes="0"/>
                           <Group type="102" attributes="0">
                               <Group type="103" groupAlignment="0" attributes="0">
                                   <Group type="102" attributes="0">
                                       <EmptySpace max="-2" attributes="0"/>
-                                      <Component id="cashierPhoneNumLabel" min="-2" max="-2" attributes="0"/>
+                                      <Component id="cashierLabel" min="-2" max="-2" attributes="0"/>
                                   </Group>
                                   <Group type="102" alignment="0" attributes="0">
                                       <EmptySpace min="-2" pref="21" max="-2" attributes="0"/>
@@ -110,13 +111,12 @@
                               </Group>
                               <EmptySpace min="-2" pref="22" max="-2" attributes="0"/>
                           </Group>
-                          <Component id="customerIDLabel" alignment="1" min="-2" max="-2" attributes="0"/>
                       </Group>
                       <Group type="103" groupAlignment="0" attributes="0">
-                          <Group type="102" alignment="0" attributes="0">
+                          <Group type="102" attributes="0">
                               <EmptySpace max="-2" attributes="0"/>
                               <Group type="103" groupAlignment="0" max="-2" attributes="0">
-                                  <Component id="cashierPhoneNumText" max="32767" attributes="0"/>
+                                  <Component id="cashierTextField" max="32767" attributes="0"/>
                                   <Component id="employeeListComboBox" max="32767" attributes="0"/>
                                   <Component id="customerIDText" max="32767" attributes="0"/>
                               </Group>
@@ -124,35 +124,49 @@
                           </Group>
                           <Group type="102" alignment="1" attributes="0">
                               <EmptySpace max="32767" attributes="0"/>
-                              <Group type="103" groupAlignment="0" max="-2" attributes="0">
-                                  <Component id="checkCustomerIDBtn" max="-2" attributes="0"/>
-                                  <Component id="customerPointCheckTextField" max="32767" attributes="0"/>
+                              <Group type="103" groupAlignment="0" attributes="0">
+                                  <Component id="customerDiscountOfferTextField" min="-2" pref="104" max="-2" attributes="0"/>
+                                  <Component id="customerPointCheckTextField" min="-2" pref="104" max="-2" attributes="0"/>
                               </Group>
-                              <EmptySpace min="-2" pref="31" max="-2" attributes="0"/>
+                              <EmptySpace min="-2" pref="29" max="-2" attributes="0"/>
                           </Group>
                       </Group>
+                  </Group>
+                  <Group type="102" alignment="0" attributes="0">
+                      <EmptySpace max="-2" attributes="0"/>
+                      <Component id="customerDiscountOfferLabel" min="-2" max="-2" attributes="0"/>
+                      <EmptySpace max="32767" attributes="0"/>
+                  </Group>
+                  <Group type="102" alignment="1" attributes="0">
+                      <EmptySpace max="32767" attributes="0"/>
+                      <Component id="checkCustomerIDBtn" max="-2" attributes="0"/>
+                      <EmptySpace min="-2" pref="44" max="-2" attributes="0"/>
                   </Group>
               </Group>
             </DimensionLayout>
             <DimensionLayout dim="1">
               <Group type="103" groupAlignment="0" attributes="0">
                   <Group type="102" alignment="0" attributes="0">
-                      <EmptySpace min="0" pref="18" max="32767" attributes="0"/>
                       <Group type="103" groupAlignment="3" attributes="0">
                           <Component id="customerIDText" alignment="3" min="-2" pref="23" max="-2" attributes="0"/>
                           <Component id="customerIDLabel" alignment="3" min="-2" pref="22" max="-2" attributes="0"/>
                       </Group>
-                      <EmptySpace max="-2" attributes="0"/>
+                      <EmptySpace min="-2" pref="5" max="-2" attributes="0"/>
                       <Component id="checkCustomerIDBtn" min="-2" max="-2" attributes="0"/>
+                      <EmptySpace min="-2" pref="5" max="-2" attributes="0"/>
+                      <Group type="103" groupAlignment="0" attributes="0">
+                          <Component id="customerPointCheckTextField" alignment="0" min="-2" max="-2" attributes="0"/>
+                          <Component id="customerPointLabel" alignment="1" min="-2" max="-2" attributes="0"/>
+                      </Group>
                       <EmptySpace max="-2" attributes="0"/>
                       <Group type="103" groupAlignment="3" attributes="0">
-                          <Component id="customerPointCheckTextField" alignment="3" min="-2" max="-2" attributes="0"/>
-                          <Component id="customerPointLabel" alignment="3" min="-2" max="-2" attributes="0"/>
+                          <Component id="customerDiscountOfferLabel" alignment="3" min="-2" max="-2" attributes="0"/>
+                          <Component id="customerDiscountOfferTextField" alignment="3" min="-2" max="-2" attributes="0"/>
                       </Group>
-                      <EmptySpace type="separate" max="-2" attributes="0"/>
+                      <EmptySpace pref="16" max="32767" attributes="0"/>
                       <Group type="103" groupAlignment="3" attributes="0">
-                          <Component id="cashierPhoneNumText" alignment="3" min="-2" pref="23" max="-2" attributes="0"/>
-                          <Component id="cashierPhoneNumLabel" alignment="3" min="-2" pref="23" max="-2" attributes="0"/>
+                          <Component id="cashierTextField" alignment="3" min="-2" pref="23" max="-2" attributes="0"/>
+                          <Component id="cashierLabel" alignment="3" min="-2" pref="23" max="-2" attributes="0"/>
                       </Group>
                       <EmptySpace max="-2" attributes="0"/>
                       <Group type="103" groupAlignment="3" attributes="0">
@@ -165,7 +179,7 @@
             </DimensionLayout>
           </Layout>
           <SubComponents>
-            <Component class="javax.swing.JLabel" name="cashierPhoneNumLabel">
+            <Component class="javax.swing.JLabel" name="cashierLabel">
               <Properties>
                 <Property name="background" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
                   <Color blue="ff" green="ff" red="ff" type="rgb"/>
@@ -176,7 +190,7 @@
                 <Property name="text" type="java.lang.String" value="Thu Ng&#xe2;n-S&#x110;T: "/>
               </Properties>
             </Component>
-            <Component class="javax.swing.JTextField" name="cashierPhoneNumText">
+            <Component class="javax.swing.JTextField" name="cashierTextField">
               <Properties>
                 <Property name="editable" type="boolean" value="false"/>
                 <Property name="background" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
@@ -283,6 +297,35 @@
                 <EventHandler event="keyPressed" listener="java.awt.event.KeyListener" parameters="java.awt.event.KeyEvent" handler="customerIDTextKeyPressed"/>
               </Events>
             </Component>
+            <Component class="javax.swing.JLabel" name="customerDiscountOfferLabel">
+              <Properties>
+                <Property name="text" type="java.lang.String" value="&#x1af;u &#x111;&#xe3;i tri&#x1ebf;t kh&#x1ea5;u:"/>
+              </Properties>
+            </Component>
+            <Component class="javax.swing.JTextField" name="customerDiscountOfferTextField">
+              <Properties>
+                <Property name="editable" type="boolean" value="false"/>
+                <Property name="background" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
+                  <Color blue="ff" green="ff" red="ff" type="rgb"/>
+                </Property>
+                <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
+                  <Font name="Segoe UI" size="12" style="2"/>
+                </Property>
+                <Property name="foreground" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
+                  <Color blue="33" green="0" red="ff" type="rgb"/>
+                </Property>
+                <Property name="horizontalAlignment" type="int" value="0"/>
+                <Property name="border" type="javax.swing.border.Border" editor="org.netbeans.modules.form.editors2.BorderEditor">
+                  <Border info="null"/>
+                </Property>
+                <Property name="maximumSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
+                  <Dimension value="[80, 80]"/>
+                </Property>
+                <Property name="minimumSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
+                  <Dimension value="[0, 0]"/>
+                </Property>
+              </Properties>
+            </Component>
           </SubComponents>
         </Container>
         <Container class="javax.swing.JPanel" name="goodsPanel">
@@ -349,14 +392,12 @@
                       </Table>
                     </Property>
                     <Property name="autoResizeMode" type="int" value="0"/>
-                    <Property name="focusable" type="boolean" value="false"/>
                     <Property name="maximumSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
                       <Dimension value="[700, 0]"/>
                     </Property>
                     <Property name="minimumSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
                       <Dimension value="[675, 0]"/>
                     </Property>
-                    <Property name="opaque" type="boolean" value="false"/>
                     <Property name="showGrid" type="boolean" value="true"/>
                   </Properties>
                   <AccessibilityProperties>
@@ -1171,17 +1212,12 @@
                           <Component id="jSeparator2" min="-2" pref="7" max="-2" attributes="0"/>
                           <EmptySpace min="-2" pref="6" max="-2" attributes="0"/>
                           <Group type="103" groupAlignment="0" attributes="0">
-                              <Group type="102" attributes="0">
+                              <Group type="102" alignment="0" attributes="0">
                                   <Group type="103" groupAlignment="0" attributes="0">
                                       <Group type="102" alignment="0" attributes="0">
                                           <Component id="quantityTextField" min="-2" pref="120" max="-2" attributes="0"/>
                                           <EmptySpace max="32767" attributes="0"/>
                                           <Component id="editBtn" min="-2" pref="85" max="-2" attributes="0"/>
-                                      </Group>
-                                      <Group type="102" attributes="0">
-                                          <Component id="quantityLabel" min="-2" max="-2" attributes="0"/>
-                                          <EmptySpace max="32767" attributes="0"/>
-                                          <Component id="addBtn" min="-2" pref="85" max="-2" attributes="0"/>
                                       </Group>
                                       <Group type="102" alignment="0" attributes="0">
                                           <Group type="103" groupAlignment="0" attributes="0">
@@ -1205,18 +1241,24 @@
                                   <Group type="103" groupAlignment="0" max="-2" attributes="0">
                                       <Component id="shipmentIDTextField" min="-2" pref="98" max="-2" attributes="0"/>
                                       <Component id="goodsIDTextField" min="-2" pref="98" max="-2" attributes="0"/>
-                                      <Component id="resetOrderGoodsList" max="32767" attributes="0"/>
+                                      <Component id="resetBtn" max="32767" attributes="0"/>
                                       <Component id="removeBtn" min="-2" pref="98" max="-2" attributes="0"/>
                                   </Group>
+                                  <EmptySpace max="-2" attributes="0"/>
                               </Group>
-                              <Group type="102" attributes="0">
-                                  <Component id="searchBtn" min="-2" pref="98" max="-2" attributes="0"/>
-                                  <EmptySpace min="-2" pref="27" max="-2" attributes="0"/>
-                                  <Component id="warningTextField" min="-2" pref="170" max="-2" attributes="0"/>
-                                  <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
+                              <Group type="102" alignment="0" attributes="0">
+                                  <Group type="103" groupAlignment="0" attributes="0">
+                                      <Component id="quantityLabel" min="-2" max="-2" attributes="0"/>
+                                      <Component id="searchBtn" min="-2" pref="98" max="-2" attributes="0"/>
+                                  </Group>
+                                  <EmptySpace max="32767" attributes="0"/>
+                                  <Group type="103" groupAlignment="0" attributes="0">
+                                      <Component id="addBtn" min="-2" pref="85" max="-2" attributes="0"/>
+                                      <Component id="warningTextField" min="-2" pref="170" max="-2" attributes="0"/>
+                                  </Group>
+                                  <EmptySpace min="-2" pref="31" max="-2" attributes="0"/>
                               </Group>
                           </Group>
-                          <EmptySpace max="-2" attributes="0"/>
                       </Group>
                   </Group>
                 </DimensionLayout>
@@ -1270,33 +1312,34 @@
                                   </Group>
                                   <EmptySpace max="-2" attributes="0"/>
                                   <Group type="103" groupAlignment="0" attributes="0">
-                                      <Group type="102" attributes="0">
-                                          <Component id="keyWordTextField" min="-2" max="-2" attributes="0"/>
-                                          <EmptySpace max="-2" attributes="0"/>
-                                          <Component id="searchBtn" min="-2" pref="25" max="-2" attributes="0"/>
-                                          <EmptySpace max="32767" attributes="0"/>
-                                          <Component id="quantityLabel" min="-2" max="-2" attributes="0"/>
-                                          <EmptySpace max="-2" attributes="0"/>
+                                      <Group type="103" alignment="0" groupAlignment="3" attributes="0">
+                                          <Component id="shipmentIDTextField" alignment="3" min="-2" max="-2" attributes="0"/>
+                                          <Component id="shipmentIDLabel" alignment="3" min="-2" max="-2" attributes="0"/>
                                       </Group>
-                                      <Group type="102" alignment="1" attributes="0">
-                                          <Group type="103" groupAlignment="3" attributes="0">
-                                              <Component id="shipmentIDTextField" alignment="3" min="-2" max="-2" attributes="0"/>
-                                              <Component id="shipmentIDLabel" alignment="3" min="-2" max="-2" attributes="0"/>
-                                          </Group>
-                                          <EmptySpace max="32767" attributes="0"/>
+                                      <Component id="keyWordTextField" alignment="0" min="-2" max="-2" attributes="0"/>
+                                  </Group>
+                                  <EmptySpace max="32767" attributes="0"/>
+                                  <Group type="103" groupAlignment="0" attributes="0">
+                                      <Group type="102" attributes="0">
+                                          <EmptySpace min="-2" pref="2" max="-2" attributes="0"/>
+                                          <Component id="searchBtn" min="-2" pref="25" max="-2" attributes="0"/>
+                                          <EmptySpace max="-2" attributes="0"/>
+                                          <Component id="quantityLabel" min="-2" max="-2" attributes="0"/>
+                                      </Group>
+                                      <Group type="102" attributes="0">
                                           <Component id="warningTextField" min="-2" max="-2" attributes="0"/>
                                           <EmptySpace max="-2" attributes="0"/>
                                           <Group type="103" groupAlignment="3" attributes="0">
                                               <Component id="removeBtn" alignment="3" min="-2" pref="27" max="-2" attributes="0"/>
                                               <Component id="addBtn" alignment="3" min="-2" max="-2" attributes="0"/>
                                           </Group>
-                                          <EmptySpace min="-2" pref="10" max="-2" attributes="0"/>
                                       </Group>
                                   </Group>
+                                  <EmptySpace max="-2" attributes="0"/>
                                   <Group type="103" groupAlignment="3" attributes="0">
                                       <Component id="quantityTextField" alignment="3" min="-2" max="-2" attributes="0"/>
                                       <Component id="editBtn" alignment="3" max="32767" attributes="0"/>
-                                      <Component id="resetOrderGoodsList" alignment="3" min="-2" max="-2" attributes="0"/>
+                                      <Component id="resetBtn" alignment="3" min="-2" max="-2" attributes="0"/>
                                   </Group>
                               </Group>
                           </Group>
@@ -1378,7 +1421,7 @@
                     <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="removeBtnActionPerformed"/>
                   </Events>
                 </Component>
-                <Component class="javax.swing.JButton" name="resetOrderGoodsList">
+                <Component class="javax.swing.JButton" name="resetBtn">
                   <Properties>
                     <Property name="background" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
                       <Color blue="33" green="33" red="33" type="rgb"/>
@@ -1396,7 +1439,7 @@
                     </Property>
                   </Properties>
                   <Events>
-                    <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="resetOrderGoodsListActionPerformed"/>
+                    <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="resetBtnActionPerformed"/>
                   </Events>
                 </Component>
                 <Component class="javax.swing.JButton" name="editBtn">
@@ -1697,11 +1740,9 @@
                       </Table>
                     </Property>
                     <Property name="autoResizeMode" type="int" value="0"/>
-                    <Property name="focusable" type="boolean" value="false"/>
                     <Property name="maximumSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
                       <Dimension value="[700, 0]"/>
                     </Property>
-                    <Property name="opaque" type="boolean" value="false"/>
                     <Property name="showGrid" type="boolean" value="true"/>
                   </Properties>
                   <Events>

@@ -48,11 +48,17 @@ public class OrderController extends GoodsListController {
 
     public BigDecimal getTotal(Order order, Store store) {
         // Khoan tien can thanh toan khi da tru di discount va cong them VAT
-        return (getSubTotal(order)
+        BigDecimal total = (getSubTotal(order)
                 .add(getTaxAmount(order)))
                 .multiply(new BigDecimal(1.0 - order.getDiscount() * 1.0 / 100))
-                .subtract(getPointDiscountAmount(order, store))
                 .add(order.getShippingFee());
+        if(order.getCustomerCard()!=null){
+            Double customerDisOffer = (100f - cardCtr
+                    .getCustomerDiscountOffer(order.getCustomerCard(), store))/100;
+            total = total.subtract(getPointDiscountAmount(order, store));
+            total = total.multiply(new BigDecimal(customerDisOffer));
+        }
+        return total;
     }
 
     public BigDecimal getDiscountAmount(Order order) {
@@ -66,8 +72,9 @@ public class OrderController extends GoodsListController {
     }
 
     public BigDecimal getPointDiscountAmount(Order order, Store store) {
-        return cardCtr
-                .convertPointToMoney(order.getCustomerCard(), order.getPointDiscount(), store);
+        return (order.getCustomerCard() == null) ? BigDecimal.ZERO : cardCtr
+                .convertPointToMoney(order.getCustomerCard(), 
+                        order.getPointDiscount(), store);
     }
 
     public GoodsList<Goods> makeDraftGoodsList(GoodsList<Goods> repoGoodsList) {
@@ -103,10 +110,12 @@ public class OrderController extends GoodsListController {
         }
     }
 
-    public Order makeNewOrder(Shift shift, IDGenerator idGenerator) {
+    public Order makeNewOrder(Shift shift, IDGenerator idGenerator, 
+            Employee cashier, int tax, PaymentOptions paymentOptions) {
         Order order = new Order(idGenerator.generateID(Order.class.getName(), 6));
-        // thêm order hiện tại vào lịch sử ca hiện tại
-        shift.getOrderHisPerShift().add(order);
+        order.setCashier(cashier);
+        order.setTax(tax);
+        order.setPaymentOptions(paymentOptions);
         return order;
     }
 
@@ -195,10 +204,13 @@ public class OrderController extends GoodsListController {
         }
     }
 
-    public void payOrder(Order order, Shift shift, GoodsList<Goods> repository, Store store) {
-        if (order.getCustomerCard() != null) {
-            cardCtr.gainPoint(order.getCustomerCard(), getTotal(order, store), store);
-            cardCtr.usePoint(order.getCustomerCard(), order.getPointDiscount());
+    public void payOrder(Order order, Shift shift, 
+            GoodsList<Goods> repository, Store store, History history) {
+        CustomerCard card = order.getCustomerCard();
+        if (card != null) {
+            cardCtr.gainPoint(card, getTotal(order, store), store);
+            cardCtr.usePoint(card, order.getPointDiscount());
+            cardCtr.updateRank(card, history, store);
         }
         order.setOrderDateTime();
         shift.getOrderHisPerShift().add(order);

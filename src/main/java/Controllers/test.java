@@ -15,6 +15,7 @@ import java.math.BigInteger;
 import java.nio.file.Path;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -32,8 +33,8 @@ public class test {
     static Map<String, Integer> staticalList = new HashMap<>();
 
     public static void main(String[] args) {
-        Employee e = new Employee();
-        System.out.println(e.toString().equals("n"));
+        Float customerDisOffer = (100f - 3)/100;
+        System.out.println(customerDisOffer*50000);
     }
 
 

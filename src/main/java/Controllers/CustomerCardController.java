@@ -6,11 +6,15 @@ package Controllers;
 
 import Models.CustomerCard;
 import Models.CustomerCardList;
+import Models.CustomerRank;
+import Models.History;
+import Models.Order;
 import Models.Store;
 import Ultility.IDGenerator;
 import View.CustomerView;
 import java.math.BigDecimal;
 import java.math.BigInteger;
+import java.util.List;
 import java.util.stream.Collectors;
 
 /**
@@ -125,4 +129,44 @@ public class CustomerCardController {
     public void usePoint(CustomerCard customerCard, BigInteger usedPoint){
         customerCard.setPoint(customerCard.getPoint().subtract(usedPoint));
     }
+    
+    public void updateRank(CustomerCard customerCard, History history, Store store){
+        HistoryController hisCtr = new HistoryController();
+        OrderController orderCtr = new OrderController();
+        BigDecimal total = BigDecimal.ZERO;
+        for (String orderID : customerCard.getIDOfBoughtOrders()) {
+            Order order = hisCtr.containOrder(orderID,history);
+            total = total.add(orderCtr.getTotal(order, store));
+        }
+        
+        if(total.compareTo(store.getBronzeDiscountOffer().getK())>=0){
+            customerCard.setRank(CustomerRank.BRONZE);
+        }
+        if(total.compareTo(store.getSilverDiscountOffer().getK())>=0){
+            customerCard.setRank(CustomerRank.SILVER);
+        }
+        if(total.compareTo(store.getGoldDiscountOffer().getK())>=0){
+            customerCard.setRank(CustomerRank.GOLD);
+        }
+        if(total.compareTo(store.getDiamondDiscountOffer().getK())>=0){
+            customerCard.setRank(CustomerRank.DIAMOND);
+        }
+    }
+    
+    public Double getCustomerDiscountOffer(CustomerCard customerCard, Store store){
+        Double discountOffer = 0d;
+        if(customerCard.getRank().equals(CustomerRank.BRONZE)){
+            discountOffer = store.getBronzeDiscountOffer().getV();
+        }
+        if(customerCard.getRank().equals(CustomerRank.SILVER)){
+            discountOffer = store.getSilverDiscountOffer().getV();
+        }
+        if(customerCard.getRank().equals(CustomerRank.GOLD)){
+            discountOffer = store.getGoldDiscountOffer().getV();
+        }
+        if(customerCard.getRank().equals(CustomerRank.DIAMOND)){
+            discountOffer = store.getDiamondDiscountOffer().getV();
+        }
+        return discountOffer;
+    } 
 }

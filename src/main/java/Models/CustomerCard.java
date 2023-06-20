@@ -28,7 +28,10 @@ public class CustomerCard {
     @SerializedName("IDOfBoughtOrders")
     @Expose
     private List<String> IDOfBoughtOrders = new ArrayList<>();
-
+    @SerializedName("rank")
+    @Expose
+    private CustomerRank rank = CustomerRank.NONE; 
+            
     public CustomerCard() {
     }
 
@@ -68,4 +71,14 @@ public class CustomerCard {
     public void setIDOfBoughtOrders(List<String> IDOfBoughtOrders) {
         this.IDOfBoughtOrders = IDOfBoughtOrders;
     }
+
+    public CustomerRank getRank() {
+        return rank;
+    }
+
+    public void setRank(CustomerRank rank) {
+        this.rank = rank;
+    }
+    
+    
 }
