@@ -27,8 +27,18 @@ public final class Header extends javax.swing.JPanel {
         this.storeNameLabel.setText(store.getName());
         this.storePhoneNumLabel.setText("Liên hệ: " + store.getPhoneNumber());
         this.storeAndressLabel.setText("Địa chỉ: " + store.getAddress());
-    }
+        //this.storeEmailLabel.setText("Email: " + store.getEmail());
 
+    }
+  public void setTitle(String name, String phoneNumber, String address) {
+    this.store.setName(name);
+    this.store.setPhoneNumber(phoneNumber);
+    this.store.setAddress(address);
+    
+    this.storeNameLabel.setText(store.getName());
+    this.storePhoneNumLabel.setText("Liên hệ: " + store.getPhoneNumber());
+    this.storeAndressLabel.setText("Địa chỉ: " + store.getAddress());
+}
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -41,6 +51,7 @@ public final class Header extends javax.swing.JPanel {
         storeNameLabel = new javax.swing.JLabel();
         storePhoneNumLabel = new javax.swing.JLabel();
         storeAndressLabel = new javax.swing.JLabel();
+        storeEmailLabel = new javax.swing.JLabel();
         imageAvatar1 = new Models.ImageAvatar();
 
         storeNameLabel.setFont(new java.awt.Font("Segoe UI", 1, 16)); // NOI18N
@@ -52,6 +63,9 @@ public final class Header extends javax.swing.JPanel {
 
         storeAndressLabel.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         storeAndressLabel.setText(" ");
+
+        storeEmailLabel.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        storeEmailLabel.setText(" ");
 
         imageAvatar1.setImage(new javax.swing.ImageIcon(getClass().getResource("/ImageIcon/avtdis.png"))); // NOI18N
 
@@ -67,6 +81,10 @@ public final class Header extends javax.swing.JPanel {
                     .addComponent(storeNameLabel, javax.swing.GroupLayout.DEFAULT_SIZE, 176, Short.MAX_VALUE)
                     .addComponent(imageAvatar1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addGap(27, 27, 27))
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(storeEmailLabel, javax.swing.GroupLayout.DEFAULT_SIZE, 206, Short.MAX_VALUE)
+                .addContainerGap())
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -79,7 +97,9 @@ public final class Header extends javax.swing.JPanel {
                 .addComponent(storePhoneNumLabel)
                 .addGap(3, 3, 3)
                 .addComponent(storeAndressLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 16, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(storeEmailLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 16, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(14, Short.MAX_VALUE))
         );
     }// </editor-fold>//GEN-END:initComponents
 
@@ -88,6 +108,7 @@ public final class Header extends javax.swing.JPanel {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private Models.ImageAvatar imageAvatar1;
     private javax.swing.JLabel storeAndressLabel;
+    private javax.swing.JLabel storeEmailLabel;
     private javax.swing.JLabel storeNameLabel;
     private javax.swing.JLabel storePhoneNumLabel;
     // End of variables declaration//GEN-END:variables

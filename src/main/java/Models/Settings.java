@@ -4,8 +4,11 @@
  */
 package Models;
 
+import com.google.gson.Gson;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.util.ArrayList;
@@ -25,6 +28,23 @@ public class Settings {
     
     public Settings() {
     }
+    public void save() {
+        // Convert Settings to JSON string using Gson library
+        Gson gson = new Gson();
+        String json = gson.toJson(this);
+        
+        try (FileWriter writer = new FileWriter("settings.json")) {
+            // Save JSON string to file
+            writer.write(json);
+            writer.flush();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        
+        System.out.println("Settings saved!");
+    }
+
+
 
     public Store getStore() {
         return myStore;

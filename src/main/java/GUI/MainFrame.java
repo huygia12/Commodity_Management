@@ -272,12 +272,12 @@ public class MainFrame extends javax.swing.JFrame {
             new MainFrame().setVisible(true);
         });
     }
-
+    
     private void passDataToComponents() {
         // pass data vào purchasePanel
         purchasePanel1.passData(repository, idGenerator,
-                settings, shift, 
-                units, customerCardList, 
+                settings, shift,
+                units, customerCardList,
                 employeeList, history);
         // pass data vào customerCardPanel
         customerCardPanel1.passData(customerCardList, idGenerator, history);
@@ -289,8 +289,9 @@ public class MainFrame extends javax.swing.JFrame {
         // pass data vào shiftJPanel
         shiftPanel1.passData(shift, history, employeeList,
                 settings.getStore(), this);
+        settingsPanel1.passData(settings, header);
     }
-
+    
     private void notOpenShiftWarning() {
         int choice = JOptionPane.showConfirmDialog(displayPanel, "Thực hiện mở ca ngay?",
                 "Không có ca hiện tại!", JOptionPane.WARNING_MESSAGE);
@@ -298,7 +299,7 @@ public class MainFrame extends javax.swing.JFrame {
             switchPanel(2);
         }
     }
-
+    
     private void initSideBar() {
         DrawerItem productDrawerItem = new DrawerItem("Sản phẩm").icon(new ImageIcon(getClass().getResource("/ImageIcon/icons8-product-35.png"))).build();
         productDrawerItem.setFont(new java.awt.Font("Segoe UI", 1, 16));
@@ -347,7 +348,7 @@ public class MainFrame extends javax.swing.JFrame {
                 })
                 .build();
     }
-
+    
     private void switchPanel(int i) {
         switch (i) {
             case 0:
@@ -389,7 +390,7 @@ public class MainFrame extends javax.swing.JFrame {
             case 6:
         }
     }
-
+    
     private void realTimeClock() {
         new Thread() {
             @Override
@@ -407,7 +408,7 @@ public class MainFrame extends javax.swing.JFrame {
             }
         }.start();
     }
-
+    
     private void loadData() {
         repository = myData.load(Path.of(REPOSITORY_PATH), Repository.class, repository);
         shift = myData.load(Path.of(SHIFT_PATH), Shift.class, shift);
@@ -418,7 +419,7 @@ public class MainFrame extends javax.swing.JFrame {
         settings = myData.load(Path.of(SETTINGS_PATH), Settings.class, settings);
         units = myData.load(Path.of(UNITS_PATH), Units.class, units);
     }
-
+    
     private static void saveData() {
         myData.save(Path.of(REPOSITORY_PATH), repository);
         myData.save(Path.of(SHIFT_PATH), shift);
@@ -428,7 +429,7 @@ public class MainFrame extends javax.swing.JFrame {
         myData.save(Path.of(IDGENERATOR_PATH), idGenerator);
         myData.save(Path.of(SETTINGS_PATH), settings);
     }
-
+    
     private void setUp() {
         setIconImage(new ImageIcon(getClass()
                 .getResource("/ImageIcon/icons8-grocery-store-96.png")).getImage());
@@ -436,12 +437,12 @@ public class MainFrame extends javax.swing.JFrame {
         displayPanel.add(repoPanel1, "repo");
         cardLayout.show(displayPanel, "repo");
     }
-
+    
     private void initVariables() {
         cardLayout = (CardLayout) displayPanel.getLayout();
         realTimeClock();
     }
-
+    
     private Header header;
     private CardLayout cardLayout;
     static Units units = new Units();

@@ -147,7 +147,7 @@
                   <Component id="openSideBarLabel" min="-2" max="-2" attributes="0"/>
                   <EmptySpace max="-2" attributes="0"/>
                   <Component id="shiftIDLabel" min="-2" max="-2" attributes="0"/>
-                  <EmptySpace pref="538" max="32767" attributes="0"/>
+                  <EmptySpace pref="508" max="32767" attributes="0"/>
                   <Component id="dateLabel" min="-2" max="-2" attributes="0"/>
                   <EmptySpace max="-2" attributes="0"/>
                   <Component id="dateTextField" min="-2" pref="104" max="-2" attributes="0"/>

@@ -558,7 +558,7 @@ public class EmployJPanel extends javax.swing.JPanel {
 
         String address = inputAdressTextPane.getText();
         String phone = inputPhoneTextField.getText();
-        String reg = "^(0|\\+84)(\\s|\\.)?((3[0-9])|(5[0-9])|(7[0-9])|(8[0-689])|(9[0-46-9]))(\\d)(\\s|\\.)?(\\d{3})(\\s|\\.)?(\\d{3})$";
+        String reg = "^(0|\\+84)\\d{9}$";
         if (!phone.matches(reg)) {
             JOptionPane.showMessageDialog(this, "Số điện thoại không đúng định dạng! Vui lòng nhập lại.", "Cảnh báo", JOptionPane.WARNING_MESSAGE);
             return;
@@ -623,7 +623,7 @@ public class EmployJPanel extends javax.swing.JPanel {
             String newGender = maleButton.isSelected() ? "MALE" : femaleRadioButton.isSelected() ? "FEMALE" : "OTHER";
             String newAddress = inputAdressTextPane.getText();
             String newPhone = inputPhoneTextField.getText();
-            String reg = "^(0|\\+84)(\\s|\\.)?((3[0-9])|(5[0-9])|(7[0-9])|(8[0-689])|(9[0-46-9]))(\\d)(\\s|\\.)?(\\d{3})(\\s|\\.)?(\\d{3})$";
+            String reg = "^(0|\\+84)\\d{9}$";
             if (!newPhone.matches(reg)) {
                 JOptionPane.showMessageDialog(this, "Số điện thoại không đúng định dạng! Vui lòng nhập lại .", "Cảnh báo", JOptionPane.WARNING_MESSAGE);
                 return;
