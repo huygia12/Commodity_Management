@@ -29,12 +29,11 @@ public class Settings {
     public Settings() {
     }
     public void save() {
-        // Convert Settings to JSON string using Gson library
+        
         Gson gson = new Gson();
         String json = gson.toJson(this);
         
         try (FileWriter writer = new FileWriter("settings.json")) {
-            // Save JSON string to file
             writer.write(json);
             writer.flush();
         } catch (IOException e) {
