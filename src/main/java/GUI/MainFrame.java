@@ -64,7 +64,7 @@ public class MainFrame extends javax.swing.JFrame {
         customerCardPanel1 = new GUI.CustomerCardPanel();
         employJPanel1 = new GUI.EmployJPanel();
         shiftPanel1 = new GUI.ShiftPanel();
-        settingsPanel1 = new GUI.SettingsPanel();
+        settingsPanel2 = new GUI.SettingsPanel();
         menuBar = new javax.swing.JMenuBar();
         fileMenu = new javax.swing.JMenu();
         editMenu = new javax.swing.JMenu();
@@ -175,18 +175,18 @@ public class MainFrame extends javax.swing.JFrame {
         displayPanel.add(employJPanel1, "card5");
         displayPanel.add(shiftPanel1, "card6");
 
-        javax.swing.GroupLayout settingsPanel1Layout = new javax.swing.GroupLayout(settingsPanel1);
-        settingsPanel1.setLayout(settingsPanel1Layout);
-        settingsPanel1Layout.setHorizontalGroup(
-            settingsPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+        javax.swing.GroupLayout settingsPanel2Layout = new javax.swing.GroupLayout(settingsPanel2);
+        settingsPanel2.setLayout(settingsPanel2Layout);
+        settingsPanel2Layout.setHorizontalGroup(
+            settingsPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGap(0, 1000, Short.MAX_VALUE)
         );
-        settingsPanel1Layout.setVerticalGroup(
-            settingsPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+        settingsPanel2Layout.setVerticalGroup(
+            settingsPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGap(0, 589, Short.MAX_VALUE)
         );
 
-        displayPanel.add(settingsPanel1, "card7");
+        displayPanel.add(settingsPanel2, "card7");
 
         menuBar.setMaximumSize(new java.awt.Dimension(171000, 20));
         menuBar.setMinimumSize(new java.awt.Dimension(1000, 15));
@@ -295,7 +295,7 @@ public class MainFrame extends javax.swing.JFrame {
         shiftPanel1.passData(shift, history, employeeList,
                 settings.getStore(), idGenerator, this);
         // pass data vao settingsPanel
-        settingsPanel1.passData(settings, header);
+        settingsPanel2.passData(settings, header);
     }
 
     private void initSideBar() {
@@ -376,7 +376,7 @@ public class MainFrame extends javax.swing.JFrame {
                 drawerCtr.hide();
                 break;
             case 5:
-                displayPanel.add(settingsPanel1, "settings");
+                displayPanel.add(settingsPanel2, "settings");
                 cardLayout.show(displayPanel, "settings");
                 drawerCtr.hide();
                 break;
@@ -473,7 +473,7 @@ public class MainFrame extends javax.swing.JFrame {
     private javax.swing.JMenu optionsMenu;
     private GUI.PurchasePanel purchasePanel1;
     private GUI.RepoPanel repoPanel1;
-    private GUI.SettingsPanel settingsPanel1;
+    private GUI.SettingsPanel settingsPanel2;
     private javax.swing.JLabel shiftIDLabel;
     private GUI.ShiftPanel shiftPanel1;
     private javax.swing.JLabel timeLabel;
