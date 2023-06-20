@@ -274,7 +274,9 @@ public class MainFrame extends javax.swing.JFrame {
     private void passDataToComponents() {
         // pass data vào purchasePanel
         purchasePanel1.passData(repository, idGenerator,
-                settings, shift, units, customerCardList, employeeList);
+                settings, shift, 
+                units, customerCardList, 
+                employeeList, history);
         // pass data vào customerCardPanel
         customerCardPanel1.passData(customerCardList, idGenerator, history);
         // pass data vào employPanel

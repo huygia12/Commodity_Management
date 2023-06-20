@@ -53,7 +53,10 @@ public class OrderController extends GoodsListController {
                 .multiply(new BigDecimal(1.0 - order.getDiscount() * 1.0 / 100))
                 .add(order.getShippingFee());
         if(order.getCustomerCard()!=null){
+            Double customerDisOffer = (100f - cardCtr
+                    .getCustomerDiscountOffer(order.getCustomerCard(), store))/100;
             total = total.subtract(getPointDiscountAmount(order, store));
+            total = total.multiply(new BigDecimal(customerDisOffer));
         }
         return total;
     }
@@ -201,10 +204,13 @@ public class OrderController extends GoodsListController {
         }
     }
 
-    public void payOrder(Order order, Shift shift, GoodsList<Goods> repository, Store store) {
-        if (order.getCustomerCard() != null) {
-            cardCtr.gainPoint(order.getCustomerCard(), getTotal(order, store), store);
-            cardCtr.usePoint(order.getCustomerCard(), order.getPointDiscount());
+    public void payOrder(Order order, Shift shift, 
+            GoodsList<Goods> repository, Store store, History history) {
+        CustomerCard card = order.getCustomerCard();
+        if (card != null) {
+            cardCtr.gainPoint(card, getTotal(order, store), store);
+            cardCtr.usePoint(card, order.getPointDiscount());
+            cardCtr.updateRank(card, history, store);
         }
         order.setOrderDateTime();
         shift.getOrderHisPerShift().add(order);

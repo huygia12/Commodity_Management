@@ -33,9 +33,8 @@ public class test {
     static Map<String, Integer> staticalList = new HashMap<>();
 
     public static void main(String[] args) {
-        LocalTime currentDateTime = LocalTime.now();
-        String format = "HH:mm";
-        System.out.println(currentDateTime.format(DateTimeFormatter.ofPattern(format)));
+        Float customerDisOffer = (100f - 3)/100;
+        System.out.println(customerDisOffer*50000);
     }
 
 

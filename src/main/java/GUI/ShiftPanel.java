@@ -13,6 +13,7 @@ import Ultility.Cautions;
 import java.util.stream.*;
 import java.awt.event.KeyEvent;
 import java.math.BigDecimal;
+import java.time.DateTimeException;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
@@ -708,14 +709,14 @@ public class ShiftPanel extends javax.swing.JPanel {
         cashierPhoneNumberFilter = true;
         orderDateFilter = true;
         orderTimeFilter = true;
-        
+
         if (!orderID.isBlank()) { // nếu có ID của ca thì tìm được ca luôn và không thực hiện code bên dưới nữa
             Order searchingOrder = shiftCtr.containOrder(filterOrderList, orderID);
             if (searchingOrder != null) {
                 clearTableModel(orderListModel);
                 insertOrderToOverViewTable(searchingOrder, myStore);
-            }else{
-                showWarningJOptionPane("Mã Ca "+INVALID_WARNING);
+            } else {
+                showWarningJOptionPane("Mã Ca " + INVALID_WARNING);
             }
             return;
         }
@@ -725,12 +726,12 @@ public class ShiftPanel extends javax.swing.JPanel {
         if (!orderDate.isBlank()) { // lọc theo ngày tạo hóa đơn
             filterOrderList = searchOrderWithOrderDateFilter(filterOrderList, orderDate);
         }
-        if (!(orderTimeFrom.equals(defaultTimeSet) 
+        if (!(orderTimeFrom.equals(defaultTimeSet)
                 && orderTimeTo.equals(defaultTimeSet))) { // lọc theo thời gian tạo hóa đơn
             filterOrderList = searchOrderWithOrderTimeFilter(filterOrderList, orderTimeFrom, orderTimeTo);
         }
-        
-        if(!showFilterWarning()){
+
+        if (!showFilterWarning()) {
             insertOrderHistoryToOverViewTable(filterOrderList, myStore);
         }
     }//GEN-LAST:event_searchBtnActionPerformed
@@ -1028,53 +1029,59 @@ public class ShiftPanel extends javax.swing.JPanel {
     }
 
     private List<Order> searchOrderWithOrderTimeFilter(List<Order> filterOrderList, String fromTime, String toTime) {
-        LocalTime fromLocalTime = LocalTime.parse(fromTime, DateTimeFormatter.ofPattern(TIME_PATERN));
-        LocalTime toLocalTime = LocalTime.parse(toTime, DateTimeFormatter.ofPattern(TIME_PATERN));
-        if(fromLocalTime.isBefore(toLocalTime)){
-            filterOrderList.stream().filter(order->order.getOrderDateTime().toLocalTime()
-                    .isBefore(toLocalTime)
-                    &&order.getOrderDateTime().toLocalTime()
-                            .isAfter(fromLocalTime)).collect(Collectors.toList());
-            orderTimeFilter = true;
-        }else{
+        try {
+            LocalTime fromLocalTime = LocalTime.parse(fromTime,
+                    DateTimeFormatter.ofPattern(TIME_PATERN));
+            LocalTime toLocalTime = LocalTime.parse(toTime,
+                    DateTimeFormatter.ofPattern(TIME_PATERN));
+            if (fromLocalTime.isBefore(toLocalTime)) {
+                filterOrderList = filterOrderList.stream().filter(order -> order.getOrderDateTime().toLocalTime()
+                        .isBefore(toLocalTime)
+                        && order.getOrderDateTime().toLocalTime()
+                                .isAfter(fromLocalTime)).collect(Collectors.toList());
+                orderTimeFilter = true;
+            } else {
+                orderTimeFilter = false;
+            }
+        } catch (DateTimeException dte) {
             orderTimeFilter = false;
         }
         return filterOrderList;
     }
 
-    private boolean showFilterWarning(){
+    private boolean showFilterWarning() {
         Boolean check = false;
         String phoneNumStr = "SĐT ";
         String dateStr = "Ngày xuất hóa đơn ";
         String timeStr = "Thời gian xuất hóa đơn ";
         String linkingVerb = "và ";
         StringBuffer holeStr = new StringBuffer("");
-        
-        if(!cashierPhoneNumberFilter){
+
+        if (!cashierPhoneNumberFilter) {
             check = true;
             holeStr = holeStr.append(phoneNumStr);
         }
-        if(!orderDateFilter){
-            if(check){
+        if (!orderDateFilter) {
+            if (check) {
                 holeStr.append(linkingVerb);
             }
             check = true;
             holeStr = holeStr.append(dateStr);
         }
-        if(!orderTimeFilter){
-            if(check){
+        if (!orderTimeFilter) {
+            if (check) {
                 holeStr.append(linkingVerb);
             }
             holeStr = holeStr.append(timeStr);
         }
-        
-        if(!cashierPhoneNumberFilter | !orderDateFilter | !orderTimeFilter){
-            showWarningJOptionPane(holeStr.toString()+ INVALID_WARNING);
+
+        if (!cashierPhoneNumberFilter | !orderDateFilter | !orderTimeFilter) {
+            showWarningJOptionPane(holeStr.toString() + INVALID_WARNING);
             return true;
         }
         return false;
     }
-    
+
     private void passValueToEmployeeListComboBox() {
         shiftEmployeeListComboBox.removeAllItems();
         shift.getEmployeeOfThisShift().getList().stream().forEach(
@@ -1203,6 +1210,7 @@ public class ShiftPanel extends javax.swing.JPanel {
         surchargeLabel.setEnabled(enable);
         surchargeTextField.setEnabled(enable);
         endShiftBtn.setEnabled(enable);
+        editShiftBtn.setEnabled(enable);
         //
         numberOfOrderLabel.setEnabled(enable);
         numberOfOrderTextField.setEnabled(enable);
