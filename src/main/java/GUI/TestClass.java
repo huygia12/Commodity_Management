@@ -8,6 +8,8 @@ import Models.Goods;
 import Models.GoodsList;
 import Models.Units;
 import java.util.ArrayList;
+import GUI.RepoPanel;
+import GUI.ShiftPanel;
 
 /**
  *
@@ -20,8 +22,6 @@ public class TestClass extends javax.swing.JFrame {
      */
     public TestClass() {
         initComponents();
-        repoPanel1.setGoodsList(new GoodsList<Goods>());
-        repoPanel1.setUnitsList(new Units());
     }
 
     /**
@@ -36,23 +36,9 @@ public class TestClass extends javax.swing.JFrame {
         repoPanel1 = new GUI.RepoPanel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
-
-        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
-        getContentPane().setLayout(layout);
-        layout.setHorizontalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(repoPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap())
-        );
-        layout.setVerticalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(repoPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap())
-        );
+        setMaximumSize(new java.awt.Dimension(980, 620));
+        getContentPane().setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
+        getContentPane().add(repoPanel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 980, 620));
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
@@ -91,6 +77,7 @@ public class TestClass extends javax.swing.JFrame {
             }
         });
     }
+    
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private GUI.RepoPanel repoPanel1;

@@ -80,4 +80,14 @@ public class Shipment {
     public void setID(String shipmentID) {
         this.id = shipmentID;
     }
+    
+    public String calculateStatus() {
+        if (this.hsd == null || this.nsx == null) {
+            return "Không có hạn sử dụng";
+        } else if (!this.hsd.isAfter(LocalDate.now())) {
+            return "Hết hạn";
+        } else {
+            return "Còn hạn";
+        }
+    }
 }
