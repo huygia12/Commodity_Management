@@ -292,7 +292,7 @@ public class MainFrame extends javax.swing.JFrame {
                 units, customerCardList, 
                 employeeList, history);
         // pass data vào customerCardPanel
-        customerCardPanel1.passData(customerCardList, idGenerator, history);
+        customerCardPanel1.passData(customerCardList, idGenerator, history, settings);
         // pass data vào employPanel
         employJPanel1.passData(employeeList, shift);
         // pass data vào repoPanel

@@ -234,10 +234,10 @@ public class CommodityManagement {
         settings.getPriceAmountList().add("100000 - 300000");
         settings.getPriceAmountList().add("300000 - 500000");
         settings.getPriceAmountList().add("< 500000");
-        settings.getStore().setBronzeDiscountOffer(new CustomPair<>(new BigDecimal("8000000"), 0d));
-        settings.getStore().setSilverDiscountOffer(new CustomPair<>(new BigDecimal("12000000"), 2d));
-        settings.getStore().setGoldDiscountOffer(new CustomPair<>(new BigDecimal("20000000"), 3d));
-        settings.getStore().setDiamondDiscountOffer(new CustomPair<>(new BigDecimal("34000000"), 4d));
+        settings.getStore().setBronzeDiscountOffer(new CustomPair<>(new BigDecimal("0"), 0d));
+        settings.getStore().setSilverDiscountOffer(new CustomPair<>(new BigDecimal("8000000"), 2d));
+        settings.getStore().setGoldDiscountOffer(new CustomPair<>(new BigDecimal("12000000"), 3d));
+        settings.getStore().setDiamondDiscountOffer(new CustomPair<>(new BigDecimal("30000000"), 4d));
 //        GoodsList<Goods> orderGoodsList1 = new GoodsList();
 //        orderGoodsList1.getList().add(repo.getList().get(0));
 //        orderGoodsList1.getList().add(repo.getList().get(2));
