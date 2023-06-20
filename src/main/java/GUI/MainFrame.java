@@ -289,6 +289,7 @@ public class MainFrame extends javax.swing.JFrame {
         // pass data vào shiftJPanel
         shiftPanel1.passData(shift, history, employeeList,
                 settings.getStore(), this);
+        //pass dât vào settingsPanel
         settingsPanel1.passData(settings, header);
     }
     
