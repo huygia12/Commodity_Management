@@ -47,6 +47,11 @@ public class RepoPanel extends javax.swing.JPanel {
         goodTableModel = (DefaultTableModel) jTable1.getModel();
         Instance = this;
     }
+    
+    public void externalRefresh() {
+        defaultSettings();
+        reloadTable(goodsList);
+    }
 
     /**
      * This method is called from within the constructor to initialize the form.
