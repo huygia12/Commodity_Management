@@ -18,10 +18,8 @@ import java.util.logging.Logger;
 import javaswingdev.drawer.Drawer;
 import javaswingdev.drawer.DrawerController;
 import javaswingdev.drawer.DrawerItem;
-import javaswingdev.drawer.EventDrawer;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
-import javax.swing.JTextField;
 import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
 
@@ -66,6 +64,7 @@ public class MainFrame extends javax.swing.JFrame {
         customerCardPanel1 = new GUI.CustomerCardPanel();
         employJPanel1 = new GUI.EmployJPanel();
         shiftPanel1 = new GUI.ShiftPanel();
+        settingsPanel1 = new GUI.SettingsPanel();
         menuBar = new javax.swing.JMenuBar();
         fileMenu = new javax.swing.JMenu();
         editMenu = new javax.swing.JMenu();
@@ -176,6 +175,19 @@ public class MainFrame extends javax.swing.JFrame {
         displayPanel.add(employJPanel1, "card5");
         displayPanel.add(shiftPanel1, "card6");
 
+        javax.swing.GroupLayout settingsPanel1Layout = new javax.swing.GroupLayout(settingsPanel1);
+        settingsPanel1.setLayout(settingsPanel1Layout);
+        settingsPanel1Layout.setHorizontalGroup(
+            settingsPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 1000, Short.MAX_VALUE)
+        );
+        settingsPanel1Layout.setVerticalGroup(
+            settingsPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 589, Short.MAX_VALUE)
+        );
+
+        displayPanel.add(settingsPanel1, "card7");
+
         menuBar.setMaximumSize(new java.awt.Dimension(171000, 20));
         menuBar.setMinimumSize(new java.awt.Dimension(1000, 15));
         menuBar.setPreferredSize(new java.awt.Dimension(1000, 20));
@@ -282,6 +294,8 @@ public class MainFrame extends javax.swing.JFrame {
         // pass data vào shiftJPanel
         shiftPanel1.passData(shift, history, employeeList,
                 settings.getStore(), idGenerator, this);
+        // pass data vao settingsPanel
+        settingsPanel1.passData(settings, header);
     }
 
     private void initSideBar() {
@@ -311,9 +325,10 @@ public class MainFrame extends javax.swing.JFrame {
         settingsDrawerItem.setFocusable(false);
         DrawerItem logoutDrawerItem = new DrawerItem("Đăng xuất").icon(new ImageIcon(getClass().getResource("/ImageIcon/icons8-logout-30.png"))).build();
         logoutDrawerItem.setFocusable(false);
-
+        header = new Header(settings.getStore());
+        
         drawerCtr = Drawer.newDrawer(this)
-                .header(new Header(settings.getStore()))
+                .header(header)
                 .separator(2, Color.LIGHT_GRAY)
                 .space(10)
                 .duration(300)
@@ -361,6 +376,8 @@ public class MainFrame extends javax.swing.JFrame {
                 drawerCtr.hide();
                 break;
             case 5:
+                displayPanel.add(settingsPanel1, "settings");
+                cardLayout.show(displayPanel, "settings");
                 drawerCtr.hide();
                 break;
             case 6:
@@ -417,6 +434,7 @@ public class MainFrame extends javax.swing.JFrame {
         realTimeClock();
     }
 
+    private Header header;
     private CardLayout cardLayout;
     static Units units = new Units();
     static Repository repository;
@@ -455,6 +473,7 @@ public class MainFrame extends javax.swing.JFrame {
     private javax.swing.JMenu optionsMenu;
     private GUI.PurchasePanel purchasePanel1;
     private GUI.RepoPanel repoPanel1;
+    private GUI.SettingsPanel settingsPanel1;
     private javax.swing.JLabel shiftIDLabel;
     private GUI.ShiftPanel shiftPanel1;
     private javax.swing.JLabel timeLabel;

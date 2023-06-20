@@ -20,9 +20,9 @@
           <Group type="102" alignment="1" attributes="0">
               <EmptySpace min="-2" pref="27" max="-2" attributes="0"/>
               <Group type="103" groupAlignment="0" attributes="0">
-                  <Component id="storePhoneNumTextField" min="-2" pref="176" max="-2" attributes="0"/>
-                  <Component id="storeAndressTextField" min="-2" pref="176" max="-2" attributes="0"/>
-                  <Component id="storeNameTextField" min="-2" pref="176" max="-2" attributes="0"/>
+                  <Component id="storePhoneNumLabel" min="-2" pref="176" max="-2" attributes="0"/>
+                  <Component id="storeAndressLabel" min="-2" pref="176" max="-2" attributes="0"/>
+                  <Component id="storeNameLabel" min="-2" pref="176" max="-2" attributes="0"/>
               </Group>
               <EmptySpace min="-2" pref="27" max="-2" attributes="0"/>
           </Group>
@@ -34,11 +34,11 @@
               <EmptySpace min="-2" pref="15" max="-2" attributes="0"/>
               <Component id="imageAvatar1" min="-2" pref="96" max="-2" attributes="0"/>
               <EmptySpace min="-2" pref="15" max="-2" attributes="0"/>
-              <Component id="storeNameTextField" min="-2" max="-2" attributes="0"/>
+              <Component id="storeNameLabel" min="-2" max="-2" attributes="0"/>
               <EmptySpace max="-2" attributes="0"/>
-              <Component id="storePhoneNumTextField" min="-2" max="-2" attributes="0"/>
+              <Component id="storePhoneNumLabel" min="-2" max="-2" attributes="0"/>
               <EmptySpace min="-2" pref="3" max="-2" attributes="0"/>
-              <Component id="storeAndressTextField" min="-2" pref="16" max="-2" attributes="0"/>
+              <Component id="storeAndressLabel" min="-2" pref="16" max="-2" attributes="0"/>
               <EmptySpace max="32767" attributes="0"/>
           </Group>
       </Group>
@@ -56,7 +56,7 @@
         <Property name="useNullLayout" type="boolean" value="true"/>
       </Layout>
     </Container>
-    <Component class="javax.swing.JLabel" name="storeNameTextField">
+    <Component class="javax.swing.JLabel" name="storeNameLabel">
       <Properties>
         <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
           <Font name="Segoe UI" size="16" style="1"/>
@@ -65,13 +65,13 @@
         <Property name="text" type="java.lang.String" value=" "/>
       </Properties>
     </Component>
-    <Component class="javax.swing.JLabel" name="storePhoneNumTextField">
+    <Component class="javax.swing.JLabel" name="storePhoneNumLabel">
       <Properties>
         <Property name="horizontalAlignment" type="int" value="0"/>
         <Property name="text" type="java.lang.String" value=" "/>
       </Properties>
     </Component>
-    <Component class="javax.swing.JLabel" name="storeAndressTextField">
+    <Component class="javax.swing.JLabel" name="storeAndressLabel">
       <Properties>
         <Property name="horizontalAlignment" type="int" value="0"/>
         <Property name="text" type="java.lang.String" value=" "/>

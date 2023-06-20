@@ -5,28 +5,28 @@
 package GUI;
 
 import Models.Store;
-import java.io.File;
 
 /**
  *
  * @author FPTSHOP
  */
-public class Header extends javax.swing.JPanel {
+public final class Header extends javax.swing.JPanel {
 
     /**
      * Creates new form Header
      *
      * @param store
      */
-    public Header(Store store) {
+    public  Header(Store store) {
         initComponents();
-        setStoreInfor(store);
+        this.store = store;
+        setStoreInfor();
     }
 
-    private void setStoreInfor(Store store) {
-        this.storeNameTextField.setText(store.getName());
-        this.storePhoneNumTextField.setText("Liên hệ: " + store.getPhoneNumber());
-        this.storeAndressTextField.setText("Địa chỉ: " + store.getAddress());
+    public void setStoreInfor() {
+        this.storeNameLabel.setText(store.getName());
+        this.storePhoneNumLabel.setText("Liên hệ: " + store.getPhoneNumber());
+        this.storeAndressLabel.setText("Địa chỉ: " + store.getAddress());
     }
 
     /**
@@ -39,21 +39,21 @@ public class Header extends javax.swing.JPanel {
     private void initComponents() {
 
         imageAvatar1 = new swing.ImageAvatar();
-        storeNameTextField = new javax.swing.JLabel();
-        storePhoneNumTextField = new javax.swing.JLabel();
-        storeAndressTextField = new javax.swing.JLabel();
+        storeNameLabel = new javax.swing.JLabel();
+        storePhoneNumLabel = new javax.swing.JLabel();
+        storeAndressLabel = new javax.swing.JLabel();
 
         imageAvatar1.setImage(new javax.swing.ImageIcon(getClass().getResource("/ImageIcon/avtdis.png"))); // NOI18N
 
-        storeNameTextField.setFont(new java.awt.Font("Segoe UI", 1, 16)); // NOI18N
-        storeNameTextField.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        storeNameTextField.setText(" ");
+        storeNameLabel.setFont(new java.awt.Font("Segoe UI", 1, 16)); // NOI18N
+        storeNameLabel.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        storeNameLabel.setText(" ");
 
-        storePhoneNumTextField.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        storePhoneNumTextField.setText(" ");
+        storePhoneNumLabel.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        storePhoneNumLabel.setText(" ");
 
-        storeAndressTextField.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        storeAndressTextField.setText(" ");
+        storeAndressLabel.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        storeAndressLabel.setText(" ");
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
@@ -63,9 +63,9 @@ public class Header extends javax.swing.JPanel {
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                 .addGap(27, 27, 27)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(storePhoneNumTextField, javax.swing.GroupLayout.PREFERRED_SIZE, 176, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(storeAndressTextField, javax.swing.GroupLayout.PREFERRED_SIZE, 176, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(storeNameTextField, javax.swing.GroupLayout.PREFERRED_SIZE, 176, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(storePhoneNumLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 176, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(storeAndressLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 176, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(storeNameLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 176, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(27, 27, 27))
         );
         layout.setVerticalGroup(
@@ -74,22 +74,20 @@ public class Header extends javax.swing.JPanel {
                 .addGap(15, 15, 15)
                 .addComponent(imageAvatar1, javax.swing.GroupLayout.PREFERRED_SIZE, 96, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(15, 15, 15)
-                .addComponent(storeNameTextField)
+                .addComponent(storeNameLabel)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(storePhoneNumTextField)
+                .addComponent(storePhoneNumLabel)
                 .addGap(3, 3, 3)
-                .addComponent(storeAndressTextField, javax.swing.GroupLayout.PREFERRED_SIZE, 16, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(storeAndressLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 16, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
     }// </editor-fold>//GEN-END:initComponents
 
-    private static final String HOME = System.getProperty("user.dir");
-    private static final String SEPARATOR = File.separator;
-    private static final String IMAGE_FOLDER = HOME + SEPARATOR + "src" + SEPARATOR + "main" + SEPARATOR + "java" + SEPARATOR + "ImageIcon";
+    private Store store;
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private swing.ImageAvatar imageAvatar1;
-    private javax.swing.JLabel storeAndressTextField;
-    private javax.swing.JLabel storeNameTextField;
-    private javax.swing.JLabel storePhoneNumTextField;
+    private javax.swing.JLabel storeAndressLabel;
+    private javax.swing.JLabel storeNameLabel;
+    private javax.swing.JLabel storePhoneNumLabel;
     // End of variables declaration//GEN-END:variables
 }
