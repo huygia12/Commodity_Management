@@ -65,7 +65,7 @@ public class MainFrame extends javax.swing.JFrame {
         customerCardPanel1 = new GUI.CustomerCardPanel();
         employJPanel1 = new GUI.EmployJPanel();
         shiftPanel1 = new GUI.ShiftPanel();
-        settingsPanel2 = new GUI.SettingsPanel();
+        settingsPanel1 = new GUI.SettingsPanel();
         menuBar = new javax.swing.JMenuBar();
         fileMenu = new javax.swing.JMenu();
         editMenu = new javax.swing.JMenu();
@@ -179,19 +179,7 @@ public class MainFrame extends javax.swing.JFrame {
         displayPanel.add(customerCardPanel1, "card6");
         displayPanel.add(employJPanel1, "card5");
         displayPanel.add(shiftPanel1, "card6");
-
-        javax.swing.GroupLayout settingsPanel2Layout = new javax.swing.GroupLayout(settingsPanel2);
-        settingsPanel2.setLayout(settingsPanel2Layout);
-        settingsPanel2Layout.setHorizontalGroup(
-            settingsPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 1000, Short.MAX_VALUE)
-        );
-        settingsPanel2Layout.setVerticalGroup(
-            settingsPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 589, Short.MAX_VALUE)
-        );
-
-        displayPanel.add(settingsPanel2, "card7");
+        displayPanel.add(settingsPanel1, "card7");
 
         menuBar.setMaximumSize(new java.awt.Dimension(171000, 20));
         menuBar.setMinimumSize(new java.awt.Dimension(1000, 15));
@@ -394,7 +382,7 @@ public class MainFrame extends javax.swing.JFrame {
                 drawerCtr.hide();
                 break;
             case 5:
-                displayPanel.add(settingsPanel2, "settings");
+                displayPanel.add(settingsPanel1, "settings");
                 cardLayout.show(displayPanel, "settings");
                 drawerCtr.hide();
                 break;
@@ -493,7 +481,7 @@ public class MainFrame extends javax.swing.JFrame {
     private javax.swing.JMenu optionsMenu;
     private GUI.PurchasePanel purchasePanel1;
     private GUI.RepoPanel repoPanel1;
-    private GUI.SettingsPanel settingsPanel2;
+    private GUI.SettingsPanel settingsPanel1;
     private javax.swing.JLabel shiftIDLabel;
     private GUI.ShiftPanel shiftPanel1;
     private javax.swing.JLabel timeLabel;
