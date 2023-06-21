@@ -173,47 +173,44 @@ public class SettingsPanel extends javax.swing.JPanel {
             .addGroup(inputchangeScorePanelLayout.createSequentialGroup()
                 .addGap(27, 27, 27)
                 .addGroup(inputchangeScorePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(pointsForOneVNDLabel)
-                    .addComponent(amountForOnePointLabel))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(inputchangeScorePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(inputchangeScoreButton)
                     .addGroup(inputchangeScorePanelLayout.createSequentialGroup()
-                        .addComponent(amountForOnePointTextField, javax.swing.GroupLayout.PREFERRED_SIZE, 109, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(66, 66, 66)
-                        .addComponent(inputchangeScoreButton))
-                    .addComponent(pointsForOneVNDTextField, javax.swing.GroupLayout.PREFERRED_SIZE, 109, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(61, Short.MAX_VALUE))
+                        .addGroup(inputchangeScorePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(pointsForOneVNDLabel)
+                            .addComponent(amountForOnePointLabel))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGroup(inputchangeScorePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(amountForOnePointTextField, javax.swing.GroupLayout.PREFERRED_SIZE, 109, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(pointsForOneVNDTextField, javax.swing.GroupLayout.PREFERRED_SIZE, 109, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                .addContainerGap(224, Short.MAX_VALUE))
         );
         inputchangeScorePanelLayout.setVerticalGroup(
             inputchangeScorePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(inputchangeScorePanelLayout.createSequentialGroup()
-                .addGroup(inputchangeScorePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(inputchangeScorePanelLayout.createSequentialGroup()
-                        .addGap(26, 26, 26)
-                        .addGroup(inputchangeScorePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(amountForOnePointLabel)
-                            .addComponent(amountForOnePointTextField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                    .addGroup(inputchangeScorePanelLayout.createSequentialGroup()
-                        .addGap(36, 36, 36)
-                        .addComponent(inputchangeScoreButton)))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGap(26, 26, 26)
+                .addGroup(inputchangeScorePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(amountForOnePointLabel)
+                    .addComponent(amountForOnePointTextField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(24, 24, 24)
                 .addGroup(inputchangeScorePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(pointsForOneVNDLabel)
                     .addComponent(pointsForOneVNDTextField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(270, Short.MAX_VALUE))
+                .addGap(38, 38, 38)
+                .addComponent(inputchangeScoreButton)
+                .addContainerGap(203, Short.MAX_VALUE))
         );
 
         inputchangeInfoPanel.add(inputchangeScorePanel, java.awt.BorderLayout.CENTER);
 
         add(inputchangeInfoPanel, java.awt.BorderLayout.PAGE_START);
 
-        settingIntroductionPanel.setBackground(new java.awt.Color(255, 255, 0));
+        settingIntroductionPanel.setBackground(new java.awt.Color(204, 204, 204));
 
         javax.swing.GroupLayout settingIntroductionPanelLayout = new javax.swing.GroupLayout(settingIntroductionPanel);
         settingIntroductionPanel.setLayout(settingIntroductionPanelLayout);
         settingIntroductionPanelLayout.setHorizontalGroup(
             settingIntroductionPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 0, Short.MAX_VALUE)
+            .addGap(0, 1015, Short.MAX_VALUE)
         );
         settingIntroductionPanelLayout.setVerticalGroup(
             settingIntroductionPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -251,7 +248,7 @@ public class SettingsPanel extends javax.swing.JPanel {
         header.setStoreInfor();
          */
         // Kiểm tra các trường nhập liệu có bị bỏ trống hay không và điều kiện cho SĐT
-        if (name.isEmpty() || phoneNumber.isEmpty() || address.isEmpty()) {
+        if (name.isEmpty() || phoneNumber.isEmpty() || address.isEmpty() || email.isEmpty()) {
             JOptionPane.showMessageDialog(this, "Hãy nhập thông tin cho cửa hàng của bạn.");
             return;
         } else if (!matcher.matches()) {
