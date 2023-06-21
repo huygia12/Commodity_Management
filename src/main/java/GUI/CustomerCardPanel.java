@@ -504,10 +504,11 @@ public class CustomerCardPanel extends javax.swing.JPanel {
             CustomerInforPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(CustomerInforPanelLayout.createSequentialGroup()
                 .addGap(21, 21, 21)
-                .addGroup(CustomerInforPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(memberCardIDTextField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel1)
-                    .addComponent(reloadButton))
+                .addGroup(CustomerInforPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(reloadButton)
+                    .addGroup(CustomerInforPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(memberCardIDTextField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(jLabel1)))
                 .addGap(18, 18, 18)
                 .addGroup(CustomerInforPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel36)
@@ -531,11 +532,12 @@ public class CustomerCardPanel extends javax.swing.JPanel {
                     .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel6))
                 .addGap(18, 18, 18)
-                .addGroup(CustomerInforPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(DeleteCardButton, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(CreateNewCardButton, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(UpdateCustomerDateButton, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(refreshButton, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGroup(CustomerInforPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(refreshButton, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGroup(CustomerInforPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(DeleteCardButton, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(CreateNewCardButton, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(UpdateCustomerDateButton, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addGap(18, 18, 18)
                 .addComponent(CardInforPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
@@ -1253,6 +1255,14 @@ public class CustomerCardPanel extends javax.swing.JPanel {
         }
         return false;
     }
+    
+    private boolean checkDiscount(String s) {
+        double d = Double.parseDouble(s);
+        if (d > 100) {
+            return true;
+        }
+        return false;
+    }
 
     private void agreeWithNewPolicyActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_agreeWithNewPolicyActionPerformed
         // TODO add your handling code here:
@@ -1274,6 +1284,12 @@ public class CustomerCardPanel extends javax.swing.JPanel {
             return;
         }
         getPolicy();
+        if (checkDiscount(silveDis) || checkDiscount(copperDis) || checkDiscount(goldenDis) || checkDiscount(diamondDis)) {
+            JOptionPane.showMessageDialog(CustomerCardPanel.this,
+                    "<Ưu đãi chiết khấu> không thể lớn hơn 100.");
+            check = false;
+            return;
+        }
         if (!checkIncreasing(copperPayment, silvePayment, goldenPayment, diamondPayment)) {
             JOptionPane.showMessageDialog(CustomerCardPanel.this,
                     "<Tổng chi tiêu tối thiểu> của thứ hạng sau phải lớn hơn thứ hạng trước.");
@@ -1376,7 +1392,7 @@ public class CustomerCardPanel extends javax.swing.JPanel {
     }
     
     private void defaultPolicy() {
-        
+        setPolicy("0", "0.0", "8000000", "2.0", "12000000", "3.0", "20000000", "4.0");
     }
 
     public void passData(CustomerCardList customerCardList, IDGenerator idGenerator, History history, Settings settings) {
@@ -1391,11 +1407,8 @@ public class CustomerCardPanel extends javax.swing.JPanel {
         searchResultQuantity.setText("");
         copperPay.setEditable(false);
         copperDiscount.setEditable(false);
-        reload();
-        setPolicy(copperPayment, copperDis,
-                silvePayment, silveDis,
-                goldenPayment, goldenDis,
-                diamondPayment, diamondDis);
+        defaultPolicy();
+        
     }
 
     private CustomerCardList customerCardList;
