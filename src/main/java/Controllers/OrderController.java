@@ -110,12 +110,11 @@ public class OrderController extends GoodsListController {
         }
     }
 
-    public Order makeNewOrder(Shift shift, IDGenerator idGenerator, 
-            Employee cashier, int tax, PaymentOptions paymentOptions) {
+    public Order makeNewOrder(Shift shift, IDGenerator idGenerator) {
         Order order = new Order(idGenerator.generateID(Order.class.getName(), 6));
-        order.setCashier(cashier);
-        order.setTax(tax);
-        order.setPaymentOptions(paymentOptions);
+        order.setCashier(shift.getCashier());
+        order.setTax(shift.getTax());
+        order.setPaymentOptions(PaymentOptions.CASH_PAYMENT);
         return order;
     }
 
@@ -211,6 +210,7 @@ public class OrderController extends GoodsListController {
             cardCtr.gainPoint(card, getTotal(order, store), store);
             cardCtr.usePoint(card, order.getPointDiscount());
             cardCtr.updateRank(card, history, store);
+            card.getIDOfBoughtOrders().add(order.getID());
         }
         order.setOrderDateTime();
         shift.getOrderHisPerShift().add(order);

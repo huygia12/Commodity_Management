@@ -35,12 +35,13 @@ public class Shipment {
     public Shipment() {
     }
 
-    public Shipment(BigDecimal quantity, BigDecimal importPrice, LocalDate nsx, LocalDate hsd, String id) {
+    public Shipment(BigDecimal quantity, BigDecimal importPrice, LocalDate nsx, LocalDate hsd, String id, LocalDate importedDate) {
         this.quantity = quantity;
         this.importPrice = importPrice;
         this.nsx = nsx;
         this.hsd = hsd;
         this.id = id.trim();
+        this.importedDate = importedDate;
     }
 
     public LocalDate getNsx() {

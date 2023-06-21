@@ -8,19 +8,19 @@
     "amountForOnePoint": 10000,
     "pointsForOneVND": 10,
     "bronzeDiscountOffer": {
-      "k": 8000000,
+      "k": 0,
       "v": 0.0
     },
     "silverDiscountOffer": {
-      "k": 12000000,
+      "k": 8000000,
       "v": 2.0
     },
     "goldDiscountOffer": {
-      "k": 20000000,
+      "k": 12000000,
       "v": 3.0
     },
     "diamondDiscountOffer": {
-      "k": 34000000,
+      "k": 30000000,
       "v": 4.0
     }
   },

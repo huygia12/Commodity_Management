@@ -29,39 +29,6 @@
           <Properties>
             <Property name="text" type="java.lang.String" value="T&#xf9;y Ch&#x1ecd;n"/>
           </Properties>
-          <SubComponents>
-            <Menu class="javax.swing.JMenu" name="customOrder">
-              <Properties>
-                <Property name="text" type="java.lang.String" value="H&#xf3;a &#x110;&#x1a1;n"/>
-              </Properties>
-              <SubComponents>
-                <MenuItem class="javax.swing.JCheckBoxMenuItem" name="cashierBindWithShiftMenuItem">
-                  <Properties>
-                    <Property name="accelerator" type="javax.swing.KeyStroke" editor="org.netbeans.modules.form.editors.KeyStrokeEditor">
-                      <KeyStroke key="F1"/>
-                    </Property>
-                    <Property name="mnemonic" type="int" value="84"/>
-                    <Property name="text" type="java.lang.String" value="Thu ng&#xe2;n theo ca"/>
-                  </Properties>
-                  <Events>
-                    <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="cashierBindWithShiftMenuItemActionPerformed"/>
-                  </Events>
-                </MenuItem>
-                <MenuItem class="javax.swing.JCheckBoxMenuItem" name="vatBindWithStoreMenuItem">
-                  <Properties>
-                    <Property name="accelerator" type="javax.swing.KeyStroke" editor="org.netbeans.modules.form.editors.KeyStrokeEditor">
-                      <KeyStroke key="F2"/>
-                    </Property>
-                    <Property name="mnemonic" type="int" value="86"/>
-                    <Property name="text" type="java.lang.String" value="VAT theo c&#x1eed;a h&#xe0;ng"/>
-                  </Properties>
-                  <Events>
-                    <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="vatBindWithStoreMenuItemActionPerformed"/>
-                  </Events>
-                </MenuItem>
-              </SubComponents>
-            </Menu>
-          </SubComponents>
         </Menu>
       </SubComponents>
     </Menu>
@@ -147,7 +114,7 @@
                   <Component id="openSideBarLabel" min="-2" max="-2" attributes="0"/>
                   <EmptySpace max="-2" attributes="0"/>
                   <Component id="shiftIDLabel" min="-2" max="-2" attributes="0"/>
-                  <EmptySpace pref="508" max="32767" attributes="0"/>
+                  <EmptySpace pref="538" max="32767" attributes="0"/>
                   <Component id="dateLabel" min="-2" max="-2" attributes="0"/>
                   <EmptySpace max="-2" attributes="0"/>
                   <Component id="dateTextField" min="-2" pref="104" max="-2" attributes="0"/>

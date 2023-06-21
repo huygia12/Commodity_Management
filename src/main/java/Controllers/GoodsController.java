@@ -110,5 +110,34 @@ public class GoodsController {
             }
         } while (true);
     }
-
+    
+    public boolean compare(Goods goods, Goods anotherGoods) {
+        ShipmentController shipmentCtr = new ShipmentController();
+        boolean check = true;
+        if (!goods.getGoodsName().equals(anotherGoods.getGoodsName())) {
+            check = false;
+        } else if (!goods.getID().equals(anotherGoods.getID())) {
+            check = false;
+        } else if (!goods.getManufacture().equals(anotherGoods.getManufacture())) {
+            check = false;
+        } else if (!goods.getUnit().equals(anotherGoods.getUnit())) {
+            check = false;
+        } else if (goods.getListPrice().compareTo(anotherGoods.getListPrice()) != 0) {
+            check = false;
+        } else {
+            int size = goods.getShipments().size();
+            if (size != anotherGoods.getShipments().size()) {
+                check = false;
+            } else {
+                for (int i = 0; i < size; i++) {
+                    if(!shipmentCtr.compare(goods.getShipments().get(i), 
+                            anotherGoods.getShipments().get(i))){
+                        check = false;
+                        break;
+                    }
+                }
+            }
+        }
+        return check;
+    }
 }

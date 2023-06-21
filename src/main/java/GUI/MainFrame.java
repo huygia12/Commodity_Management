@@ -70,9 +70,6 @@ public class MainFrame extends javax.swing.JFrame {
         fileMenu = new javax.swing.JMenu();
         editMenu = new javax.swing.JMenu();
         optionsMenu = new javax.swing.JMenu();
-        customOrder = new javax.swing.JMenu();
-        cashierBindWithShiftMenuItem = new javax.swing.JCheckBoxMenuItem();
-        vatBindWithStoreMenuItem = new javax.swing.JCheckBoxMenuItem();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setAutoRequestFocus(false);
@@ -192,31 +189,6 @@ public class MainFrame extends javax.swing.JFrame {
         menuBar.add(editMenu);
 
         optionsMenu.setText("Tùy Chọn");
-
-        customOrder.setText("Hóa Đơn");
-
-        cashierBindWithShiftMenuItem.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_F1, 0));
-        cashierBindWithShiftMenuItem.setMnemonic('T');
-        cashierBindWithShiftMenuItem.setText("Thu ngân theo ca");
-        cashierBindWithShiftMenuItem.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                cashierBindWithShiftMenuItemActionPerformed(evt);
-            }
-        });
-        customOrder.add(cashierBindWithShiftMenuItem);
-
-        vatBindWithStoreMenuItem.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_F2, 0));
-        vatBindWithStoreMenuItem.setMnemonic('V');
-        vatBindWithStoreMenuItem.setText("VAT theo cửa hàng");
-        vatBindWithStoreMenuItem.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                vatBindWithStoreMenuItemActionPerformed(evt);
-            }
-        });
-        customOrder.add(vatBindWithStoreMenuItem);
-
-        optionsMenu.add(customOrder);
-
         menuBar.add(optionsMenu);
 
         setJMenuBar(menuBar);
@@ -245,14 +217,6 @@ public class MainFrame extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void cashierBindWithShiftMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cashierBindWithShiftMenuItemActionPerformed
-        purchasePanel1.setCashierBindWithShift(cashierBindWithShiftMenuItem.isSelected());
-    }//GEN-LAST:event_cashierBindWithShiftMenuItemActionPerformed
-
-    private void vatBindWithStoreMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_vatBindWithStoreMenuItemActionPerformed
-        purchasePanel1.setVATBindWithStore(vatBindWithStoreMenuItem.isSelected());
-    }//GEN-LAST:event_vatBindWithStoreMenuItemActionPerformed
-
     private void openSideBarLabelMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_openSideBarLabelMouseClicked
         if (drawerCtr.isShow()) {
             drawerCtr.hide();
@@ -277,8 +241,7 @@ public class MainFrame extends javax.swing.JFrame {
         // pass data vào purchasePanel
         purchasePanel1.passData(repository, idGenerator,
                 settings, shift,
-                units, customerCardList,
-                employeeList, history);
+                units, customerCardList, history);
         // pass data vào customerCardPanel
         customerCardPanel1.passData(customerCardList, idGenerator, history);
         // pass data vào employPanel
@@ -288,7 +251,7 @@ public class MainFrame extends javax.swing.JFrame {
         repoPanel1.setUnitsList(units);
         // pass data vào shiftJPanel
         shiftPanel1.passData(shift, history, employeeList,
-                settings.getStore(), this);
+                settings.getStore());
         //pass dât vào settingsPanel
         settingsPanel1.passData(settings, header);
     }
@@ -365,6 +328,8 @@ public class MainFrame extends javax.swing.JFrame {
                 drawerCtr.hide();
                 if (!shift.getState().equals(ShiftState.OPENED)) {
                     notOpenShiftWarning();
+                }else{
+                    purchasePanel1.refresh();
                 }
                 break;
             case 2:
@@ -468,8 +433,6 @@ public class MainFrame extends javax.swing.JFrame {
     private static final String SETTINGS_PATH = DATA_FOLDER + "settingsData.json";
     private static final String UNITS_PATH = DATA_FOLDER + "units.json";
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JCheckBoxMenuItem cashierBindWithShiftMenuItem;
-    private javax.swing.JMenu customOrder;
     private GUI.CustomerCardPanel customerCardPanel1;
     private javax.swing.JLabel dateLabel;
     private javax.swing.JFormattedTextField dateTextField;
@@ -489,6 +452,5 @@ public class MainFrame extends javax.swing.JFrame {
     private javax.swing.JLabel timeLabel;
     private javax.swing.JFormattedTextField timeTextField;
     private javax.swing.JPanel toolBarPanel;
-    private javax.swing.JCheckBoxMenuItem vatBindWithStoreMenuItem;
     // End of variables declaration//GEN-END:variables
 }

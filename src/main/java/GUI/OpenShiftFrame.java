@@ -14,7 +14,6 @@ import Ultility.Cautions;
 import Ultility.IDGenerator;
 import java.awt.event.KeyEvent;
 import java.math.BigDecimal;
-import java.util.ArrayList;
 import javax.swing.ImageIcon;
 import javax.swing.JOptionPane;
 import javax.swing.JTextField;
@@ -289,7 +288,7 @@ public class OpenShiftFrame extends javax.swing.JFrame {
         tableAndBtnPanelLayout.setHorizontalGroup(
             tableAndBtnPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, tableAndBtnPanelLayout.createSequentialGroup()
-                .addContainerGap(322, Short.MAX_VALUE)
+                .addContainerGap(326, Short.MAX_VALUE)
                 .addComponent(denyBtn, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(acceptBtn, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -306,8 +305,7 @@ public class OpenShiftFrame extends javax.swing.JFrame {
                 .addGap(0, 159, Short.MAX_VALUE)
                 .addGroup(tableAndBtnPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(acceptBtn, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(denyBtn, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                .addContainerGap())
+                    .addComponent(denyBtn, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
             .addGroup(tableAndBtnPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                 .addGroup(tableAndBtnPanelLayout.createSequentialGroup()
                     .addComponent(employeeListScrollPane, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -330,20 +328,16 @@ public class OpenShiftFrame extends javax.swing.JFrame {
             }
 
             String phoneNum = employeeListTable.getValueAt(selectedRow, 3).toString();
-            Employee e = employeeListCtr.containEmployee(employeeList, phoneNum,
+            Employee employee = employeeListCtr.containEmployee(employeeList, phoneNum,
                     employeeListCtr.BY_PHONE_NUMBER);
-            if (!e.toString().equals(shiftCashier.toString())) {
-                // Xóa cashier cũ ra khỏi danh sách nhân viên ca hiện tại
-                if (shiftCashier != null) {
-                    shiftEmployeeList.getList().remove(shiftCashier);
-                }
-                shiftCashier = e;
-                // Thêm cashier mới vào danh sách nhân viên ca hiện tại
-                if (employeeListCtr.containEmployee(shiftEmployeeList, phoneNum,
-                        employeeListCtr.BY_PHONE_NUMBER) == null) {
-                    shiftEmployeeList.getList().add(e);
-                }
+            Employee employeeInShift = employeeListCtr.containEmployee(shiftEmployeeList, phoneNum, 
+                    employeeListCtr.BY_PHONE_NUMBER);
+            if(employeeInShift != null){
+                shiftEmployeeList.getList().remove(employeeInShift);
                 passValueToEmployeeListComboBox();
+            }
+            if (!employee.toString().equals(shiftCashier.toString())) {
+                shiftCashier = employee;
                 passValueToCashierComboBox();
             }
             showCashierComboBoxSelectedItem();
@@ -456,17 +450,10 @@ public class OpenShiftFrame extends javax.swing.JFrame {
         int selectedIndex = shiftEmployeeListComboBox.getSelectedIndex();
         if (selectedIndex != -1) {
             String eToString = shiftEmployeeListComboBox.getSelectedItem().toString();
-            Employee removingEmployee = shiftEmployeeList.getList()
+            shiftEmployeeList.setList( shiftEmployeeList.getList()
                     .stream()
-                    .filter(e -> e.toString().equals(eToString))
-                    .collect(Collectors.toList())
-                    .get(0);
+                    .filter(e -> !e.toString().equals(eToString)).toList());
             shiftEmployeeListComboBox.removeItemAt(selectedIndex);
-            shiftEmployeeList.getList().remove(removingEmployee);
-            if (shiftCashier == removingEmployee) {
-                shiftCashier = new Employee();
-            }
-            passValueToCashierComboBox();
             passValueToEmployeeListComboBox();
             showCashierComboBoxSelectedItem();
         } else {
@@ -479,6 +466,10 @@ public class OpenShiftFrame extends javax.swing.JFrame {
         int selectedRow = employeeListTable.getSelectedRow();
         if (selectedRow != -1) {
             String phoneNum = employeeListTable.getValueAt(selectedRow, 3).toString();
+            if(phoneNum.equals(shiftCashier.getPhoneNumber())){
+                showWarningJOptionPane(CURRENTLY_CASHIER_WARNING);
+                return;
+            }
             if (employeeListCtr.containEmployee(shiftEmployeeList,
                     phoneNum, employeeListCtr.BY_PHONE_NUMBER) == null) {
 
@@ -514,7 +505,7 @@ public class OpenShiftFrame extends javax.swing.JFrame {
                     shiftOpenBalance, shiftCashier,
                     shiftEmployeeList, noteArea.getText());
         }
-        shiftPanel.reloadOnShiftMode();
+        shiftPanel.reload();
         this.dispose();
     }//GEN-LAST:event_acceptBtnActionPerformed
 
@@ -572,6 +563,11 @@ public class OpenShiftFrame extends javax.swing.JFrame {
         }
     }
 
+    private void showWarningJOptionPane(String message) {
+        JOptionPane.showMessageDialog(this, message,
+                "Lỗi", JOptionPane.WARNING_MESSAGE);
+    }
+    
     private void setUp() {
         setIconImage(new ImageIcon(getClass().getResource("/ImageIcon/icons8-grocery-store-96.png")).getImage());
         this.setLocationRelativeTo(null);
@@ -718,6 +714,8 @@ public class OpenShiftFrame extends javax.swing.JFrame {
     private final String BOTH_NOT_SELECTED_WARNING = "Thực hiện thêm nhân viên và thu ngân ca!";
     private final String SET_DEFAULT_WARNING = "Đặt lại giá trị ban đầu cho toàn bộ thay đổi?";
     private final String INVALID_WARNING = "Không hợp lệ!";
+    private final String ALREADY_IN_EMPLOYEELIST_WARNING = "Danh sách nhân viên trực đã tồn tại người này!";
+    private final String CURRENTLY_CASHIER_WARNING = "Người này đang là thu ngân!";
     private final String NOTHING_CHOOSEN_FROM_TABLE_WARNING = "Thực hiện chọn ở bảng trước!";
     private final String NOTHING_CHOOSEN_FROM_COMBOBOX_WARNING = "Thực hiện chọn ở hộp chọn trước!";
     // Variables declaration - do not modify//GEN-BEGIN:variables

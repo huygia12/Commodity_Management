@@ -48,10 +48,6 @@ public class ShiftPanel extends javax.swing.JPanel {
     private void initComponents() {
 
         ordersAndShipsHistoryPanel = new javax.swing.JPanel();
-        flowBtnPanel = new javax.swing.JPanel();
-        currentShiftBtn = new javax.swing.JButton();
-        shipmentHistoryBtn = new javax.swing.JButton();
-        orderHistoryBtn = new javax.swing.JButton();
         searchAndTablePanel = new javax.swing.JPanel();
         searchPanel = new javax.swing.JPanel();
         orderIDLabel = new javax.swing.JLabel();
@@ -109,42 +105,12 @@ public class ShiftPanel extends javax.swing.JPanel {
         ordersAndShipsHistoryPanel.setPreferredSize(new java.awt.Dimension(350, 595));
         ordersAndShipsHistoryPanel.setLayout(new java.awt.BorderLayout(10, 0));
 
-        flowBtnPanel.setPreferredSize(new java.awt.Dimension(350, 34));
-
-        currentShiftBtn.setText("Ca hiện tại");
-        currentShiftBtn.setOpaque(true);
-        currentShiftBtn.setPreferredSize(new java.awt.Dimension(110, 23));
-        currentShiftBtn.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                currentShiftBtnActionPerformed(evt);
-            }
-        });
-        flowBtnPanel.add(currentShiftBtn);
-
-        shipmentHistoryBtn.setText("Lịch sử nhập");
-        shipmentHistoryBtn.setMaximumSize(new java.awt.Dimension(200, 200));
-        shipmentHistoryBtn.setMinimumSize(new java.awt.Dimension(110, 23));
-        shipmentHistoryBtn.setPreferredSize(new java.awt.Dimension(110, 23));
-        flowBtnPanel.add(shipmentHistoryBtn);
-
-        orderHistoryBtn.setText("Lịch sử HĐ");
-        orderHistoryBtn.setMaximumSize(new java.awt.Dimension(200, 23));
-        orderHistoryBtn.setMinimumSize(new java.awt.Dimension(50, 23));
-        orderHistoryBtn.setPreferredSize(new java.awt.Dimension(110, 23));
-        orderHistoryBtn.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                orderHistoryBtnActionPerformed(evt);
-            }
-        });
-        flowBtnPanel.add(orderHistoryBtn);
-
-        ordersAndShipsHistoryPanel.add(flowBtnPanel, java.awt.BorderLayout.PAGE_START);
-
         searchAndTablePanel.setPreferredSize(new java.awt.Dimension(350, 562));
         searchAndTablePanel.setLayout(new java.awt.BorderLayout(0, 10));
 
         searchPanel.setBorder(javax.swing.BorderFactory.createTitledBorder("Tìm Kiếm"));
-        searchPanel.setPreferredSize(new java.awt.Dimension(350, 200));
+        searchPanel.setMinimumSize(new java.awt.Dimension(0, 234));
+        searchPanel.setPreferredSize(new java.awt.Dimension(350, 234));
 
         orderIDLabel.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         orderIDLabel.setText("Mã HĐ: ");
@@ -304,59 +270,61 @@ public class ShiftPanel extends javax.swing.JPanel {
             searchPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(searchPanelLayout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(searchPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(searchPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addGroup(searchPanelLayout.createSequentialGroup()
                         .addComponent(searchBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 155, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(refreashBtn, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                     .addGroup(searchPanelLayout.createSequentialGroup()
-                        .addGap(16, 16, 16)
-                        .addGroup(searchPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(cashierPhoneNumLable)
-                            .addComponent(orderIDLabel)
-                            .addComponent(orderDateLabel))
-                        .addGap(29, 29, 29)
-                        .addGroup(searchPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(orderDateTextField, javax.swing.GroupLayout.DEFAULT_SIZE, 152, Short.MAX_VALUE)
-                            .addComponent(cashierPhoneNumTextField)
-                            .addComponent(orderIDTextField)))
-                    .addGroup(searchPanelLayout.createSequentialGroup()
                         .addComponent(fromLabel)
                         .addGap(0, 0, 0)
-                        .addComponent(fromHourTextField, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(2, 2, 2)
-                        .addComponent(separatorLabel4, javax.swing.GroupLayout.PREFERRED_SIZE, 8, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(2, 2, 2)
-                        .addComponent(fromMinuteTextField, javax.swing.GroupLayout.PREFERRED_SIZE, 34, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(2, 2, 2)
-                        .addComponent(separatorLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 8, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(2, 2, 2)
-                        .addComponent(fromSecondTextField, javax.swing.GroupLayout.PREFERRED_SIZE, 33, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(26, 26, 26)
-                        .addComponent(toLabel)
-                        .addGap(2, 2, 2)
-                        .addComponent(toHourTextField, javax.swing.GroupLayout.PREFERRED_SIZE, 31, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(2, 2, 2)
-                        .addComponent(separatorLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 8, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(2, 2, 2)
-                        .addComponent(toMinuteTextField, javax.swing.GroupLayout.PREFERRED_SIZE, 31, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(2, 2, 2)
-                        .addComponent(separatorLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 8, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(2, 2, 2)
-                        .addComponent(toSecondTextField, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addGroup(searchPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(searchPanelLayout.createSequentialGroup()
+                                .addGroup(searchPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(orderDateLabel)
+                                    .addComponent(cashierPhoneNumLable)
+                                    .addComponent(orderIDLabel))
+                                .addGap(45, 45, 45)
+                                .addGroup(searchPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                    .addComponent(orderDateTextField, javax.swing.GroupLayout.DEFAULT_SIZE, 152, Short.MAX_VALUE)
+                                    .addComponent(cashierPhoneNumTextField)
+                                    .addComponent(orderIDTextField)))
+                            .addGroup(searchPanelLayout.createSequentialGroup()
+                                .addComponent(fromHourTextField, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(2, 2, 2)
+                                .addComponent(separatorLabel4, javax.swing.GroupLayout.PREFERRED_SIZE, 8, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(2, 2, 2)
+                                .addComponent(fromMinuteTextField, javax.swing.GroupLayout.PREFERRED_SIZE, 34, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(2, 2, 2)
+                                .addComponent(separatorLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 8, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(2, 2, 2)
+                                .addComponent(fromSecondTextField, javax.swing.GroupLayout.PREFERRED_SIZE, 33, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(26, 26, 26)
+                                .addComponent(toLabel)
+                                .addGap(2, 2, 2)
+                                .addComponent(toHourTextField, javax.swing.GroupLayout.PREFERRED_SIZE, 31, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(2, 2, 2)
+                                .addComponent(separatorLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 8, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(2, 2, 2)
+                                .addComponent(toMinuteTextField, javax.swing.GroupLayout.PREFERRED_SIZE, 31, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(2, 2, 2)
+                                .addComponent(separatorLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 8, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(2, 2, 2)
+                                .addComponent(toSecondTextField, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)))))
                 .addContainerGap(16, Short.MAX_VALUE))
         );
         searchPanelLayout.setVerticalGroup(
             searchPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(searchPanelLayout.createSequentialGroup()
+                .addGap(8, 8, 8)
                 .addGroup(searchPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(orderIDTextField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(orderIDLabel))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                    .addComponent(orderIDLabel)
+                    .addComponent(orderIDTextField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(12, 12, 12)
                 .addGroup(searchPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(cashierPhoneNumTextField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(cashierPhoneNumLable))
-                .addGap(6, 6, 6)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(searchPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(orderDateTextField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(orderDateLabel))
@@ -374,11 +342,11 @@ public class ShiftPanel extends javax.swing.JPanel {
                     .addComponent(toMinuteTextField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(separatorLabel1)
                     .addComponent(toSecondTextField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 23, Short.MAX_VALUE)
                 .addGroup(searchPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(refreashBtn, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(searchBtn, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap())
+                    .addComponent(searchBtn, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(refreashBtn, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(12, 12, 12))
         );
 
         searchAndTablePanel.add(searchPanel, java.awt.BorderLayout.PAGE_START);
@@ -560,22 +528,25 @@ public class ShiftPanel extends javax.swing.JPanel {
             .addGroup(currentShiftOverViewPanelLayout.createSequentialGroup()
                 .addGap(14, 14, 14)
                 .addGroup(currentShiftOverViewPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(taxShiftLabel)
-                    .addComponent(openBalanceLabel)
-                    .addComponent(shiftEmployeeListLabel)
-                    .addComponent(shiftCashierLabel)
-                    .addComponent(surchargeLabel)
-                    .addComponent(editShiftBtn, javax.swing.GroupLayout.DEFAULT_SIZE, 138, Short.MAX_VALUE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(currentShiftOverViewPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(shiftEmployeeListComboBox, javax.swing.GroupLayout.Alignment.TRAILING, 0, 146, Short.MAX_VALUE)
-                    .addComponent(taxTextField, javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(openBalanceTextField, javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(surchargeTextField)
                     .addGroup(currentShiftOverViewPanelLayout.createSequentialGroup()
-                        .addGap(6, 6, 6)
-                        .addComponent(endShiftBtn, javax.swing.GroupLayout.DEFAULT_SIZE, 140, Short.MAX_VALUE))
-                    .addComponent(shiftCashierTextField, javax.swing.GroupLayout.Alignment.TRAILING))
+                        .addGroup(currentShiftOverViewPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(taxShiftLabel)
+                            .addComponent(openBalanceLabel)
+                            .addComponent(shiftEmployeeListLabel)
+                            .addComponent(surchargeLabel)
+                            .addComponent(shiftCashierLabel))
+                        .addGap(17, 17, 17)
+                        .addGroup(currentShiftOverViewPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(taxTextField, javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addComponent(openBalanceTextField, javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addComponent(surchargeTextField)
+                            .addComponent(shiftCashierTextField)
+                            .addComponent(shiftEmployeeListComboBox, javax.swing.GroupLayout.Alignment.TRAILING, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                    .addGroup(currentShiftOverViewPanelLayout.createSequentialGroup()
+                        .addComponent(editShiftBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 134, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(18, 18, 18)
+                        .addComponent(endShiftBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 138, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(0, 0, Short.MAX_VALUE)))
                 .addGap(12, 12, 12)
                 .addComponent(jSeparator2, javax.swing.GroupLayout.PREFERRED_SIZE, 6, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGroup(currentShiftOverViewPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -628,12 +599,12 @@ public class ShiftPanel extends javax.swing.JPanel {
                             .addComponent(taxShiftLabel))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(currentShiftOverViewPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(shiftEmployeeListComboBox, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(shiftEmployeeListLabel))
+                            .addComponent(shiftCashierTextField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(shiftCashierLabel))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(currentShiftOverViewPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(shiftCashierLabel)
-                            .addComponent(shiftCashierTextField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(shiftEmployeeListComboBox, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(shiftEmployeeListLabel))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(currentShiftOverViewPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(surchargeTextField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -672,10 +643,6 @@ public class ShiftPanel extends javax.swing.JPanel {
 
         add(otherFunctionPanel, java.awt.BorderLayout.CENTER);
     }// </editor-fold>//GEN-END:initComponents
-
-    private void orderHistoryBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_orderHistoryBtnActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_orderHistoryBtnActionPerformed
 
     private void grossRevenueTextFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_grossRevenueTextFieldActionPerformed
         // TODO add your handling code here:
@@ -739,10 +706,6 @@ public class ShiftPanel extends javax.swing.JPanel {
     private void refreashBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_refreashBtnActionPerformed
         insertOrderHistoryToOverViewTable(shift.getOrderHisPerShift(), myStore);
     }//GEN-LAST:event_refreashBtnActionPerformed
-
-    private void currentShiftBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_currentShiftBtnActionPerformed
-        reloadOnShiftMode();
-    }//GEN-LAST:event_currentShiftBtnActionPerformed
 
     private void openBalanceTextFieldKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_openBalanceTextFieldKeyPressed
         if (evt.getKeyCode() == KeyEvent.VK_ENTER) {
@@ -1292,7 +1255,8 @@ public class ShiftPanel extends javax.swing.JPanel {
         openShiftFrame.reload();
     }
 
-    public void reloadOnShiftMode() {
+
+    public void reload() {
         boolean checkOpenShift = shift.getState().equals(ShiftState.OPENED);
         setEnableAllComponents(checkOpenShift);
         if (checkOpenShift) { // nếu đã mở ca thì reload lại các thông số ca
@@ -1317,24 +1281,6 @@ public class ShiftPanel extends javax.swing.JPanel {
         }
     }
 
-    private void reloadOnOrderHistoryMode() {
-
-    }
-
-    private void reloadOnImportGoodsHistoryMode() {
-    }
-
-    public void reload() {
-        switch (selectedMode) {
-            case 0:
-                reloadOnShiftMode();
-            case 1:
-                reloadOnOrderHistoryMode();
-            case 2:
-                reloadOnImportGoodsHistoryMode();
-        }
-    }
-
     private void initVariables() {
         // Table
         orderListModel = (DefaultTableModel) orderListTable.getModel();
@@ -1356,12 +1302,11 @@ public class ShiftPanel extends javax.swing.JPanel {
     }
 
     public void passData(Shift shift, History history,
-            EmployeeList employeeList, Store myStore, MainFrame mainFrame) {
+            EmployeeList employeeList, Store myStore) {
         this.shift = shift;
         this.history = history;
         this.employeeList = employeeList;
         this.myStore = myStore;
-        this.mainFrame = mainFrame;
         //
         initVariables();
     }
@@ -1374,10 +1319,6 @@ public class ShiftPanel extends javax.swing.JPanel {
     private boolean checkTax = false;
     private boolean checkSurcharge = false;
     private boolean lastState;
-    private int selectedMode = 0;
-    private final int ON_CURRENT_SHIFT = 0;
-    private final int ON_ORDER_HISTORY = 1;
-    private final int ON_IMPORTGOODS_HISTORY = 2;
     private ShiftController shiftCtr;
     private EmployeeListController employeeListCtr;
     private OrderController orderCtr;
@@ -1389,7 +1330,6 @@ public class ShiftPanel extends javax.swing.JPanel {
     private EmployeeList employeeList;
     private Store myStore;
     private Cautions ctions;
-    private MainFrame mainFrame;
     String defaultTimeSet = "00/00/00";
     private final String TIME_PATERN = "H/m/s";
     private final String DATE_PATTERN = "dd/MM/yyyy";
@@ -1409,11 +1349,9 @@ public class ShiftPanel extends javax.swing.JPanel {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel cashierPhoneNumLable;
     private javax.swing.JTextField cashierPhoneNumTextField;
-    private javax.swing.JButton currentShiftBtn;
     private javax.swing.JPanel currentShiftOverViewPanel;
     private javax.swing.JButton editShiftBtn;
     private javax.swing.JButton endShiftBtn;
-    private javax.swing.JPanel flowBtnPanel;
     private javax.swing.JTextField fromHourTextField;
     private javax.swing.JLabel fromLabel;
     private javax.swing.JTextField fromMinuteTextField;
@@ -1433,7 +1371,6 @@ public class ShiftPanel extends javax.swing.JPanel {
     private javax.swing.JTextField orderDateTextField;
     private javax.swing.JScrollPane orderDetailJScrollPane;
     private javax.swing.JTable orderDetailTable;
-    private javax.swing.JButton orderHistoryBtn;
     private javax.swing.JLabel orderIDLabel;
     private javax.swing.JTextField orderIDTextField;
     private javax.swing.JTable orderListTable;
@@ -1452,7 +1389,6 @@ public class ShiftPanel extends javax.swing.JPanel {
     private javax.swing.JTextField shiftCashierTextField;
     private javax.swing.JComboBox<String> shiftEmployeeListComboBox;
     private javax.swing.JLabel shiftEmployeeListLabel;
-    private javax.swing.JButton shipmentHistoryBtn;
     private javax.swing.JLabel surchargeLabel;
     private javax.swing.JTextField surchargeTextField;
     private javax.swing.JLabel taxShiftLabel;

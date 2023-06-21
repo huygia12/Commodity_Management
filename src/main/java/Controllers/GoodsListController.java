@@ -127,4 +127,19 @@ public class GoodsListController {
         }
         return null;
     }
+    
+    public <T extends Goods> boolean compare(GoodsList<T> goodsList, GoodsList<T> anotherGoodsList){
+        int size = goodsList.getList().size();
+        if(size != anotherGoodsList.getList().size()){
+            return false;
+        }
+        for (int i = 0; i < size; i++) {
+            Goods g1 = goodsList.getList().get(i);
+            Goods g2 = anotherGoodsList.getList().get(i);
+            if(!goodsCtr.compare(g1, g2)){
+                return false;
+            }
+        }
+        return true;
+    }
 }

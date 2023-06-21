@@ -20,6 +20,8 @@ import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
+import java.util.Iterator;
+import java.util.stream.Collectors;
 import javax.swing.ImageIcon;
 import javax.swing.JOptionPane;
 import javax.swing.ScrollPaneConstants;
@@ -55,10 +57,8 @@ public class PurchasePanel extends javax.swing.JPanel {
         cashierLabel = new javax.swing.JLabel();
         cashierTextField = new javax.swing.JTextField();
         customerIDLabel = new javax.swing.JLabel();
-        employeeListComboBox = new javax.swing.JComboBox<>();
         customerPointLabel = new javax.swing.JLabel();
         customerPointCheckTextField = new javax.swing.JTextField();
-        employeeRoleLabel = new javax.swing.JLabel();
         checkCustomerIDBtn = new javax.swing.JButton();
         customerIDText = new javax.swing.JTextField();
         customerDiscountOfferLabel = new javax.swing.JLabel();
@@ -160,14 +160,6 @@ public class PurchasePanel extends javax.swing.JPanel {
         customerIDLabel.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
         customerIDLabel.setText("MÃ KHÁCH HÀNG: ");
 
-        employeeListComboBox.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "none" }));
-        employeeListComboBox.setPreferredSize(new java.awt.Dimension(64, 22));
-        employeeListComboBox.addItemListener(new java.awt.event.ItemListener() {
-            public void itemStateChanged(java.awt.event.ItemEvent evt) {
-                employeeListComboBoxItemStateChanged(evt);
-            }
-        });
-
         customerPointLabel.setText("Điểm hiện tại:");
 
         customerPointCheckTextField.setEditable(false);
@@ -178,9 +170,6 @@ public class PurchasePanel extends javax.swing.JPanel {
         customerPointCheckTextField.setBorder(null);
         customerPointCheckTextField.setMaximumSize(new java.awt.Dimension(80, 80));
         customerPointCheckTextField.setMinimumSize(new java.awt.Dimension(0, 0));
-
-        employeeRoleLabel.setFont(new java.awt.Font("Segoe UI", 2, 12)); // NOI18N
-        employeeRoleLabel.setText("(Tại quầy)");
 
         checkCustomerIDBtn.setText("Kiểm tra");
         checkCustomerIDBtn.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
@@ -206,7 +195,7 @@ public class PurchasePanel extends javax.swing.JPanel {
             }
         });
 
-        customerDiscountOfferLabel.setText("Ưu đãi triết khấu:");
+        customerDiscountOfferLabel.setText("Ưu đãi chiết khấu:");
 
         customerDiscountOfferTextField.setEditable(false);
         customerDiscountOfferTextField.setBackground(new java.awt.Color(255, 255, 255));
@@ -225,23 +214,16 @@ public class PurchasePanel extends javax.swing.JPanel {
                 .addGroup(employeeAndCustomerPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(customerIDLabel, javax.swing.GroupLayout.Alignment.TRAILING)
                     .addGroup(employeeAndCustomerPanelLayout.createSequentialGroup()
+                        .addContainerGap()
                         .addGroup(employeeAndCustomerPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(employeeAndCustomerPanelLayout.createSequentialGroup()
-                                .addContainerGap()
-                                .addComponent(cashierLabel))
-                            .addGroup(employeeAndCustomerPanelLayout.createSequentialGroup()
-                                .addGap(21, 21, 21)
-                                .addComponent(employeeRoleLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 61, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addGroup(employeeAndCustomerPanelLayout.createSequentialGroup()
-                                .addContainerGap()
-                                .addComponent(customerPointLabel)))
+                            .addComponent(cashierLabel)
+                            .addComponent(customerPointLabel))
                         .addGap(22, 22, 22)))
                 .addGroup(employeeAndCustomerPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(employeeAndCustomerPanelLayout.createSequentialGroup()
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(employeeAndCustomerPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                             .addComponent(cashierTextField)
-                            .addComponent(employeeListComboBox, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                             .addComponent(customerIDText, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                         .addGap(0, 16, Short.MAX_VALUE))
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, employeeAndCustomerPanelLayout.createSequentialGroup()
@@ -257,33 +239,30 @@ public class PurchasePanel extends javax.swing.JPanel {
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, employeeAndCustomerPanelLayout.createSequentialGroup()
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(checkCustomerIDBtn)
-                .addGap(44, 44, 44))
+                .addGap(43, 43, 43))
         );
         employeeAndCustomerPanelLayout.setVerticalGroup(
             employeeAndCustomerPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(employeeAndCustomerPanelLayout.createSequentialGroup()
+                .addContainerGap()
                 .addGroup(employeeAndCustomerPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(customerIDText, javax.swing.GroupLayout.PREFERRED_SIZE, 23, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(customerIDLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 22, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(5, 5, 5)
+                    .addComponent(customerIDLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 22, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(customerIDText, javax.swing.GroupLayout.PREFERRED_SIZE, 23, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(checkCustomerIDBtn)
                 .addGap(5, 5, 5)
-                .addGroup(employeeAndCustomerPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(customerPointCheckTextField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(customerPointLabel, javax.swing.GroupLayout.Alignment.TRAILING))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(employeeAndCustomerPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(customerPointCheckTextField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(customerPointLabel))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(employeeAndCustomerPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(customerDiscountOfferLabel)
                     .addComponent(customerDiscountOfferTextField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 16, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 24, Short.MAX_VALUE)
                 .addGroup(employeeAndCustomerPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(cashierTextField, javax.swing.GroupLayout.PREFERRED_SIZE, 23, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(cashierLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 23, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(employeeAndCustomerPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(employeeListComboBox, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(employeeRoleLabel))
-                .addContainerGap())
+                    .addComponent(cashierLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 23, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(cashierTextField, javax.swing.GroupLayout.PREFERRED_SIZE, 23, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(19, 19, 19))
         );
 
         aboutGoodsAndCusPanel.add(employeeAndCustomerPanel, java.awt.BorderLayout.LINE_START);
@@ -365,7 +344,7 @@ public class PurchasePanel extends javax.swing.JPanel {
 
         discountLabel.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
         discountLabel.setIcon(new javax.swing.ImageIcon(getClass().getResource("/ImageIcon/icons8-discount-24.png"))); // NOI18N
-        discountLabel.setText("Chiết khấu(%): ");
+        discountLabel.setText("Chiết khấu trực tiếp(%): ");
 
         shippingFeeText.setHorizontalAlignment(javax.swing.JTextField.CENTER);
         shippingFeeText.setMaximumSize(new java.awt.Dimension(2147483647, 20));
@@ -423,7 +402,7 @@ public class PurchasePanel extends javax.swing.JPanel {
 
         pointDiscountLabel.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
         pointDiscountLabel.setIcon(new javax.swing.ImageIcon(getClass().getResource("/ImageIcon/icons8-loyalty-card-24.png"))); // NOI18N
-        pointDiscountLabel.setText("Điểm tích lũy:");
+        pointDiscountLabel.setText("Dùng điểm:");
 
         pointDiscountText.setHorizontalAlignment(javax.swing.JTextField.CENTER);
         pointDiscountText.setPreferredSize(new java.awt.Dimension(64, 20));
@@ -459,23 +438,11 @@ public class PurchasePanel extends javax.swing.JPanel {
         taxLabel.setIcon(new javax.swing.ImageIcon(getClass().getResource("/ImageIcon/icons8-tax-24.png"))); // NOI18N
         taxLabel.setText("Thuế(VAT-%):");
 
+        taxText.setEditable(false);
         taxText.setHorizontalAlignment(javax.swing.JTextField.CENTER);
         taxText.setMaximumSize(new java.awt.Dimension(2147483647, 20));
         taxText.setMinimumSize(new java.awt.Dimension(64, 20));
         taxText.setPreferredSize(new java.awt.Dimension(64, 20));
-        taxText.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
-                taxTextMouseClicked(evt);
-            }
-            public void mouseExited(java.awt.event.MouseEvent evt) {
-                taxTextMouseExited(evt);
-            }
-        });
-        taxText.addKeyListener(new java.awt.event.KeyAdapter() {
-            public void keyPressed(java.awt.event.KeyEvent evt) {
-                taxTextKeyPressed(evt);
-            }
-        });
 
         javax.swing.GroupLayout subFeePanelLayout = new javax.swing.GroupLayout(subFeePanel);
         subFeePanel.setLayout(subFeePanelLayout);
@@ -487,8 +454,8 @@ public class PurchasePanel extends javax.swing.JPanel {
                     .addGroup(subFeePanelLayout.createSequentialGroup()
                         .addGroup(subFeePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(pointDiscountLabel)
-                            .addComponent(discountLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 128, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGap(76, 76, 76)
+                            .addComponent(discountLabel))
+                        .addGap(37, 37, 37)
                         .addGroup(subFeePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(discountText, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                             .addComponent(pointDiscountText, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
@@ -1156,9 +1123,6 @@ public class PurchasePanel extends javax.swing.JPanel {
         if (order.getList().isEmpty()) { // Kiểm tra xem đã chọn sản phẩm nào chưa
             insertWarningToTextField(warningTextField, NOTHING_CHOOSEN_WARNING, 12);
             return;
-        } else if (employeeListComboBox.getSelectedIndex() == 0) { // kiểm tra xem đã chọn thu ngân chưa
-            insertWarningToTextField(cashierTextField, NONE_SELECTED_CASHIER, 12);
-            return;
         } else if (insufficientCustomerMoneyCheck(order.getCusMoney())) {
             return;
         }
@@ -1172,9 +1136,6 @@ public class PurchasePanel extends javax.swing.JPanel {
         // xét các điều kiện
         if (order.getList().isEmpty()) { // Kiểm tra xem đã chọn sản phẩm nào chưa
             insertWarningToTextField(warningTextField, NOTHING_CHOOSEN_WARNING, 12);
-            return;
-        } else if (employeeListComboBox.getSelectedIndex() == 0) { // kiểm tra xem đã chọn thu ngân chưa
-            insertWarningToTextField(cashierTextField, NONE_SELECTED_CASHIER, 12);
             return;
         } else if (insufficientCustomerMoneyCheck(order.getCusMoney())) { //Kiểm tra xem có thiếu tiền kh
             return;
@@ -1192,15 +1153,15 @@ public class PurchasePanel extends javax.swing.JPanel {
             return;
         }
         String shipmentID = (String) goodsListModel.getValueAt(selectedRow, 5);
-        Goods goods = orderCtr.containGoodsForGUI(draftGoodsList, shipmentID);
+        Goods selectedGoods = orderCtr.containGoodsForGUI(draftGoodsList, shipmentID);
         shipmentIDTextField.setText(shipmentID);
-        keyWordTextField.setText(goods.getGoodsName());
-        goodsIDTextField.setText(goods.getID());
+        keyWordTextField.setText(selectedGoods.getGoodsName());
+        goodsIDTextField.setText(selectedGoods.getID());
         if (filterGoodsList != null) {
-            goods = orderCtr.containGoodsForGUI(filterGoodsList, shipmentID);
+            selectedGoods = orderCtr.containGoodsForGUI(filterGoodsList, shipmentID);
         }
         GoodsList<Goods> bucket = new GoodsList<>();
-        bucket.getList().add(goods);
+        bucket.getList().add(selectedGoods);
         orderSelectedRow = -1;
         insertGoodsListToGoodsListTable(bucket);
     }//GEN-LAST:event_goodsListTableMouseClicked
@@ -1354,19 +1315,6 @@ public class PurchasePanel extends javax.swing.JPanel {
         }
     }//GEN-LAST:event_customerMoneyTextKeyPressed
 
-    private void employeeListComboBoxItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_employeeListComboBoxItemStateChanged
-        setDefaultOptionToTextField(cashierTextField, 12);
-        int selectedItem = employeeListComboBox.getSelectedIndex();
-        if (selectedItem != -1) {
-            if (selectedItem == 0) {
-                insertWarningToTextField(cashierTextField, NONE_SELECTED_CASHIER, 12);
-            } else {
-                order.setCashier(employeeList.getList().get(selectedItem - 1));
-                cashierTextField.setText(employeeListComboBox.getSelectedItem().toString());
-            }
-        }
-    }//GEN-LAST:event_employeeListComboBoxItemStateChanged
-
     private void discountTextKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_discountTextKeyPressed
         if (evt.getKeyCode() == KeyEvent.VK_ENTER) {
             String discountStr = discountText.getText();
@@ -1426,9 +1374,7 @@ public class PurchasePanel extends javax.swing.JPanel {
         setDefaultOptionToTextField(customerMoneyText, 12);
         customerMoneyText.setText((order.getPaymentOptions() == PaymentOptions.CASH_PAYMENT) ? "0.0" : "");
         customerMoneyText.setEditable(editable);
-        if (!taxBindWithShift) {
-            taxText.requestFocus();
-        }
+        shippingFeeText.requestFocus();
         loadMainFee(order);
     }//GEN-LAST:event_paymentOptionComboboxItemStateChanged
 
@@ -1437,55 +1383,6 @@ public class PurchasePanel extends javax.swing.JPanel {
             textFieldMouseClick(customerIDText, 12);
         }
     }//GEN-LAST:event_customerIDTextMouseClicked
-
-    private void taxTextMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_taxTextMouseExited
-        if (!taxBindWithShift) {
-            String taxStr = taxText.getText();
-            if (!ctions.checkIfAValidNumberForGUI(taxStr) && !taxStr.isBlank()) {// kiểm tra xem có phải số hợp lệ hay không
-                insertWarningToTextField(taxText, INVALID_WARNING, 12);
-                taxWarningCheck = false;
-                return;
-            }
-            if (taxStr.isBlank()) {
-                taxText.setText("0");
-                order.setTax(0);
-                return;
-            }
-            order.setTax(Math.min(100, Integer.parseInt(taxStr)));
-            taxWarningCheck = true;
-            loadMainFee(order);
-        }
-    }//GEN-LAST:event_taxTextMouseExited
-
-    private void taxTextKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_taxTextKeyPressed
-        if (!taxBindWithShift) {
-            if (evt.getKeyCode() == KeyEvent.VK_ENTER) {
-                String taxStr = taxText.getText();
-                if (!ctions.checkIfAValidNumberForGUI(taxStr) && !taxStr.isBlank()) {// kiểm tra xem có phải số hợp lệ hay không
-                    insertWarningToTextField(taxText, INVALID_WARNING, 12);
-                    taxWarningCheck = false;
-                    return;
-                }
-                if (taxStr.isBlank()) {
-                    taxText.setText("0");
-                    order.setTax(0);
-                    return;
-                }
-                order.setTax(Math.min(100, Integer.parseInt(taxStr)));
-                taxWarningCheck = true;
-                shippingFeeText.requestFocus();
-                loadMainFee(order);
-            }
-        }
-    }//GEN-LAST:event_taxTextKeyPressed
-
-    private void taxTextMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_taxTextMouseClicked
-        if (!taxBindWithShift) {
-            if (!taxWarningCheck) {
-                textFieldMouseClick(taxText, 12);
-            }
-        }
-    }//GEN-LAST:event_taxTextMouseClicked
 
     private void shippingFeeTextMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_shippingFeeTextMouseExited
         String shippingFeeStr = shippingFeeText.getText();
@@ -2165,14 +2062,11 @@ public class PurchasePanel extends javax.swing.JPanel {
 
     private void setDefaultValuesToComponentsInSubFeePanel() {
         paymentOptionCombobox.setSelectedIndex(0);
-        if (taxBindWithShift) {
-            taxText.setText(shift.getTax() + "");
-        } else {
-            taxText.setText("0");
-        }
+        taxText.setText(shift.getTax() + "");
         shippingFeeText.setText("0.0");
         customerMoneyText.setText("0.0");
         discountText.setText("0");
+        pointDiscountAmountTextField.setText("");
     }
 
     private void setDefaultValuesToComponentsInMainFeePanel() {
@@ -2185,12 +2079,7 @@ public class PurchasePanel extends javax.swing.JPanel {
     }
 
     private void setDefaultValuesToComponentsInEmployeeAndCustomerPanel() {
-        employeeListComboBox.setSelectedIndex(0);
-        if (cashierBindWithShift) {
-            cashierTextField.setText(shift.getCashier().toString());
-        } else {
-            cashierTextField.setText("");
-        }
+        cashierTextField.setText((shift.getCashier() == null) ? "" : shift.getCashier().toString());
         customerIDText.setText("");
         customerPointCheckTextField.setText("");
         customerDiscountOfferTextField.setText("");
@@ -2228,12 +2117,12 @@ public class PurchasePanel extends javax.swing.JPanel {
         customerDiscountOfferTextField.setEnabled(enable);
         cashierLabel.setEnabled(enable);
         cashierTextField.setEnabled(enable);
-        employeeRoleLabel.setEnabled(enable);
-        employeeListComboBox.setEnabled(enable);
     }
 
     private void setEnableToMainOrderFunctionPanel(boolean enable) {
-        setEnableFilterPanel(enable);
+        if (!enable) {
+            setEnableFilterPanel(enable);
+        }
         filterSwitchRadioBtn.setEnabled(enable);
         keyWordLabel.setEnabled(enable);
         keyWordTextField.setEnabled(enable);
@@ -2284,10 +2173,6 @@ public class PurchasePanel extends javax.swing.JPanel {
     }
 
     public void setEnableToAllPanel(boolean enable) {
-        if (lastState == enable) {
-            return;
-        }
-        lastState = enable;
         setEnableToEmployeeAndCustomerPanel(enable);
         setEnableToMainOrderFunctionPanel(enable);
         setEnableToSubFeePanel(enable);
@@ -2307,18 +2192,6 @@ public class PurchasePanel extends javax.swing.JPanel {
         BigDecimal change = (order.getPaymentOptions().compareTo(PaymentOptions.OTHER_PAYMENT) == 0)
                 ? BigDecimal.ZERO : orderCtr.getChange(order, settings.getStore());
         changeAmountTextField.setText(String.format("%.1f", change));
-    }
-
-    private void passValueToEmployeeListComboBox() {
-        int bound = employeeListComboBox.getItemCount();
-        if (bound > 1) {
-            for (int i = 1; i < bound; i++) {
-                employeeListComboBox.removeItemAt(1);
-            }
-        }
-        employeeList.getList().stream().forEach(
-                employee -> employeeListComboBox.insertItemAt(employee.toString(),
-                        employeeListComboBox.getItemCount()));
     }
 
     private void passValueToUnitCombobox() {
@@ -2345,16 +2218,23 @@ public class PurchasePanel extends javax.swing.JPanel {
                         priceRangeComboBox.getItemCount()));
     }
 
+    private void showWarningJOptionPane(String message) {
+        JOptionPane.showMessageDialog(this, message,
+                "Lỗi", JOptionPane.WARNING_MESSAGE);
+    }
+
     private void initNewOrder() {
         // Tạo order mới
-        order = orderCtr.makeNewOrder(shift, idGenerator, cashier,
-                tax, PaymentOptions.CASH_PAYMENT);
+        order = orderCtr.makeNewOrder(shift, idGenerator);
         // Tạo danh sách nháp để làm việc
         draftGoodsList = orderCtr.makeDraftGoodsList(repository);
+        lastGoodsList = new GoodsList(repository.getList()
+                .stream()
+                .map(x -> goodsCtr.cloneGoods(x))
+                .collect(Collectors.toList()));
         // reset lại toàn bộ components theo order mới
         passValueToUnitCombobox();
         passValueToPriceRangeComboBox();
-        passValueToEmployeeListComboBox();
         TitledBorder tb = (TitledBorder) employeeAndCustomerPanel.getBorder();
         tb.setTitle(" Mã Hóa Đơn - " + order.getID());
         tb.setTitleFont(new java.awt.Font("Segoe UI", 1, 14));
@@ -2364,7 +2244,6 @@ public class PurchasePanel extends javax.swing.JPanel {
         computeSizeOfEachColumnInGoodsListTable();
         computeSizeOfEachColumnInOrderGoodsListTable();
         insertGoodsListToGoodsListTable(draftGoodsList);
-        lastState = !shift.getState().equals(ShiftState.OPENED);
     }
 
     private void initVariables() {
@@ -2394,44 +2273,62 @@ public class PurchasePanel extends javax.swing.JPanel {
 
     public void passData(Repository repository, IDGenerator idGenerator,
             Settings settings, Shift shift,
-            Units units, CustomerCardList cutomerCardList,
-            EmployeeList employeeList, History history) {
+            Units units, CustomerCardList cutomerCardList, History history) {
         this.repository = repository;
         this.idGenerator = idGenerator;
         this.settings = settings;
         this.shift = shift;
         this.units = units;
         this.cutomerCardList = cutomerCardList;
-        this.employeeList = employeeList;
-        //
-        initNewOrder();
     }
 
-    public void setCashierBindWithShift(boolean check) {
-        employeeListComboBox.setEditable(!check);
-        cashierBindWithShift = check;
-        if (check) {
-            cashierTextField.setText(cashier.toString());
-            cashier = shift.getCashier();
+    public void refresh() {
+        if (shift.getState().equals(ShiftState.OPENED) && order == null) {
+            initNewOrder();
         } else {
-            cashierTextField.setText(employeeListComboBox.getItemAt(0));
+            draftGoodsList = orderCtr.makeDraftGoodsList(repository);
+            cashierTextField.setText(shift.getCashier().toString());
+            taxText.setText(shift.getTax() + "");
+            passValueToUnitCombobox();
+            passValueToPriceRangeComboBox();
         }
+        if (!customerIDText.getText().isBlank()) {
+            checkCustomerIDBtnActionPerformed(null);
+        }
+        if (lastGoodsList != null) {
+            Iterator<Goods> goodsIt = order.getList().iterator();
+            while (goodsIt.hasNext()) {
+                Goods goodsInOrder = goodsIt.next();
+                Goods goodsInRepo = orderCtr.containGoods(draftGoodsList, goodsInOrder.getID());
+                Goods goodsInDraftGoodsList = orderCtr.containGoods(lastGoodsList, goodsInOrder.getID());
+                if (goodsInRepo == null) {
+                    System.out.println(1);
+                    showWarningJOptionPane(GOODS_HAS_BEEN_CHANGED_WARNING);
+                    goodsIt.remove();
+                } else {
+                    if (!goodsCtr.compare(goodsInRepo, goodsInDraftGoodsList)) {
+                        System.out.println(2);
+                        showWarningJOptionPane(GOODS_HAS_BEEN_CHANGED_WARNING);
+                        goodsIt.remove();
+                    } else {
+                        // Giảm số lượng của những mặt hàng đã thêm vào order
+                        for (Shipment orderShipment : goodsInOrder.getShipments()) {
+                            Shipment repoShipment = goodsCtr
+                                    .containShipment(goodsInRepo, orderShipment.getID());
+                            repoShipment.setQuantity(repoShipment
+                                    .getQuantity()
+                                    .subtract(orderShipment.getQuantity()));
+                        }
+                    }
+                }
+            }
+        }
+        insertGoodsListToOrderGoodsListTable(order);
+        insertGoodsListToGoodsListTable(draftGoodsList);
+        loadMainFee(order);
     }
 
-    public void setVATBindWithStore(boolean check) {
-        taxText.setEditable(!check);
-        taxBindWithShift = check;
-        if (check) {
-            taxText.setText(settings.getStore().getVAT() + "");
-            tax = shift.getTax();
-        }
-        taxText.setText(tax + "");
-    }
-
-    private boolean lastState;
     private int orderSelectedRow = -1;
-    private Employee cashier;
-    private int tax;
     private String productionDateFrom;
     private String productionDateTo;
     private String expirDateFrom;
@@ -2445,15 +2342,13 @@ public class PurchasePanel extends javax.swing.JPanel {
     private boolean pointDiscountWarningCheck = false;
     private boolean discountWarningCheck = false;
     private boolean customerIDWarningCheck = false;
-    private boolean taxWarningCheck = false;
     private boolean shippingFeeWarningCheck = false;
     private boolean customerMoneyWarningCheck = false;
-    private boolean cashierBindWithShift;
-    private boolean taxBindWithShift;
     private boolean ifCashPayment = true;
     private History history;
     private Order order;
     private Cautions ctions;
+    private GoodsList<Goods> lastGoodsList;
     private GoodsList<Goods> filterGoodsList;
     private GoodsList<Goods> draftGoodsList;
     private OrderController orderCtr;
@@ -2466,7 +2361,6 @@ public class PurchasePanel extends javax.swing.JPanel {
     private Repository repository;
     private Shift shift;
     private CustomerCardList cutomerCardList;
-    private EmployeeList employeeList;
     private IDGenerator idGenerator;
     private Settings settings;
     private Units units;
@@ -2475,12 +2369,12 @@ public class PurchasePanel extends javax.swing.JPanel {
     private final String EMPTY_LIST_WARNING = "Danh sách trống!";
     private final String NOTHING_FOUND_WARNING = "Không tìm thấy từ khóa!";
     private final String NOTHING_CHOOSEN_WARNING = "Bạn chưa chọn mặt hàng nào!";
+    private final String GOODS_HAS_BEEN_CHANGED_WARNING = "Mặt hàng bạn thêm đã bị thay đổi!\n Xóa khỏi hóa đơn...";
     private final String EMPTY_TEXT_FIELD_WARNING = "Ô nhập Trống!";
     private final String INVALID_WARNING = "Không hợp lệ!";
     private final String NOT_ENOUGH_QUANTITY = "Không đủ số lượng!";
     private final String CHOOSE_IN_GOODSLIST_TABLE = "Chọn ở bảng hóa đơn!";
     private final String CUSTOMER_CARD_NOT_EXIST = "Thẻ không tồn tại!";
-    private final String NONE_SELECTED_CASHIER = "Chưa chọn thu ngân!";
     private final String INSUFFICIENT_MONEY = "Số dư âm!";
     private final int extraLength = 100;
     private int goodsIDMaxSize = "Mã SP".length() + extraLength;
@@ -2516,8 +2410,6 @@ public class PurchasePanel extends javax.swing.JPanel {
     private javax.swing.JTextField discountText;
     private javax.swing.JButton editBtn;
     private javax.swing.JPanel employeeAndCustomerPanel;
-    private javax.swing.JComboBox<String> employeeListComboBox;
-    private javax.swing.JLabel employeeRoleLabel;
     private javax.swing.JRadioButton expirDateRadioBtn;
     private javax.swing.JPanel feePanel;
     private javax.swing.JButton filterBtn;
