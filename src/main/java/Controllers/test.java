@@ -8,6 +8,7 @@ import Models.Employee;
 import Models.Settings;
 import Models.Shift;
 import Models.ShiftState;
+import Models.Store;
 import Ultility.CustomPair;
 import Ultility.JsonDataFile;
 import java.math.BigDecimal;
@@ -35,6 +36,10 @@ public class test {
     public static void main(String[] args) {
         Float customerDisOffer = (100f - 3)/100;
         System.out.println(customerDisOffer*50000);
+        
+        Store store = new Store();
+        store.setBronzeDiscountOffer(new CustomPair<>(BigDecimal.valueOf(0),0d));
+        store.getBronzeDiscountOffer().getV();
     }
 
 

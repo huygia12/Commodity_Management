@@ -10,8 +10,11 @@ import Models.CustomerCard;
 import Models.CustomerCardList;
 import Models.Gender;
 import Models.History;
+import Models.Settings;
 import Ultility.Cautions;
+import Ultility.CustomPair;
 import Ultility.IDGenerator;
+import java.math.BigDecimal;
 import java.math.BigInteger;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
@@ -195,6 +198,7 @@ public class CustomerCardPanel extends javax.swing.JPanel {
         jLabel3 = new javax.swing.JLabel();
         CreateNewCardButton = new javax.swing.JButton();
         refreshButton = new javax.swing.JButton();
+        reloadButton = new javax.swing.JButton();
         jPanel6 = new javax.swing.JPanel();
         ToolsPanel = new javax.swing.JPanel();
         jLabel4 = new javax.swing.JLabel();
@@ -249,7 +253,7 @@ public class CustomerCardPanel extends javax.swing.JPanel {
 
         DeleteCardButton.setBackground(new java.awt.Color(255, 51, 0));
         DeleteCardButton.setForeground(new java.awt.Color(255, 255, 255));
-        DeleteCardButton.setText("XÓA THẺ");
+        DeleteCardButton.setText("XÓA");
         DeleteCardButton.setFocusable(false);
         DeleteCardButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -258,7 +262,7 @@ public class CustomerCardPanel extends javax.swing.JPanel {
         });
 
         UpdateCustomerDateButton.setBackground(new java.awt.Color(153, 255, 0));
-        UpdateCustomerDateButton.setText("CẬP NHẬT");
+        UpdateCustomerDateButton.setText("SỬA");
         UpdateCustomerDateButton.setFocusable(false);
         UpdateCustomerDateButton.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
@@ -342,6 +346,13 @@ public class CustomerCardPanel extends javax.swing.JPanel {
             .addGroup(CardInforPanelLayout.createSequentialGroup()
                 .addGroup(CardInforPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(CardInforPanelLayout.createSequentialGroup()
+                        .addContainerGap()
+                        .addComponent(needMore)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(morePayToNextRank, javax.swing.GroupLayout.PREFERRED_SIZE, 80, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(toNextRank))
+                    .addGroup(CardInforPanelLayout.createSequentialGroup()
                         .addGap(32, 32, 32)
                         .addGroup(CardInforPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(jLabel8)
@@ -354,20 +365,13 @@ public class CustomerCardPanel extends javax.swing.JPanel {
                             .addComponent(memberTotalPayTextField, javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(memberCardRankTextField, javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(memberUsagePointTextField))
-                        .addGap(0, 0, Short.MAX_VALUE))
-                    .addGroup(CardInforPanelLayout.createSequentialGroup()
-                        .addContainerGap()
-                        .addComponent(needMore)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(morePayToNextRank, javax.swing.GroupLayout.PREFERRED_SIZE, 80, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(toNextRank)))
+                        .addGap(0, 0, Short.MAX_VALUE)))
                 .addContainerGap())
         );
         CardInforPanelLayout.setVerticalGroup(
             CardInforPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(CardInforPanelLayout.createSequentialGroup()
-                .addGap(17, 17, 17)
+                .addGap(28, 28, 28)
                 .addGroup(CardInforPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel7)
                     .addComponent(memberUsagePointTextField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
@@ -389,7 +393,7 @@ public class CustomerCardPanel extends javax.swing.JPanel {
                         .addComponent(needMore)
                         .addComponent(toNextRank))
                     .addComponent(morePayToNextRank, javax.swing.GroupLayout.PREFERRED_SIZE, 20, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap(10, Short.MAX_VALUE))
         );
 
         jLabel36.setText("Họ:");
@@ -413,7 +417,7 @@ public class CustomerCardPanel extends javax.swing.JPanel {
         jLabel3.setText("Giới tính:");
 
         CreateNewCardButton.setBackground(new java.awt.Color(153, 255, 255));
-        CreateNewCardButton.setText("TẠO THẺ");
+        CreateNewCardButton.setText("THÊM");
         CreateNewCardButton.setFocusable(false);
         CreateNewCardButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -421,16 +425,22 @@ public class CustomerCardPanel extends javax.swing.JPanel {
             }
         });
 
-        refreshButton.setFont(new java.awt.Font("Segoe UI", 2, 14)); // NOI18N
-        refreshButton.setForeground(new java.awt.Color(0, 153, 255));
-        refreshButton.setText("Làm mới");
-        refreshButton.setBorderPainted(false);
-        refreshButton.setContentAreaFilled(false);
+        refreshButton.setText("HỦY");
         refreshButton.setFocusPainted(false);
         refreshButton.setFocusable(false);
         refreshButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 refreshButtonActionPerformed(evt);
+            }
+        });
+
+        reloadButton.setIcon(new javax.swing.ImageIcon(getClass().getResource("/ImageIcon/reload (3).png"))); // NOI18N
+        reloadButton.setBorder(null);
+        reloadButton.setContentAreaFilled(false);
+        reloadButton.setFocusable(false);
+        reloadButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                reloadButtonActionPerformed(evt);
             }
         });
 
@@ -473,30 +483,32 @@ public class CustomerCardPanel extends javax.swing.JPanel {
                                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                         .addComponent(memberLastNameTextField, javax.swing.GroupLayout.PREFERRED_SIZE, 75, javax.swing.GroupLayout.PREFERRED_SIZE))))
                             .addGroup(javax.swing.GroupLayout.Alignment.LEADING, CustomerInforPanelLayout.createSequentialGroup()
-                                .addGroup(CustomerInforPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, CustomerInforPanelLayout.createSequentialGroup()
-                                        .addComponent(jLabel1)
-                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                        .addComponent(memberCardIDTextField, javax.swing.GroupLayout.PREFERRED_SIZE, 92, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                        .addComponent(refreshButton, javax.swing.GroupLayout.PREFERRED_SIZE, 90, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, CustomerInforPanelLayout.createSequentialGroup()
-                                        .addComponent(DeleteCardButton)
-                                        .addGap(18, 18, 18)
-                                        .addComponent(CreateNewCardButton)
-                                        .addGap(18, 18, 18)
-                                        .addComponent(UpdateCustomerDateButton)))
-                                .addGap(0, 0, Short.MAX_VALUE)))))
+                                .addComponent(DeleteCardButton, javax.swing.GroupLayout.PREFERRED_SIZE, 72, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(CreateNewCardButton)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(UpdateCustomerDateButton)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(refreshButton, javax.swing.GroupLayout.PREFERRED_SIZE, 72, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(0, 0, Short.MAX_VALUE))
+                            .addGroup(javax.swing.GroupLayout.Alignment.LEADING, CustomerInforPanelLayout.createSequentialGroup()
+                                .addComponent(jLabel1)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(memberCardIDTextField)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addComponent(reloadButton)
+                                .addGap(12, 12, 12)))))
                 .addContainerGap())
         );
         CustomerInforPanelLayout.setVerticalGroup(
             CustomerInforPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(CustomerInforPanelLayout.createSequentialGroup()
                 .addGap(21, 21, 21)
-                .addGroup(CustomerInforPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(memberCardIDTextField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel1)
-                    .addComponent(refreshButton))
+                .addGroup(CustomerInforPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(reloadButton)
+                    .addGroup(CustomerInforPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(memberCardIDTextField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(jLabel1)))
                 .addGap(18, 18, 18)
                 .addGroup(CustomerInforPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel36)
@@ -520,10 +532,12 @@ public class CustomerCardPanel extends javax.swing.JPanel {
                     .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel6))
                 .addGap(18, 18, 18)
-                .addGroup(CustomerInforPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(DeleteCardButton, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(CreateNewCardButton, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(UpdateCustomerDateButton, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGroup(CustomerInforPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(refreshButton, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGroup(CustomerInforPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(DeleteCardButton, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(CreateNewCardButton, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(UpdateCustomerDateButton, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addGap(18, 18, 18)
                 .addComponent(CardInforPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
@@ -601,31 +615,6 @@ public class CustomerCardPanel extends javax.swing.JPanel {
         totalQuantity.setForeground(new java.awt.Color(0, 153, 255));
         totalQuantity.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
 
-        javax.swing.GroupLayout CustomerCardTableLayout = new javax.swing.GroupLayout(CustomerCardTable);
-        CustomerCardTable.setLayout(CustomerCardTableLayout);
-        CustomerCardTableLayout.setHorizontalGroup(
-            CustomerCardTableLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(CustomerCardTableLayout.createSequentialGroup()
-                .addContainerGap()
-                .addGroup(CustomerCardTableLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 629, Short.MAX_VALUE)
-                    .addGroup(CustomerCardTableLayout.createSequentialGroup()
-                        .addComponent(searchResultQuantity, javax.swing.GroupLayout.PREFERRED_SIZE, 158, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(totalQuantity, javax.swing.GroupLayout.PREFERRED_SIZE, 105, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap())
-        );
-        CustomerCardTableLayout.setVerticalGroup(
-            CustomerCardTableLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, CustomerCardTableLayout.createSequentialGroup()
-                .addGroup(CustomerCardTableLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(searchResultQuantity, javax.swing.GroupLayout.DEFAULT_SIZE, 16, Short.MAX_VALUE)
-                    .addComponent(totalQuantity, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 254, Short.MAX_VALUE)
-                .addContainerGap())
-        );
-
         jPanel8.setBackground(new java.awt.Color(255, 255, 255));
         jPanel8.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Cài đặt chính sách", javax.swing.border.TitledBorder.LEFT, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Segoe UI", 1, 18))); // NOI18N
 
@@ -651,6 +640,11 @@ public class CustomerCardPanel extends javax.swing.JPanel {
 
         copperDiscount.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
         copperDiscount.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        copperDiscount.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                copperDiscountActionPerformed(evt);
+            }
+        });
 
         copperPay.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
         copperPay.setHorizontalAlignment(javax.swing.JTextField.CENTER);
@@ -730,55 +724,57 @@ public class CustomerCardPanel extends javax.swing.JPanel {
         jPanel8Layout.setHorizontalGroup(
             jPanel8Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel8Layout.createSequentialGroup()
+                .addContainerGap(302, Short.MAX_VALUE)
+                .addComponent(jLabel22)
+                .addGap(71, 71, 71))
+            .addGroup(jPanel8Layout.createSequentialGroup()
                 .addGap(15, 15, 15)
-                .addComponent(changePolicyButton, javax.swing.GroupLayout.PREFERRED_SIZE, 203, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(agreeWithNewPolicy)
-                .addGap(18, 18, 18)
-                .addComponent(cancelPolicyChange, javax.swing.GroupLayout.PREFERRED_SIZE, 78, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, 18))
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel8Layout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addGroup(jPanel8Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel8Layout.createSequentialGroup()
-                        .addGroup(jPanel8Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addGroup(jPanel8Layout.createSequentialGroup()
+                        .addComponent(changePolicyButton, javax.swing.GroupLayout.PREFERRED_SIZE, 203, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(agreeWithNewPolicy)
+                        .addGap(18, 18, 18)
+                        .addComponent(cancelPolicyChange, javax.swing.GroupLayout.PREFERRED_SIZE, 78, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(18, 18, 18))
+                    .addGroup(jPanel8Layout.createSequentialGroup()
+                        .addGroup(jPanel8Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                             .addGroup(jPanel8Layout.createSequentialGroup()
-                                .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 140, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(copperPay))
+                                .addComponent(jLabel12)
+                                .addGap(77, 77, 77)
+                                .addComponent(jLabel13)
+                                .addGap(79, 79, 79)
+                                .addComponent(jLabel14)
+                                .addGap(55, 55, 55)
+                                .addComponent(jLabel15)
+                                .addGap(9, 9, 9))
                             .addGroup(jPanel8Layout.createSequentialGroup()
-                                .addComponent(jLabel5, javax.swing.GroupLayout.PREFERRED_SIZE, 140, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(copperDiscount, javax.swing.GroupLayout.PREFERRED_SIZE, 90, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                        .addGap(18, 18, 18)
-                        .addGroup(jPanel8Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(silvePay)
-                            .addComponent(silveDiscount, javax.swing.GroupLayout.PREFERRED_SIZE, 90, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGap(18, 18, 18)
-                        .addGroup(jPanel8Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(goldenDiscount)
-                            .addComponent(goldenPay, javax.swing.GroupLayout.PREFERRED_SIZE, 90, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGap(18, 18, 18)
-                        .addGroup(jPanel8Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(diamondPay, javax.swing.GroupLayout.DEFAULT_SIZE, 90, Short.MAX_VALUE)
-                            .addComponent(diamondDiscount))
+                                .addGroup(jPanel8Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                    .addGroup(jPanel8Layout.createSequentialGroup()
+                                        .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 140, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                        .addComponent(copperPay))
+                                    .addGroup(jPanel8Layout.createSequentialGroup()
+                                        .addComponent(jLabel5, javax.swing.GroupLayout.PREFERRED_SIZE, 140, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                        .addComponent(copperDiscount, javax.swing.GroupLayout.PREFERRED_SIZE, 90, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                                .addGap(18, 18, 18)
+                                .addGroup(jPanel8Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                    .addComponent(silvePay)
+                                    .addComponent(silveDiscount, javax.swing.GroupLayout.PREFERRED_SIZE, 90, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addGap(18, 18, 18)
+                                .addGroup(jPanel8Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                    .addComponent(goldenDiscount)
+                                    .addComponent(goldenPay, javax.swing.GroupLayout.PREFERRED_SIZE, 90, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addGap(18, 18, 18)
+                                .addGroup(jPanel8Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                    .addComponent(diamondPay)
+                                    .addComponent(diamondDiscount, javax.swing.GroupLayout.PREFERRED_SIZE, 90, javax.swing.GroupLayout.PREFERRED_SIZE))))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(jPanel8Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(jLabel17)
                             .addComponent(jLabel19, javax.swing.GroupLayout.PREFERRED_SIZE, 29, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGap(0, 0, 0))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel8Layout.createSequentialGroup()
-                        .addComponent(jLabel22)
-                        .addGap(71, 71, 71))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel8Layout.createSequentialGroup()
-                        .addComponent(jLabel12)
-                        .addGap(80, 80, 80)
-                        .addComponent(jLabel13)
-                        .addGap(75, 75, 75)
-                        .addComponent(jLabel14)
-                        .addGap(57, 57, 57)
-                        .addComponent(jLabel15)
-                        .addGap(55, 55, 55))))
+                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
         );
         jPanel8Layout.setVerticalGroup(
             jPanel8Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -788,9 +784,10 @@ public class CustomerCardPanel extends javax.swing.JPanel {
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel8Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                         .addComponent(jLabel13)
                         .addComponent(jLabel12))
-                    .addComponent(jLabel14, javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(jLabel15, javax.swing.GroupLayout.Alignment.TRAILING))
-                .addGap(16, 16, 16)
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel8Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(jLabel15)
+                        .addComponent(jLabel14)))
+                .addGap(18, 18, 18)
                 .addGroup(jPanel8Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel8Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                         .addComponent(copperPay, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -800,7 +797,7 @@ public class CustomerCardPanel extends javax.swing.JPanel {
                     .addGroup(jPanel8Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                         .addComponent(diamondPay, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addComponent(jLabel17)))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addGap(18, 18, 18)
                 .addGroup(jPanel8Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel8Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                         .addComponent(copperDiscount, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -811,9 +808,9 @@ public class CustomerCardPanel extends javax.swing.JPanel {
                         .addGroup(jPanel8Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(diamondDiscount, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(jLabel19))))
-                .addGap(18, 18, 18)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 21, Short.MAX_VALUE)
                 .addComponent(jLabel22)
-                .addGap(29, 29, 29)
+                .addGap(18, 18, 18)
                 .addGroup(jPanel8Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(cancelPolicyChange, javax.swing.GroupLayout.PREFERRED_SIZE, 38, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(agreeWithNewPolicy, javax.swing.GroupLayout.PREFERRED_SIZE, 38, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -821,16 +818,39 @@ public class CustomerCardPanel extends javax.swing.JPanel {
                 .addGap(15, 15, 15))
         );
 
+        javax.swing.GroupLayout CustomerCardTableLayout = new javax.swing.GroupLayout(CustomerCardTable);
+        CustomerCardTable.setLayout(CustomerCardTableLayout);
+        CustomerCardTableLayout.setHorizontalGroup(
+            CustomerCardTableLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(CustomerCardTableLayout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(CustomerCardTableLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(CustomerCardTableLayout.createSequentialGroup()
+                        .addComponent(searchResultQuantity, javax.swing.GroupLayout.PREFERRED_SIZE, 158, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(totalQuantity, javax.swing.GroupLayout.PREFERRED_SIZE, 105, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addContainerGap())
+                    .addComponent(jPanel8, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jScrollPane2)))
+        );
+        CustomerCardTableLayout.setVerticalGroup(
+            CustomerCardTableLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, CustomerCardTableLayout.createSequentialGroup()
+                .addGroup(CustomerCardTableLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(searchResultQuantity, javax.swing.GroupLayout.DEFAULT_SIZE, 16, Short.MAX_VALUE)
+                    .addComponent(totalQuantity, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 254, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jPanel8, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+        );
+
         javax.swing.GroupLayout MainPanelLayout = new javax.swing.GroupLayout(MainPanel);
         MainPanel.setLayout(MainPanelLayout);
         MainPanelLayout.setHorizontalGroup(
             MainPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(MainPanelLayout.createSequentialGroup()
-                .addGroup(MainPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(CustomerCardTable, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addGroup(MainPanelLayout.createSequentialGroup()
-                        .addContainerGap()
-                        .addComponent(jPanel8, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addComponent(CustomerCardTable, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         MainPanelLayout.setVerticalGroup(
@@ -838,8 +858,7 @@ public class CustomerCardPanel extends javax.swing.JPanel {
             .addGroup(MainPanelLayout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(CustomerCardTable, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jPanel8, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         jPanel6.add(MainPanel, java.awt.BorderLayout.CENTER);
@@ -864,7 +883,7 @@ public class CustomerCardPanel extends javax.swing.JPanel {
                 customerCardList.getList().remove(selectedRow);
                 resetMemberCardValue();
                 totalQuantity.setText(String.valueOf("Tổng số: " + customerCardList.getList().size()));
-                if (totalQuantity.getText().isBlank()) {
+                if (searchResultQuantity.getText().isBlank()) {
                     return;
                 }
                 setSearchResult();
@@ -882,12 +901,14 @@ public class CustomerCardPanel extends javax.swing.JPanel {
         diamondPay.setEditable(b);
         agreeWithNewPolicy.setEnabled(b);
         cancelPolicyChange.setEnabled(b);
+        reloadButton.setEnabled(b);
     }
 
     private void setPolicy(String cp, String cd,
             String sp, String sd,
             String gp, String gd,
             String dp, String dd) {
+
         copperPay.setText(cp);
         copperDiscount.setText(cd);
         silveDiscount.setText(sd);
@@ -896,6 +917,19 @@ public class CustomerCardPanel extends javax.swing.JPanel {
         goldenPay.setText(gp);
         diamondDiscount.setText(dd);
         diamondPay.setText(dp);
+
+        settings.getStore().getBronzeDiscountOffer().setK(new BigDecimal(cp));
+        settings.getStore().getBronzeDiscountOffer().setV(Double.parseDouble(cd));
+        settings.getStore().getSilverDiscountOffer().setK(new BigDecimal(sp));
+        settings.getStore().getSilverDiscountOffer().setV(Double.parseDouble(sd));
+        settings.getStore().getGoldDiscountOffer().setK(new BigDecimal(gp));
+        settings.getStore().getGoldDiscountOffer().setV(Double.parseDouble(gd));
+        settings.getStore().getDiamondDiscountOffer().setK(new BigDecimal(dp));
+        settings.getStore().getDiamondDiscountOffer().setV(Double.parseDouble(dd));
+    }
+
+    private void showPolicy() {
+
     }
 
     private void resetMemberCardValue() {
@@ -911,6 +945,8 @@ public class CustomerCardPanel extends javax.swing.JPanel {
         memberUsedPointTextField.setText("");
         memberCardRankTextField.setText("");
         setVisibleNeedPay(false);
+        customerTable.clearSelection();
+        reloadButton.setEnabled(false);
     }
 
     private boolean checkInformation(String firstName, String lastName, String age, String phone, String address) {
@@ -1101,6 +1137,7 @@ public class CustomerCardPanel extends javax.swing.JPanel {
     private void customerTableMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_customerTableMouseClicked
         // TODO add your handling code here:
         int rowIndex = customerTable.getSelectedRow();
+        reloadButton.setEnabled(true);
 
         memberCardIDTextField.setText(customerModel.getValueAt(rowIndex, 0).toString());
         memberFirstNameTextField.setText(customerModel.getValueAt(rowIndex, 1).toString());
@@ -1218,6 +1255,14 @@ public class CustomerCardPanel extends javax.swing.JPanel {
         }
         return false;
     }
+    
+    private boolean checkDiscount(String s) {
+        double d = Double.parseDouble(s);
+        if (d > 100) {
+            return true;
+        }
+        return false;
+    }
 
     private void agreeWithNewPolicyActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_agreeWithNewPolicyActionPerformed
         // TODO add your handling code here:
@@ -1239,6 +1284,12 @@ public class CustomerCardPanel extends javax.swing.JPanel {
             return;
         }
         getPolicy();
+        if (checkDiscount(silveDis) || checkDiscount(copperDis) || checkDiscount(goldenDis) || checkDiscount(diamondDis)) {
+            JOptionPane.showMessageDialog(CustomerCardPanel.this,
+                    "<Ưu đãi chiết khấu> không thể lớn hơn 100.");
+            check = false;
+            return;
+        }
         if (!checkIncreasing(copperPayment, silvePayment, goldenPayment, diamondPayment)) {
             JOptionPane.showMessageDialog(CustomerCardPanel.this,
                     "<Tổng chi tiêu tối thiểu> của thứ hạng sau phải lớn hơn thứ hạng trước.");
@@ -1306,6 +1357,16 @@ public class CustomerCardPanel extends javax.swing.JPanel {
         // TODO add your handling code here:
     }//GEN-LAST:event_goldenDiscountActionPerformed
 
+    private void copperDiscountActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_copperDiscountActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_copperDiscountActionPerformed
+
+    private void reloadButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_reloadButtonActionPerformed
+        // TODO add your handling code here:
+            reload();
+            showPoint();       
+    }//GEN-LAST:event_reloadButtonActionPerformed
+
     private void getPolicy() {
         copperDis = copperDiscount.getText();
         copperPayment = copperPay.getText();
@@ -1317,27 +1378,47 @@ public class CustomerCardPanel extends javax.swing.JPanel {
         diamondPayment = diamondPay.getText();
     }
 
-    public void passData(CustomerCardList customerCardList, IDGenerator idGenerator, History history) {
+    public void reload() {
+        copperPayment = settings.getStore().getBronzeDiscountOffer().getK().toString();
+        silvePayment = settings.getStore().getSilverDiscountOffer().getK().toString();
+        goldenPayment = settings.getStore().getGoldDiscountOffer().getK().toString();
+        diamondPayment = settings.getStore().getDiamondDiscountOffer().getK().toString();
+
+        copperDis = settings.getStore().getBronzeDiscountOffer().getV().toString();
+        silveDis = settings.getStore().getSilverDiscountOffer().getV().toString();
+        goldenDis = settings.getStore().getGoldDiscountOffer().getV().toString();
+        diamondDis = settings.getStore().getDiamondDiscountOffer().getV().toString();
+
+    }
+    
+    private void defaultPolicy() {
+        setPolicy("0", "0.0", "8000000", "2.0", "12000000", "3.0", "20000000", "4.0");
+    }
+
+    public void passData(CustomerCardList customerCardList, IDGenerator idGenerator, History history, Settings settings) {
         this.customerCardList = customerCardList;
         this.idGenerator = idGenerator;
         this.history = history;
+        this.settings = settings;
         addAllCustomerCardToTable();
         setVisibleNeedPay(false);
         totalQuantity.setText(String.valueOf("Tổng số: " + customerCardList.getList().size()));
         setEnablePolicy(false);
+        searchResultQuantity.setText("");
         copperPay.setEditable(false);
         copperDiscount.setEditable(false);
-        setPolicy("8000000", "0.0",
-                "12000000", "2.0",
-                "20000000", "3.0",
-                "34000000", "4.0");
+        defaultPolicy();
+        
     }
+
     private CustomerCardList customerCardList;
     private IDGenerator idGenerator;
     private History history;
     private Cautions cautions = new Cautions();
     private DefaultTableModel customerModel;
     private CustomerCardListController customerCardListCtl;
+    private Settings settings;
+
     private String copperPayment;
     private String copperDis;
     private String silvePayment;
@@ -1408,6 +1489,7 @@ public class CustomerCardPanel extends javax.swing.JPanel {
     private javax.swing.JLabel morePayToNextRank;
     private javax.swing.JLabel needMore;
     private javax.swing.JButton refreshButton;
+    private javax.swing.JButton reloadButton;
     private javax.swing.JLabel searchResultQuantity;
     private javax.swing.JTextField silveDiscount;
     private javax.swing.JTextField silvePay;
