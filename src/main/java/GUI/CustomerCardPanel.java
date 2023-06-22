@@ -11,8 +11,8 @@ import Models.CustomerCardList;
 import Models.Gender;
 import Models.History;
 import Models.Settings;
+import Models.Store;
 import Ultility.Cautions;
-import Ultility.CustomPair;
 import Ultility.IDGenerator;
 import java.math.BigDecimal;
 import java.math.BigInteger;
@@ -918,14 +918,14 @@ public class CustomerCardPanel extends javax.swing.JPanel {
         diamondDiscount.setText(dd);
         diamondPay.setText(dp);
 
-        settings.getStore().getBronzeDiscountOffer().setK(new BigDecimal(cp));
-        settings.getStore().getBronzeDiscountOffer().setV(Double.parseDouble(cd));
-        settings.getStore().getSilverDiscountOffer().setK(new BigDecimal(sp));
-        settings.getStore().getSilverDiscountOffer().setV(Double.parseDouble(sd));
-        settings.getStore().getGoldDiscountOffer().setK(new BigDecimal(gp));
-        settings.getStore().getGoldDiscountOffer().setV(Double.parseDouble(gd));
-        settings.getStore().getDiamondDiscountOffer().setK(new BigDecimal(dp));
-        settings.getStore().getDiamondDiscountOffer().setV(Double.parseDouble(dd));
+        store.getBronzeDiscountOffer().setK(new BigDecimal(cp));
+        store.getBronzeDiscountOffer().setV(Double.parseDouble(cd));
+        store.getSilverDiscountOffer().setK(new BigDecimal(sp));
+        store.getSilverDiscountOffer().setV(Double.parseDouble(sd));
+        store.getGoldDiscountOffer().setK(new BigDecimal(gp));
+        store.getGoldDiscountOffer().setV(Double.parseDouble(gd));
+        store.getDiamondDiscountOffer().setK(new BigDecimal(dp));
+        store.getDiamondDiscountOffer().setV(Double.parseDouble(dd));
     }
 
     private void showPolicy() {
@@ -1379,15 +1379,15 @@ public class CustomerCardPanel extends javax.swing.JPanel {
     }
 
     public void reload() {
-        copperPayment = settings.getStore().getBronzeDiscountOffer().getK().toString();
-        silvePayment = settings.getStore().getSilverDiscountOffer().getK().toString();
-        goldenPayment = settings.getStore().getGoldDiscountOffer().getK().toString();
-        diamondPayment = settings.getStore().getDiamondDiscountOffer().getK().toString();
+        copperPayment = store.getBronzeDiscountOffer().getK().toString();
+        silvePayment = store.getSilverDiscountOffer().getK().toString();
+        goldenPayment = store.getGoldDiscountOffer().getK().toString();
+        diamondPayment = store.getDiamondDiscountOffer().getK().toString();
 
-        copperDis = settings.getStore().getBronzeDiscountOffer().getV().toString();
-        silveDis = settings.getStore().getSilverDiscountOffer().getV().toString();
-        goldenDis = settings.getStore().getGoldDiscountOffer().getV().toString();
-        diamondDis = settings.getStore().getDiamondDiscountOffer().getV().toString();
+        copperDis = store.getBronzeDiscountOffer().getV().toString();
+        silveDis = store.getSilverDiscountOffer().getV().toString();
+        goldenDis = store.getGoldDiscountOffer().getV().toString();
+        diamondDis = store.getDiamondDiscountOffer().getV().toString();
 
     }
     
@@ -1395,11 +1395,11 @@ public class CustomerCardPanel extends javax.swing.JPanel {
         setPolicy("0", "0.0", "8000000", "2.0", "12000000", "3.0", "20000000", "4.0");
     }
 
-    public void passData(CustomerCardList customerCardList, IDGenerator idGenerator, History history, Settings settings) {
-        this.customerCardList = customerCardList;
-        this.idGenerator = idGenerator;
-        this.history = history;
-        this.settings = settings;
+    public void passData(Store store) {
+        this.customerCardList = store.getCustomerCardList();
+        this.idGenerator = store.getiDGenerator();
+        this.history = store.getHistory();
+        this.store = store;
         addAllCustomerCardToTable();
         setVisibleNeedPay(false);
         totalQuantity.setText(String.valueOf("Tổng số: " + customerCardList.getList().size()));
@@ -1417,7 +1417,7 @@ public class CustomerCardPanel extends javax.swing.JPanel {
     private Cautions cautions = new Cautions();
     private DefaultTableModel customerModel;
     private CustomerCardListController customerCardListCtl;
-    private Settings settings;
+    private Store store;
 
     private String copperPayment;
     private String copperDis;

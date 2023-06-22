@@ -4,11 +4,7 @@
  */
 package GUI;
 
-import static GUI.MainFrame.employeeList;
-import Models.Employee;
-import Models.EmployeeList;
-import Models.Gender;
-import Models.Shift;
+import Models.*;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
@@ -413,7 +409,7 @@ public class EmployJPanel extends javax.swing.JPanel {
     private void displayEmployees() {
         DefaultTableModel model = (DefaultTableModel) displayTable.getModel();
         model.setRowCount(0);
-        for (Employee employee : employeeList.getList()) {
+        for (Employee employee : employeelist.getList()) {
             Object[] rowData = {employee.getFirstName(), employee.getLastName(), employee.getAge(), employee.getGender(), employee.getAddress(), employee.getPhoneNumber(), employee.getCCCD(), employee.getSalaryPerDay()};
             model.addRow(rowData);
         }
@@ -455,7 +451,7 @@ public class EmployJPanel extends javax.swing.JPanel {
     }
 
     private void updateEmployeeCount() {
-        quantityEmploytextField.setText(Integer.toString(employeeList.getList().size()));
+        quantityEmploytextField.setText(Integer.toString(employeelist.getList().size()));
     }
 
     private void insertWarningToTextField(javax.swing.JTextField textField, String warningText, int size) {
@@ -574,7 +570,7 @@ public class EmployJPanel extends javax.swing.JPanel {
         }
 
         // Kiểm tra thông tin nhân viên trùng lặp
-        for (Employee employee : employeeList.getList()) {
+        for (Employee employee : employeelist.getList()) {
             if (employee.getCCCD().equals(cccd) || employee.getPhoneNumber().equals(phone) || employee.getLastName().equals(lastName)) {
                 JOptionPane.showMessageDialog(this, "Thông tin nhân viên đã trùng! Mong bạn kiểm tra và nhập lại.\n(Không được trùng Tên, CCCD,SĐT)", "Cảnh báo", JOptionPane.WARNING_MESSAGE);
                 return;
@@ -585,10 +581,10 @@ public class EmployJPanel extends javax.swing.JPanel {
         Employee newEmployee = new Employee(firstName, lastName, age, address, cccd, phone, salary, gender);
 
         // Thêm đối tượng Employee mới vào danh sách nhân viên trong đối tượng EmployeeList
-        employeeList.getList().add(newEmployee);
+        employeelist.getList().add(newEmployee);
 
         // Hiển thị danh sách nhân viên trong bảng
-        showTable(employeeList.getList());
+        showTable(employeelist.getList());
 
         // Xóa các trường nhập để chuẩn bị cho việc nhập thông tin nhân viên tiếp theo
         clearInputFields();
@@ -654,8 +650,8 @@ public class EmployJPanel extends javax.swing.JPanel {
 
                 if (hasChanged) {
                     // Kiểm tra trùng lặp thông tin
-                    for (Employee employee : employeeList.getList()) {
-                        if (employee != employeeList.getList().get(rowIndex) && (employee.getPhoneNumber().equals(newPhone) || employee.getCCCD().equals(newCCCD))) {
+                    for (Employee employee : employeelist.getList()) {
+                        if (employee != employeelist.getList().get(rowIndex) && (employee.getPhoneNumber().equals(newPhone) || employee.getCCCD().equals(newCCCD))) {
                             // Hiển thị cảnh báo trùng lặp thông tin
                             JOptionPane.showMessageDialog(this, "CCCD hoặc SĐT này đã trùng lặp với một nhân viên khác!", "Cảnh báo", JOptionPane.WARNING_MESSAGE);
                             return;
@@ -683,7 +679,7 @@ public class EmployJPanel extends javax.swing.JPanel {
                         model.setValueAt(newSalary, rowIndex, 7);
 
                         // Cập nhật thông tin nhân viên trong employeeList
-                        Employee selectedEmployee = employeeList.getList().get(rowIndex);
+                        Employee selectedEmployee = employeelist.getList().get(rowIndex);
                         selectedEmployee.setFirstName(newFirstName);
                         selectedEmployee.setLastName(newLastName);
                         selectedEmployee.setAge(newAge);
@@ -727,9 +723,9 @@ public class EmployJPanel extends javax.swing.JPanel {
         int reply = JOptionPane.showConfirmDialog(this, "Bạn có chắc muốn xóa thông tin không?", "Xác nhận xóa", JOptionPane.YES_NO_OPTION);
         if (reply == JOptionPane.YES_OPTION) {
             // Lấy đối tượng Employee từ dữ liệu bảng
-            Employee employeeToRemove = employeeList.getList().get(selectedRowIndex);
+            Employee employeeToRemove = employeelist.getList().get(selectedRowIndex);
             // Xóa đối tượng Employee khỏi danh sách
-            employeeList.getList().remove(employeeToRemove);
+            employeelist.getList().remove(employeeToRemove);
             // Xóa dòng được chọn trong bảng
             model.removeRow(selectedRowIndex);
             // Cập nhật bảng
@@ -754,7 +750,7 @@ public class EmployJPanel extends javax.swing.JPanel {
 
         // Tìm kiếm vị trí của tất cả các nhân viên có firstName,lastName,CCCD tương ứng trong danh sách nhân viên
         List<Employee> searchResult = new ArrayList<>();
-        for (Employee employee : employeeList.getList()) {
+        for (Employee employee : employeelist.getList()) {
             if (employee.getFirstName().toLowerCase().contains(searchValue.toLowerCase())
                     || employee.getLastName().toLowerCase().contains(searchValue.toLowerCase())
                     || employee.getCCCD().contains(searchValue)) {
@@ -837,7 +833,7 @@ public class EmployJPanel extends javax.swing.JPanel {
     private void showAllButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_showAllButtonActionPerformed
         // TODO add your handling code here:
         // Hiển thị danh sách nhân viên trên bảng
-        showTable(employeeList.getList());
+        showTable(employeelist.getList());
         updateEmployeeCount();
     }//GEN-LAST:event_showAllButtonActionPerformed
 

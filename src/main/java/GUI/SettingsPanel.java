@@ -259,13 +259,12 @@ public class SettingsPanel extends javax.swing.JPanel {
             return;
         }
         // Cập nhật đối tượng Store
-        Store store = settings.getStore();
         store.setName(name);
         store.setPhoneNumber(phoneNumber);
         store.setAddress(address);
 
         // Lưu thay đổi
-        settings.save();
+        store.getSettings().save();
 
         // Cập nhật Header với tên cửa hàng mới
         header.setTitle(name, phoneNumber, address, email);
@@ -300,12 +299,11 @@ public class SettingsPanel extends javax.swing.JPanel {
             }
 
             // Cập nhật giá trị mới cho store
-            Store store = settings.getStore();
             store.setAmountForOnePoint(amountForOnePoint);
             store.setPointsForOneVND(pointsForOneVND);
 
             // Lưu lại cài đặt mới
-            settings.save();
+            store.getSettings().save();
 
             // Hiển thị thông báo thành công
             JOptionPane.showMessageDialog(this, "Cập nhật thông số thành công!");
@@ -315,11 +313,10 @@ public class SettingsPanel extends javax.swing.JPanel {
         }
     }//GEN-LAST:event_inputchangeScoreButtonActionPerformed
 
-    public void passData(Settings settings, Header header) {
-        this.settings = settings;
+    public void passData(Store store, Header header) {
+        this.store = store;
         this.header = header;
         //Cập nhật thông tin hiện có
-        Store store = settings.getStore();
         inputNameTextField.setText(store.getName());
         inputPhoneNumberTextField.setText(store.getPhoneNumber());
         inputAndressTextPane.setText(store.getAddress());
@@ -331,7 +328,7 @@ public class SettingsPanel extends javax.swing.JPanel {
     }
 
     private Header header;
-    private Settings settings;
+    private Store store;
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel amountForOnePointLabel;
     private javax.swing.JTextField amountForOnePointTextField;

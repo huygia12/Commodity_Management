@@ -487,33 +487,32 @@
             <DimensionLayout dim="0">
               <Group type="103" groupAlignment="0" attributes="0">
                   <Group type="102" alignment="0" attributes="0">
-                      <EmptySpace min="-2" pref="14" max="-2" attributes="0"/>
+                      <EmptySpace max="-2" attributes="0"/>
                       <Group type="103" groupAlignment="0" attributes="0">
                           <Group type="102" attributes="0">
                               <Group type="103" groupAlignment="0" attributes="0">
-                                  <Component id="taxShiftLabel" min="-2" max="-2" attributes="0"/>
-                                  <Component id="openBalanceLabel" min="-2" max="-2" attributes="0"/>
+                                  <Component id="surchargeLabel" alignment="0" min="-2" max="-2" attributes="0"/>
                                   <Component id="shiftEmployeeListLabel" alignment="0" min="-2" max="-2" attributes="0"/>
-                                  <Component id="surchargeLabel" min="-2" max="-2" attributes="0"/>
-                                  <Component id="shiftCashierLabel" min="-2" max="-2" attributes="0"/>
+                                  <Component id="shiftCashierLabel" alignment="0" min="-2" max="-2" attributes="0"/>
+                                  <Component id="taxShiftLabel" alignment="0" min="-2" max="-2" attributes="0"/>
+                                  <Component id="openBalanceLabel" alignment="0" min="-2" max="-2" attributes="0"/>
                               </Group>
-                              <EmptySpace min="-2" pref="17" max="-2" attributes="0"/>
+                              <EmptySpace min="-2" pref="25" max="-2" attributes="0"/>
                               <Group type="103" groupAlignment="0" attributes="0">
-                                  <Component id="taxTextField" alignment="1" max="32767" attributes="0"/>
-                                  <Component id="openBalanceTextField" alignment="1" max="32767" attributes="0"/>
                                   <Component id="surchargeTextField" alignment="0" max="32767" attributes="0"/>
-                                  <Component id="shiftCashierTextField" max="32767" attributes="0"/>
-                                  <Component id="shiftEmployeeListComboBox" alignment="1" max="32767" attributes="0"/>
+                                  <Component id="shiftEmployeeListComboBox" alignment="1" pref="158" max="32767" attributes="0"/>
+                                  <Component id="openBalanceTextField" alignment="0" max="32767" attributes="0"/>
+                                  <Component id="taxTextField" alignment="1" max="32767" attributes="0"/>
+                                  <Component id="shiftCashierTextField" alignment="1" max="32767" attributes="0"/>
                               </Group>
                           </Group>
                           <Group type="102" attributes="0">
-                              <Component id="editShiftBtn" min="-2" pref="134" max="-2" attributes="0"/>
+                              <Component id="editShiftBtn" min="-2" pref="144" max="-2" attributes="0"/>
                               <EmptySpace type="separate" max="-2" attributes="0"/>
-                              <Component id="endShiftBtn" min="-2" pref="138" max="-2" attributes="0"/>
-                              <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
+                              <Component id="endShiftBtn" max="32767" attributes="0"/>
                           </Group>
                       </Group>
-                      <EmptySpace min="-2" pref="12" max="-2" attributes="0"/>
+                      <EmptySpace max="-2" attributes="0"/>
                       <Component id="jSeparator2" min="-2" pref="6" max="-2" attributes="0"/>
                       <Group type="103" groupAlignment="0" attributes="0">
                           <Group type="102" attributes="0">
@@ -622,11 +621,6 @@
                 </Property>
                 <Property name="horizontalAlignment" type="int" value="0"/>
               </Properties>
-              <Events>
-                <EventHandler event="mouseClicked" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="openBalanceTextFieldMouseClicked"/>
-                <EventHandler event="mouseExited" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="openBalanceTextFieldMouseExited"/>
-                <EventHandler event="keyPressed" listener="java.awt.event.KeyListener" parameters="java.awt.event.KeyEvent" handler="openBalanceTextFieldKeyPressed"/>
-              </Events>
             </Component>
             <Component class="javax.swing.JLabel" name="surchargeLabel">
               <Properties>
@@ -716,11 +710,6 @@
                 </Property>
                 <Property name="horizontalAlignment" type="int" value="0"/>
               </Properties>
-              <Events>
-                <EventHandler event="mouseClicked" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="taxTextFieldMouseClicked"/>
-                <EventHandler event="mouseExited" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="taxTextFieldMouseExited"/>
-                <EventHandler event="keyPressed" listener="java.awt.event.KeyListener" parameters="java.awt.event.KeyEvent" handler="taxTextFieldKeyPressed"/>
-              </Events>
             </Component>
             <Component class="javax.swing.JLabel" name="numberOfOrderLabel">
               <Properties>

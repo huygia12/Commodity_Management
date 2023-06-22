@@ -8,11 +8,14 @@ import java.nio.file.Path;
 import Models.*;
 import Ultility.*;
 import com.formdev.flatlaf.FlatLightLaf;
+import com.google.gson.reflect.TypeToken;
 import java.awt.CardLayout;
 import java.awt.Color;
 import java.io.File;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javaswingdev.drawer.Drawer;
@@ -34,12 +37,11 @@ public class MainFrame extends javax.swing.JFrame {
      * Creates new form MainFrame
      */
     public MainFrame() {
-        loadData();
         initComponents();
         initVariables();
         initSideBar();
         setUp();
-        passDataToComponents();
+        
     }
 
     /**
@@ -236,26 +238,23 @@ public class MainFrame extends javax.swing.JFrame {
             new MainFrame().setVisible(true);
         });
     }
-    
+
     private void passDataToComponents() {
         // pass data vào purchasePanel
-        purchasePanel1.passData(repository, idGenerator,
-                settings, shift,
-                units, customerCardList, history);
+        purchasePanel1.passData(store);
         // pass data vào customerCardPanel
-        customerCardPanel1.passData(customerCardList, idGenerator, history, settings);
+        customerCardPanel1.passData(store);
         // pass data vào employPanel
-        employJPanel1.passData(employeeList, shift);
+        employJPanel1.passData(store.getEmployeeList(), store.getShift());
         // pass data vào repoPanel
-        repoPanel1.setGoodsList(repository);
-        repoPanel1.setUnitsList(units);
+        repoPanel1.setGoodsList(store.getRepository());
+        repoPanel1.setUnitsList(store.getUnits());
         // pass data vào shiftJPanel
-        shiftPanel1.passData(shift, history, employeeList,
-                settings.getStore());
+        shiftPanel1.passData(store);
         //pass dât vào settingsPanel
-        settingsPanel1.passData(settings, header);
+        settingsPanel1.passData(store, header);
     }
-    
+
     private void notOpenShiftWarning() {
         int choice = JOptionPane.showConfirmDialog(displayPanel, "Thực hiện mở ca ngay?",
                 "Không có ca hiện tại!", JOptionPane.WARNING_MESSAGE);
@@ -263,7 +262,7 @@ public class MainFrame extends javax.swing.JFrame {
             switchPanel(2);
         }
     }
-    
+
     private void initSideBar() {
         DrawerItem productDrawerItem = new DrawerItem("Sản phẩm").icon(new ImageIcon(getClass().getResource("/ImageIcon/icons8-product-35.png"))).build();
         productDrawerItem.setFont(new java.awt.Font("Segoe UI", 1, 16));
@@ -291,7 +290,7 @@ public class MainFrame extends javax.swing.JFrame {
         settingsDrawerItem.setFocusable(false);
         DrawerItem logoutDrawerItem = new DrawerItem("Đăng xuất").icon(new ImageIcon(getClass().getResource("/ImageIcon/icons8-logout-30.png"))).build();
         logoutDrawerItem.setFocusable(false);
-        header = new Header(settings.getStore());
+        header = new Header(store);
         
         drawerCtr = Drawer.newDrawer(this)
                 .header(header)
@@ -312,7 +311,7 @@ public class MainFrame extends javax.swing.JFrame {
                 })
                 .build();
     }
-    
+
     private void switchPanel(int i) {
         switch (i) {
             case 0:
@@ -322,13 +321,13 @@ public class MainFrame extends javax.swing.JFrame {
                 repoPanel1.externalRefresh();
                 break;
             case 1:
-                purchasePanel1.setEnableToAllPanel(shift.getState().equals(ShiftState.OPENED));
+                purchasePanel1.setEnableToAllPanel(store.getShift().getState().equals(ShiftState.OPENED));
                 displayPanel.add(purchasePanel1, "purchase");
                 cardLayout.show(displayPanel, "purchase");
                 drawerCtr.hide();
-                if (!shift.getState().equals(ShiftState.OPENED)) {
+                if (!store.getShift().getState().equals(ShiftState.OPENED)) {
                     notOpenShiftWarning();
-                }else{
+                } else {
                     purchasePanel1.refresh();
                 }
                 break;
@@ -356,7 +355,7 @@ public class MainFrame extends javax.swing.JFrame {
             case 6:
         }
     }
-    
+
     private void realTimeClock() {
         new Thread() {
             @Override
@@ -374,26 +373,21 @@ public class MainFrame extends javax.swing.JFrame {
             }
         }.start();
     }
-    
-    private void loadData() {
-        repository = myData.load(Path.of(REPOSITORY_PATH), Repository.class, repository);
-        shift = myData.load(Path.of(SHIFT_PATH), Shift.class, shift);
-        history = myData.load(Path.of(HISTORY_PATH), History.class, history);
-        employeeList = myData.load(Path.of(EMPLOYEE_LIST_PATH), EmployeeList.class, employeeList);
-        customerCardList = myData.load(Path.of(CUSTOMER_CARD_LIST_PATH), CustomerCardList.class, customerCardList);
-        idGenerator = myData.load(Path.of(IDGENERATOR_PATH), IDGenerator.class, idGenerator);
-        settings = myData.load(Path.of(SETTINGS_PATH), Settings.class, settings);
-        units = myData.load(Path.of(UNITS_PATH), Units.class, units);
+
+    public List<Store> loadData() {
+        return myData.load(Path.of(LIST_STORE_PATH),
+                new TypeToken<List<Store>>() {}.getType(), storeList);
     }
-    
+
     private static void saveData() {
-        myData.save(Path.of(REPOSITORY_PATH), repository);
-        myData.save(Path.of(SHIFT_PATH), shift);
-        myData.save(Path.of(HISTORY_PATH), history);
-        myData.save(Path.of(EMPLOYEE_LIST_PATH), employeeList);
-        myData.save(Path.of(CUSTOMER_CARD_LIST_PATH), customerCardList);
-        myData.save(Path.of(IDGENERATOR_PATH), idGenerator);
-        myData.save(Path.of(SETTINGS_PATH), settings);
+        myData.save(Path.of(LIST_STORE_PATH), storeList);
+    }
+
+    public void setUserStore(Store store){
+        this.store = store;
+        passDataToComponents();
+        header.setStore(store);
+        header.setStoreInfor();
     }
     
     private void setUp() {
@@ -403,35 +397,24 @@ public class MainFrame extends javax.swing.JFrame {
         displayPanel.add(repoPanel1, "repo");
         cardLayout.show(displayPanel, "repo");
     }
-    
+
     private void initVariables() {
         cardLayout = (CardLayout) displayPanel.getLayout();
         realTimeClock();
+        storeList = new ArrayList<>();
+        store = new Store();
     }
     
+    private Store store;
+    private static List<Store> storeList;
     private Header header;
     private CardLayout cardLayout;
-    static Units units = new Units();
-    static Repository repository;
-    static Shift shift = new Shift();
-    static History history = new History();
-    static CustomerCardList customerCardList;
-    static EmployeeList employeeList;
-    static IDGenerator idGenerator;
-    static Settings settings;
     private DrawerController drawerCtr;
     private static final JsonDataFile myData = new JsonDataFile();
     private static final String HOME = System.getProperty("user.dir");
     private static final String SEPARATOR = File.separator;
     private static final String DATA_FOLDER = HOME + SEPARATOR + "data" + SEPARATOR;
-    private static final String REPOSITORY_PATH = DATA_FOLDER + "repositoryData.json";
-    private static final String SHIFT_PATH = DATA_FOLDER + "currentShift.json";
-    private static final String HISTORY_PATH = DATA_FOLDER + "historyData.json";
-    private static final String EMPLOYEE_LIST_PATH = DATA_FOLDER + "employeeListData.json";
-    private static final String CUSTOMER_CARD_LIST_PATH = DATA_FOLDER + "customerCardListData.json";
-    private static final String IDGENERATOR_PATH = DATA_FOLDER + "idgenerator.json";
-    private static final String SETTINGS_PATH = DATA_FOLDER + "settingsData.json";
-    private static final String UNITS_PATH = DATA_FOLDER + "units.json";
+    private static final String LIST_STORE_PATH = DATA_FOLDER + "storeList.json";
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private GUI.CustomerCardPanel customerCardPanel1;
     private javax.swing.JLabel dateLabel;

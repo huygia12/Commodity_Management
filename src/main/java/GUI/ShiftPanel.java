@@ -4,10 +4,8 @@
  */
 package GUI;
 
-import Controllers.EmployeeListController;
 import Controllers.OrderController;
 import Controllers.ShiftController;
-import static GUI.MainFrame.idGenerator;
 import Models.*;
 import Ultility.Cautions;
 import java.util.stream.*;
@@ -396,19 +394,6 @@ public class ShiftPanel extends javax.swing.JPanel {
         openBalanceTextField.setEditable(false);
         openBalanceTextField.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         openBalanceTextField.setHorizontalAlignment(javax.swing.JTextField.CENTER);
-        openBalanceTextField.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
-                openBalanceTextFieldMouseClicked(evt);
-            }
-            public void mouseExited(java.awt.event.MouseEvent evt) {
-                openBalanceTextFieldMouseExited(evt);
-            }
-        });
-        openBalanceTextField.addKeyListener(new java.awt.event.KeyAdapter() {
-            public void keyPressed(java.awt.event.KeyEvent evt) {
-                openBalanceTextFieldKeyPressed(evt);
-            }
-        });
 
         surchargeLabel.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         surchargeLabel.setText("Chi Tiêu Trong Ca : ");
@@ -452,19 +437,6 @@ public class ShiftPanel extends javax.swing.JPanel {
         taxTextField.setEditable(false);
         taxTextField.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         taxTextField.setHorizontalAlignment(javax.swing.JTextField.CENTER);
-        taxTextField.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
-                taxTextFieldMouseClicked(evt);
-            }
-            public void mouseExited(java.awt.event.MouseEvent evt) {
-                taxTextFieldMouseExited(evt);
-            }
-        });
-        taxTextField.addKeyListener(new java.awt.event.KeyAdapter() {
-            public void keyPressed(java.awt.event.KeyEvent evt) {
-                taxTextFieldKeyPressed(evt);
-            }
-        });
 
         numberOfOrderLabel.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         numberOfOrderLabel.setText("Tổng Số Hóa Đơn:");
@@ -526,28 +498,27 @@ public class ShiftPanel extends javax.swing.JPanel {
         currentShiftOverViewPanelLayout.setHorizontalGroup(
             currentShiftOverViewPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(currentShiftOverViewPanelLayout.createSequentialGroup()
-                .addGap(14, 14, 14)
+                .addContainerGap()
                 .addGroup(currentShiftOverViewPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(currentShiftOverViewPanelLayout.createSequentialGroup()
                         .addGroup(currentShiftOverViewPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(taxShiftLabel)
-                            .addComponent(openBalanceLabel)
-                            .addComponent(shiftEmployeeListLabel)
                             .addComponent(surchargeLabel)
-                            .addComponent(shiftCashierLabel))
-                        .addGap(17, 17, 17)
+                            .addComponent(shiftEmployeeListLabel)
+                            .addComponent(shiftCashierLabel)
+                            .addComponent(taxShiftLabel)
+                            .addComponent(openBalanceLabel))
+                        .addGap(25, 25, 25)
                         .addGroup(currentShiftOverViewPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(taxTextField, javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addComponent(openBalanceTextField, javax.swing.GroupLayout.Alignment.TRAILING)
                             .addComponent(surchargeTextField)
-                            .addComponent(shiftCashierTextField)
-                            .addComponent(shiftEmployeeListComboBox, javax.swing.GroupLayout.Alignment.TRAILING, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                            .addComponent(shiftEmployeeListComboBox, javax.swing.GroupLayout.Alignment.TRAILING, 0, 158, Short.MAX_VALUE)
+                            .addComponent(openBalanceTextField)
+                            .addComponent(taxTextField, javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addComponent(shiftCashierTextField, javax.swing.GroupLayout.Alignment.TRAILING)))
                     .addGroup(currentShiftOverViewPanelLayout.createSequentialGroup()
-                        .addComponent(editShiftBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 134, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(editShiftBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 144, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(18, 18, 18)
-                        .addComponent(endShiftBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 138, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(0, 0, Short.MAX_VALUE)))
-                .addGap(12, 12, 12)
+                        .addComponent(endShiftBtn, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jSeparator2, javax.swing.GroupLayout.PREFERRED_SIZE, 6, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGroup(currentShiftOverViewPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(currentShiftOverViewPanelLayout.createSequentialGroup()
@@ -663,7 +634,20 @@ public class ShiftPanel extends javax.swing.JPanel {
     }//GEN-LAST:event_orderListTableMouseClicked
 
     private void endShiftBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_endShiftBtnActionPerformed
-        // TODO add your handling code here:
+        String surcharge = surchargeTextField.getText();
+        if (!ctions.checkIfAValidNumberForGUI(surcharge)) {
+            showWarningJOptionPane("Khoản chi tiêu không hợp lệ!");
+            return;
+        }
+        shiftCtr.endShiftForGUI(shift, history, noteArea.getText(), new BigDecimal(surcharge));
+        int choice = JOptionPane.showConfirmDialog(this, "In báo cáo tổng kết cuối ca?",
+                "Đóng ca hoàn tất", JOptionPane.OK_CANCEL_OPTION);
+        if (choice == JOptionPane.OK_OPTION) {
+            shiftCtr.getView().printFileOfThisShiftOverView(myStore, shift, shiftCtr);
+        }
+        shift = new Shift();
+        setDefaultToAllComponents();
+        reload();
     }//GEN-LAST:event_endShiftBtnActionPerformed
 
     private void searchBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_searchBtnActionPerformed
@@ -682,8 +666,16 @@ public class ShiftPanel extends javax.swing.JPanel {
             if (searchingOrder != null) {
                 clearTableModel(orderListModel);
                 insertOrderToOverViewTable(searchingOrder, myStore);
+                cashierPhoneNumTextField.setText("");
+                orderDateTextField.setText("");
+                fromHourTextField.setText("00");
+                fromMinuteTextField.setText("00");
+                fromSecondTextField.setText("00");
+                toHourTextField.setText("00");
+                toMinuteTextField.setText("00");
+                toSecondTextField.setText("00");
             } else {
-                showWarningJOptionPane("Mã Ca " + INVALID_WARNING);
+                showWarningJOptionPane("Mã Ca " + orderID + " " + NOT_EXIST_WARNING);
             }
             return;
         }
@@ -706,93 +698,6 @@ public class ShiftPanel extends javax.swing.JPanel {
     private void refreashBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_refreashBtnActionPerformed
         insertOrderHistoryToOverViewTable(shift.getOrderHisPerShift(), myStore);
     }//GEN-LAST:event_refreashBtnActionPerformed
-
-    private void openBalanceTextFieldKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_openBalanceTextFieldKeyPressed
-        if (evt.getKeyCode() == KeyEvent.VK_ENTER) {
-            String openBalanceStr = openBalanceTextField.getText();
-            if (openBalanceStr.isBlank()) { //Kiểm tra ô trống
-                openBalanceTextField.setText("0.0");
-                shift.setOpeningBalance(BigDecimal.ZERO);
-                return;
-            }
-            if (!ctions.checkIfAValidNumberForGUI(openBalanceStr)) {
-                insertWarningToTextField(openBalanceTextField, INVALID_WARNING, 14);
-                checkOpenBalance = false;
-                return;
-            }
-            checkOpenBalance = true;
-            shift.setOpeningBalance(new BigDecimal(openBalanceStr));
-            openBalanceTextField.setText(String.format("%.1f", shift.getOpeningBalance()));
-            taxTextField.requestFocus();
-        }
-    }//GEN-LAST:event_openBalanceTextFieldKeyPressed
-
-    private void openBalanceTextFieldMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_openBalanceTextFieldMouseExited
-        String openBalanceStr = openBalanceTextField.getText();
-        if (openBalanceStr.isBlank()) { //Kiểm tra ô trống
-            openBalanceTextField.setText("0.0");
-            shift.setOpeningBalance(BigDecimal.ZERO);
-            return;
-        }
-        if (!ctions.checkIfAValidNumberForGUI(openBalanceStr)) {
-            insertWarningToTextField(openBalanceTextField, INVALID_WARNING, 14);
-            checkOpenBalance = false;
-            return;
-        }
-        checkOpenBalance = true;
-        shift.setOpeningBalance(new BigDecimal(openBalanceStr));
-        openBalanceTextField.setText(String.format("%.1f", shift.getOpeningBalance()));
-    }//GEN-LAST:event_openBalanceTextFieldMouseExited
-
-    private void openBalanceTextFieldMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_openBalanceTextFieldMouseClicked
-        if (!checkOpenBalance) {
-            setDefaultOptionToTextField(openBalanceTextField, 14);
-        }
-    }//GEN-LAST:event_openBalanceTextFieldMouseClicked
-
-    private void taxTextFieldKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_taxTextFieldKeyPressed
-        if (evt.getKeyCode() == KeyEvent.VK_ENTER) {
-            String taxStr = taxTextField.getText();
-            if (taxStr.isBlank()) { //Kiểm tra ô trống
-                taxTextField.setText("0");
-                shift.setTax(0);
-                return;
-            }
-            if (!ctions.checkIfAValidNumberForGUI(taxStr)) {
-                insertWarningToTextField(openBalanceTextField, INVALID_WARNING, 14);
-                checkTax = false;
-                return;
-            }
-            checkTax = true;
-            shift.setTax(Math.min(Integer.parseInt(taxStr), 100));
-            taxTextField.setText(shift.getTax() + "");
-            shiftEmployeeListComboBox.requestFocus();
-        }
-    }//GEN-LAST:event_taxTextFieldKeyPressed
-
-    private void taxTextFieldMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_taxTextFieldMouseClicked
-        if (!checkTax) {
-            setDefaultOptionToTextField(taxTextField, 14);
-        }
-    }//GEN-LAST:event_taxTextFieldMouseClicked
-
-    private void taxTextFieldMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_taxTextFieldMouseExited
-        String taxStr = taxTextField.getText();
-        if (taxStr.isBlank()) { //Kiểm tra ô trống
-            taxTextField.setText("0");
-            shift.setTax(0);
-            checkTax = false;
-            return;
-        }
-        if (!ctions.checkIfAValidNumberForGUI(taxStr)) {
-            insertWarningToTextField(taxTextField, INVALID_WARNING, 14);
-            checkTax = false;
-            return;
-        }
-        checkTax = true;
-        shift.setTax(Math.min(Integer.parseInt(taxStr), 100));
-        taxTextField.setText(shift.getTax() + "");
-    }//GEN-LAST:event_taxTextFieldMouseExited
 
     private void editShiftBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_editShiftBtnActionPerformed
         openShiftFrame = new OpenShiftFrame();
@@ -819,6 +724,9 @@ public class ShiftPanel extends javax.swing.JPanel {
     }//GEN-LAST:event_surchargeTextFieldKeyPressed
 
     private void surchargeTextFieldMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_surchargeTextFieldMouseExited
+        if(!surchargeTextField.isEnabled()){
+            return;
+        }
         String surchargeStr = surchargeTextField.getText();
         if (surchargeStr.isBlank()) { //Kiểm tra ô trống
             surchargeTextField.setText("0.0");
@@ -853,6 +761,9 @@ public class ShiftPanel extends javax.swing.JPanel {
     }//GEN-LAST:event_orderIDTextFieldKeyPressed
 
     private void fromHourTextFieldMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_fromHourTextFieldMouseExited
+        if(!fromHourTextField.isEnabled()){
+            return;
+        }
         String text = fromHourTextField.getText();
         if (!ctions.checkIfValidHours(text)) {
             fromHourTextField.setText("00");
@@ -860,6 +771,9 @@ public class ShiftPanel extends javax.swing.JPanel {
     }//GEN-LAST:event_fromHourTextFieldMouseExited
 
     private void fromMinuteTextFieldMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_fromMinuteTextFieldMouseExited
+        if(!fromMinuteTextField.isEnabled()){
+            return;
+        }
         String text = fromMinuteTextField.getText();
         if (!ctions.checkIfValidMinute(text)) {
             fromMinuteTextField.setText("00");
@@ -867,6 +781,9 @@ public class ShiftPanel extends javax.swing.JPanel {
     }//GEN-LAST:event_fromMinuteTextFieldMouseExited
 
     private void fromSecondTextFieldMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_fromSecondTextFieldMouseExited
+        if(!fromSecondTextField.isEnabled()){
+            return;
+        }
         String text = fromSecondTextField.getText();
         if (!ctions.checkIfValidSecond(text)) {
             fromSecondTextField.setText("00");
@@ -874,6 +791,9 @@ public class ShiftPanel extends javax.swing.JPanel {
     }//GEN-LAST:event_fromSecondTextFieldMouseExited
 
     private void toHourTextFieldMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_toHourTextFieldMouseExited
+        if(!toHourTextField.isEnabled()){
+            return;
+        }
         String text = toHourTextField.getText();
         if (!ctions.checkIfValidHours(text)) {
             toHourTextField.setText("00");
@@ -881,6 +801,9 @@ public class ShiftPanel extends javax.swing.JPanel {
     }//GEN-LAST:event_toHourTextFieldMouseExited
 
     private void toMinuteTextFieldMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_toMinuteTextFieldMouseExited
+        if(!toMinuteTextField.isEnabled()){
+            return;
+        }
         String text = toMinuteTextField.getText();
         if (!ctions.checkIfValidMinute(text)) {
             toMinuteTextField.setText("00");
@@ -888,6 +811,9 @@ public class ShiftPanel extends javax.swing.JPanel {
     }//GEN-LAST:event_toMinuteTextFieldMouseExited
 
     private void toSecondTextFieldMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_toSecondTextFieldMouseExited
+        if(!toSecondTextField.isEnabled()){
+            return;
+        }
         String text = toSecondTextField.getText();
         if (!ctions.checkIfValidSecond(text)) {
             toSecondTextField.setText("00");
@@ -1076,6 +1002,37 @@ public class ShiftPanel extends javax.swing.JPanel {
         textField.setText("");
     }
 
+    private void setDeafaultToSearchPanel() {
+        orderIDTextField.setText("");
+        cashierPhoneNumTextField.setText("");
+        orderDateTextField.setText("");
+        fromHourTextField.setText("00");
+        fromMinuteTextField.setText("00");
+        fromSecondTextField.setText("00");
+        toHourTextField.setText("00");
+        toMinuteTextField.setText("00");
+        toSecondTextField.setText("00");
+    }
+
+    private void setDeafaultToCurrentShiftOverViewPanel() {
+        openBalanceTextField.setText("");
+        taxTextField.setText("");
+        cashierPhoneNumTextField.setText("");
+        shiftEmployeeListComboBox.removeAllItems();
+        surchargeTextField.setText("");
+        numberOfOrderTextField.setText("");
+        netRevenueTextField.setText("");
+        grossRevenueTextField.setText("");
+        noteArea.setText("");
+    }
+
+    private void setDefaultToAllComponents() {
+        setDeafaultToCurrentShiftOverViewPanel();
+        setDeafaultToSearchPanel();
+        clearTableModel(orderListModel);
+        clearTableModel(orderDetailModel);
+    }
+
     private void insertWarningToTextField(JTextField textField, String warningText, int size) {
         textField.setFont(new java.awt.Font("Segoe UI", 2, size)); // NOI18N
         textField.setForeground(new java.awt.Color(255, 0, 0));
@@ -1251,21 +1208,19 @@ public class ShiftPanel extends javax.swing.JPanel {
 
     private void popupOpenShiftFrame() {
         openShiftFrame.setVisible(true);
-        openShiftFrame.passData(employeeList, shift, idGenerator, this);
+        openShiftFrame.passData(employeeList, shift, myStore.getiDGenerator(), this);
         openShiftFrame.reload();
     }
-
 
     public void reload() {
         boolean checkOpenShift = shift.getState().equals(ShiftState.OPENED);
         setEnableAllComponents(checkOpenShift);
+        computeSizeOfEachColumnInTable();
+        TitledBorder tb = (TitledBorder) currentShiftOverViewPanel.getBorder();
+        tb.setTitle((shift.getID() == null ) ? "" : "  Mã Ca - " + shift.getID());
+        tb.setTitleFont(new java.awt.Font("Segoe UI", 1, 14));
+        tb.setTitlePosition(TitledBorder.DEFAULT_JUSTIFICATION);
         if (checkOpenShift) { // nếu đã mở ca thì reload lại các thông số ca
-            TitledBorder tb = (TitledBorder) currentShiftOverViewPanel.getBorder();
-            tb.setTitle("  Mã Ca - " + shift.getID());
-            tb.setTitleFont(new java.awt.Font("Segoe UI", 1, 14));
-            tb.setTitlePosition(TitledBorder.DEFAULT_JUSTIFICATION);
-            computeSizeOfEachColumnInTable();
-            //
             insertOrderHistoryToOverViewTable(shift.getOrderHisPerShift(), myStore);
             numberOfOrderTextField.setText(shiftCtr.getNumberOfOrder(shift) + "");
             grossRevenueTextField.setText(String.format("%.1f", shiftCtr.getGrossRevenue(shift)));
@@ -1275,6 +1230,7 @@ public class ShiftPanel extends javax.swing.JPanel {
             openBalanceTextField.setText(String.format("%.1f", shift.getOpeningBalance()));
             taxTextField.setText(shift.getTax() + "");
             shiftCashierTextField.setText(shift.getCashier().toString());
+            surchargeTextField.setText(String.format("%.1f", shift.getSurcharge()));
             passValueToEmployeeListComboBox();
         } else { // nếu chưa mở ca thì thực hiện popup màn hình mở ca
             popupOpenShiftFrame();
@@ -1291,21 +1247,18 @@ public class ShiftPanel extends javax.swing.JPanel {
         orderDetailJScrollPane.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
         // open shift frame
         openShiftFrame = new OpenShiftFrame();
-        openShiftFrame.passData(employeeList, shift, idGenerator, this);
         // Biến khác
         lastState = !shift.getState().equals(ShiftState.OPENED);
         orderCtr = new OrderController();
         shiftCtr = new ShiftController();
-        employeeListCtr = new EmployeeListController();
         ctions = new Cautions();
         filterOrderList = new ArrayList<>();
     }
 
-    public void passData(Shift shift, History history,
-            EmployeeList employeeList, Store myStore) {
-        this.shift = shift;
-        this.history = history;
-        this.employeeList = employeeList;
+    public void passData(Store myStore) {
+        this.shift = myStore.getShift();
+        this.history = myStore.getHistory();
+        this.employeeList = myStore.getEmployeeList();
         this.myStore = myStore;
         //
         initVariables();
@@ -1315,12 +1268,9 @@ public class ShiftPanel extends javax.swing.JPanel {
     private boolean cashierPhoneNumberFilter = true;
     private boolean orderDateFilter = true;
     private boolean orderTimeFilter = true;
-    private boolean checkOpenBalance = false;
-    private boolean checkTax = false;
     private boolean checkSurcharge = false;
     private boolean lastState;
     private ShiftController shiftCtr;
-    private EmployeeListController employeeListCtr;
     private OrderController orderCtr;
     private DefaultTableModel orderDetailModel;
     private DefaultTableModel orderListModel;
@@ -1335,6 +1285,7 @@ public class ShiftPanel extends javax.swing.JPanel {
     private final String DATE_PATTERN = "dd/MM/yyyy";
     private final String DATE_TIME_PATTERN = "HH:mm:ss dd/MM/yyyy";
     private final String INVALID_WARNING = "Không hợp lệ!";
+    private final String NOT_EXIST_WARNING = "không tồn tại!";
     private final int extraLength = 100;
     private int goodsIDMaxSize = "Mã SP".length() + extraLength;
     private int goodsNameMaxSize = "Tên SP".length() + extraLength;

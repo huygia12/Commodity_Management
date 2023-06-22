@@ -59,7 +59,7 @@ public class OrderView {
             }
             pw.printf("SubTotal: %.1f\n", orderCtr.getSubTotal(order));
             pw.printf("Discount Amount(Discount=%s): %.1f\n", order.getDiscount() + "%", orderCtr.getDiscountAmount(order));
-            pw.printf("Tax(VAT=%s): %.1f\n", store.getVAT() + "%", orderCtr.getTaxAmount(order));
+            pw.printf("Tax(VAT=%s): %.1f\n", order.getTax() + "%", orderCtr.getTaxAmount(order));
             pw.println("Payment Option: " + order.getPaymentOptions());
             pw.println("Member Card ID: " + customerID);
             pw.printf("Point Discount: \n", orderCtr.getPointDiscountAmount(order, store));
