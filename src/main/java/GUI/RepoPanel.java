@@ -46,6 +46,7 @@ public class RepoPanel extends javax.swing.JPanel {
         cancelCheck();
         goodTableModel = (DefaultTableModel) jTable1.getModel();
         Instance = this;
+        shipmentsButton.setEnabled(false);
     }
     
     public void externalRefresh() {
@@ -504,6 +505,7 @@ public class RepoPanel extends javax.swing.JPanel {
         // TODO add your handling code here:
         if (jTable1.getSelectedRow() == -1) {
         } else {
+            shipmentsButton.setEnabled(true);
             if (findUnit((String) goodTableModel.getValueAt(jTable1.getSelectedRow(), 2)) == 0) {
                 JOptionPane.showMessageDialog(null, "Đơn vị không tồn tại. Tiến hành thêm dơn vị...", "Uh oh!", JOptionPane.ERROR_MESSAGE);
                 unitsList.getBucket().add((String) goodTableModel.getValueAt(jTable1.getSelectedRow(), 2));

@@ -61,6 +61,7 @@ Controllers\EmployeeController.class
 GUI\ShiftPanel$7.class
 Controllers\OrderController.class
 GUI\ShiftPanel$10.class
+GUI\PopupShipment.class
 GUI\PurchasePanel$17.class
 GUI\RepoPanel$8.class
 GUI\OpenShiftFrame$8.class
@@ -105,6 +106,7 @@ View\HistoryView.class
 Models\Goods.class
 GUI\PurchasePanel$38.class
 GUI\OpenShiftFrame$4.class
+GUI\ShipmentPanel$4.class
 Controllers\ShipmentController.class
 GUI\OpenShiftFrame$10.class
 GUI\CustomerCardPanel$3.class
@@ -123,6 +125,7 @@ GUI\OpenShiftFrame$11.class
 GUI\OpenShiftFrame$5.class
 GUI\SettingsPanel.class
 GUI\PurchasePanel$42.class
+GUI\ShipmentPanel$5.class
 GUI\CustomerCardPanel$13.class
 GUI\PurchasePanel$14.class
 GUI\PurchasePanel$1.class
@@ -135,6 +138,7 @@ GUI\CardTest$5.class
 Models\Store.class
 Builder\CustomerBuilder.class
 GUI\OpenShiftFrame$6.class
+GUI\ShipmentPanel$3.class
 GUI\EmployJPanel$9.class
 Controllers\GoodsController.class
 GUI\RepoPanel$6.class
@@ -150,6 +154,7 @@ GUI\PurchasePanel$6.class
 GUI\LogInFrame$1.class
 GUI\RepoPanel$11.class
 Controllers\EmployeeListController.class
+GUI\RepoPanel$16.class
 GUI\PurchasePanel$28.class
 GUI\EmployJPanel$3.class
 Models\PaymentOptions.class
@@ -206,6 +211,7 @@ Ultility\Cautions.class
 GUI\MainFrame$3.class
 GUI\PurchasePanel$9.class
 Models\CustomerCard.class
+GUI\PopupShipment$1.class
 Ultility\LocalDateSerializer.class
 View\CommodityManagement.class
 GUI\ShiftPanel$9.class
@@ -217,7 +223,6 @@ GUI\CustomerCardPanel$18.class
 View\StoreView.class
 GUI\PurchasePanel$25.class
 GUI\RepoPanel$12.class
-GUI\RepositoryPanel.class
 GUI\MainFrame$2.class
 GUI\CardTest$6.class
 Models\Repository.class

@@ -9,6 +9,7 @@ import Models.Shipment;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.List;
+import java.util.stream.Collectors;
 import javax.swing.table.DefaultTableModel;
 
 /**
@@ -106,6 +107,12 @@ public class ShipmentPanel extends javax.swing.JPanel {
 
         importPriceLabel.setText("Giá nhập hàng:");
 
+        importPriceTextField.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                importPriceTextFieldKeyReleased(evt);
+            }
+        });
+
         quantityLabel.setText("Số lượng: ");
 
         doesExpiredToggleBtn.addActionListener(new java.awt.event.ActionListener() {
@@ -143,6 +150,11 @@ public class ShipmentPanel extends javax.swing.JPanel {
         addButton.setText("Thêm");
 
         deleteButton.setText("Xóa");
+        deleteButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                deleteButtonActionPerformed(evt);
+            }
+        });
 
         editButton.setText("Sửa");
 
@@ -330,6 +342,11 @@ public class ShipmentPanel extends javax.swing.JPanel {
                 return canEdit [columnIndex];
             }
         });
+        jTable1.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseReleased(java.awt.event.MouseEvent evt) {
+                jTable1MouseReleased(evt);
+            }
+        });
         jScrollPane1.setViewportView(jTable1);
 
         javax.swing.GroupLayout shipmentTablePanelLayout = new javax.swing.GroupLayout(shipmentTablePanel);
@@ -351,12 +368,21 @@ public class ShipmentPanel extends javax.swing.JPanel {
     public void defaultSettings() {
         Instance = this;
         shipmentTableModel = (DefaultTableModel) jTable1.getModel();
-        updateStatus();
         errorDateLabel.setVisible(false);
         errorIDLabel.setVisible(false);
         errorPriceLabel.setVisible(false);
         errorQuantityLabel.setVisible(false);
         setVisibleDate(false);
+        doesExpiredToggleBtn.setSelected(false);
+        
+        addButton.setEnabled(false);
+        deleteButton.setEnabled(false);
+        editButton.setEnabled(false);
+        cancelButton.setEnabled(false);
+        
+        shipmentIDTextField.setText("");
+        importPriceTextField.setText("");
+        quantityTextField.setText("");
     }
 
     private void setVisibleDate(Boolean isVisible) {
@@ -364,11 +390,17 @@ public class ShipmentPanel extends javax.swing.JPanel {
         NSXDayTextField.setVisible(isVisible);
         NSXMonthTextField.setVisible(isVisible);
         NSXYearTextField.setVisible(isVisible);
+        NSXDayTextField.setText("");
+        NSXMonthTextField.setText("");
+        NSXYearTextField.setText("");
 
         HSDLabel.setVisible(isVisible);
         HSDDayTextField.setVisible(isVisible);
         HSDMonthTextField.setVisible(isVisible);
         HSDYearTextField.setVisible(isVisible);
+        HSDDayTextField.setText("");
+        HSDMonthTextField.setText("");
+        HSDYearTextField.setText("");
 
         jLabel2.setVisible(isVisible);
         jLabel3.setVisible(isVisible);
@@ -378,6 +410,7 @@ public class ShipmentPanel extends javax.swing.JPanel {
         DayLabel.setVisible(isVisible);
         MonthLabel.setVisible(isVisible);
         YearLabel.setVisible(isVisible);
+
     }
     private void NSXDayTextFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_NSXDayTextFieldActionPerformed
         // TODO add your handling code here:
@@ -418,8 +451,69 @@ public class ShipmentPanel extends javax.swing.JPanel {
         setVisibleDate(isOn);
     }//GEN-LAST:event_doesExpiredToggleBtnActionPerformed
 
+    private void jTable1MouseReleased(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jTable1MouseReleased
+        // TODO add your handling code here:
+        deleteCheck();
+        cancelCheck();
+    }//GEN-LAST:event_jTable1MouseReleased
+
+    private void importPriceTextFieldKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_importPriceTextFieldKeyReleased
+        // TODO add your handling code here:
+        try {
+            String input = importPriceTextField.getText();
+            if (input.length() == 0) {
+                errorPriceLabel.setVisible(false);
+                addButton.setEnabled(false);
+                return;
+            }
+            double check = Double.parseDouble(input);
+            if (check < 0) {
+                errorPriceLabel.setVisible(true);
+                addButton.setEnabled(false);
+            } else {
+                errorPriceLabel.setVisible(false);
+                shipmentPrice = BigDecimal.valueOf(check);
+                addCheck();
+            }
+        } catch (NumberFormatException nfe) {
+            errorPriceLabel.setVisible(true);
+            addButton.setEnabled(false);
+        }
+        addCheck();
+        deleteCheck();
+        editCheck();
+    }//GEN-LAST:event_importPriceTextFieldKeyReleased
+
+    private void deleteButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_deleteButtonActionPerformed
+        // TODO add your handling code here:
+        String deletedGoodID = jTable1.getModel().getValueAt(jTable1.getSelectedRow(), 0).toString();
+        shipments = shipments.stream().filter(x->!x.getID().equals(deletedGoodID)).collect(Collectors.toList());
+        reloadTable(shipments);
+        defaultSettings();
+    }//GEN-LAST:event_deleteButtonActionPerformed
+
     private void addCheck() {
 
+    }
+    
+    private void editCheck() {
+        
+    }
+    
+    private void deleteCheck() {
+        if (jTable1.getSelectedRow() != -1) {
+            deleteButton.setEnabled(true);
+        } else {
+            deleteButton.setEnabled(false);
+        }
+    }
+    
+    public void cancelCheck() {
+        if (jTable1.getSelectedRow() != -1) {
+            cancelButton.setEnabled(true);
+        } else {
+            cancelButton.setEnabled(false);
+        }
     }
 
     public void setOpenButton(Boolean isSelected) {
@@ -456,27 +550,7 @@ public class ShipmentPanel extends javax.swing.JPanel {
 
         }
     }
-
-    private void updateStatus() {
-        new Thread() {
-            @Override
-            public void run() {
-                try {
-                    while (true) {
-                        try {
-                            reloadTable(shipments);
-                        } catch (NullPointerException npe) {
-
-                        }
-                        Thread.sleep(1000);
-                    }
-                } catch (InterruptedException ex) {
-
-                }
-            }
-        }.start();
-    }
-
+    
     public void attachGood(Goods good) {
         this.attachedGood = good;
         this.shipments = good.getShipments();
