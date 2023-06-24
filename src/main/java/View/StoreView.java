@@ -95,38 +95,4 @@ public class StoreView {
         }
     }
 
-    public int typeInVAT(Store store) {
-        while (true) {
-            System.out.print("Type in VAT or type EXIT/BACK to exit/back: ");
-            String inputStr = sc.nextLine();
-            if ("exit".equalsIgnoreCase(inputStr)) {
-                return 0;
-            } else if ("back".equalsIgnoreCase(inputStr)) {
-                return -1;
-            } else if (ctions.checkIfNoInput(inputStr)) {
-            } else {
-                try {
-                    BigDecimal VAT = new BigDecimal(inputStr);
-                    if (!ctions.checkIfNumberNegative(VAT)) {
-                        continue;
-                    }
-                    store.setVAT(Math.min(100, Integer.parseInt(inputStr)));
-                    return 1;
-                } catch (NumberFormatException nfe) {
-                    ctions.wrInput();
-                }
-            }
-        }
-    }
-    
-    public void showStoreInfor(Store store) {
-        System.out.println("");
-        System.out.println(String.format("%20s" + " | " + "%-20s", "STORE NAME", store.getName()));
-        System.out.println(String.format("%20s" + " | " + "%-20s", "EMAIL", store.getEmail()));
-        System.out.println(String.format("%20s" + " | " + "%-20s", "ADDRESS", store.getAddress()));
-        System.out.println(String.format("%20s" + " | " + "%-20s", "PHONE NUMBER", store.getPhoneNumber()));
-        System.out.println(String.format("%20s" + " | " + "%-20s", "VAT", store.getVAT() + "%"));
-        System.out.println("     (VAT is applied to all products)");
-        System.out.println("");
-    }
 }

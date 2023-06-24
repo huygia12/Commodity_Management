@@ -4,12 +4,19 @@
  */
 package GUI;
 
+import Controllers.StoreController;
+import Models.Store;
+import com.formdev.flatlaf.FlatLightLaf;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import javax.swing.ImageIcon;
 import javax.swing.JOptionPane;
+import javax.swing.UIManager;
+import javax.swing.UnsupportedLookAndFeelException;
 
 /**
  *
@@ -17,37 +24,15 @@ import javax.swing.JOptionPane;
  */
 public class LogInFrame extends javax.swing.JFrame {
 
-    private Pattern pattern;
-    private Matcher matcher;
-    private String EMAIL_REGEX = "^[A-Za-z0-9]+[A-Za-z0-9]*@[A-Za-z0-9]+(\\.[A-Za-z0-9]+)$";
-    List<String> emailList = new ArrayList<>();
-    List<String> passwordList = new ArrayList<>();
-
-    private boolean checkValidEmail(String regex) {
-        pattern = Pattern.compile(EMAIL_REGEX);
-        matcher = pattern.matcher(regex);
-        return matcher.matches();
-    }
-
     /**
      * Creates new form LogInFrame
+     *
      */
     public LogInFrame() {
         initComponents();
-
+        setUp();
+        initVariable();
         setProperties();
-    }
-
-    private void setProperties() {
-        passwordWarning.setVisible(false);
-        illegalSignUpEmailWarning.setVisible(false);
-        blankSignUpPasswordWarning.setVisible(false);
-        illegalLogInEmailWarning.setVisible(false);
-        logInPassword.setText("");
-        signUpPassword.setText("");
-        retypePassword.setText("");
-        logInEmail.setText("");
-        signUpEmail.setText("");
     }
 
     /**
@@ -354,20 +339,21 @@ public class LogInFrame extends javax.swing.JFrame {
     }//GEN-LAST:event_signUpEmailActionPerformed
 
     private void signUpButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_signUpButtonActionPerformed
-        // TODO add your handling code here:
-        if (!emailList.isEmpty()) {
-            for (String string : emailList) {
-                if (string.equals(signUpEmail.getText())) {
-                    JOptionPane.showMessageDialog(LogInFrame.this,
-                            "Email đã tồn tại!",
-                            "Đăng kí thất bại!",
-                            JOptionPane.WARNING_MESSAGE);
-                }
+        String emailStr = signUpEmail.getText();
+        String passwordStr = signUpPassword.getText();
+        String retypePasswordStr = retypePassword.getText();
+
+        if (!storeList.isEmpty()) {
+            if (storeCtr.containEmail(storeList, emailStr) != null) {
+                JOptionPane.showMessageDialog(LogInFrame.this,
+                        "Email đã tồn tại!",
+                        "Đăng kí thất bại!",
+                        JOptionPane.WARNING_MESSAGE);
             }
             return;
         }
         boolean validEmail, matchPassword, rightpassword;
-        if (!checkValidEmail(signUpEmail.getText())) {
+        if (!checkValidEmail(emailStr)) {
             illegalSignUpEmailWarning.setVisible(true);
             signUpEmail.setText("");
             validEmail = false;
@@ -375,7 +361,7 @@ public class LogInFrame extends javax.swing.JFrame {
             validEmail = true;
         }
 
-        if (signUpPassword.getText().length() < 4) {
+        if (passwordStr.length() < 4) {
             blankSignUpPasswordWarning.setVisible(true);
             signUpPassword.setText("");
             rightpassword = false;
@@ -383,7 +369,7 @@ public class LogInFrame extends javax.swing.JFrame {
             rightpassword = true;
         }
 
-        if (!signUpPassword.getText().equals(retypePassword.getText())) {
+        if (!passwordStr.equals(retypePasswordStr)) {
             passwordWarning.setVisible(true);
             retypePassword.setText("");
             signUpPassword.setText("");
@@ -393,8 +379,10 @@ public class LogInFrame extends javax.swing.JFrame {
         }
 
         if (validEmail && matchPassword && rightpassword) {
-            emailList.add(signUpEmail.getText());
-            passwordList.add(signUpPassword.getText());
+            Store newStore = new Store();
+            newStore.setEmail(emailStr);
+            newStore.setEmail(passwordStr);
+            storeList.add(newStore);
             JOptionPane.showMessageDialog(LogInFrame.this,
                     "Vui lòng trở lại màn hình đăng nhập",
                     "Đăng kí thành công!",
@@ -411,33 +399,38 @@ public class LogInFrame extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_retypePasswordActionPerformed
 
-    private void checkExistingEmail() {
-        if (emailList.isEmpty()) {
-            JOptionPane.showMessageDialog(LogInFrame.this,
-                    "Email chưa được đăng kí!",
-                    "Đăng nhập thất bại!",
-                    JOptionPane.WARNING_MESSAGE);
-            return;
-        } else {
-            for (int i = 0; i < emailList.size(); i++) {
-                if (emailList.get(i).equals(logInEmail.getText())) {
-                    if (!logInPassword.getText().equals(passwordList.get(i))) {
-                        JOptionPane.showMessageDialog(LogInFrame.this,
-                                "Sai mật khẩu!",
-                                "Đăng nhập thất bại!",
-                                JOptionPane.WARNING_MESSAGE);
-                        return;
+    private Store checkExistingEmail() {
+        String inputEmail = logInEmail.getText();
+        String loginPassword = logInPassword.getText();
+        Store userStore = null;
+        Boolean checkIfEmailExisted = false;
+        if (!storeList.isEmpty()) {
+            for (Store store : storeList) {
+                System.out.println(store.getEmail());
+                System.out.println(store.getPassWord());
+                if (store.getEmail().equals(inputEmail)) {
+                    if (!loginPassword.equals(store.getPassWord())) {
+                        logInFailMessage();
+                    } else {
+                        userStore = store;
                     }
-                } else {
-                    JOptionPane.showMessageDialog(LogInFrame.this,
-                    "Email chưa được đăng kí!",
-                    "Đăng nhập thất bại!",
-                    JOptionPane.WARNING_MESSAGE);
-                    return;
+                    checkIfEmailExisted = true;
+                    break;
                 }
-            } 
+            }
+        }
+        if (!checkIfEmailExisted) {
+            showNoneExistEmailWarning();
         }
         setProperties();
+        return userStore;
+    }
+
+    private void showNoneExistEmailWarning() {
+        JOptionPane.showMessageDialog(this,
+                "Email chưa được đăng kí!",
+                "Đăng nhập thất bại!",
+                JOptionPane.WARNING_MESSAGE);
     }
 
     private void logInFailMessage() {
@@ -448,59 +441,78 @@ public class LogInFrame extends javax.swing.JFrame {
     }
 
     private void logInButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_logInButtonActionPerformed
-        // TODO add your handling code here:
-
         if (!checkValidEmail(logInEmail.getText())) {
             illegalLogInEmailWarning.setVisible(true);
             logInEmail.setText("");
         } else {
-            checkExistingEmail();
+            Store userStore = checkExistingEmail();
+            if (userStore != null) {
+                mainFrame.setUserStore(userStore);
+                this.dispose();
+                mainFrame.setLocationRelativeTo(null);
+                mainFrame.setVisible(true);
+            }
         }
-
-
     }//GEN-LAST:event_logInButtonActionPerformed
 
     private void jTabbedPane1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jTabbedPane1MouseClicked
-        // TODO add your handling code here:
         setProperties();
-
     }//GEN-LAST:event_jTabbedPane1MouseClicked
+
+    private boolean checkValidEmail(String regex) {
+        pattern = Pattern.compile(EMAIL_REGEX);
+        matcher = pattern.matcher(regex);
+        return matcher.matches();
+    }
+
+    private void setUp() {
+        setLocationRelativeTo(null);
+        setIconImage(new ImageIcon(getClass()
+                .getResource("/ImageIcon/icons8-grocery-store-96.png")).getImage());
+    }
+
+    private void setProperties() {
+        passwordWarning.setVisible(false);
+        illegalSignUpEmailWarning.setVisible(false);
+        blankSignUpPasswordWarning.setVisible(false);
+        illegalLogInEmailWarning.setVisible(false);
+        logInPassword.setText("");
+        signUpPassword.setText("");
+        retypePassword.setText("");
+        logInEmail.setText("");
+        signUpEmail.setText("");
+    }
+
+    private void initVariable() {
+        storeCtr = new StoreController();
+        mainFrame = new MainFrame();
+        storeList = mainFrame.loadData();
+        EMAIL_REGEX = "^[A-Za-z0-9]+[A-Za-z0-9]*@[A-Za-z0-9]+(\\.[A-Za-z0-9]+)$";
+        
+    }
+
+    public void passData(List<Store> storeList, MainFrame mainFrame) {
+        this.storeList = storeList;
+        LogInFrame.mainFrame = mainFrame;
+    }
 
     /**
      * @param args the command line arguments
+     * @throws javax.swing.UnsupportedLookAndFeelException
      */
-    public static void main(String args[]) {
-        /* Set the Nimbus look and feel */
-        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
-        /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
-         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
-         */
-        try {
-            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
-                if ("Nimbus".equals(info.getName())) {
-                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
-                    break;
-                }
-            }
-        } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(LogInFrame.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(LogInFrame.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(LogInFrame.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(LogInFrame.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        }
-        //</editor-fold>
-
-        /* Create and display the form */
-        java.awt.EventQueue.invokeLater(new Runnable() {
-            public void run() {
-                new LogInFrame().setVisible(true);
-            }
+    public static void main(String args[]) throws UnsupportedLookAndFeelException {
+        UIManager.setLookAndFeel(new FlatLightLaf());
+        java.awt.EventQueue.invokeLater(() -> {
+            new LogInFrame().setVisible(true);
         });
     }
 
+    private static MainFrame mainFrame;
+    private Pattern pattern;
+    private Matcher matcher;
+    private String EMAIL_REGEX;
+    private List<Store> storeList;
+    private StoreController storeCtr;
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JPanel LogInPanel;
     private javax.swing.JPanel SignUpPanel;

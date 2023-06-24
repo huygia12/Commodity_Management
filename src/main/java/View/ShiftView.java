@@ -194,30 +194,30 @@ public class ShiftView {
                 StandardOpenOption.CREATE,
                 StandardOpenOption.WRITE,
                 StandardOpenOption.TRUNCATE_EXISTING))) {
-            pw.printf("%11s\n", "END-SHIFT-REPORT");
-            pw.println(String.format("%21s" + " | " + "%-20s", "STORE NAME", store.getName()));
-            pw.println("-".repeat(40));
-            pw.println(String.format("%21s" + " | " + "%-20s", "Open time", shift.getOpenTime()));
-            pw.println(String.format("%21s" + " | " + "%-20s", "Close time", shift.getEndTime()));
-            pw.println(String.format("%21s" + " | " + "%-20s", "Cashier", shift.getCashier().getFirstName() + " " + shift.getCashier().getLastName()));
-            pw.println(String.format("%21s" + " | " + "%-20.1f", "Openning balance", shift.getOpeningBalance()));
-            pw.println(String.format("%21s" + " | " + "%-20.1f", "Gross revenue", shiftCtr.getGrossRevenue(shift)));
-            pw.println(String.format("%21s" + " | " + "%-20.1f", "Total direct discount", shiftCtr.getTotalDiscountMoney(shift)));
-            pw.println(String.format("%21s" + " | " + "%-20.1f", "Total point discount", shiftCtr.getTotalPointDiscount(shift, store)));
-            pw.println(String.format("%21s" + " | " + "%-20.1f", "VAT" + shift.getTax() + "%", shiftCtr.getTotalVAT(shift)));
-            pw.println(String.format("%21s" + " | " + "%-20.1f", "Surcharge during Shift", shift.getSurcharge()));
-            pw.println(String.format("%21s" + " | " + "%-20.1f", "Net revenue", shiftCtr.getNetRevenue(shift, store)));
-            pw.println(String.format("%21s" + " | " + "%-20s", "Number of orders", shiftCtr.getNumberOfOrder(shift)));
-            pw.println(String.format("%21s" + " | " + "%-20.1f", "Average per Order", shiftCtr.getAveragePerOrder(shift, store)));
-            pw.println(String.format("%21s", "OPTIONS PAYMENT:"));
-            pw.println(String.format("%21s" + " | " + "%-20.1f", "+Cash", shiftCtr.getTotalPaymentByCash(shift, store)));
-            pw.println(String.format("%21s" + " | " + "%-20.1f", "+Wire transfer", shiftCtr.getTotalPaymentByWireTransfer(shift, store)));
-            pw.println(String.format("%21s" + " | " + "%-20.1f", "+Current CashBox money", shiftCtr.getTotalPaymentByCash(shift, store).add(shift.getOpeningBalance())));
-            pw.println(String.format("%21s", "CONSUMPTIONS:"));
-            pw.println(String.format("%-21s" + " | " + "%-20s" + " | " + "%-20s" + " | " + "%-20s", "Goods Name", "Quantity", "Revenue", "Ratio"));
+            pw.printf("%49s\n", "BÁO CÁO CA : " + shift.getID());
+            pw.println(String.format("%40s" + " | " + "%-40s", "Cửa hàng", store.getName()));
+            pw.println("-".repeat(83));
+            pw.println(String.format("%40s" + " | " + "%-40s", "Giờ mở ca", shift.getOpenTime()));
+            pw.println(String.format("%40s" + " | " + "%-40s", "Giờ đóng ca", shift.getEndTime()));
+            pw.println(String.format("%40s" + " | " + "%-40s", "Thu ngân", shift.getCashier().getFirstName() + " " + shift.getCashier().getLastName()));
+            pw.println(String.format("%40s" + " | " + "%-40.1f", "Số dư đầu ca", shift.getOpeningBalance()));
+            pw.println(String.format("%40s" + " | " + "%-40.1f", "Doanh thu(gross)", shiftCtr.getGrossRevenue(shift)));
+            pw.println(String.format("%40s" + " | " + "%-40.1f", "Tổng chiết khấu trực tiếp", shiftCtr.getTotalDiscountMoney(shift)));
+            pw.println(String.format("%40s" + " | " + "%-40.1f", "Tổng chiết khấu điểm", shiftCtr.getTotalPointDiscount(shift, store)));
+            pw.println(String.format("%40s" + " | " + "%-40.1f", "Tổng tiền thuế(VAT)" + shift.getTax() + "%", shiftCtr.getTotalVAT(shift)));
+            pw.println(String.format("%40s" + " | " + "%-40.1f", "Phí phát sinh", shift.getSurcharge()));
+            pw.println(String.format("%40s" + " | " + "%-40.1f", "Lợi nhuận ròng(net)", shiftCtr.getNetRevenue(shift, store)));
+            pw.println(String.format("%40s" + " | " + "%-40s", "Tổng số hóa đơn", shiftCtr.getNumberOfOrder(shift)));
+            pw.println(String.format("%40s" + " | " + "%-40.1f", "Trung bình/hóa đơn", shiftCtr.getAveragePerOrder(shift, store)));
+            pw.println(String.format("%-70s", "<+> CÁC PHƯƠNG THỨC THANH TOÁN:"));
+            pw.println(String.format("%40s" + " | " + "%-40.1f", "Tiền mặt", shiftCtr.getTotalPaymentByCash(shift, store)));
+            pw.println(String.format("%40s" + " | " + "%-40.1f", "Chuyển khoản&Ngân hàng", shiftCtr.getTotalPaymentByWireTransfer(shift, store)));
+            pw.println(String.format("%-70s", "<+> MẶT HÀNG TIÊU THỤ:"));
+            pw.println(String.format("%20s" + " | " + "%-20s" + " | " + "%-20s" + " | " + "%-20s", "Goods Name", "Quantity", "Revenue", "Ratio"));
             List<StaticalItems> staticalItemsList = new ArrayList<>(shiftCtr.getStaticalList(shift).values());
-            staticalItemsList.stream().forEach(x -> pw.println(String.format("%-21s" + " | " + "%-20.1f" + " | " + "%-20.1f" + " | " + "%-20s",
+            staticalItemsList.stream().forEach(x -> pw.println(String.format("%20s" + " | " + "%-20.1f" + " | " + "%-20.1f" + " | " + "%-20s",
                     x.getName(), x.getQuantity(), x.getRevenue(), String.format("%.1f", x.getRatio()) + "%")));
+            pw.println(String.format("%-70s", "<+> GHI CHÚ CA: ") + shift.getNote());
         } catch (IOException ex) {
             Logger.getLogger(Shift.class.getName()).log(Level.SEVERE, null, ex);
         }

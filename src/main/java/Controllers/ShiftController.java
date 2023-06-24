@@ -4,17 +4,8 @@
  */
 package Controllers;
 
-import Models.Employee;
-import Models.EmployeeList;
-import Models.Goods;
-import Models.History;
-import Models.Order;
-import Models.PaymentOptions;
 import Ultility.IDGenerator;
-import Models.Shift;
-import Models.ShiftState;
-import Models.StaticalItems;
-import Models.Store;
+import Models.*;
 import View.ShiftView;
 import java.math.BigDecimal;
 import java.util.HashMap;
@@ -53,14 +44,7 @@ public class ShiftController {
             choice = sc.nextLine();
             switch (choice) {
                 case "1":
-                    if (shift != null) {
-                        this.shiftView.shiftNotEndCaution();
-                        break;
-                    }
-                    shift = openShift(employeeList, idGenerator, myStore, shift);
-                    if (shift != null) {
-                        currentHistory.getShiftHistory().add(shift);
-                    }
+                    
                     break;
                 case "2":
                     if (shift == null) {
@@ -243,37 +227,6 @@ public class ShiftController {
         return null;
     }
 
-    private Shift openShift(EmployeeList employeeList, IDGenerator iDGenerator, Store myStore, Shift shift) {
-        shift = new Shift(iDGenerator.generateID(Shift.class.getName(), 6),
-                myStore.getVAT());
-        shift.setOpenTime();
-        int n = 1;
-        int nextProcess;
-        while (n != 3) {
-            switch (n) {
-                case 1:
-                    nextProcess = this.shiftView.typeInOpeningBalance(shift);
-                    if (nextProcess == 0 || nextProcess == -1) {
-                        return null;
-                    }
-                case 2:
-                    nextProcess = this.shiftView.typeInEmployeesOfThisShift(shift, employeeList);
-                    if (nextProcess == 0) {
-                        return null;
-                    } else if (nextProcess == -1) {
-                        n = 1;
-                        break;
-                    }
-                case 3:
-                    nextProcess = this.shiftView.typeInCashier(shift, employeeList);
-                    n = 3;
-                    break;
-            }
-        }
-        return shift;
-    }
-
-
     private void addEmployeeToShift(EmployeeList employeeList, Shift shift) {
         Employee e = employeeListCtr.searchEmployee(employeeList);
         if (e != null) {
@@ -364,4 +317,11 @@ public class ShiftController {
         shift.setNote(note);
     }
     
+    public void endShiftForGUI(Shift shift, History history, String note, BigDecimal surcharge) {
+        shift.setEndTime();
+        shift.setNote(note);
+        shift.setSurcharge(surcharge);
+        shift.setState(ShiftState.CLOSED);
+        history.getShiftHistory().add(shift);
+    }
 }

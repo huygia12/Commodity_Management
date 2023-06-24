@@ -7,6 +7,7 @@ package Controllers;
 import Models.Shift;
 import Models.Store;
 import View.StoreView;
+import java.util.List;
 
 /**
  *
@@ -53,9 +54,6 @@ public class StoreController {
                         System.out.println("This current Shift is not over yet, change cannot be performed!");
                         break;
                     }
-                    if (this.storeView.typeInVAT(store) == 0) {
-                        return;
-                    }
                     break;
                 case "6":
                     break;
@@ -64,5 +62,14 @@ public class StoreController {
                     break;
             }
         } while (!choice.equalsIgnoreCase("6"));
+    }
+    
+    public Store containEmail(List<Store> storeList, String email){
+        for (Store store : storeList) {
+            if(store.getEmail().equals(email)){
+                return store;
+            }
+        }
+        return null;
     }
 }

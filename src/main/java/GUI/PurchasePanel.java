@@ -141,7 +141,7 @@ public class PurchasePanel extends javax.swing.JPanel {
         aboutGoodsAndCusPanel.setLayout(new java.awt.BorderLayout(5, 0));
 
         employeeAndCustomerPanel.setBackground(new java.awt.Color(255, 255, 255));
-        employeeAndCustomerPanel.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "", javax.swing.border.TitledBorder.CENTER, javax.swing.border.TitledBorder.DEFAULT_POSITION));
+        employeeAndCustomerPanel.setBorder(javax.swing.BorderFactory.createTitledBorder(""));
         employeeAndCustomerPanel.setFocusable(false);
         employeeAndCustomerPanel.setMaximumSize(new java.awt.Dimension(280550, 2000000));
         employeeAndCustomerPanel.setMinimumSize(new java.awt.Dimension(280, 200));
@@ -1127,8 +1127,9 @@ public class PurchasePanel extends javax.swing.JPanel {
             return;
         }
         // thực hiện chức năng
-        orderCtr.payOrder(order, shift, repository, settings.getStore(), history);
-        initNewOrder();
+        orderCtr.payOrder(order, shift, repository, store, history);
+        order = null;
+        refresh();
     }//GEN-LAST:event_payBtnActionPerformed
 
     private void payAnfPrintBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_payAnfPrintBtnActionPerformed
@@ -1141,9 +1142,10 @@ public class PurchasePanel extends javax.swing.JPanel {
             return;
         }
         // thực hiện chức năng
-        orderCtr.payOrder(order, shift, repository, settings.getStore(), history);
-        orderCtr.getOrderView().printBillToFile(order, settings.getStore());
-        initNewOrder();
+        orderCtr.payOrder(order, shift, repository, store, history);
+        orderCtr.getOrderView().printBillToFile(order, store);
+        order = null;
+        refresh();
     }//GEN-LAST:event_payAnfPrintBtnActionPerformed
 
     private void goodsListTableMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_goodsListTableMouseClicked
@@ -1229,7 +1231,7 @@ public class PurchasePanel extends javax.swing.JPanel {
             customerDiscountOfferTextField.setFont(new java.awt.Font("Segoe UI", 2, 12)); // NOI18N
             customerDiscountOfferTextField.setForeground(Color.RED);
             customerDiscountOfferTextField.setText(
-                    cardCtr.getCustomerDiscountOffer(customerCard, settings.getStore()) + "%");
+                    cardCtr.getCustomerDiscountOffer(customerCard, store)+ "%");
             pointDiscountText.setEditable(true);
         }
         order.setCustomerCard(customerCard);
@@ -1385,6 +1387,9 @@ public class PurchasePanel extends javax.swing.JPanel {
     }//GEN-LAST:event_customerIDTextMouseClicked
 
     private void shippingFeeTextMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_shippingFeeTextMouseExited
+        if (!shippingFeeText.isEnabled()) {
+            return;
+        }
         String shippingFeeStr = shippingFeeText.getText();
         if (!ctions.checkIfAValidNumberForGUI(shippingFeeStr) && !shippingFeeStr.isBlank()) {// kiểm tra xem có phải số hợp lệ hay không
             insertWarningToTextField(shippingFeeText, INVALID_WARNING, 12);
@@ -1403,6 +1408,9 @@ public class PurchasePanel extends javax.swing.JPanel {
     }//GEN-LAST:event_shippingFeeTextMouseExited
 
     private void customerMoneyTextMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_customerMoneyTextMouseExited
+        if (!customerMoneyText.isEnabled()) {
+            return;
+        }
         if (order.getPaymentOptions().equals(PaymentOptions.CASH_PAYMENT)) {
             String customerMoneyStr = customerMoneyText.getText();
             if (customerMoneyStr.isBlank()) { // kiểm tra xemD textField có trống không
@@ -1423,6 +1431,9 @@ public class PurchasePanel extends javax.swing.JPanel {
     }//GEN-LAST:event_customerMoneyTextMouseExited
 
     private void discountTextMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_discountTextMouseExited
+        if (!discountText.isEnabled()) {
+            return;
+        }
         String discountStr = discountText.getText();
         if (!ctions.checkIfAValidNumberForGUI(discountStr) && !discountStr.isBlank()) {// kiểm tra xem có phải số hợp lệ hay không
             discountWarningCheck = false;
@@ -1442,6 +1453,9 @@ public class PurchasePanel extends javax.swing.JPanel {
     }//GEN-LAST:event_discountTextMouseExited
 
     private void pointDiscountTextMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_pointDiscountTextMouseExited
+        if (!pointDiscountText.isEnabled()) {
+            return;
+        }
         if (order.getCustomerCard() != null) {
             String pointDiscountStr = pointDiscountText.getText();
             if (!ctions.checkIfANumberSequenceForGUI(pointDiscountStr) && !pointDiscountStr.isBlank()) {// kiểm tra xem có phải số hợp lệ hay không
@@ -1707,6 +1721,9 @@ public class PurchasePanel extends javax.swing.JPanel {
     }//GEN-LAST:event_expirDateRadioBtnItemStateChanged
 
     private void fromDateTextFieldMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_fromDateTextFieldMouseExited
+        if (!fromDateTextField.isEnabled()) {
+            return;
+        }
         String fromDateStr = fromDateTextField.getText();
         if (productionDateRadioBtn.isSelected()) {
             if (!ctions.checkIfValidDate(fromDateStr)) {// kiểm tra dateString có hợp lệ không
@@ -1754,6 +1771,9 @@ public class PurchasePanel extends javax.swing.JPanel {
     }//GEN-LAST:event_toDateTextFieldMouseClicked
 
     private void toDateTextFieldMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_toDateTextFieldMouseExited
+        if (!toDateTextField.isEnabled()) {
+            return;
+        }
         String toDateStr = toDateTextField.getText();
         if (productionDateRadioBtn.isSelected()) {
             if (!ctions.checkIfValidDate(toDateStr)) {// kiểm tra dateString có hợp lệ không
@@ -1882,7 +1902,7 @@ public class PurchasePanel extends javax.swing.JPanel {
 
     private boolean insufficientCustomerMoneyCheck(BigDecimal customerMoney) {
         if (paymentOptionCombobox.getSelectedIndex() == 0) {
-            if (orderCtr.getTotal(order, settings.getStore()).compareTo(customerMoney) == 1) {
+            if (orderCtr.getTotal(order, store).compareTo(customerMoney) == 1) {
                 insertWarningToTextField(customerMoneyText, INSUFFICIENT_MONEY, 12);
                 customerMoneyWarningCheck = false;
                 return true;
@@ -2186,11 +2206,11 @@ public class PurchasePanel extends javax.swing.JPanel {
         taxAmountTextField.setText(String.format("%.1f", orderCtr.getTaxAmount(order)));
         discountAmountTextField.setText(String.format("%.1f", orderCtr.getDiscountAmount(order)));
         BigDecimal pointDiscountAmount = (!customerIDWarningCheck)
-                ? BigDecimal.ZERO : orderCtr.getPointDiscountAmount(order, settings.getStore());
+                ? BigDecimal.ZERO : orderCtr.getPointDiscountAmount(order, store);
         pointDiscountAmountTextField.setText(String.format("%.1f", pointDiscountAmount));
-        totalTextField.setText(String.format("%.1f", orderCtr.getTotal(order, settings.getStore())));
+        totalTextField.setText(String.format("%.1f", orderCtr.getTotal(order, store)));
         BigDecimal change = (order.getPaymentOptions().compareTo(PaymentOptions.OTHER_PAYMENT) == 0)
-                ? BigDecimal.ZERO : orderCtr.getChange(order, settings.getStore());
+                ? BigDecimal.ZERO : orderCtr.getChange(order, store);
         changeAmountTextField.setText(String.format("%.1f", change));
     }
 
@@ -2236,9 +2256,9 @@ public class PurchasePanel extends javax.swing.JPanel {
         passValueToUnitCombobox();
         passValueToPriceRangeComboBox();
         TitledBorder tb = (TitledBorder) employeeAndCustomerPanel.getBorder();
-        tb.setTitle(" Mã Hóa Đơn - " + order.getID());
         tb.setTitleFont(new java.awt.Font("Segoe UI", 1, 14));
-        tb.setTitlePosition(TitledBorder.CENTER);
+        tb.setTitlePosition(TitledBorder.DEFAULT_JUSTIFICATION);
+        tb.setTitle(" Mã Hóa Đơn - " + order.getID());
         setDefaultValuesToAllComponents();
         clearTableModel(orderGoodsListModel);
         computeSizeOfEachColumnInGoodsListTable();
@@ -2269,22 +2289,23 @@ public class PurchasePanel extends javax.swing.JPanel {
         customerCardListCtr = new CustomerCardListController();
         cardCtr = new CustomerCardController();
         ctions = new Cautions();
+        store = new Store();
     }
 
-    public void passData(Repository repository, IDGenerator idGenerator,
-            Settings settings, Shift shift,
-            Units units, CustomerCardList cutomerCardList, History history) {
-        this.repository = repository;
-        this.idGenerator = idGenerator;
-        this.settings = settings;
-        this.shift = shift;
-        this.units = units;
-        this.cutomerCardList = cutomerCardList;
+    public void passData(Store store) {
+        this.store = store;
+        this.repository = store.getRepository();
+        this.idGenerator = store.getiDGenerator();
+        this.settings = store.getSettings();
+        this.shift = store.getShift();
+        this.units = store.getUnits();
+        this.cutomerCardList = store.getCustomerCardList();
     }
 
     public void refresh() {
         if (shift.getState().equals(ShiftState.OPENED) && order == null) {
             initNewOrder();
+            return;
         } else {
             draftGoodsList = orderCtr.makeDraftGoodsList(repository);
             cashierTextField.setText(shift.getCashier().toString());
@@ -2302,12 +2323,10 @@ public class PurchasePanel extends javax.swing.JPanel {
                 Goods goodsInRepo = orderCtr.containGoods(draftGoodsList, goodsInOrder.getID());
                 Goods goodsInDraftGoodsList = orderCtr.containGoods(lastGoodsList, goodsInOrder.getID());
                 if (goodsInRepo == null) {
-                    System.out.println(1);
                     showWarningJOptionPane(GOODS_HAS_BEEN_CHANGED_WARNING);
                     goodsIt.remove();
                 } else {
                     if (!goodsCtr.compare(goodsInRepo, goodsInDraftGoodsList)) {
-                        System.out.println(2);
                         showWarningJOptionPane(GOODS_HAS_BEEN_CHANGED_WARNING);
                         goodsIt.remove();
                     } else {
@@ -2347,6 +2366,7 @@ public class PurchasePanel extends javax.swing.JPanel {
     private boolean ifCashPayment = true;
     private History history;
     private Order order;
+    private Store store;
     private Cautions ctions;
     private GoodsList<Goods> lastGoodsList;
     private GoodsList<Goods> filterGoodsList;

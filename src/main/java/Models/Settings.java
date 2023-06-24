@@ -9,8 +9,6 @@ import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.math.BigDecimal;
-import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -19,9 +17,6 @@ import java.util.List;
  * @author FPTSHOP
  */
 public class Settings {
-    @SerializedName("myStore")
-    @Expose
-    private Store myStore = new Store();
     @SerializedName("priceAmountList")
     @Expose
     private List<String> priceAmountList = new ArrayList<>();
@@ -41,16 +36,6 @@ public class Settings {
         }
         
         System.out.println("Settings saved!");
-    }
-
-
-
-    public Store getStore() {
-        return myStore;
-    }
-
-    public void setStore(Store myStore) {
-        this.myStore = myStore;
     }
 
     public List<String> getPriceAmountList() {
