@@ -10,8 +10,7 @@ import com.google.gson.annotations.SerializedName;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
-import java.util.List;
-import java.util.ArrayList;
+import java.util.Stack;
 
 /**
  *
@@ -40,10 +39,10 @@ public class Shift {
     private int VAT = 0;
     @SerializedName("orderHisPerShift")
     @Expose
-    private List<Order> orderHisPerShift = new ArrayList<>();
+    private Stack<Order> orderHisPerShift = new Stack<>();
     @SerializedName("employeeOfThisShift")
     @Expose
-    private EmployeeList employeeOfThisShift = new EmployeeList(new ArrayList());
+    private EmployeeList employeeOfThisShift = new EmployeeList(new Stack());
     @SerializedName("state")
     @Expose
     private ShiftState state = ShiftState.STAGED;
@@ -71,15 +70,13 @@ public class Shift {
         return this.VAT;
     }
 
-    public List<Order> getOrderHisPerShift() {
+    public Stack<Order> getOrderHisPerShift() {
         return this.orderHisPerShift;
     }
 
-
-    public void setOrderHisPerShift(List<Order> orderHisPerShift) {
+    public void setOrderHisPerShift(Stack<Order> orderHisPerShift) {
         this.orderHisPerShift = orderHisPerShift;
     }
-
 
     public LocalDateTime getOpenTime() {
         return this.openDateTime;

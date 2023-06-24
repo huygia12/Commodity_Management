@@ -11,8 +11,10 @@ import Models.History;
 import Models.Order;
 import Models.Shift;
 import Models.SoldGoods;
+import Models.Store;
 import Ultility.Cautions;
 import View.HistoryView;
+import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -20,6 +22,7 @@ import java.util.InputMismatchException;
 import java.util.List;
 import java.util.Scanner;
 import java.util.Set;
+import java.util.Stack;
 
 /**
  *
@@ -31,6 +34,7 @@ public class HistoryController {
     final Scanner sc = new Scanner(System.in);
     final Cautions ctions = new Cautions();
     final GoodsListController goodsListCtr = new GoodsListController();
+    final OrderController orderCtr = new OrderController();
     
     public HistoryController() {
     }
@@ -149,7 +153,6 @@ public class HistoryController {
         // Nhat tat ca order nam trong khoang fromToDate de cho vao shiftList
         List<Shift> shiftList = ordersBetweenFromToDate(fromToDate, history);
         // Hien thi cac thong tin co ban cua cac order do: orderID, shiftID, orderDateTime, orderTotal
-        this.view.showOrderHistory(new History(shiftList));
         // Hien thi thong ke so luong va so tien cua tung mat hang duoc ban
         this.view.showOrderHistory(makeHisoryOrderGoodsList(shiftList));
     }
@@ -173,7 +176,6 @@ public class HistoryController {
     private void statisticOfShiftGoods(History history) {
         CustomPair<LocalDate, LocalDate> fromToDate = this.view.typeInFromToDate();
         List<Shift> shiftList = shiftBetweenFromToDate(fromToDate, history);
-        this.view.showShiftHistory(new History(shiftList));
     }
 
     //function 4
@@ -273,4 +275,21 @@ public class HistoryController {
         return searchingShift;
     }
     
+    public List<Order> toOrderList(History history){
+        List<Order> listOfOrder = new ArrayList<>();
+        for (Shift shift : history.getShiftHistory()) {
+            for (Order order : shift.getOrderHisPerShift()) {
+                listOfOrder.add(order);
+            }
+        }
+        return listOfOrder;
+    } 
+    
+    public BigDecimal totalNetRevenue(List<Order> orderHistory, Store store){
+        BigDecimal result = BigDecimal.ZERO;
+        for (Order order : orderHistory) {
+            result = result.add(orderCtr.getTotal(order, store));
+        }
+        return result;
+    }
 }

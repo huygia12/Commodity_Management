@@ -66,6 +66,7 @@ public class MainFrame extends javax.swing.JFrame {
         employJPanel1 = new GUI.EmployJPanel();
         shiftPanel1 = new GUI.ShiftPanel();
         settingsPanel1 = new GUI.SettingsPanel();
+        historyPanel1 = new GUI.HistoryPanel();
         menuBar = new javax.swing.JMenuBar();
         fileMenu = new javax.swing.JMenu();
         editMenu = new javax.swing.JMenu();
@@ -104,14 +105,12 @@ public class MainFrame extends javax.swing.JFrame {
         dateTextField.setEditable(false);
         dateTextField.setBorder(null);
         dateTextField.setFocusable(false);
-        dateTextField.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         dateTextField.setPreferredSize(new java.awt.Dimension(126, 22));
 
         timeTextField.setEditable(false);
         timeTextField.setBorder(null);
         timeTextField.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.DateFormatter(java.text.DateFormat.getTimeInstance())));
         timeTextField.setFocusable(false);
-        timeTextField.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         timeTextField.setPreferredSize(new java.awt.Dimension(126, 22));
 
         openSideBarLabel.setIcon(new javax.swing.ImageIcon(getClass().getResource("/ImageIcon/icons8-menu-40.png"))); // NOI18N
@@ -177,6 +176,7 @@ public class MainFrame extends javax.swing.JFrame {
         displayPanel.add(employJPanel1, "card5");
         displayPanel.add(shiftPanel1, "card6");
         displayPanel.add(settingsPanel1, "card7");
+        displayPanel.add(historyPanel1, "card8");
 
         menuBar.setMaximumSize(new java.awt.Dimension(171000, 20));
         menuBar.setMinimumSize(new java.awt.Dimension(1000, 15));
@@ -254,6 +254,8 @@ public class MainFrame extends javax.swing.JFrame {
                 settings.getStore());
         //pass dât vào settingsPanel
         settingsPanel1.passData(settings, header);
+        //pass data vào historyPanel
+        historyPanel1.passData(history, employeeList, settings.getStore());
     }
     
     private void notOpenShiftWarning() {
@@ -273,7 +275,7 @@ public class MainFrame extends javax.swing.JFrame {
         purchaseDrawerItem.setFont(new java.awt.Font("Segoe UI", 1, 16));
         purchaseDrawerItem.setHorizontalAlignment(JButton.LEADING);
         purchaseDrawerItem.setFocusable(false);
-        DrawerItem manageDrawerItem = new DrawerItem("Quản lý cửa hàng").icon(new ImageIcon(getClass().getResource("/ImageIcon/icons8-static-35.png"))).build();
+        DrawerItem manageDrawerItem = new DrawerItem("Ca hiện tại").icon(new ImageIcon(getClass().getResource("/ImageIcon/icons8-static-35.png"))).build();
         manageDrawerItem.setFont(new java.awt.Font("Segoe UI", 1, 16));
         manageDrawerItem.setHorizontalAlignment(JButton.LEADING);
         manageDrawerItem.setFocusable(false);
@@ -285,6 +287,10 @@ public class MainFrame extends javax.swing.JFrame {
         customerDrawerItem.setFont(new java.awt.Font("Segoe UI", 1, 16));
         customerDrawerItem.setHorizontalAlignment(JButton.LEADING);
         customerDrawerItem.setFocusable(false);
+        DrawerItem historyDrawerItem = new DrawerItem("Lịch sử").icon(new ImageIcon(getClass().getResource("/ImageIcon/icons8-history-35.png"))).build();
+        historyDrawerItem.setFont(new java.awt.Font("Segoe UI", 1, 16));
+        historyDrawerItem.setHorizontalAlignment(JButton.LEADING);
+        historyDrawerItem.setFocusable(false);
         DrawerItem settingsDrawerItem = new DrawerItem("Cài đặt").icon(new ImageIcon(getClass().getResource("/ImageIcon/icons8-settings-35.png"))).build();
         settingsDrawerItem.setFont(new java.awt.Font("Segoe UI", 1, 16));
         settingsDrawerItem.setHorizontalAlignment(JButton.LEADING);
@@ -305,6 +311,7 @@ public class MainFrame extends javax.swing.JFrame {
                 .addChild(manageDrawerItem)
                 .addChild(employeeDrawerItem)
                 .addChild(customerDrawerItem)
+                .addChild(historyDrawerItem)
                 .addChild(settingsDrawerItem)
                 .addFooter(logoutDrawerItem)
                 .event((int i, DrawerItem di) -> {
@@ -349,11 +356,16 @@ public class MainFrame extends javax.swing.JFrame {
                 drawerCtr.hide();
                 break;
             case 5:
+                displayPanel.add(historyPanel1, "history");
+                cardLayout.show(displayPanel, "history");
+                drawerCtr.hide();
+                break;
+            case 6:
                 displayPanel.add(settingsPanel1, "settings");
                 cardLayout.show(displayPanel, "settings");
                 drawerCtr.hide();
                 break;
-            case 6:
+            case 7:
         }
     }
     
@@ -441,6 +453,7 @@ public class MainFrame extends javax.swing.JFrame {
     private javax.swing.JMenu editMenu;
     private GUI.EmployJPanel employJPanel1;
     private javax.swing.JMenu fileMenu;
+    private GUI.HistoryPanel historyPanel1;
     private javax.swing.JMenuBar menuBar;
     private javax.swing.JLabel openSideBarLabel;
     private javax.swing.JMenu optionsMenu;

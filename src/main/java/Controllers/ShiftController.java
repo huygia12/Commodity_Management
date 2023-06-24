@@ -17,7 +17,6 @@ import Models.StaticalItems;
 import Models.Store;
 import View.ShiftView;
 import java.math.BigDecimal;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -89,7 +88,6 @@ public class ShiftController {
                         this.shiftView.shiftNotOpenCaution();
                         break;
                     }
-                    showorderHistory(shift, hisCtr);
                     break;
                 case "6":
                     if (shift == null) {
@@ -275,17 +273,6 @@ public class ShiftController {
         return shift;
     }
 
-    private void showorderHistory(Shift shift, HistoryController hisCtr) {
-        if (shift.getOrderHisPerShift().isEmpty()) {
-            System.out.println("Your current order history is empty!");
-            return;
-        }
-        List<Shift> shiftList = new ArrayList<>();
-        shiftList.add(shift);
-        hisCtr.getHistoryView().showOrderHistory(new History(shiftList));
-        hisCtr.getHistoryView().showOrderHistory(
-                hisCtr.makeHisoryOrderGoodsList(shiftList));
-    }
 
     private void addEmployeeToShift(EmployeeList employeeList, Shift shift) {
         Employee e = employeeListCtr.searchEmployee(employeeList);
