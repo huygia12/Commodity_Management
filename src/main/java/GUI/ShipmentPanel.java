@@ -159,6 +159,11 @@ public class ShipmentPanel extends javax.swing.JPanel {
         editButton.setText("Sửa");
 
         cancelButton.setText("Hủy");
+        cancelButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                cancelButtonActionPerformed(evt);
+            }
+        });
 
         errorIDLabel.setForeground(new java.awt.Color(255, 51, 51));
         errorIDLabel.setText("Mã không hợp lệ!");
@@ -372,7 +377,7 @@ public class ShipmentPanel extends javax.swing.JPanel {
         errorIDLabel.setVisible(false);
         errorPriceLabel.setVisible(false);
         errorQuantityLabel.setVisible(false);
-        setVisibleDate(false);
+        setVisibleDate(false, false);
         doesExpiredToggleBtn.setSelected(false);
         
         addButton.setEnabled(false);
@@ -383,9 +388,20 @@ public class ShipmentPanel extends javax.swing.JPanel {
         shipmentIDTextField.setText("");
         importPriceTextField.setText("");
         quantityTextField.setText("");
+        
+        NSXDay = "";
+        NSXMonth = "";
+        NSXYear = "";
+        HSDDay = "";
+        HSDMonth = "";
+        HSDYear = "";
+        
+        shipmentID = "";
+        shipmentPrice = BigDecimal.ZERO;
+        shipmentQuantity = BigDecimal.ZERO;
     }
 
-    private void setVisibleDate(Boolean isVisible) {
+    private void setVisibleDate(Boolean isVisible, Boolean isError) {
         NSXLabel.setVisible(isVisible);
         NSXDayTextField.setVisible(isVisible);
         NSXMonthTextField.setVisible(isVisible);
@@ -410,7 +426,35 @@ public class ShipmentPanel extends javax.swing.JPanel {
         DayLabel.setVisible(isVisible);
         MonthLabel.setVisible(isVisible);
         YearLabel.setVisible(isVisible);
-
+        
+        if (isVisible) {
+            if (isError) {
+                errorDateLabel.setVisible(true);
+            } else {
+                errorDateLabel.setVisible(false);
+            }
+        } else {
+            errorDateLabel.setVisible(false);
+        }
+    }
+  
+    private void saveDateData(boolean isToggled) {
+        if (isToggled) {
+            NSXDayTextField.setText(NSXDay);
+            NSXMonthTextField.setText(NSXMonth);
+            NSXYearTextField.setText(NSXYear);
+            HSDDayTextField.setText(HSDDay);
+            HSDMonthTextField.setText(HSDMonth);
+            HSDYearTextField.setText(HSDYear);
+            errorDateLabel.setVisible(isDateError);
+        } else {
+            NSXDay = NSXDayTextField.getText();
+            NSXMonth = NSXMonthTextField.getText();
+            NSXYear = NSXYearTextField.getText();
+            HSDDay = HSDDayTextField.getText();
+            HSDMonth = HSDMonthTextField.getText();
+            HSDYear = HSDYearTextField.getText();
+        }
     }
     private void NSXDayTextFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_NSXDayTextFieldActionPerformed
         // TODO add your handling code here:
@@ -425,9 +469,7 @@ public class ShipmentPanel extends javax.swing.JPanel {
         boolean dupedIDOnTable = true;
         try {
             dupedIDOnTable = shipmentIDTextField.getText().equals(shipmentTableModel.getValueAt(jTable1.getSelectedRow(), 0).toString());
-        } catch (ArrayIndexOutOfBoundsException aioobe) {
-
-        } catch (NullPointerException npe) {
+        } catch (ArrayIndexOutOfBoundsException | NullPointerException aioobe) {
 
         }
         if (dupedID == 0 || (dupedIDOnTable && jTable1.getSelectedRow() != -1)) {
@@ -442,17 +484,34 @@ public class ShipmentPanel extends javax.swing.JPanel {
     private void doesExpiredToggleBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_doesExpiredToggleBtnActionPerformed
         // TODO add your handling code here:
         Boolean isOn;
-        if (doesExpiredToggleBtn.getSelectedObjects() == null) {
-            isOn = false;
-        } else {
-            isOn = true;
+        isOn = doesExpiredToggleBtn.getSelectedObjects() != null;
+        if (!isOn) {
+            saveDateData(false);
         }
-
-        setVisibleDate(isOn);
+        setVisibleDate(isOn, isDateError);
+        if (isOn) {
+            saveDateData(true);
+        }
     }//GEN-LAST:event_doesExpiredToggleBtnActionPerformed
 
     private void jTable1MouseReleased(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jTable1MouseReleased
         // TODO add your handling code here:
+        if (jTable1.getSelectedRow() != -1) {
+            shipmentIDTextField.setText((String) shipmentTableModel.getValueAt(jTable1.getSelectedRow(), 0));
+            importPriceTextField.setText(shipmentTableModel.getValueAt(jTable1.getSelectedRow(), 1).toString());
+            quantityTextField.setText(shipmentTableModel.getValueAt(jTable1.getSelectedRow(), 2).toString());
+            if (!(shipmentTableModel.getValueAt(jTable1.getSelectedRow(), 3)).toString().isEmpty()) {
+                doesExpiredToggleBtn.setSelected(true);
+                setVisibleDate(true, isDateError);
+                saveDateData(false);
+                NSXDayTextField.setText(shipmentTableModel.getValueAt(jTable1.getSelectedRow(), 3).toString().substring(8, 10));
+                NSXMonthTextField.setText(shipmentTableModel.getValueAt(jTable1.getSelectedRow(), 3).toString().substring(5, 7));
+                NSXYearTextField.setText(shipmentTableModel.getValueAt(jTable1.getSelectedRow(), 3).toString().substring(0, 4));
+                HSDDayTextField.setText(shipmentTableModel.getValueAt(jTable1.getSelectedRow(), 4).toString().substring(8, 10));
+                HSDMonthTextField.setText(shipmentTableModel.getValueAt(jTable1.getSelectedRow(), 4).toString().substring(5, 7));
+                HSDYearTextField.setText(shipmentTableModel.getValueAt(jTable1.getSelectedRow(), 4).toString().substring(0, 4));
+            }
+        }
         deleteCheck();
         cancelCheck();
     }//GEN-LAST:event_jTable1MouseReleased
@@ -491,6 +550,12 @@ public class ShipmentPanel extends javax.swing.JPanel {
         reloadTable(shipments);
         defaultSettings();
     }//GEN-LAST:event_deleteButtonActionPerformed
+
+    private void cancelButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cancelButtonActionPerformed
+        // TODO add your handling code here:
+        reloadTable(shipments);
+        defaultSettings();
+    }//GEN-LAST:event_cancelButtonActionPerformed
 
     private void addCheck() {
 
@@ -563,9 +628,14 @@ public class ShipmentPanel extends javax.swing.JPanel {
     private String shipmentID = "";
     private BigDecimal shipmentPrice = BigDecimal.ZERO;
     private BigDecimal shipmentQuantity = BigDecimal.ZERO;
-    private LocalDate manufacturerDate;
-    private LocalDate expiredDate;
-
+    private String NSXDay;
+    private String NSXMonth;
+    private String NSXYear;
+    private String HSDDay;
+    private String HSDMonth;
+    private String HSDYear;
+    private boolean isDateError = false;
+    
     public static ShipmentPanel Instance;
     private DefaultTableModel shipmentTableModel;
 
