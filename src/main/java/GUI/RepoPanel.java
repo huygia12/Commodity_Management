@@ -571,6 +571,7 @@ public class RepoPanel extends javax.swing.JPanel {
             shipmentPanel.getShipmentPanel().attachGood(selectedGood);
             shipmentPanel.getShipmentPanel().reloadTable(selectedGood.getShipments());
             shipmentPanel.setDefaultCloseOperation(shipmentPanel.DISPOSE_ON_CLOSE);
+            reloadTable(goodsList);
         } catch (NullPointerException npe) {
             
         }
@@ -679,13 +680,23 @@ public class RepoPanel extends javax.swing.JPanel {
     public int findUnit(String unit) {
         return (int) unitsList.getBucket().stream().filter(x->x.equals(unit)).count();
     }
+    
+    public void findSelectedGood (String ID, List<Shipment> shipments) {
+        for (Goods goods : goodsList.getList()) {
+            if (ID.equals(goods.getID())) {
+                goods.setShipments(shipments);
+                reloadTable(goodsList);
+                return;
+            }
+        }
+    }
 
     private GoodsList<Goods> goodsList;
     private Units unitsList;
     private GoodsListController glc = new GoodsListController();
     private boolean isReloadingUnits = false;
+    public static RepoPanel Instance;
     
-    public RepoPanel Instance;
     private Animator animator;
     private Animator animator2;
     

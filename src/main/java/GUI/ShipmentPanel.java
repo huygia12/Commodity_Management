@@ -115,6 +115,12 @@ public class ShipmentPanel extends javax.swing.JPanel {
 
         quantityLabel.setText("Số lượng: ");
 
+        quantityTextField.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                quantityTextFieldKeyReleased(evt);
+            }
+        });
+
         doesExpiredToggleBtn.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 doesExpiredToggleBtnActionPerformed(evt);
@@ -347,6 +353,7 @@ public class ShipmentPanel extends javax.swing.JPanel {
                 return canEdit [columnIndex];
             }
         });
+        jTable1.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
         jTable1.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseReleased(java.awt.event.MouseEvent evt) {
                 jTable1MouseReleased(evt);
@@ -479,6 +486,7 @@ public class ShipmentPanel extends javax.swing.JPanel {
         } else {
             errorIDLabel.setVisible(true);
         }
+        cancelCheck();
     }//GEN-LAST:event_shipmentIDTextFieldKeyReleased
 
     private void doesExpiredToggleBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_doesExpiredToggleBtnActionPerformed
@@ -538,9 +546,9 @@ public class ShipmentPanel extends javax.swing.JPanel {
             errorPriceLabel.setVisible(true);
             addButton.setEnabled(false);
         }
-        addCheck();
         deleteCheck();
         editCheck();
+        cancelCheck();
     }//GEN-LAST:event_importPriceTextFieldKeyReleased
 
     private void deleteButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_deleteButtonActionPerformed
@@ -548,6 +556,7 @@ public class ShipmentPanel extends javax.swing.JPanel {
         String deletedGoodID = jTable1.getModel().getValueAt(jTable1.getSelectedRow(), 0).toString();
         shipments = shipments.stream().filter(x->!x.getID().equals(deletedGoodID)).collect(Collectors.toList());
         reloadTable(shipments);
+        transferData();
         defaultSettings();
     }//GEN-LAST:event_deleteButtonActionPerformed
 
@@ -556,6 +565,33 @@ public class ShipmentPanel extends javax.swing.JPanel {
         reloadTable(shipments);
         defaultSettings();
     }//GEN-LAST:event_cancelButtonActionPerformed
+
+    private void quantityTextFieldKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_quantityTextFieldKeyReleased
+        // TODO add your handling code here:
+        try {
+            String input = quantityTextField.getText();
+            if (input.length() == 0) {
+                errorQuantityLabel.setVisible(false);
+                addButton.setEnabled(false);
+                return;
+            }
+            double check = Double.parseDouble(input);
+            if (check < 0) {
+                errorQuantityLabel.setVisible(true);
+                addButton.setEnabled(false);
+            } else {
+                errorQuantityLabel.setVisible(false);
+                shipmentQuantity = BigDecimal.valueOf(check);
+                addCheck();
+            }
+        } catch (NumberFormatException nfe) {
+            errorQuantityLabel.setVisible(true);
+            addButton.setEnabled(false);
+        }
+        cancelCheck();
+        deleteCheck();
+        editCheck();
+    }//GEN-LAST:event_quantityTextFieldKeyReleased
 
     private void addCheck() {
 
@@ -574,7 +610,16 @@ public class ShipmentPanel extends javax.swing.JPanel {
     }
     
     public void cancelCheck() {
-        if (jTable1.getSelectedRow() != -1) {
+        if (jTable1.getSelectedRow() != -1 || 
+                !shipmentIDTextField.getText().isEmpty() || 
+                !importPriceTextField.getText().isEmpty() || 
+                !quantityTextField.getText().isEmpty() || 
+                !NSXDayTextField.getText().isEmpty() || 
+                !NSXMonthTextField.getText().isEmpty() || !
+                !NSXYearTextField.getText().isEmpty() ||
+                !HSDDayTextField.getText().isEmpty() ||
+                !HSDMonthTextField.getText().isEmpty() ||
+                !HSDYearTextField.getText().isEmpty()) {
             cancelButton.setEnabled(true);
         } else {
             cancelButton.setEnabled(false);
@@ -619,6 +664,10 @@ public class ShipmentPanel extends javax.swing.JPanel {
     public void attachGood(Goods good) {
         this.attachedGood = good;
         this.shipments = good.getShipments();
+    }
+    
+    public void transferData() {
+        RepoPanel.Instance.findSelectedGood(attachedGood.getID(), shipments);
     }
 
     // Custom variables declaration
