@@ -6,10 +6,16 @@ package GUI;
 
 import Models.Goods;
 import Models.Shipment;
+import java.awt.Component;
 import java.math.BigDecimal;
+import java.time.DateTimeException;
 import java.time.LocalDate;
+import java.time.Month;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.stream.Collectors;
+import javax.swing.JOptionPane;
+import javax.swing.JTextField;
 import javax.swing.table.DefaultTableModel;
 
 /**
@@ -111,6 +117,9 @@ public class ShipmentPanel extends javax.swing.JPanel {
             public void keyReleased(java.awt.event.KeyEvent evt) {
                 importPriceTextFieldKeyReleased(evt);
             }
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                importPriceTextFieldKeyTyped(evt);
+            }
         });
 
         quantityLabel.setText("Số lượng: ");
@@ -136,16 +145,51 @@ public class ShipmentPanel extends javax.swing.JPanel {
                 NSXDayTextFieldActionPerformed(evt);
             }
         });
+        NSXDayTextField.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                NSXDayTextFieldKeyReleased(evt);
+            }
+        });
 
         jLabel2.setText("/");
 
+        NSXMonthTextField.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                NSXMonthTextFieldKeyReleased(evt);
+            }
+        });
+
         jLabel3.setText("/");
+
+        NSXYearTextField.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                NSXYearTextFieldKeyReleased(evt);
+            }
+        });
 
         HSDLabel.setText("Hạn sử dụng:");
 
+        HSDDayTextField.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                HSDDayTextFieldKeyReleased(evt);
+            }
+        });
+
         jLabel5.setText("/");
 
+        HSDMonthTextField.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                HSDMonthTextFieldKeyReleased(evt);
+            }
+        });
+
         jLabel6.setText("/");
+
+        HSDYearTextField.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                HSDYearTextFieldKeyReleased(evt);
+            }
+        });
 
         DayLabel.setText("Ngày");
 
@@ -154,6 +198,11 @@ public class ShipmentPanel extends javax.swing.JPanel {
         YearLabel.setText("Năm");
 
         addButton.setText("Thêm");
+        addButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                addButtonActionPerformed(evt);
+            }
+        });
 
         deleteButton.setText("Xóa");
         deleteButton.addActionListener(new java.awt.event.ActionListener() {
@@ -386,23 +435,23 @@ public class ShipmentPanel extends javax.swing.JPanel {
         errorQuantityLabel.setVisible(false);
         setVisibleDate(false, false);
         doesExpiredToggleBtn.setSelected(false);
-        
+
         addButton.setEnabled(false);
         deleteButton.setEnabled(false);
         editButton.setEnabled(false);
         cancelButton.setEnabled(false);
-        
+
         shipmentIDTextField.setText("");
         importPriceTextField.setText("");
         quantityTextField.setText("");
-        
+
         NSXDay = "";
         NSXMonth = "";
         NSXYear = "";
         HSDDay = "";
         HSDMonth = "";
         HSDYear = "";
-        
+
         shipmentID = "";
         shipmentPrice = BigDecimal.ZERO;
         shipmentQuantity = BigDecimal.ZERO;
@@ -433,7 +482,7 @@ public class ShipmentPanel extends javax.swing.JPanel {
         DayLabel.setVisible(isVisible);
         MonthLabel.setVisible(isVisible);
         YearLabel.setVisible(isVisible);
-        
+
         if (isVisible) {
             if (isError) {
                 errorDateLabel.setVisible(true);
@@ -444,7 +493,7 @@ public class ShipmentPanel extends javax.swing.JPanel {
             errorDateLabel.setVisible(false);
         }
     }
-  
+
     private void saveDateData(boolean isToggled) {
         if (isToggled) {
             NSXDayTextField.setText(NSXDay);
@@ -487,6 +536,7 @@ public class ShipmentPanel extends javax.swing.JPanel {
             errorIDLabel.setVisible(true);
         }
         cancelCheck();
+        addCheck();
     }//GEN-LAST:event_shipmentIDTextFieldKeyReleased
 
     private void doesExpiredToggleBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_doesExpiredToggleBtnActionPerformed
@@ -500,6 +550,10 @@ public class ShipmentPanel extends javax.swing.JPanel {
         if (isOn) {
             saveDateData(true);
         }
+        addCheck();
+        deleteCheck();
+        editCheck();
+        cancelCheck();
     }//GEN-LAST:event_doesExpiredToggleBtnActionPerformed
 
     private void jTable1MouseReleased(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jTable1MouseReleased
@@ -522,6 +576,7 @@ public class ShipmentPanel extends javax.swing.JPanel {
         }
         deleteCheck();
         cancelCheck();
+        addCheck();
     }//GEN-LAST:event_jTable1MouseReleased
 
     private void importPriceTextFieldKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_importPriceTextFieldKeyReleased
@@ -549,12 +604,13 @@ public class ShipmentPanel extends javax.swing.JPanel {
         deleteCheck();
         editCheck();
         cancelCheck();
+        addCheck();
     }//GEN-LAST:event_importPriceTextFieldKeyReleased
 
     private void deleteButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_deleteButtonActionPerformed
         // TODO add your handling code here:
         String deletedGoodID = jTable1.getModel().getValueAt(jTable1.getSelectedRow(), 0).toString();
-        shipments = shipments.stream().filter(x->!x.getID().equals(deletedGoodID)).collect(Collectors.toList());
+        shipments = shipments.stream().filter(x -> !x.getID().equals(deletedGoodID)).collect(Collectors.toList());
         reloadTable(shipments);
         transferData();
         defaultSettings();
@@ -591,16 +647,111 @@ public class ShipmentPanel extends javax.swing.JPanel {
         cancelCheck();
         deleteCheck();
         editCheck();
+        addCheck();
     }//GEN-LAST:event_quantityTextFieldKeyReleased
 
+    private void importPriceTextFieldKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_importPriceTextFieldKeyTyped
+        // TODO add your handling code here:
+    }//GEN-LAST:event_importPriceTextFieldKeyTyped
+
+    private void NSXDayTextFieldKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_NSXDayTextFieldKeyReleased
+        // TODO add your handling code here:
+        NSXDay = dateCheck(NSXDayTextField, NSXMonthTextField, NSXDay, 2);
+    }//GEN-LAST:event_NSXDayTextFieldKeyReleased
+
+    private void NSXMonthTextFieldKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_NSXMonthTextFieldKeyReleased
+        // TODO add your handling code here:
+        NSXMonth = dateCheck(NSXMonthTextField, NSXYearTextField, NSXMonth, 2);
+    }//GEN-LAST:event_NSXMonthTextFieldKeyReleased
+
+    private void NSXYearTextFieldKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_NSXYearTextFieldKeyReleased
+        // TODO add your handling code here:
+        NSXYear = dateCheck(NSXYearTextField, HSDDayTextField, NSXYear, 4);
+    }//GEN-LAST:event_NSXYearTextFieldKeyReleased
+
+    private void HSDDayTextFieldKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_HSDDayTextFieldKeyReleased
+        // TODO add your handling code here:
+        HSDDay = dateCheck(HSDDayTextField, HSDMonthTextField, HSDDay, 2);
+    }//GEN-LAST:event_HSDDayTextFieldKeyReleased
+
+    private void HSDMonthTextFieldKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_HSDMonthTextFieldKeyReleased
+        // TODO add your handling code here:
+        HSDMonth = dateCheck(HSDMonthTextField, HSDYearTextField, HSDMonth, 2);
+    }//GEN-LAST:event_HSDMonthTextFieldKeyReleased
+
+    private void HSDYearTextFieldKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_HSDYearTextFieldKeyReleased
+        // TODO add your handling code here:
+        HSDYear = dateCheck(HSDYearTextField, HSDYearTextField, HSDYear, 4);
+    }//GEN-LAST:event_HSDYearTextFieldKeyReleased
+
+    private void addButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_addButtonActionPerformed
+        // TODO add your handling code here:
+        if (shipments.stream().filter(x -> x.getID().equals(shipmentID)).count() == 0) {
+            if (doesExpiredToggleBtn.isSelected()) {
+                try {
+                    if (LocalDate.of(Integer.parseInt(NSXYear), Integer.parseInt(NSXMonth), Integer.parseInt(NSXDay)).isBefore(LocalDate.of(Integer.parseInt(HSDYear), Integer.parseInt(HSDMonth), Integer.parseInt(HSDDay)))) {
+                        shipments.add(new Shipment(shipmentQuantity,
+                                shipmentPrice,
+                                LocalDate.of(Integer.parseInt(NSXYear),
+                                        Integer.parseInt(NSXMonth), Integer.parseInt(NSXDay)),
+                                LocalDate.of(Integer.parseInt(HSDYear), Integer.parseInt(HSDMonth), Integer.parseInt(HSDDay)),
+                                shipmentID));
+                    } else {
+                        JOptionPane.showMessageDialog(null, "Ngày sản xuất không thể trước hạn sử dụng!", "Oh no!", JOptionPane.WARNING_MESSAGE);
+                        return;
+                    }
+                } catch (DateTimeException dte) {
+                    JOptionPane.showMessageDialog(null, "Ngày không tồn tại!", "Oh no!", JOptionPane.WARNING_MESSAGE);
+                    return;
+                }
+            } else {
+                shipments.add(new Shipment(shipmentQuantity, shipmentPrice, null, null, shipmentID));
+            }
+            defaultSettings();
+            reloadTable(shipments);
+            transferData();
+        } else {
+            JOptionPane.showMessageDialog(null, "Mặt hàng đã tồn tại!", "Oh no!", JOptionPane.WARNING_MESSAGE);
+        }
+    }//GEN-LAST:event_addButtonActionPerformed
+
     private void addCheck() {
+        if (doesExpiredToggleBtn.isSelected()) {
+            if (!shipmentIDTextField.getText().isEmpty()
+                    && !importPriceTextField.getText().isEmpty()
+                    && !quantityTextField.getText().isEmpty()
+                    && !errorIDLabel.isVisible()
+                    && !errorPriceLabel.isVisible()
+                    && !errorQuantityLabel.isVisible()
+                    && !NSXDayTextField.getText().isEmpty()
+                    && !NSXMonthTextField.getText().isEmpty()
+                    && !NSXYearTextField.getText().isEmpty()
+                    && !HSDDayTextField.getText().isEmpty()
+                    && !HSDMonthTextField.getText().isEmpty()
+                    && !HSDYearTextField.getText().isEmpty()
+                    && !errorDateLabel.isVisible()) {
+                addButton.setEnabled(true);
+            } else {
+                addButton.setEnabled(false);
+            }
+        } else {
+            if (!shipmentIDTextField.getText().isEmpty()
+                    && !importPriceTextField.getText().isEmpty()
+                    && !quantityTextField.getText().isEmpty()
+                    && !errorIDLabel.isVisible()
+                    && !errorPriceLabel.isVisible()
+                    && !errorQuantityLabel.isVisible()) {
+                addButton.setEnabled(true);
+            } else {
+                addButton.setEnabled(false);
+            }
+        }
+    }
+
+    private void editCheck() {
 
     }
-    
-    private void editCheck() {
-        
-    }
-    
+
     private void deleteCheck() {
         if (jTable1.getSelectedRow() != -1) {
             deleteButton.setEnabled(true);
@@ -608,22 +759,47 @@ public class ShipmentPanel extends javax.swing.JPanel {
             deleteButton.setEnabled(false);
         }
     }
-    
+
     public void cancelCheck() {
-        if (jTable1.getSelectedRow() != -1 || 
-                !shipmentIDTextField.getText().isEmpty() || 
-                !importPriceTextField.getText().isEmpty() || 
-                !quantityTextField.getText().isEmpty() || 
-                !NSXDayTextField.getText().isEmpty() || 
-                !NSXMonthTextField.getText().isEmpty() || !
-                !NSXYearTextField.getText().isEmpty() ||
-                !HSDDayTextField.getText().isEmpty() ||
-                !HSDMonthTextField.getText().isEmpty() ||
-                !HSDYearTextField.getText().isEmpty()) {
+        if (jTable1.getSelectedRow() != -1
+                || !shipmentIDTextField.getText().isEmpty()
+                || !importPriceTextField.getText().isEmpty()
+                || !quantityTextField.getText().isEmpty()
+                || !NSXDayTextField.getText().isEmpty()
+                || !NSXMonthTextField.getText().isEmpty() || ! !NSXYearTextField.getText().isEmpty()
+                || !HSDDayTextField.getText().isEmpty()
+                || !HSDMonthTextField.getText().isEmpty()
+                || !HSDYearTextField.getText().isEmpty()) {
             cancelButton.setEnabled(true);
         } else {
             cancelButton.setEnabled(false);
         }
+    }
+
+    private String dateCheck(JTextField textField, Component nextField, String date, int maxLength) {
+        if (textField.getText().length() == 0) {
+            errorDateLabel.setVisible(false);
+            return "";
+        }
+        String currentText;
+        if ((currentText = textField.getText()).length() > maxLength) {
+            textField.setText(currentText.substring(0, maxLength));
+        }
+        try {
+            Integer.parseInt(textField.getText());
+            date = textField.getText();
+            errorDateLabel.setVisible(false);
+        } catch (NumberFormatException nfe) {
+            errorDateLabel.setVisible(true);
+        }
+        if (textField.getText().length() == maxLength) {
+            nextField.requestFocusInWindow();
+        }
+        addCheck();
+        deleteCheck();
+        editCheck();
+        cancelCheck();
+        return date;
     }
 
     public void setOpenButton(Boolean isSelected) {
@@ -660,12 +836,12 @@ public class ShipmentPanel extends javax.swing.JPanel {
 
         }
     }
-    
+
     public void attachGood(Goods good) {
         this.attachedGood = good;
         this.shipments = good.getShipments();
     }
-    
+
     public void transferData() {
         RepoPanel.Instance.findSelectedGood(attachedGood.getID(), shipments);
     }
@@ -684,7 +860,7 @@ public class ShipmentPanel extends javax.swing.JPanel {
     private String HSDMonth;
     private String HSDYear;
     private boolean isDateError = false;
-    
+
     public static ShipmentPanel Instance;
     private DefaultTableModel shipmentTableModel;
 
