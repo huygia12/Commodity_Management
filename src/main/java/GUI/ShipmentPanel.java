@@ -562,16 +562,19 @@ public class ShipmentPanel extends javax.swing.JPanel {
             shipmentIDTextField.setText((String) shipmentTableModel.getValueAt(jTable1.getSelectedRow(), 0));
             importPriceTextField.setText(shipmentTableModel.getValueAt(jTable1.getSelectedRow(), 1).toString());
             quantityTextField.setText(shipmentTableModel.getValueAt(jTable1.getSelectedRow(), 2).toString());
+            shipmentID = shipmentTableModel.getValueAt(jTable1.getSelectedRow(), 0).toString();
+            shipmentQuantity = new BigDecimal(shipmentTableModel.getValueAt(jTable1.getSelectedRow(), 2).toString());
+            shipmentPrice = new BigDecimal(shipmentTableModel.getValueAt(jTable1.getSelectedRow(), 1).toString());
             if (!(shipmentTableModel.getValueAt(jTable1.getSelectedRow(), 3)).toString().isEmpty()) {
                 doesExpiredToggleBtn.setSelected(true);
                 setVisibleDate(true, isDateError);
                 saveDateData(false);
-                NSXDayTextField.setText(shipmentTableModel.getValueAt(jTable1.getSelectedRow(), 3).toString().substring(8, 10));
-                NSXMonthTextField.setText(shipmentTableModel.getValueAt(jTable1.getSelectedRow(), 3).toString().substring(5, 7));
-                NSXYearTextField.setText(shipmentTableModel.getValueAt(jTable1.getSelectedRow(), 3).toString().substring(0, 4));
-                HSDDayTextField.setText(shipmentTableModel.getValueAt(jTable1.getSelectedRow(), 4).toString().substring(8, 10));
-                HSDMonthTextField.setText(shipmentTableModel.getValueAt(jTable1.getSelectedRow(), 4).toString().substring(5, 7));
-                HSDYearTextField.setText(shipmentTableModel.getValueAt(jTable1.getSelectedRow(), 4).toString().substring(0, 4));
+                NSXDayTextField.setText(NSXDay = shipmentTableModel.getValueAt(jTable1.getSelectedRow(), 3).toString().substring(8, 10));
+                NSXMonthTextField.setText(NSXMonth = shipmentTableModel.getValueAt(jTable1.getSelectedRow(), 3).toString().substring(5, 7));
+                NSXYearTextField.setText(NSXYear =shipmentTableModel.getValueAt(jTable1.getSelectedRow(), 3).toString().substring(0, 4));
+                HSDDayTextField.setText(HSDDay = shipmentTableModel.getValueAt(jTable1.getSelectedRow(), 4).toString().substring(8, 10));
+                HSDMonthTextField.setText(HSDMonth = shipmentTableModel.getValueAt(jTable1.getSelectedRow(), 4).toString().substring(5, 7));
+                HSDYearTextField.setText(HSDYear = shipmentTableModel.getValueAt(jTable1.getSelectedRow(), 4).toString().substring(0, 4));
             }
         }
         deleteCheck();
