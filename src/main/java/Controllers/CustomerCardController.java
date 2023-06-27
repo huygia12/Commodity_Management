@@ -130,12 +130,12 @@ public class CustomerCardController {
         customerCard.setPoint(customerCard.getPoint().subtract(usedPoint));
     }
     
-    public void updateRank(CustomerCard customerCard, History history, Store store){
+    public void updateRank(CustomerCard customerCard, Store store){
         HistoryController hisCtr = new HistoryController();
         OrderController orderCtr = new OrderController();
         BigDecimal total = BigDecimal.ZERO;
         for (String orderID : customerCard.getIDOfBoughtOrders()) {
-            Order order = hisCtr.containOrder(orderID,history);
+            Order order = hisCtr.containOrder(orderID,store.getHistory());
             total = total.add(orderCtr.getTotal(order, store));
         }
         

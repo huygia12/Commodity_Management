@@ -103,7 +103,7 @@ public class OrderController extends GoodsListController {
         for (Goods orderGoods : order.getList()) {
             Goods repoGoods = containGoods(repoGoodsList, orderGoods.getID());
             for (Shipment orderShipment : orderGoods.getShipments()) {
-                Shipment repoShipment = goodsCtr.containShipment(repoGoods, orderShipment.getID());
+                Shipment repoShipment = goodsCtr.containShipment(repoGoods.getShipments(), orderShipment.getID());
                 BigDecimal quanBefore = repoShipment.getQuantity();
                 repoShipment.setQuantity(quanBefore.subtract(orderShipment.getQuantity()));
             }
@@ -121,7 +121,7 @@ public class OrderController extends GoodsListController {
     public int addToOrder(GoodsList<Goods> draftGoodsList, Order order, String strQuantity, String goodsID, String shipmentID) {
         int choice = 0;
         Goods addedGoods = containGoods(draftGoodsList, goodsID);
-        Shipment addedShipment = goodsCtr.containShipment(addedGoods, shipmentID);
+        Shipment addedShipment = goodsCtr.containShipment(addedGoods.getShipments(), shipmentID);
 
         BigDecimal quantity = new BigDecimal(strQuantity);
         Shipment cloneShipment = shipmentCtr.cloneShipment(addedShipment);
@@ -135,7 +135,7 @@ public class OrderController extends GoodsListController {
             order.getList().add(cloneGoods);
         } else {
             Shipment existedShipment = goodsCtr
-                    .containShipment(existedGoods, shipmentID);
+                    .containShipment(existedGoods.getShipments(), shipmentID);
             // nếu shipment đã tồn tại thì cộng số lượng vào số lượng đã có : 1
             if (existedShipment != null) {
                 existedShipment
@@ -156,17 +156,17 @@ public class OrderController extends GoodsListController {
 
     public void deleteFromOrder(GoodsList<Goods> repoGoodsList, GoodsList<Goods> draftGoodsList, Order order, String shipmentID, String goodsID) {
         Goods selectedGoods = containGoods(order, goodsID);
-        Shipment deletedShipment = goodsCtr.containShipment(selectedGoods, shipmentID);
+        Shipment deletedShipment = goodsCtr.containShipment(selectedGoods.getShipments(), shipmentID);
         selectedGoods.getShipments().remove(deletedShipment);
         if (selectedGoods.getShipments().isEmpty()) {
             order.getList().remove(selectedGoods);
         }
         // trả lại số lượng cho draftGoodsList sau khi xóa 
         BigDecimal originQuan = goodsCtr
-                .containShipment(containGoods(repoGoodsList, goodsID),
+                .containShipment(containGoods(repoGoodsList, goodsID).getShipments(),
                         shipmentID)
                 .getQuantity();
-        goodsCtr.containShipment(containGoods(draftGoodsList, goodsID),
+        goodsCtr.containShipment(containGoods(draftGoodsList, goodsID).getShipments(),
                 shipmentID)
                 .setQuantity(originQuan);
     }
@@ -174,7 +174,8 @@ public class OrderController extends GoodsListController {
     public void resetOrder(GoodsList<Goods> draftGoodsList, Order order) {
         for (Goods goods : order.getList()) {
             for (Shipment shipment : goods.getShipments()) {
-                Shipment shipmentInDraftGoodsList = goodsCtr.containShipment(containGoods(draftGoodsList, goods.getID()),
+                Shipment shipmentInDraftGoodsList = goodsCtr
+                        .containShipment(containGoods(draftGoodsList, goods.getID()).getShipments(),
                         shipment.getID());
                 BigDecimal originQuan = shipment.getQuantity().add(shipmentInDraftGoodsList.getQuantity());
                 shipmentInDraftGoodsList.setQuantity(originQuan);
@@ -203,17 +204,16 @@ public class OrderController extends GoodsListController {
         }
     }
 
-    public void payOrder(Order order, Shift shift, 
-            GoodsList<Goods> repository, Store store, History history) {
+    public void payOrder(Order order,Shift shift, Store store) {
         CustomerCard card = order.getCustomerCard();
         if (card != null) {
             cardCtr.gainPoint(card, getTotal(order, store), store);
             cardCtr.usePoint(card, order.getPointDiscount());
-            cardCtr.updateRank(card, history, store);
+            cardCtr.updateRank(card, store);
             card.getIDOfBoughtOrders().add(order.getID());
         }
         order.setOrderDateTime();
         shift.getOrderHisPerShift().add(order);
-        updateQuanAfterPay(repository, order);
+        updateQuanAfterPay(store.getRepository(), order);
     }
 }

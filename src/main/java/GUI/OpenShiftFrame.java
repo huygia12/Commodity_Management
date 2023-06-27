@@ -10,8 +10,8 @@ import Controllers.ShiftController;
 import Models.Employee;
 import Models.EmployeeList;
 import Models.Shift;
+import Models.Store;
 import Ultility.Cautions;
-import Ultility.IDGenerator;
 import java.awt.event.KeyEvent;
 import java.math.BigDecimal;
 import javax.swing.ImageIcon;
@@ -31,6 +31,7 @@ public class OpenShiftFrame extends javax.swing.JFrame {
      */
     public OpenShiftFrame() {
         initComponents();
+        initVariables();
         setUp();
     }
 
@@ -64,9 +65,7 @@ public class OpenShiftFrame extends javax.swing.JFrame {
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Mở Ca Làm Việc");
-        setMaximumSize(new java.awt.Dimension(530, 400));
         setMinimumSize(new java.awt.Dimension(530, 400));
-        setPreferredSize(new java.awt.Dimension(530, 400));
         setResizable(false);
 
         openBalanceLabel.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
@@ -328,7 +327,7 @@ public class OpenShiftFrame extends javax.swing.JFrame {
             }
 
             String phoneNum = employeeListTable.getValueAt(selectedRow, 3).toString();
-            Employee employee = employeeListCtr.containEmployee(employeeList, phoneNum,
+            Employee employee = employeeListCtr.containEmployee(store.getEmployeeList(), phoneNum,
                     employeeListCtr.BY_PHONE_NUMBER);
             Employee employeeInShift = employeeListCtr.containEmployee(shiftEmployeeList, phoneNum, 
                     employeeListCtr.BY_PHONE_NUMBER);
@@ -473,12 +472,14 @@ public class OpenShiftFrame extends javax.swing.JFrame {
             if (employeeListCtr.containEmployee(shiftEmployeeList,
                     phoneNum, employeeListCtr.BY_PHONE_NUMBER) == null) {
 
-                Employee e = employeeListCtr.containEmployee(employeeList,
+                Employee e = employeeListCtr.containEmployee(store.getEmployeeList(),
                         phoneNum,
                         employeeListCtr.BY_PHONE_NUMBER);
                 shiftEmployeeList.getList().add(e);
                 shiftEmployeeListComboBox.addItem(e.toString());
                 passValueToEmployeeListComboBox();
+            }else{
+                showWarningJOptionPane(ALREADY_IN_EMPLOYEELIST_WARNING);
             }
         } else {
             JOptionPane.showMessageDialog(this, NOTHING_CHOOSEN_FROM_TABLE_WARNING,
@@ -501,11 +502,11 @@ public class OpenShiftFrame extends javax.swing.JFrame {
                     "Lỗi", JOptionPane.WARNING_MESSAGE);
             return;
         } else {
-            shiftCtr.openShiftForGUI(shift, iDGenerator, shiftTax,
+            shiftCtr.openShiftForGUI(store, shift, shiftTax,
                     shiftOpenBalance, shiftCashier,
                     shiftEmployeeList, noteArea.getText());
         }
-        shiftPanel.reload();
+        shiftPanel.reload(shift);
         this.dispose();
     }//GEN-LAST:event_acceptBtnActionPerformed
 
@@ -534,6 +535,7 @@ public class OpenShiftFrame extends javax.swing.JFrame {
         } catch (javax.swing.UnsupportedLookAndFeelException ex) {
             java.util.logging.Logger.getLogger(OpenShiftFrame.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
+        //</editor-fold>
         //</editor-fold>
 
         /* Create and display the form */
@@ -598,7 +600,7 @@ public class OpenShiftFrame extends javax.swing.JFrame {
     }
 
     private void computeSizeOfEachColumnInEmployeeListTable() {
-        for (Employee e : employeeList.getList()) {
+        for (Employee e : store.getEmployeeList().getList()) {
             if (e.getFirstName().length() + extraLength > employeeFirstNameMaxSize) {
                 employeeFirstNameMaxSize = e.getFirstName().length() + extraLength;
             }
@@ -627,7 +629,7 @@ public class OpenShiftFrame extends javax.swing.JFrame {
     
     private void insertEmployeeToEmployeeListTable() {
         clearTableModel(employeeListModel);
-        employeeList.getList().stream().forEach(e -> employeeListModel.addRow(new Object[]{
+        store.getEmployeeList().getList().stream().forEach(e -> employeeListModel.addRow(new Object[]{
             e.getFirstName(),
             e.getLastName(),
             e.getGender(),
@@ -661,16 +663,15 @@ public class OpenShiftFrame extends javax.swing.JFrame {
         taxTextField.setText(shiftTax+"");
         passValueToCashierComboBox();
         passValueToEmployeeListComboBox();
+        computeSizeOfEachColumnInEmployeeListTable();
+        insertEmployeeToEmployeeListTable();
     }
 
-    private void initVariables(EmployeeList employeeList) {
-        this.employeeList = employeeList;
+    private void initVariables() {
         // Table
         employeeListModel = (DefaultTableModel) employeeListTable.getModel();
         employeeListScrollPane.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
         employeeListScrollPane.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
-        computeSizeOfEachColumnInEmployeeListTable();
-        insertEmployeeToEmployeeListTable();
         // 
         noteScrollPane.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
         noteScrollPane.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_NEVER);
@@ -678,24 +679,23 @@ public class OpenShiftFrame extends javax.swing.JFrame {
         employeeListCtr = new EmployeeListController();
         shiftCtr = new ShiftController();
         ctions = new Cautions();
-        reload();
+        store = new Store();
     }
 
-    public void passData(EmployeeList employeeList, Shift shift,
-            IDGenerator iDGenerator, ShiftPanel shiftPanel) {
-        this.employeeList = employeeList;
-        this.iDGenerator = iDGenerator;
-        this.shift = shift;
+    public void passData(Store store, Shift shift, ShiftPanel shiftPanel) {
         this.shiftPanel = shiftPanel;
-        initVariables(employeeList);
+        this.store = store;
+        this.shift = shift;
     }
 
+    private Shift shift;
     private boolean checkOpenBalance = false;
     private boolean checkTax = false;
     private BigDecimal shiftOpenBalance;
     private int shiftTax;
     private EmployeeList shiftEmployeeList;
     private Employee shiftCashier;
+    private Store store;
     private EmployeeListController employeeListCtr;
     private ShiftController shiftCtr;
     private final int extraLength = 100;
@@ -704,9 +704,6 @@ public class OpenShiftFrame extends javax.swing.JFrame {
     private int employeeGenderMaxSize = "Gioi tinh".length();
     private int employeePhoneNumMaxSize = "SDT".length();
     private ShiftPanel shiftPanel;
-    private Shift shift;
-    private EmployeeList employeeList;
-    private IDGenerator iDGenerator;
     private DefaultTableModel employeeListModel;
     private Cautions ctions;
     private final String CASHIER_NOT_SELECTED_WARNING = "Thực hiện chọn thu ngân ca!";

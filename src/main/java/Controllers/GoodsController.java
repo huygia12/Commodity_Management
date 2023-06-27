@@ -11,6 +11,7 @@ import Ultility.Cautions;
 import View.GoodsView;
 import java.math.BigDecimal;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Scanner;
 
 /**
@@ -75,9 +76,9 @@ public class GoodsController {
         return -1;
     }
 
-    public Shipment containShipment(Goods goods, String shipmentID) {
+    public<T extends Shipment> T containShipment(List<T> shipmentList, String shipmentID) {
         // tra ve mot shipment voi tham so dau vao la id cua shipment do
-        for (Shipment tmpShipment : goods.getShipments()) {
+        for (T tmpShipment : shipmentList) {
             if (tmpShipment.getID().equals(shipmentID)) {
                 return tmpShipment;
             }

@@ -14,7 +14,6 @@ import Models.History;
 import Models.Order;
 import Models.Shift;
 import Models.SoldGoods;
-import Models.StaticalItems;
 import java.math.BigDecimal;
 import java.time.DateTimeException;
 import java.time.LocalDate;
@@ -34,7 +33,7 @@ public class HistoryView {
     final EmployeeListController employeeListCtr = new EmployeeListController();
     final ShiftController shiftCtr = new ShiftController();
     final String DATE_FORMAT = "dd/MM/yyyy";
-    final String DATE_TIME_FORMAT = "dd/MM/yyyy hh:mm:ss";
+    final String DATE_TIME_FORMAT = "dd/MM/yyyy HH:mm:ss";
     private int orderIDMaxSize;
     private int orderDateTimeMaxSize;
     private int totalMaxSize;
@@ -268,44 +267,6 @@ public class HistoryView {
 //        System.out.printf("%s: %.1f\n", "Total", orderCtr.getTotal(order));
     }
 
-    public void showAnShiftInDetail(Shift shift) {
-        String openTime = shift.getOpenTime().toString();
-        String endTime = shift.getEndTime().toString();
-        if (openTime == null) {
-            openTime = "";
-        }
-        if (endTime == null) {
-            endTime = "";
-        }
-        System.out.println("");
-        System.out.printf("%10s%8s\n", "SHIFT ID: ", shift.getID());
-        System.out.printf("%s: %-20s\n", "Open Date&Time", shift.getOpenTime());
-        System.out.printf("%s: %-20s\n", "End Date&Time", shift.getEndTime());
-        System.out.printf("%s: %-20s\n", "Cashier", shift.getCashier().getFirstName()+" "+shift.getCashier().getLastName());
-        System.out.printf("%s: %-20.1f\n", "Opening Balance", shift.getOpeningBalance());
-        System.out.printf("%s: %-20.1f\n", "Gross revenue", shiftCtr.getGrossRevenue(shift));
-        System.out.printf("%s: %-20.1f\n", "Total direct discount", shiftCtr.getTotalDiscountMoney(shift));
-//        System.out.printf("%s: %-20.1f\n", "Total point discount", shiftCtr.getTotalPointDiscount(shift));
-//        System.out.printf("%s: %-20s\n", "VAT", shift.getTax() + "%");
-//        System.out.printf("%s: %-20.1f\n", "Surcharge during Shift", shift.getSurcharge());
-//        System.out.printf("%s: %-20.1f\n", "Net Revenue", shiftCtr.getNetRevenue(shift));
-//        System.out.printf("%s: %-20s\n", "Number of Order", shiftCtr.getNumberOfOrder(shift));
-//        System.out.printf("%s: %-20.1f\n", "Average per Order", shiftCtr.getAveragePerOrder(shift));
-//        System.out.println("OPTIONS PAYMENT:");
-//        System.out.printf("%s: %-20.1f\n", "+Cash", shiftCtr.getTotalPaymentByCash(shift));
-//        System.out.printf("%s: %-20.1f\n", "+Wire transfer", shiftCtr.getTotalPaymentByWireTransfer(shift));
-//        System.out.printf("%s: %-20.1f\n", "+Current CashBox money", shiftCtr.getTotalPaymentByCash(shift)
-//                .add(shift.getOpeningBalance()));
-        System.out.println(String.format("%5s", "CONSUMPTIONS:"));
-        System.out.println(String.format("%-20s" + " | " + "%-20s" + " | " + "%-20s" + " | " + "%-20s",
-                "Goods Name", "Quantity", "Revenue", "Ratio"));
-        List<StaticalItems> staticalItemsList = new ArrayList<>(shiftCtr.getStaticalList(shift).values());
-        staticalItemsList.stream().forEach(x -> System.out.println(String.format("%-20s" + " | " + "%-20.1f" + " | " + "%-20.1f" + " | " + "%-20s",
-                x.getName(), x.getQuantity(), x.getRevenue(), String.format("%.1f", x.getRatio())+"%")));
-        employeeListCtr.getView().showList(shift.getEmployeeOfThisShift());
-    }
-
-    //
     public CustomPair typeInFromToDate() {
         String inputStr;
         LocalDate fromDate = null, toDate = null;

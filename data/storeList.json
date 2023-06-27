@@ -20,7 +20,7 @@
       "v": 3.0
     },
     "diamondDiscountOffer": {
-      "k": 30000000,
+      "k": 20000000,
       "v": 4.0
     },
     "shift": {
@@ -37,7 +37,7 @@
       "cardList": [
         {
           "ID": "000000",
-          "point": 100,
+          "point": 2,
           "customer": {
             "firstName": "Nguyen Duc",
             "lastName": "Anh",
@@ -46,8 +46,10 @@
             "age": 20,
             "gender": "MALE"
           },
-          "IDOfBoughtOrders": [],
-          "rank": "SILVER"
+          "IDOfBoughtOrders": [
+            "000008"
+          ],
+          "rank": "BRONZE"
         },
         {
           "ID": "000001",
@@ -158,13 +160,574 @@
       ]
     },
     "history": {
-      "shiftHistory": []
+      "shiftHistory": [
+        {
+          "openDateTime": "26/06/2023 02:40:58",
+          "endDateTime": "26/06/2023 02:42:48",
+          "openingBalance": 0,
+          "surCharge": 0.0,
+          "cashier": {
+            "salaryPerDay": 23000,
+            "CCCD": "3553646623",
+            "IDOfOrdersInCharge": [],
+            "stt": 0,
+            "firstName": "Vu Hung",
+            "lastName": "Tung",
+            "phoneNumber": "0905737293",
+            "address": "AeonMall HaDong",
+            "age": 16,
+            "gender": "MALE"
+          },
+          "ID": "000000",
+          "VAT": 0,
+          "orderHisPerShift": [
+            {
+              "orderDateTime": "26/06/2023 02:41:07",
+              "ID": "000000",
+              "VAT": 0,
+              "cusMoney": 0.0,
+              "discount": 0,
+              "paymentOptions": "OTHER_PAYMENT",
+              "pointDiscount": 0,
+              "cashier": {
+                "salaryPerDay": 23000,
+                "CCCD": "3553646623",
+                "IDOfOrdersInCharge": [],
+                "stt": 0,
+                "firstName": "Vu Hung",
+                "lastName": "Tung",
+                "phoneNumber": "0905737293",
+                "address": "AeonMall HaDong",
+                "age": 16,
+                "gender": "MALE"
+              },
+              "shippingFee": 0.0,
+              "myGoodsList": [
+                {
+                  "id": "000001",
+                  "goodsName": "Cup Cake",
+                  "manufacture": "TuyenIndustry",
+                  "totalQuantity": 1,
+                  "shipments": [
+                    {
+                      "quantity": 1,
+                      "importPrice": 4000,
+                      "id": "00000004",
+                      "nsx": "15/3/2023",
+                      "hsd": "16/11/2023",
+                      "importedDate": "25/3/2023"
+                    }
+                  ],
+                  "unit": "Cái",
+                  "listPrice": 8000
+                }
+              ]
+            },
+            {
+              "orderDateTime": "26/06/2023 02:41:23",
+              "ID": "000001",
+              "VAT": 0,
+              "cusMoney": 0,
+              "discount": 0,
+              "paymentOptions": "OTHER_PAYMENT",
+              "pointDiscount": 0,
+              "cashier": {
+                "salaryPerDay": 23000,
+                "CCCD": "3553646623",
+                "IDOfOrdersInCharge": [],
+                "stt": 0,
+                "firstName": "Vu Hung",
+                "lastName": "Tung",
+                "phoneNumber": "0905737293",
+                "address": "AeonMall HaDong",
+                "age": 16,
+                "gender": "MALE"
+              },
+              "shippingFee": 0.0,
+              "myGoodsList": [
+                {
+                  "id": "000001",
+                  "goodsName": "Cup Cake",
+                  "manufacture": "TuyenIndustry",
+                  "totalQuantity": 1,
+                  "shipments": [
+                    {
+                      "quantity": 1,
+                      "importPrice": 4000,
+                      "id": "00000004",
+                      "nsx": "15/3/2023",
+                      "hsd": "16/11/2023",
+                      "importedDate": "25/3/2023"
+                    }
+                  ],
+                  "unit": "Cái",
+                  "listPrice": 8000
+                },
+                {
+                  "id": "000004",
+                  "goodsName": "Strawberry ice-cream",
+                  "manufacture": "Kem cacao",
+                  "totalQuantity": 2,
+                  "shipments": [
+                    {
+                      "quantity": 2,
+                      "importPrice": 3800,
+                      "id": "00000014",
+                      "nsx": "17/3/2023",
+                      "hsd": "18/11/2023",
+                      "importedDate": "14/4/2023"
+                    }
+                  ],
+                  "unit": "Que",
+                  "listPrice": 9000
+                }
+              ]
+            },
+            {
+              "orderDateTime": "26/06/2023 02:41:31",
+              "ID": "000002",
+              "VAT": 0,
+              "cusMoney": 0,
+              "discount": 0,
+              "paymentOptions": "OTHER_PAYMENT",
+              "pointDiscount": 0,
+              "cashier": {
+                "salaryPerDay": 23000,
+                "CCCD": "3553646623",
+                "IDOfOrdersInCharge": [],
+                "stt": 0,
+                "firstName": "Vu Hung",
+                "lastName": "Tung",
+                "phoneNumber": "0905737293",
+                "address": "AeonMall HaDong",
+                "age": 16,
+                "gender": "MALE"
+              },
+              "shippingFee": 0.0,
+              "myGoodsList": [
+                {
+                  "id": "000001",
+                  "goodsName": "Cup Cake",
+                  "manufacture": "TuyenIndustry",
+                  "totalQuantity": 1,
+                  "shipments": [
+                    {
+                      "quantity": 1,
+                      "importPrice": 3000,
+                      "id": "00000003",
+                      "nsx": "13/3/2023",
+                      "hsd": "14/11/2023",
+                      "importedDate": "20/3/2023"
+                    }
+                  ],
+                  "unit": "Cái",
+                  "listPrice": 8000
+                }
+              ]
+            },
+            {
+              "orderDateTime": "26/06/2023 02:41:37",
+              "ID": "000003",
+              "VAT": 0,
+              "cusMoney": 0,
+              "discount": 0,
+              "paymentOptions": "OTHER_PAYMENT",
+              "pointDiscount": 0,
+              "cashier": {
+                "salaryPerDay": 23000,
+                "CCCD": "3553646623",
+                "IDOfOrdersInCharge": [],
+                "stt": 0,
+                "firstName": "Vu Hung",
+                "lastName": "Tung",
+                "phoneNumber": "0905737293",
+                "address": "AeonMall HaDong",
+                "age": 16,
+                "gender": "MALE"
+              },
+              "shippingFee": 0.0,
+              "myGoodsList": [
+                {
+                  "id": "000004",
+                  "goodsName": "Strawberry ice-cream",
+                  "manufacture": "Kem cacao",
+                  "totalQuantity": 1,
+                  "shipments": [
+                    {
+                      "quantity": 1,
+                      "importPrice": 3800,
+                      "id": "00000014",
+                      "nsx": "17/3/2023",
+                      "hsd": "18/11/2023",
+                      "importedDate": "14/4/2023"
+                    }
+                  ],
+                  "unit": "Que",
+                  "listPrice": 9000
+                }
+              ]
+            },
+            {
+              "orderDateTime": "26/06/2023 02:41:42",
+              "ID": "000004",
+              "VAT": 0,
+              "cusMoney": 0.0,
+              "discount": 0,
+              "paymentOptions": "OTHER_PAYMENT",
+              "pointDiscount": 0,
+              "cashier": {
+                "salaryPerDay": 23000,
+                "CCCD": "3553646623",
+                "IDOfOrdersInCharge": [],
+                "stt": 0,
+                "firstName": "Vu Hung",
+                "lastName": "Tung",
+                "phoneNumber": "0905737293",
+                "address": "AeonMall HaDong",
+                "age": 16,
+                "gender": "MALE"
+              },
+              "shippingFee": 0.0,
+              "myGoodsList": [
+                {
+                  "id": "000006",
+                  "goodsName": "Lemon Soda",
+                  "manufacture": "Kem cacao",
+                  "totalQuantity": 1,
+                  "shipments": [
+                    {
+                      "quantity": 1,
+                      "importPrice": 4300,
+                      "id": "00000019",
+                      "nsx": "15/3/2023",
+                      "hsd": "16/11/2023",
+                      "importedDate": "25/3/2023"
+                    }
+                  ],
+                  "unit": "Lon",
+                  "listPrice": 8000
+                }
+              ]
+            },
+            {
+              "orderDateTime": "26/06/2023 02:41:50",
+              "ID": "000005",
+              "VAT": 0,
+              "cusMoney": 0.0,
+              "discount": 0,
+              "paymentOptions": "OTHER_PAYMENT",
+              "pointDiscount": 0,
+              "cashier": {
+                "salaryPerDay": 23000,
+                "CCCD": "3553646623",
+                "IDOfOrdersInCharge": [],
+                "stt": 0,
+                "firstName": "Vu Hung",
+                "lastName": "Tung",
+                "phoneNumber": "0905737293",
+                "address": "AeonMall HaDong",
+                "age": 16,
+                "gender": "MALE"
+              },
+              "shippingFee": 0.0,
+              "myGoodsList": [
+                {
+                  "id": "000005",
+                  "goodsName": "Paddle pop",
+                  "manufacture": "Kem cacao",
+                  "totalQuantity": 1,
+                  "shipments": [
+                    {
+                      "quantity": 1,
+                      "importPrice": 2200,
+                      "id": "00000017",
+                      "nsx": "17/3/2023",
+                      "hsd": "18/11/2023",
+                      "importedDate": "14/4/2023"
+                    }
+                  ],
+                  "unit": "Que",
+                  "listPrice": 5000
+                }
+              ]
+            }
+          ],
+          "employeeOfThisShift": {
+            "": [
+              {
+                "salaryPerDay": 22000,
+                "CCCD": "2223666611",
+                "IDOfOrdersInCharge": [],
+                "stt": 0,
+                "firstName": "Nguyen Gia",
+                "lastName": "Huy",
+                "phoneNumber": "0705737293",
+                "address": "so10-Ngo2-YenPhuc-PhucLa-HaDong",
+                "age": 19,
+                "gender": "MALE"
+              }
+            ]
+          },
+          "state": "CLOSED",
+          "note": ""
+        },
+        {
+          "openDateTime": "26/06/2023 02:43:08",
+          "endDateTime": "26/06/2023 02:53:34",
+          "openingBalance": 0,
+          "surCharge": 0.0,
+          "cashier": {
+            "salaryPerDay": 25000,
+            "CCCD": "3957577777",
+            "IDOfOrdersInCharge": [],
+            "stt": 0,
+            "firstName": "Nguyen Thao",
+            "lastName": "Chi",
+            "phoneNumber": "0505737293",
+            "address": "141-ChienThang-TanTrieu",
+            "age": 20,
+            "gender": "FEMALE"
+          },
+          "ID": "000001",
+          "VAT": 0,
+          "orderHisPerShift": [
+            {
+              "orderDateTime": "26/06/2023 02:43:38",
+              "ID": "000006",
+              "VAT": 0,
+              "cusMoney": 0.0,
+              "discount": 0,
+              "paymentOptions": "OTHER_PAYMENT",
+              "pointDiscount": 0,
+              "cashier": {
+                "salaryPerDay": 23000,
+                "CCCD": "3553646623",
+                "IDOfOrdersInCharge": [],
+                "stt": 0,
+                "firstName": "Vu Hung",
+                "lastName": "Tung",
+                "phoneNumber": "0905737293",
+                "address": "AeonMall HaDong",
+                "age": 16,
+                "gender": "MALE"
+              },
+              "shippingFee": 0.0,
+              "myGoodsList": [
+                {
+                  "id": "000001",
+                  "goodsName": "Cup Cake",
+                  "manufacture": "TuyenIndustry",
+                  "totalQuantity": 1,
+                  "shipments": [
+                    {
+                      "quantity": 1,
+                      "importPrice": 3000,
+                      "id": "00000003",
+                      "nsx": "13/3/2023",
+                      "hsd": "14/11/2023",
+                      "importedDate": "20/3/2023"
+                    }
+                  ],
+                  "unit": "Cái",
+                  "listPrice": 8000
+                },
+                {
+                  "id": "000005",
+                  "goodsName": "Paddle pop",
+                  "manufacture": "Kem cacao",
+                  "totalQuantity": 1,
+                  "shipments": [
+                    {
+                      "quantity": 1,
+                      "importPrice": 2500,
+                      "id": "00000015",
+                      "nsx": "13/3/2023",
+                      "hsd": "14/11/2023",
+                      "importedDate": "20/3/2023"
+                    }
+                  ],
+                  "unit": "Que",
+                  "listPrice": 5000
+                }
+              ]
+            },
+            {
+              "orderDateTime": "26/06/2023 02:43:46",
+              "ID": "000007",
+              "VAT": 0,
+              "cusMoney": 0.0,
+              "discount": 0,
+              "paymentOptions": "OTHER_PAYMENT",
+              "pointDiscount": 0,
+              "cashier": {
+                "salaryPerDay": 25000,
+                "CCCD": "3957577777",
+                "IDOfOrdersInCharge": [],
+                "stt": 0,
+                "firstName": "Nguyen Thao",
+                "lastName": "Chi",
+                "phoneNumber": "0505737293",
+                "address": "141-ChienThang-TanTrieu",
+                "age": 20,
+                "gender": "FEMALE"
+              },
+              "shippingFee": 0.0,
+              "myGoodsList": [
+                {
+                  "id": "000004",
+                  "goodsName": "Strawberry ice-cream",
+                  "manufacture": "Kem cacao",
+                  "totalQuantity": 2,
+                  "shipments": [
+                    {
+                      "quantity": 1,
+                      "importPrice": 4700,
+                      "id": "00000013",
+                      "nsx": "15/3/2023",
+                      "hsd": "16/11/2023",
+                      "importedDate": "25/3/2023"
+                    },
+                    {
+                      "quantity": 1,
+                      "importPrice": 3800,
+                      "id": "00000014",
+                      "nsx": "17/3/2023",
+                      "hsd": "18/11/2023",
+                      "importedDate": "14/4/2023"
+                    }
+                  ],
+                  "unit": "Que",
+                  "listPrice": 9000
+                }
+              ]
+            }
+          ],
+          "employeeOfThisShift": {
+            "": [
+              {
+                "salaryPerDay": 20000,
+                "CCCD": "2727495500",
+                "IDOfOrdersInCharge": [],
+                "stt": 0,
+                "firstName": "Tran Luu",
+                "lastName": "Dung",
+                "phoneNumber": "0903737293",
+                "address": "Vinhome Riverside",
+                "age": 19,
+                "gender": "OTHER"
+              }
+            ]
+          },
+          "state": "CLOSED",
+          "note": "ca nhơ đổ rác"
+        },
+        {
+          "openDateTime": "26/06/2023 02:53:42",
+          "openingBalance": 0,
+          "surCharge": 0,
+          "cashier": {
+            "salaryPerDay": 22000,
+            "CCCD": "7337593977",
+            "IDOfOrdersInCharge": [],
+            "stt": 0,
+            "firstName": "Dao Van",
+            "lastName": "Tuyen",
+            "phoneNumber": "0805737293",
+            "address": "220-TrieuKhuc-TanTrieu-ThanhTri",
+            "age": 20,
+            "gender": "MALE"
+          },
+          "ID": "000002",
+          "VAT": 0,
+          "orderHisPerShift": [
+            {
+              "orderDateTime": "26/06/2023 08:40:40",
+              "ID": "000008",
+              "VAT": 0,
+              "cusMoney": 40000.0,
+              "discount": 0,
+              "paymentOptions": "CASH_PAYMENT",
+              "customerCard": {
+                "ID": "000000",
+                "point": 2,
+                "customer": {
+                  "firstName": "Nguyen Duc",
+                  "lastName": "Anh",
+                  "phoneNumber": "0975268264",
+                  "address": "34 Nguyen Du",
+                  "age": 20,
+                  "gender": "MALE"
+                },
+                "IDOfBoughtOrders": [
+                  "000008"
+                ],
+                "rank": "BRONZE"
+              },
+              "pointDiscount": 100,
+              "cashier": {
+                "salaryPerDay": 22000,
+                "CCCD": "7337593977",
+                "IDOfOrdersInCharge": [],
+                "stt": 0,
+                "firstName": "Dao Van",
+                "lastName": "Tuyen",
+                "phoneNumber": "0805737293",
+                "address": "220-TrieuKhuc-TanTrieu-ThanhTri",
+                "age": 20,
+                "gender": "MALE"
+              },
+              "shippingFee": 10000.0,
+              "myGoodsList": [
+                {
+                  "id": "000000",
+                  "goodsName": "Custard Cake",
+                  "manufacture": "TuyenIndustry",
+                  "totalQuantity": 1,
+                  "shipments": [
+                    {
+                      "quantity": 1,
+                      "importPrice": 19000,
+                      "id": "00000001",
+                      "nsx": "15/3/2023",
+                      "hsd": "16/11/2023",
+                      "importedDate": "25/3/2023"
+                    }
+                  ],
+                  "unit": "Hộp",
+                  "listPrice": 30000
+                }
+              ]
+            }
+          ],
+          "employeeOfThisShift": {
+            "": [
+              {
+                "salaryPerDay": 20000,
+                "CCCD": "2727495500",
+                "IDOfOrdersInCharge": [],
+                "stt": 0,
+                "firstName": "Tran Luu",
+                "lastName": "Dung",
+                "phoneNumber": "0903737293",
+                "address": "Vinhome Riverside",
+                "age": 19,
+                "gender": "OTHER"
+              }
+            ]
+          },
+          "state": "OPENED",
+          "note": ""
+        }
+      ],
+      "importHistory": []
     },
     "iDGenerator": {
       "bucket": {
         "Models.CustomerCard": 3,
         "Models.Shipment": 47,
-        "Models.Goods": 15
+        "Models.Goods": 15,
+        "Models.Shift": 2,
+        "Models.Order": 7
       }
     },
     "settings": {
@@ -178,12 +741,10 @@
     "repository": {
       "myGoodsList": [
         {
-          "goodsName": "Custard Cake",
           "id": "000000",
+          "goodsName": "Custard Cake",
           "manufacture": "TuyenIndustry",
-          "unit": "Hộp",
-          "listPrice": 30000,
-          "totalQuantity": 0,
+          "totalQuantity": 30059,
           "shipments": [
             {
               "quantity": 20,
@@ -194,7 +755,7 @@
               "importedDate": "20/3/2023"
             },
             {
-              "quantity": 40,
+              "quantity": 39,
               "importPrice": 19000,
               "id": "00000001",
               "nsx": "15/3/2023",
@@ -209,18 +770,18 @@
               "hsd": "18/11/2023",
               "importedDate": "14/11/2023"
             }
-          ]
+          ],
+          "unit": "Hộp",
+          "listPrice": 30000
         },
         {
-          "goodsName": "Cup Cake",
           "id": "000001",
+          "goodsName": "Cup Cake",
           "manufacture": "TuyenIndustry",
-          "unit": "Cái",
-          "listPrice": 8000,
-          "totalQuantity": 0,
+          "totalQuantity": 76,
           "shipments": [
             {
-              "quantity": 50,
+              "quantity": 48,
               "importPrice": 3000,
               "id": "00000003",
               "nsx": "13/3/2023",
@@ -228,7 +789,7 @@
               "importedDate": "20/3/2023"
             },
             {
-              "quantity": 20,
+              "quantity": 18,
               "importPrice": 4000,
               "id": "00000004",
               "nsx": "15/3/2023",
@@ -243,15 +804,15 @@
               "hsd": "18/11/2023",
               "importedDate": "14/4/2023"
             }
-          ]
+          ],
+          "unit": "Cái",
+          "listPrice": 8000
         },
         {
-          "goodsName": "Donut",
           "id": "000002",
+          "goodsName": "Donut",
           "manufacture": "TuyenIndustry",
-          "unit": "Cái",
-          "listPrice": 12000,
-          "totalQuantity": 0,
+          "totalQuantity": 86,
           "shipments": [
             {
               "quantity": 35,
@@ -277,15 +838,15 @@
               "hsd": "18/11/2023",
               "importedDate": "14/4/2023"
             }
-          ]
+          ],
+          "unit": "Cái",
+          "listPrice": 12000
         },
         {
-          "goodsName": "Flan",
           "id": "000003",
+          "goodsName": "Flan",
           "manufacture": "Kem cacao",
-          "unit": "Hộp",
-          "listPrice": 5000,
-          "totalQuantity": 0,
+          "totalQuantity": 134,
           "shipments": [
             {
               "quantity": 50,
@@ -311,15 +872,15 @@
               "hsd": "18/11/2023",
               "importedDate": "14/4/2023"
             }
-          ]
+          ],
+          "unit": "Hộp",
+          "listPrice": 5000
         },
         {
-          "goodsName": "Strawberry ice-cream",
           "id": "000004",
+          "goodsName": "Strawberry ice-cream",
           "manufacture": "Kem cacao",
-          "unit": "Que",
-          "listPrice": 9000,
-          "totalQuantity": 0,
+          "totalQuantity": 128,
           "shipments": [
             {
               "quantity": 56,
@@ -330,7 +891,7 @@
               "importedDate": "20/3/2023"
             },
             {
-              "quantity": 44,
+              "quantity": 43,
               "importPrice": 4700,
               "id": "00000013",
               "nsx": "15/3/2023",
@@ -338,25 +899,25 @@
               "importedDate": "25/3/2023"
             },
             {
-              "quantity": 33,
+              "quantity": 29,
               "importPrice": 3800,
               "id": "00000014",
               "nsx": "17/3/2023",
               "hsd": "18/11/2023",
               "importedDate": "14/4/2023"
             }
-          ]
+          ],
+          "unit": "Que",
+          "listPrice": 9000
         },
         {
-          "goodsName": "Paddle pop",
           "id": "000005",
+          "goodsName": "Paddle pop",
           "manufacture": "Kem cacao",
-          "unit": "Que",
-          "listPrice": 5000,
-          "totalQuantity": 0,
+          "totalQuantity": 134,
           "shipments": [
             {
-              "quantity": 22,
+              "quantity": 21,
               "importPrice": 2500,
               "id": "00000015",
               "nsx": "13/3/2023",
@@ -372,22 +933,22 @@
               "importedDate": "25/3/2023"
             },
             {
-              "quantity": 68,
+              "quantity": 67,
               "importPrice": 2200,
               "id": "00000017",
               "nsx": "17/3/2023",
               "hsd": "18/11/2023",
               "importedDate": "14/4/2023"
             }
-          ]
+          ],
+          "unit": "Que",
+          "listPrice": 5000
         },
         {
-          "goodsName": "Lemon Soda",
           "id": "000006",
+          "goodsName": "Lemon Soda",
           "manufacture": "Kem cacao",
-          "unit": "Lon",
-          "listPrice": 8000,
-          "totalQuantity": 0,
+          "totalQuantity": 132,
           "shipments": [
             {
               "quantity": 42,
@@ -398,7 +959,7 @@
               "importedDate": "20/3/2023"
             },
             {
-              "quantity": 65,
+              "quantity": 64,
               "importPrice": 4300,
               "id": "00000019",
               "nsx": "15/3/2023",
@@ -413,15 +974,15 @@
               "hsd": "18/11/2023",
               "importedDate": "14/4/2023"
             }
-          ]
+          ],
+          "unit": "Lon",
+          "listPrice": 8000
         },
         {
-          "goodsName": "Ruler",
           "id": "000007",
+          "goodsName": "Ruler",
           "manufacture": "HuyStationery",
-          "unit": "Cái",
-          "listPrice": 3000,
-          "totalQuantity": 0,
+          "totalQuantity": 198,
           "shipments": [
             {
               "quantity": 33,
@@ -447,15 +1008,15 @@
               "hsd": "18/10/2025",
               "importedDate": "14/4/2023"
             }
-          ]
+          ],
+          "unit": "Cái",
+          "listPrice": 3000
         },
         {
-          "goodsName": "Pencil",
           "id": "000008",
+          "goodsName": "Pencil",
           "manufacture": "HuyStationery",
-          "unit": "Cái",
-          "listPrice": 2000,
-          "totalQuantity": 0,
+          "totalQuantity": 73,
           "shipments": [
             {
               "quantity": 13,
@@ -481,15 +1042,15 @@
               "hsd": "18/10/2025",
               "importedDate": "14/4/2023"
             }
-          ]
+          ],
+          "unit": "Cái",
+          "listPrice": 2000
         },
         {
-          "goodsName": "Rubber",
           "id": "000009",
+          "goodsName": "Rubber",
           "manufacture": "HuyStationery",
-          "unit": "Cái",
-          "listPrice": 2000,
-          "totalQuantity": 0,
+          "totalQuantity": 76,
           "shipments": [
             {
               "quantity": 15,
@@ -515,15 +1076,15 @@
               "hsd": "18/10/2025",
               "importedDate": "14/4/2023"
             }
-          ]
+          ],
+          "unit": "Cái",
+          "listPrice": 2000
         },
         {
-          "goodsName": "Note",
           "id": "000010",
+          "goodsName": "Note",
           "manufacture": "HuyStationery",
-          "unit": "Quyển",
-          "listPrice": 7000,
-          "totalQuantity": 0,
+          "totalQuantity": 79,
           "shipments": [
             {
               "quantity": 42,
@@ -549,15 +1110,15 @@
               "hsd": "18/10/2025",
               "importedDate": "14/4/2023"
             }
-          ]
+          ],
+          "unit": "Quyển",
+          "listPrice": 7000
         },
         {
-          "goodsName": "Sugar",
           "id": "000011",
+          "goodsName": "Sugar",
           "manufacture": "CookWithTung",
-          "unit": "Gói",
-          "listPrice": 22000,
-          "totalQuantity": 0,
+          "totalQuantity": 60,
           "shipments": [
             {
               "quantity": 15,
@@ -583,15 +1144,15 @@
               "hsd": "18/3/2024",
               "importedDate": "14/4/2023"
             }
-          ]
+          ],
+          "unit": "Gói",
+          "listPrice": 22000
         },
         {
-          "goodsName": "Cooking oil",
           "id": "000012",
+          "goodsName": "Cooking oil",
           "manufacture": "CookWithTung",
-          "unit": "Chai",
-          "listPrice": 48000,
-          "totalQuantity": 0,
+          "totalQuantity": 96,
           "shipments": [
             {
               "quantity": 32,
@@ -617,15 +1178,15 @@
               "hsd": "18/3/2024",
               "importedDate": "14/4/2023"
             }
-          ]
+          ],
+          "unit": "Chai",
+          "listPrice": 48000
         },
         {
-          "goodsName": "Spring-roll",
           "id": "000013",
+          "goodsName": "Spring-roll",
           "manufacture": "CookWithTung",
-          "unit": "Gói",
-          "listPrice": 50000,
-          "totalQuantity": 0,
+          "totalQuantity": 100,
           "shipments": [
             {
               "quantity": 35,
@@ -651,15 +1212,15 @@
               "hsd": "18/11/2023",
               "importedDate": "14/4/2023"
             }
-          ]
+          ],
+          "unit": "Gói",
+          "listPrice": 50000
         },
         {
-          "goodsName": "Salt",
           "id": "000014",
+          "goodsName": "Salt",
           "manufacture": "CookWithTung",
-          "unit": "Túi",
-          "listPrice": 5000,
-          "totalQuantity": 0,
+          "totalQuantity": 90,
           "shipments": [
             {
               "quantity": 43,
@@ -685,15 +1246,15 @@
               "hsd": "18/12/2023",
               "importedDate": "14/4/2023"
             }
-          ]
+          ],
+          "unit": "Túi",
+          "listPrice": 5000
         },
         {
-          "goodsName": "Instant Noodle",
           "id": "000015",
+          "goodsName": "Instant Noodle",
           "manufacture": "CookWithTung",
-          "unit": "Túi",
-          "listPrice": 14000,
-          "totalQuantity": 0,
+          "totalQuantity": 61,
           "shipments": [
             {
               "quantity": 23,
@@ -719,7 +1280,9 @@
               "hsd": "18/10/2023",
               "importedDate": "14/4/2023"
             }
-          ]
+          ],
+          "unit": "Túi",
+          "listPrice": 14000
         }
       ]
     },

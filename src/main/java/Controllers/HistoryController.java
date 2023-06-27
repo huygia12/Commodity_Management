@@ -10,11 +10,14 @@ import Models.GoodsList;
 import Models.History;
 import Models.Order;
 import Models.Shift;
+import Models.Shipment;
 import Models.SoldGoods;
+import Models.StaticalGoods;
 import Models.Store;
 import Ultility.Cautions;
 import View.HistoryView;
 import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -22,30 +25,28 @@ import java.util.InputMismatchException;
 import java.util.List;
 import java.util.Scanner;
 import java.util.Set;
-import java.util.Stack;
 
 /**
  *
  * @author FPTSHOP
  */
 public class HistoryController {
-    
+
     private final HistoryView view = new HistoryView();
     final Scanner sc = new Scanner(System.in);
     final Cautions ctions = new Cautions();
     final GoodsListController goodsListCtr = new GoodsListController();
     final OrderController orderCtr = new OrderController();
-    
+
     public HistoryController() {
     }
 
     public HistoryView getHistoryView() {
         return this.view;
     }
-    
-    
+
     public void historyManagement(History history) {
-        if(history.getShiftHistory().isEmpty()){
+        if (history.getShiftHistory().isEmpty()) {
             System.out.println("Nothing found in history!");
             return;
         }
@@ -70,7 +71,6 @@ public class HistoryController {
                     case 5:
                         break;
                     case 6:
-                        searchShiftInDetail(history);
                         break;
                     case 7:
                         System.out.println("Back...");
@@ -86,7 +86,7 @@ public class HistoryController {
             }
         } while (choice != 7);
     }
-    
+
     //function 1
     public GoodsList<SoldGoods> makeHisoryOrderGoodsList(List<Shift> shiftList) {
         GoodsList<SoldGoods> soldGoodsList = new GoodsList();
@@ -179,22 +179,15 @@ public class HistoryController {
     }
 
     //function 4
-    private void searchOrderInDetail(History history){
+    private void searchOrderInDetail(History history) {
         Order searchingOrder = searchOrder(history);
-        if(searchingOrder != null){
+        if (searchingOrder != null) {
             this.view.showAnOrderInDetail(searchingOrder);
             GoodsList<Goods> orderGoodsList = new GoodsList(searchingOrder.getList());
             goodsListCtr.getView().showGoodsList(orderGoodsList);
         }
     }
-    
-    private void searchShiftInDetail(History history){
-        Shift searchingShift = searchShift(history);
-        if(searchingShift != null){
-            this.view.showAnShiftInDetail(searchingShift);
-        }
-    }
-    
+
     public Order containOrder(String ID, History history) {
         for (Shift shift : history.getShiftHistory()) {
             for (Order order : shift.getOrderHisPerShift()) {
@@ -244,7 +237,7 @@ public class HistoryController {
         } while (!completed);
         return searchingOrder;
     }
-    
+
     public Shift searchShift(History history) {
         // tra ve null neu nguoi dung nhap 'back', nguoc lai, tra ve 1 Shift duoc tim kiem
         if (history.getShiftHistory().isEmpty()) {
@@ -274,8 +267,8 @@ public class HistoryController {
         } while (!completed);
         return searchingShift;
     }
-    
-    public List<Order> toOrderList(History history){
+
+    public List<Order> toOrderList(History history) {
         List<Order> listOfOrder = new ArrayList<>();
         for (Shift shift : history.getShiftHistory()) {
             for (Order order : shift.getOrderHisPerShift()) {
@@ -283,13 +276,61 @@ public class HistoryController {
             }
         }
         return listOfOrder;
-    } 
-    
-    public BigDecimal totalNetRevenue(List<Order> orderHistory, Store store){
+    }
+
+    public BigDecimal getTotalNetRevenue(List<Order> orderHistory, Store store) {
         BigDecimal result = BigDecimal.ZERO;
         for (Order order : orderHistory) {
             result = result.add(orderCtr.getTotal(order, store));
         }
         return result;
+    }
+
+    public BigDecimal getTotalGrossRevenue(List<Order> orderHistory) {
+        BigDecimal result = BigDecimal.ZERO;
+        for (Order order : orderHistory) {
+            result = result.add(orderCtr.getSubTotal(order));
+        }
+        return result;
+    }
+    
+    public GoodsList<StaticalGoods> makeStaticalGoodsList(List<Order> orderList, BigDecimal totalRevenue) {
+        ShipmentController shipmentCtr = new ShipmentController();
+        GoodsController goodsCtr = new GoodsController();
+        GoodsList<StaticalGoods> staticalGoodsList = new GoodsList<>();
+        // duyẹt một vòng để lọc ra danh sách không bị trùng của các goods
+        for (Order order : orderList) {
+            for (Goods goods : order.getList()) {
+                StaticalGoods staticalGoods = goodsListCtr.containGoods(staticalGoodsList, goods.getID());
+                if (staticalGoods != null) { //  nếu đã tồn tại thì check den shipment
+                    for (Shipment shipment : goods.getShipments()) {
+                        Shipment staticalShipment = goodsCtr
+                                .containShipment(staticalGoods.getShipments(), shipment.getID());
+                        if (staticalShipment != null) {// neu da ton tai thi cong so luong
+                            staticalShipment.setQuantity(staticalShipment.getQuantity()
+                                    .add(shipment.getQuantity()));
+                        } else { // neu chua ton tai thi them moi shipment
+                            Shipment cloneShipment = shipmentCtr.cloneShipment(shipment);
+                            staticalGoods.getShipments().add(cloneShipment);
+                        }
+                    }
+                } else { // nếu chưa tồn tại goods này thì thêm vào danh sách thống kê
+                    StaticalGoods newStaticalGoods = new StaticalGoods(goods);
+                    for (Shipment shipment : goods.getShipments()) {
+                        Shipment cloneShipment = shipmentCtr.cloneShipment(shipment);
+                        newStaticalGoods.getShipments().add(cloneShipment);
+                    }
+                    staticalGoodsList.getList().add(newStaticalGoods);
+                }
+            }
+        }
+        // duyệt 1 vòng để set revenue và ratio cho từng shipment trong các goods
+        for (StaticalGoods staticalGoods : staticalGoodsList.getList()) {
+            staticalGoods.setRevenue(staticalGoods.getTotalQuantity()
+                    .multiply(staticalGoods.getListPrice()));
+            staticalGoods.setRatio(staticalGoods.getRevenue()
+                    .divide(totalRevenue, 2, RoundingMode.HALF_UP));
+        }
+        return staticalGoodsList;
     }
 }

@@ -6,6 +6,7 @@ package Models;
 
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
+import com.opencsv.bean.CsvBindByPosition;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
@@ -15,29 +16,32 @@ import java.util.List;
  * @author s1rja
  */
 public class Goods {
-    
-    @SerializedName("goodsName")
-    @Expose
-    private String goodsName;
+    @CsvBindByPosition(position = 0)
     @SerializedName("id")
     @Expose
     private String id;
+    @CsvBindByPosition(position = 1)
+    @SerializedName("goodsName")
+    @Expose
+    private String goodsName;
+    @CsvBindByPosition(position = 2)
     @SerializedName("manufacture")
     @Expose
     private String manufacture;
-    @SerializedName("unit")
-    @Expose
-    private String unit;
-    @SerializedName("listPrice")
-    @Expose
-    private BigDecimal listPrice = BigDecimal.ZERO;
+    @CsvBindByPosition(position = 3)
     @SerializedName("totalQuantity")
     @Expose
     private BigDecimal totalQuantity = BigDecimal.ZERO;
     @SerializedName("shipments")
     @Expose
     private List<Shipment> shipments = new ArrayList<>();
-
+    @SerializedName("unit")
+    @Expose
+    private String unit;
+    @SerializedName("listPrice")
+    @Expose
+    private BigDecimal listPrice = BigDecimal.ZERO;
+    
     public Goods() {
     }
 

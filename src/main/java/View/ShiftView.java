@@ -5,12 +5,14 @@
 package View;
 
 import Controllers.EmployeeListController;
+import Controllers.HistoryController;
 import Controllers.ShiftController;
 import Ultility.Cautions;
 import Models.Employee;
 import Models.EmployeeList;
+import Models.GoodsList;
 import Models.Shift;
-import Models.StaticalItems;
+import Models.StaticalGoods;
 import Models.Store;
 import java.io.File;
 import java.io.IOException;
@@ -214,9 +216,10 @@ public class ShiftView {
             pw.println(String.format("%40s" + " | " + "%-40.1f", "Chuyển khoản&Ngân hàng", shiftCtr.getTotalPaymentByWireTransfer(shift, store)));
             pw.println(String.format("%-70s", "<+> MẶT HÀNG TIÊU THỤ:"));
             pw.println(String.format("%20s" + " | " + "%-20s" + " | " + "%-20s" + " | " + "%-20s", "Goods Name", "Quantity", "Revenue", "Ratio"));
-            List<StaticalItems> staticalItemsList = new ArrayList<>(shiftCtr.getStaticalList(shift).values());
-            staticalItemsList.stream().forEach(x -> pw.println(String.format("%20s" + " | " + "%-20.1f" + " | " + "%-20.1f" + " | " + "%-20s",
-                    x.getName(), x.getQuantity(), x.getRevenue(), String.format("%.1f", x.getRatio()) + "%")));
+            GoodsList<StaticalGoods> staticalGoodsList = new HistoryController()
+                    .makeStaticalGoodsList(shift.getOrderHisPerShift(), shiftCtr.getGrossRevenue(shift));
+            staticalGoodsList.getList().stream().forEach(goods -> pw.println(String.format("%20s" + " | " + "%-20.1f" + " | " + "%-20.1f" + " | " + "%-20s",
+                    goods.getGoodsName(), goods.getTotalQuantity(), goods.getRevenue(), String.format("%.1f", goods.getRatio()) + "%")));
             pw.println(String.format("%-70s", "<+> GHI CHÚ CA: ") + shift.getNote());
         } catch (IOException ex) {
             Logger.getLogger(Shift.class.getName()).log(Level.SEVERE, null, ex);

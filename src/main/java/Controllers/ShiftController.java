@@ -8,6 +8,7 @@ import Ultility.IDGenerator;
 import Models.*;
 import View.ShiftView;
 import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -84,7 +85,6 @@ public class ShiftController {
                         this.shiftView.shiftNotOpenCaution();
                         break;
                     }
-                    hisCtr.getHistoryView().showAnShiftInDetail(shift);
                     break;
                 case "8":
                     if (shift == null) {
@@ -167,55 +167,24 @@ public class ShiftController {
     }
 
     public long getNumberOfOrder(Shift shift) {
-        return shift.getOrderHisPerShift().stream().count();
+        return shift.getOrderHisPerShift().size();
     }
 
     public BigDecimal getAveragePerOrder(Shift shift, Store store) {
         if (getNumberOfOrder(shift) == 0) {
             return BigDecimal.ZERO;
         }
-        return getNetRevenue(shift, store).divide(new BigDecimal(getNumberOfOrder(shift)));
+        return getNetRevenue(shift, store).divide(new BigDecimal(getNumberOfOrder(shift)+""), 2 , RoundingMode.HALF_UP);
     }
 
-    public BigDecimal getTotalGoodsQuanOfThisShift(Shift shift) {
+    public BigDecimal getTotalQuanOfThisShift(Shift shift) {
         BigDecimal result = BigDecimal.ZERO;
         for (Order order : shift.getOrderHisPerShift()) {
             for (Goods goods : order.getList()) {
-                result = result.add(goodsCtr.getTotalQuanByShipments(goods));
+                result = result.add(goods.getTotalQuantity());
             }
         }
         return result;
-    }
-
-    public Map<String, StaticalItems> getStaticalList(Shift shift) {
-        // Tao danh sach consumptions de thong ke sanpham/soluongBan/SoTienThuDuoc/phanTram 
-        // cua tat ca san pham trong 1 ca lam viec
-        Map<String, StaticalItems> consumptions = new HashMap<>();
-        for (Order order : shift.getOrderHisPerShift()) {
-            for (Goods goods : order.getList()) {
-                StaticalItems newStaticalItems = new StaticalItems();
-                newStaticalItems.setName(goods.getGoodsName());
-                newStaticalItems.setQuantity(goodsCtr.getTotalQuanByShipments(goods));
-                newStaticalItems.setRevenue((goods.getListPrice().add(goodsCtr.getVATMoneyPerGoods(goods, order.getTax())))
-                        .multiply(goodsCtr.getTotalQuanByShipments(goods)
-                                .multiply(new BigDecimal(1.0 - order.getDiscount() * 1.0 / 100))));
-                if (consumptions.containsKey(goods.getID())) {
-                    BigDecimal quanBefore = consumptions.get(goods.getID()).getQuantity();
-                    BigDecimal revenueBefore = consumptions.get(goods.getID()).getRevenue();
-                    newStaticalItems.setQuantity(quanBefore.add(newStaticalItems.getQuantity()));
-                    newStaticalItems.setQuantity(revenueBefore.add(newStaticalItems.getRevenue()));
-                }
-                consumptions.put(goods.getID(), newStaticalItems);
-            }
-        }
-        BigDecimal totalQuan = getTotalGoodsQuanOfThisShift(shift);
-        for (Map.Entry<String, StaticalItems> entry : consumptions.entrySet()) {
-            entry.getValue().setRatio(Double.parseDouble(entry
-                    .getValue()
-                    .getQuantity()
-                    .divide(totalQuan) + ""));
-        }
-        return consumptions;
     }
 
     public Order containOrder(List<Order> orderList, String orderID) {
@@ -303,25 +272,25 @@ public class ShiftController {
         return true;
     }
 
-    public void openShiftForGUI(Shift shift,IDGenerator iDGenerator, 
+    public void openShiftForGUI(Store store, Shift shift, 
             int tax, BigDecimal openBalance, 
             Employee cashier, EmployeeList employeeList,
             String note) {
         shift.setState(ShiftState.OPENED);
-        shift.setID(iDGenerator.generateID(Shift.class.getName(), 6));
+        shift.setID(store.getiDGenerator().generateID(Shift.class.getName(), 6));
         shift.setOpenTime();
         shift.setTax(tax);
         shift.setOpeningBalance(openBalance);
         shift.setCashier(cashier);
         shift.setEmployeeOfThisShift(employeeList);
         shift.setNote(note);
+        store.getHistory().getShiftHistory().add(shift);
     }
     
-    public void endShiftForGUI(Shift shift, History history, String note, BigDecimal surcharge) {
+    public void endShiftForGUI(Shift shift, String note, BigDecimal surcharge) {
         shift.setEndTime();
         shift.setNote(note);
         shift.setSurcharge(surcharge);
         shift.setState(ShiftState.CLOSED);
-        history.getShiftHistory().add(shift);
     }
 }

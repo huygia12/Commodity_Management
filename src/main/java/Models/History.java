@@ -6,6 +6,8 @@ package Models;
 
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Stack;
 
 /**
@@ -17,7 +19,10 @@ public class History {
     @SerializedName("shiftHistory")
     @Expose
     private Stack<Shift> shiftHistory = new Stack<>();
-
+    @SerializedName("importHistory")
+    @Expose
+    private List<Goods> importGoodsList = new ArrayList<>();
+    
     public History(Stack<Shift> shiftHistory) {
         this.shiftHistory = shiftHistory;
     }
@@ -32,4 +37,14 @@ public class History {
     public void setShiftHistory(Stack<Shift> shiftHistory) {
         this.shiftHistory = shiftHistory;
     }
+
+    public List<Goods> getImportGoodsList() {
+        return importGoodsList;
+    }
+
+    public void setImportGoodsList(List<Goods> importGoodsList) {
+        this.importGoodsList = importGoodsList;
+    }
+    
+    
 }

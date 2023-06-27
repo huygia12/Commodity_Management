@@ -34,6 +34,7 @@ public class ShiftPanel extends javax.swing.JPanel {
      */
     public ShiftPanel() {
         initComponents();
+        initVariables();
     }
 
     /**
@@ -68,7 +69,7 @@ public class ShiftPanel extends javax.swing.JPanel {
         separatorLabel2 = new javax.swing.JLabel();
         orderDateTextField = new javax.swing.JTextField();
         orderDateLabel = new javax.swing.JLabel();
-        overViewTableJScrollPane = new javax.swing.JScrollPane();
+        orderListJScrollPane = new javax.swing.JScrollPane();
         orderListTable = new javax.swing.JTable();
         otherFunctionPanel = new javax.swing.JPanel();
         currentShiftOverViewPanel = new javax.swing.JPanel();
@@ -354,7 +355,7 @@ public class ShiftPanel extends javax.swing.JPanel {
 
             },
             new String [] {
-                "Mã HD", "Thời Gian Lập", "Tổng Tiền"
+                "Mã HĐ", "Ngày lập HĐ", "Tổng tiền"
             }
         ) {
             boolean[] canEdit = new boolean [] {
@@ -366,16 +367,15 @@ public class ShiftPanel extends javax.swing.JPanel {
             }
         });
         orderListTable.setAutoResizeMode(javax.swing.JTable.AUTO_RESIZE_OFF);
-        orderListTable.setPreferredSize(new java.awt.Dimension(350, 80));
         orderListTable.setShowGrid(true);
         orderListTable.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 orderListTableMouseClicked(evt);
             }
         });
-        overViewTableJScrollPane.setViewportView(orderListTable);
+        orderListJScrollPane.setViewportView(orderListTable);
 
-        searchAndTablePanel.add(overViewTableJScrollPane, java.awt.BorderLayout.CENTER);
+        searchAndTablePanel.add(orderListJScrollPane, java.awt.BorderLayout.CENTER);
 
         ordersAndShipsHistoryPanel.add(searchAndTablePanel, java.awt.BorderLayout.CENTER);
 
@@ -619,35 +619,21 @@ public class ShiftPanel extends javax.swing.JPanel {
         // TODO add your handling code here:
     }//GEN-LAST:event_grossRevenueTextFieldActionPerformed
 
-    private void orderListTableMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_orderListTableMouseClicked
-        int selectedRow = orderListTable.getSelectedRow();
-        if (selectedRow != -1) {
-            String orderID = orderListTable.getValueAt(selectedRow, 0).toString();
-            Order selectedOrder = shiftCtr.containOrder(shift.getOrderHisPerShift(), orderID);
-            insertorderGoodsListToDisplayDetailTable(selectedOrder);
-            orderIDTextField.setText(orderID);
-            cashierPhoneNumTextField.setText(selectedOrder.getCashier().getPhoneNumber());
-            orderDateTextField.setText(selectedOrder
-                    .getOrderDateTime()
-                    .format(DateTimeFormatter.ofPattern(DATE_PATTERN)));
-        }
-    }//GEN-LAST:event_orderListTableMouseClicked
-
     private void endShiftBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_endShiftBtnActionPerformed
         String surcharge = surchargeTextField.getText();
         if (!ctions.checkIfAValidNumberForGUI(surcharge)) {
             showWarningJOptionPane("Khoản chi tiêu không hợp lệ!");
             return;
         }
-        shiftCtr.endShiftForGUI(shift, history, noteArea.getText(), new BigDecimal(surcharge));
+        shiftCtr.endShiftForGUI(shift, noteArea.getText(), new BigDecimal(surcharge));
         int choice = JOptionPane.showConfirmDialog(this, "In báo cáo tổng kết cuối ca?",
                 "Đóng ca hoàn tất", JOptionPane.OK_CANCEL_OPTION);
         if (choice == JOptionPane.OK_OPTION) {
-            shiftCtr.getView().printFileOfThisShiftOverView(myStore, shift, shiftCtr);
+            shiftCtr.getView().printFileOfThisShiftOverView(store, shift, shiftCtr);
         }
-        shift = new Shift();
         setDefaultToAllComponents();
-        reload();
+        setEnableAllComponents(shift.getState().equals(ShiftState.OPENED));
+        mf.notOpenShiftWarning();
     }//GEN-LAST:event_endShiftBtnActionPerformed
 
     private void searchBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_searchBtnActionPerformed
@@ -665,7 +651,7 @@ public class ShiftPanel extends javax.swing.JPanel {
             Order searchingOrder = shiftCtr.containOrder(filterOrderList, orderID);
             if (searchingOrder != null) {
                 clearTableModel(orderListModel);
-                insertOrderToOverViewTable(searchingOrder, myStore);
+                insertOrderToOrderListTable(searchingOrder, store);
                 cashierPhoneNumTextField.setText("");
                 orderDateTextField.setText("");
                 fromHourTextField.setText("00");
@@ -691,12 +677,12 @@ public class ShiftPanel extends javax.swing.JPanel {
         }
 
         if (!showFilterWarning()) {
-            insertOrderHistoryToOverViewTable(filterOrderList, myStore);
+            insertOrderHistoryToOrderListTable(filterOrderList, store);
         }
     }//GEN-LAST:event_searchBtnActionPerformed
 
     private void refreashBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_refreashBtnActionPerformed
-        insertOrderHistoryToOverViewTable(shift.getOrderHisPerShift(), myStore);
+        insertOrderHistoryToOrderListTable(shift.getOrderHisPerShift(), store);
     }//GEN-LAST:event_refreashBtnActionPerformed
 
     private void editShiftBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_editShiftBtnActionPerformed
@@ -724,7 +710,7 @@ public class ShiftPanel extends javax.swing.JPanel {
     }//GEN-LAST:event_surchargeTextFieldKeyPressed
 
     private void surchargeTextFieldMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_surchargeTextFieldMouseExited
-        if(!surchargeTextField.isEnabled()){
+        if (!surchargeTextField.isEnabled()) {
             return;
         }
         String surchargeStr = surchargeTextField.getText();
@@ -755,13 +741,13 @@ public class ShiftPanel extends javax.swing.JPanel {
             Order searchingOrder = shiftCtr.containOrder(shift.getOrderHisPerShift(), orderID);
             clearTableModel(orderListModel);
             if (searchingOrder != null) {
-                insertOrderToOverViewTable(searchingOrder, myStore);
+                insertOrderToOrderListTable(searchingOrder, store);
             }
         }
     }//GEN-LAST:event_orderIDTextFieldKeyPressed
 
     private void fromHourTextFieldMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_fromHourTextFieldMouseExited
-        if(!fromHourTextField.isEnabled()){
+        if (!fromHourTextField.isEnabled()) {
             return;
         }
         String text = fromHourTextField.getText();
@@ -771,7 +757,7 @@ public class ShiftPanel extends javax.swing.JPanel {
     }//GEN-LAST:event_fromHourTextFieldMouseExited
 
     private void fromMinuteTextFieldMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_fromMinuteTextFieldMouseExited
-        if(!fromMinuteTextField.isEnabled()){
+        if (!fromMinuteTextField.isEnabled()) {
             return;
         }
         String text = fromMinuteTextField.getText();
@@ -781,7 +767,7 @@ public class ShiftPanel extends javax.swing.JPanel {
     }//GEN-LAST:event_fromMinuteTextFieldMouseExited
 
     private void fromSecondTextFieldMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_fromSecondTextFieldMouseExited
-        if(!fromSecondTextField.isEnabled()){
+        if (!fromSecondTextField.isEnabled()) {
             return;
         }
         String text = fromSecondTextField.getText();
@@ -791,7 +777,7 @@ public class ShiftPanel extends javax.swing.JPanel {
     }//GEN-LAST:event_fromSecondTextFieldMouseExited
 
     private void toHourTextFieldMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_toHourTextFieldMouseExited
-        if(!toHourTextField.isEnabled()){
+        if (!toHourTextField.isEnabled()) {
             return;
         }
         String text = toHourTextField.getText();
@@ -801,7 +787,7 @@ public class ShiftPanel extends javax.swing.JPanel {
     }//GEN-LAST:event_toHourTextFieldMouseExited
 
     private void toMinuteTextFieldMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_toMinuteTextFieldMouseExited
-        if(!toMinuteTextField.isEnabled()){
+        if (!toMinuteTextField.isEnabled()) {
             return;
         }
         String text = toMinuteTextField.getText();
@@ -811,7 +797,7 @@ public class ShiftPanel extends javax.swing.JPanel {
     }//GEN-LAST:event_toMinuteTextFieldMouseExited
 
     private void toSecondTextFieldMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_toSecondTextFieldMouseExited
-        if(!toSecondTextField.isEnabled()){
+        if (!toSecondTextField.isEnabled()) {
             return;
         }
         String text = toSecondTextField.getText();
@@ -885,6 +871,20 @@ public class ShiftPanel extends javax.swing.JPanel {
             }
         }
     }//GEN-LAST:event_toSecondTextFieldKeyPressed
+
+    private void orderListTableMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_orderListTableMouseClicked
+        int selectedRow = orderListTable.getSelectedRow();
+        if (selectedRow != -1) {
+            String orderID = orderListTable.getValueAt(selectedRow, 0).toString();
+            Order selectedOrder = shiftCtr.containOrder(shift.getOrderHisPerShift(), orderID);
+            insertorderGoodsListToDisplayDetailTable(selectedOrder);
+            orderIDTextField.setText(orderID);
+            cashierPhoneNumTextField.setText(selectedOrder.getCashier().getPhoneNumber());
+            orderDateTextField.setText(selectedOrder
+                .getOrderDateTime()
+                .format(DateTimeFormatter.ofPattern(DATE_PATTERN)));
+        }
+    }//GEN-LAST:event_orderListTableMouseClicked
 
     private List<Order> searchOrderWithCashierPhoneNumberFilter(List<Order> filterOrderList, String cashierPhoneNum) {
         if (ctions.checkIfANumberSequenceForGUI(cashierPhoneNum)) {
@@ -1079,14 +1079,14 @@ public class ShiftPanel extends javax.swing.JPanel {
         });
     }
 
-    private void insertOrderHistoryToOverViewTable(List<Order> orderHistory, Store store) {
+    private void insertOrderHistoryToOrderListTable(List<Order> orderHistory, Store store) {
         clearTableModel(orderListModel);
         for (Order order : orderHistory) {
-            insertOrderToOverViewTable(order, store);
+            insertOrderToOrderListTable(order, store);
         }
     }
 
-    private void insertOrderToOverViewTable(Order order, Store store) {
+    private void insertOrderToOrderListTable(Order order, Store store) {
         orderListModel.addRow(new Object[]{
             order.getID(),
             order.getOrderDateTime().format(DateTimeFormatter
@@ -1164,9 +1164,9 @@ public class ShiftPanel extends javax.swing.JPanel {
                 orderDateMaxSize = order.getOrderDateTime().format(DateTimeFormatter
                         .ofPattern(DATE_TIME_PATTERN)).length() + extraLength;
             }
-            if (String.format(".1f", orderCtr.getTotal(order, myStore)).length() + extraLength
+            if (String.format(".1f", orderCtr.getTotal(order, store)).length() + extraLength
                     > orderTotalMaxSize) {
-                orderTotalMaxSize = String.format(".1f", orderCtr.getTotal(order, myStore)).length() + extraLength;
+                orderTotalMaxSize = String.format(".1f", orderCtr.getTotal(order, store)).length() + extraLength;
             }
             for (Goods goods : order.getList()) {
                 if (goods.getID().length() + extraLength > goodsIDMaxSize) {
@@ -1208,23 +1208,24 @@ public class ShiftPanel extends javax.swing.JPanel {
 
     private void popupOpenShiftFrame() {
         openShiftFrame.setVisible(true);
-        openShiftFrame.passData(employeeList, shift, myStore.getiDGenerator(), this);
+        openShiftFrame.passData(store, shift, this);
         openShiftFrame.reload();
     }
 
-    public void reload() {
+    public void reload(Shift shift) {
+        this.shift = shift;
         boolean checkOpenShift = shift.getState().equals(ShiftState.OPENED);
         setEnableAllComponents(checkOpenShift);
         computeSizeOfEachColumnInTable();
         TitledBorder tb = (TitledBorder) currentShiftOverViewPanel.getBorder();
-        tb.setTitle((shift.getID() == null ) ? "" : "  Mã Ca - " + shift.getID());
+        tb.setTitle((!checkOpenShift) ? "" : "  Mã Ca - " + shift.getID());
         tb.setTitleFont(new java.awt.Font("Segoe UI", 1, 14));
         tb.setTitlePosition(TitledBorder.DEFAULT_JUSTIFICATION);
         if (checkOpenShift) { // nếu đã mở ca thì reload lại các thông số ca
-            insertOrderHistoryToOverViewTable(shift.getOrderHisPerShift(), myStore);
+            insertOrderHistoryToOrderListTable(shift.getOrderHisPerShift(), store);
             numberOfOrderTextField.setText(shiftCtr.getNumberOfOrder(shift) + "");
             grossRevenueTextField.setText(String.format("%.1f", shiftCtr.getGrossRevenue(shift)));
-            netRevenueTextField.setText(String.format("%.1f", shiftCtr.getNetRevenue(shift, myStore)));
+            netRevenueTextField.setText(String.format("%.1f", shiftCtr.getNetRevenue(shift, store)));
             noteArea.setText(shift.getNote());
             //
             openBalanceTextField.setText(String.format("%.1f", shift.getOpeningBalance()));
@@ -1239,29 +1240,26 @@ public class ShiftPanel extends javax.swing.JPanel {
 
     private void initVariables() {
         // Table
+        orderListJScrollPane.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_ALWAYS);
+        orderListJScrollPane.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
         orderListModel = (DefaultTableModel) orderListTable.getModel();
-        overViewTableJScrollPane.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_ALWAYS);
-        overViewTableJScrollPane.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
-        orderDetailModel = (DefaultTableModel) orderDetailTable.getModel();
         orderDetailJScrollPane.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_ALWAYS);
         orderDetailJScrollPane.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
+        orderDetailModel = (DefaultTableModel) orderDetailTable.getModel();
         // open shift frame
         openShiftFrame = new OpenShiftFrame();
         // Biến khác
-        lastState = !shift.getState().equals(ShiftState.OPENED);
         orderCtr = new OrderController();
         shiftCtr = new ShiftController();
         ctions = new Cautions();
         filterOrderList = new ArrayList<>();
     }
 
-    public void passData(Store myStore) {
-        this.shift = myStore.getShift();
-        this.history = myStore.getHistory();
-        this.employeeList = myStore.getEmployeeList();
-        this.myStore = myStore;
-        //
-        initVariables();
+    public void passData(Store myStore, Shift shift, MainFrame mainFrame) {
+        this.store = myStore;
+        this.shift = shift;
+        this.mf = mainFrame;
+        lastState = !shift.getState().equals(ShiftState.OPENED);
     }
 
     private List<Order> filterOrderList;
@@ -1275,12 +1273,11 @@ public class ShiftPanel extends javax.swing.JPanel {
     private DefaultTableModel orderDetailModel;
     private DefaultTableModel orderListModel;
     private OpenShiftFrame openShiftFrame;
+    private Store store;
     private Shift shift;
-    private History history;
-    private EmployeeList employeeList;
-    private Store myStore;
+    private MainFrame mf;
     private Cautions ctions;
-    String defaultTimeSet = "00/00/00";
+    private final String defaultTimeSet = "00/00/00";
     private final String TIME_PATERN = "H/m/s";
     private final String DATE_PATTERN = "dd/MM/yyyy";
     private final String DATE_TIME_PATTERN = "HH:mm:ss dd/MM/yyyy";
@@ -1324,10 +1321,10 @@ public class ShiftPanel extends javax.swing.JPanel {
     private javax.swing.JTable orderDetailTable;
     private javax.swing.JLabel orderIDLabel;
     private javax.swing.JTextField orderIDTextField;
+    private javax.swing.JScrollPane orderListJScrollPane;
     private javax.swing.JTable orderListTable;
     private javax.swing.JPanel ordersAndShipsHistoryPanel;
     private javax.swing.JPanel otherFunctionPanel;
-    private javax.swing.JScrollPane overViewTableJScrollPane;
     private javax.swing.JButton refreashBtn;
     private javax.swing.JPanel searchAndTablePanel;
     private javax.swing.JButton searchBtn;

@@ -13,7 +13,6 @@ import Models.*;
 import Ultility.Cautions;
 import Ultility.CustomPair;
 import Ultility.FilterGoodsList;
-import Ultility.IDGenerator;
 import java.awt.Color;
 import java.awt.event.KeyEvent;
 import java.math.BigDecimal;
@@ -21,7 +20,7 @@ import java.math.BigInteger;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.Iterator;
-import java.util.stream.Collectors;
+import java.util.stream.*;
 import javax.swing.ImageIcon;
 import javax.swing.JOptionPane;
 import javax.swing.ScrollPaneConstants;
@@ -1127,9 +1126,9 @@ public class PurchasePanel extends javax.swing.JPanel {
             return;
         }
         // thực hiện chức năng
-        orderCtr.payOrder(order, shift, repository, store, history);
+        orderCtr.payOrder(order, shift, store);
         order = null;
-        refresh();
+        initNewOrder();
     }//GEN-LAST:event_payBtnActionPerformed
 
     private void payAnfPrintBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_payAnfPrintBtnActionPerformed
@@ -1142,10 +1141,10 @@ public class PurchasePanel extends javax.swing.JPanel {
             return;
         }
         // thực hiện chức năng
-        orderCtr.payOrder(order, shift, repository, store, history);
+        orderCtr.payOrder(order,shift, store);
         orderCtr.getOrderView().printBillToFile(order, store);
         order = null;
-        refresh();
+        initNewOrder();
     }//GEN-LAST:event_payAnfPrintBtnActionPerformed
 
     private void goodsListTableMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_goodsListTableMouseClicked
@@ -1176,7 +1175,7 @@ public class PurchasePanel extends javax.swing.JPanel {
         String shipmentID = (String) orderGoodsListModel.getValueAt(selectedRow, 5);
         Goods selectedGoods = orderCtr.containGoodsForGUI(order, shipmentID);
         Goods goodsInDraftGoodsList = orderCtr.containGoods(draftGoodsList, selectedGoods.getID());
-        Shipment selectedShipment = goodsCtr.containShipment(selectedGoods, shipmentID);
+        Shipment selectedShipment = goodsCtr.containShipment(selectedGoods.getShipments(), shipmentID);
         shipmentIDTextField.setText(shipmentID);
         keyWordTextField.setText(selectedGoods.getGoodsName());
         goodsIDTextField.setText(selectedGoods.getID());
@@ -1215,7 +1214,8 @@ public class PurchasePanel extends javax.swing.JPanel {
             return;
         }
         // Thực hiện chức năng
-        customerCard = customerCardListCtr.containCustomerCard(cutomerCardList, customerID);
+        customerCard = customerCardListCtr
+                .containCustomerCard(store.getCustomerCardList(), customerID);
         if (customerCard == null) { // kiểm tra xem thẻ có tồn tại hay không
             insertWarningToTextField(customerPointCheckTextField,
                     CUSTOMER_CARD_NOT_EXIST, 12);
@@ -1231,7 +1231,7 @@ public class PurchasePanel extends javax.swing.JPanel {
             customerDiscountOfferTextField.setFont(new java.awt.Font("Segoe UI", 2, 12)); // NOI18N
             customerDiscountOfferTextField.setForeground(Color.RED);
             customerDiscountOfferTextField.setText(
-                    cardCtr.getCustomerDiscountOffer(customerCard, store)+ "%");
+                    cardCtr.getCustomerDiscountOffer(customerCard, store) + "%");
             pointDiscountText.setEditable(true);
         }
         order.setCustomerCard(customerCard);
@@ -1544,10 +1544,10 @@ public class PurchasePanel extends javax.swing.JPanel {
         }
         // lấy goods và shipment cần chỉnh sửa trong order
         Goods editedGoods = orderCtr.containGoods(order, goodsID);
-        Shipment editedShipment = goodsCtr.containShipment(editedGoods, shipmentID);
+        Shipment editedShipment = goodsCtr.containShipment(editedGoods.getShipments(), shipmentID);
         // lấy goods và shipment cùng ID với goods và shipment cần chỉnh sửa trong draftGoodsList
         Goods remainGoods = orderCtr.containGoods(draftGoodsList, goodsID);
-        Shipment remainShipment = goodsCtr.containShipment(remainGoods, shipmentID);
+        Shipment remainShipment = goodsCtr.containShipment(remainGoods.getShipments(), shipmentID);
         // lấy số lượng trước, sau và còn lại
         BigDecimal quantityBefore = editedShipment.getQuantity();
         BigDecimal quantityRemain = remainShipment.getQuantity();
@@ -1587,7 +1587,7 @@ public class PurchasePanel extends javax.swing.JPanel {
             return;
         }
         // thực hiện chức năng
-        orderCtr.deleteFromOrder(repository, draftGoodsList,
+        orderCtr.deleteFromOrder(store.getRepository(), draftGoodsList,
                 order, shipmentID, goodsIDTextField.getText());
         setDefaultValuesToComponentsInMainOrderFunctionPanel();
         insertGoodsListToOrderGoodsListTable(order);
@@ -1615,7 +1615,7 @@ public class PurchasePanel extends javax.swing.JPanel {
             return;
         }
         Shipment addedShipment = goodsCtr.containShipment(
-                orderCtr.containGoods(draftGoodsList, goodsID), shipmentID);
+                orderCtr.containGoods(draftGoodsList, goodsID).getShipments(), shipmentID);
         if (ctions.checkIfNumberNegativeForGUI(// kiểm tra xem còn đủ số lượng không
                 addedShipment.getQuantity().subtract(new BigDecimal(quantity)))) {
             insertWarningToTextField(quantityTextField, NOT_ENOUGH_QUANTITY, 14);
@@ -2099,7 +2099,8 @@ public class PurchasePanel extends javax.swing.JPanel {
     }
 
     private void setDefaultValuesToComponentsInEmployeeAndCustomerPanel() {
-        cashierTextField.setText((shift.getCashier() == null) ? "" : shift.getCashier().toString());
+        cashierTextField.setText((shift.getCashier() == null) ? ""
+                : shift.getCashier().toString());
         customerIDText.setText("");
         customerPointCheckTextField.setText("");
         customerDiscountOfferTextField.setText("");
@@ -2221,7 +2222,7 @@ public class PurchasePanel extends javax.swing.JPanel {
                 unitComboBox.removeItemAt(1);
             }
         }
-        units.getBucket().stream().forEach(
+        store.getUnits().getBucket().stream().forEach(
                 x -> unitComboBox.insertItemAt(x,
                         unitComboBox.getItemCount()));
     }
@@ -2233,7 +2234,7 @@ public class PurchasePanel extends javax.swing.JPanel {
                 priceRangeComboBox.removeItemAt(1);
             }
         }
-        settings.getPriceAmountList().stream().forEach(
+        store.getSettings().getPriceAmountList().stream().forEach(
                 x -> priceRangeComboBox.insertItemAt(x,
                         priceRangeComboBox.getItemCount()));
     }
@@ -2245,19 +2246,16 @@ public class PurchasePanel extends javax.swing.JPanel {
 
     private void initNewOrder() {
         // Tạo order mới
-        order = orderCtr.makeNewOrder(shift, idGenerator);
+        order = orderCtr.makeNewOrder(shift, store.getiDGenerator());
         // Tạo danh sách nháp để làm việc
-        draftGoodsList = orderCtr.makeDraftGoodsList(repository);
-        lastGoodsList = new GoodsList(repository.getList()
+        draftGoodsList = orderCtr.makeDraftGoodsList(store.getRepository());
+        lastGoodsList = new GoodsList(store.getRepository().getList()
                 .stream()
                 .map(x -> goodsCtr.cloneGoods(x))
                 .collect(Collectors.toList()));
         // reset lại toàn bộ components theo order mới
         passValueToUnitCombobox();
         passValueToPriceRangeComboBox();
-        TitledBorder tb = (TitledBorder) employeeAndCustomerPanel.getBorder();
-        tb.setTitleFont(new java.awt.Font("Segoe UI", 1, 14));
-        tb.setTitlePosition(TitledBorder.DEFAULT_JUSTIFICATION);
         tb.setTitle(" Mã Hóa Đơn - " + order.getID());
         setDefaultValuesToAllComponents();
         clearTableModel(orderGoodsListModel);
@@ -2267,6 +2265,9 @@ public class PurchasePanel extends javax.swing.JPanel {
     }
 
     private void initVariables() {
+        tb = (TitledBorder) employeeAndCustomerPanel.getBorder();
+        tb.setTitleFont(new java.awt.Font("Segoe UI", 1, 14));
+        tb.setTitlePosition(TitledBorder.DEFAULT_JUSTIFICATION);
         // set các visible, editable, enable là false khi khởi tạo
         priceRangeComboBox.setEnabled(false);
         unitComboBox.setEnabled(false);
@@ -2292,28 +2293,24 @@ public class PurchasePanel extends javax.swing.JPanel {
         store = new Store();
     }
 
-    public void passData(Store store) {
+    public void passData(Store store, Shift shift) {
         this.store = store;
-        this.repository = store.getRepository();
-        this.idGenerator = store.getiDGenerator();
-        this.settings = store.getSettings();
-        this.shift = store.getShift();
-        this.units = store.getUnits();
-        this.cutomerCardList = store.getCustomerCardList();
+        this.shift = shift;
     }
 
-    public void refresh() {
+    public void refresh(Shift shift) {
+        this.shift = shift;
         if (shift.getState().equals(ShiftState.OPENED) && order == null) {
             initNewOrder();
             return;
         } else {
-            draftGoodsList = orderCtr.makeDraftGoodsList(repository);
+            draftGoodsList = orderCtr.makeDraftGoodsList(store.getRepository());
             cashierTextField.setText(shift.getCashier().toString());
             taxText.setText(shift.getTax() + "");
             passValueToUnitCombobox();
             passValueToPriceRangeComboBox();
         }
-        if (!customerIDText.getText().isBlank()) {
+        if (!customerIDText.getText().isBlank()) { // kiem tra lai customerID tai textfield
             checkCustomerIDBtnActionPerformed(null);
         }
         if (lastGoodsList != null) {
@@ -2333,7 +2330,7 @@ public class PurchasePanel extends javax.swing.JPanel {
                         // Giảm số lượng của những mặt hàng đã thêm vào order
                         for (Shipment orderShipment : goodsInOrder.getShipments()) {
                             Shipment repoShipment = goodsCtr
-                                    .containShipment(goodsInRepo, orderShipment.getID());
+                                    .containShipment(goodsInRepo.getShipments(), orderShipment.getID());
                             repoShipment.setQuantity(repoShipment
                                     .getQuantity()
                                     .subtract(orderShipment.getQuantity()));
@@ -2347,6 +2344,7 @@ public class PurchasePanel extends javax.swing.JPanel {
         loadMainFee(order);
     }
 
+    private TitledBorder tb;
     private int orderSelectedRow = -1;
     private String productionDateFrom;
     private String productionDateTo;
@@ -2364,9 +2362,9 @@ public class PurchasePanel extends javax.swing.JPanel {
     private boolean shippingFeeWarningCheck = false;
     private boolean customerMoneyWarningCheck = false;
     private boolean ifCashPayment = true;
-    private History history;
     private Order order;
     private Store store;
+    private Shift shift;
     private Cautions ctions;
     private GoodsList<Goods> lastGoodsList;
     private GoodsList<Goods> filterGoodsList;
@@ -2378,12 +2376,6 @@ public class PurchasePanel extends javax.swing.JPanel {
     private CustomerCardListController customerCardListCtr;
     private DefaultTableModel orderGoodsListModel;
     private DefaultTableModel goodsListModel;
-    private Repository repository;
-    private Shift shift;
-    private CustomerCardList cutomerCardList;
-    private IDGenerator idGenerator;
-    private Settings settings;
-    private Units units;
     final String INPUT_DATE_PATTERN = "d/M/y";
     final String OUTPUT_DATE_PATTERN = "dd/MM/yyyy";
     private final String EMPTY_LIST_WARNING = "Danh sách trống!";
