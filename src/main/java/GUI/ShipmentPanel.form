@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 
-<Form version="1.5" maxVersion="1.9" type="org.netbeans.modules.form.forminfo.JPanelFormInfo">
+<Form version="1.6" maxVersion="1.9" type="org.netbeans.modules.form.forminfo.JPanelFormInfo">
   <Properties>
     <Property name="background" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
       <Color blue="ff" green="cc" red="0" type="rgb"/>
@@ -49,7 +49,7 @@
       <Properties>
         <Property name="border" type="javax.swing.border.Border" editor="org.netbeans.modules.form.editors2.BorderEditor">
           <Border info="org.netbeans.modules.form.compat2.border.TitledBorderInfo">
-            <TitledBorder title="Th&#xf4;ng tin s&#x1ea3;n ph&#x1ea9;m"/>
+            <TitledBorder title="B&#x1ed9; l&#x1ecd;c"/>
           </Border>
         </Property>
       </Properties>
@@ -62,15 +62,77 @@
       <Layout>
         <DimensionLayout dim="0">
           <Group type="103" groupAlignment="0" attributes="0">
-              <EmptySpace min="0" pref="660" max="32767" attributes="0"/>
+              <Group type="102" attributes="0">
+                  <EmptySpace max="-2" attributes="0"/>
+                  <Component id="filterCategories" min="-2" pref="221" max="-2" attributes="0"/>
+                  <EmptySpace type="separate" max="-2" attributes="0"/>
+                  <Component id="filterExtraOption" min="-2" pref="221" max="-2" attributes="0"/>
+                  <EmptySpace pref="194" max="32767" attributes="0"/>
+              </Group>
+              <Group type="102" alignment="1" attributes="0">
+                  <EmptySpace max="32767" attributes="0"/>
+                  <Component id="filterBtn" min="-2" pref="93" max="-2" attributes="0"/>
+                  <EmptySpace max="-2" attributes="0"/>
+              </Group>
           </Group>
         </DimensionLayout>
         <DimensionLayout dim="1">
           <Group type="103" groupAlignment="0" attributes="0">
-              <EmptySpace min="0" pref="127" max="32767" attributes="0"/>
+              <Group type="102" alignment="0" attributes="0">
+                  <EmptySpace max="-2" attributes="0"/>
+                  <Group type="103" groupAlignment="3" attributes="0">
+                      <Component id="filterCategories" alignment="3" min="-2" max="-2" attributes="0"/>
+                      <Component id="filterExtraOption" alignment="3" min="-2" max="-2" attributes="0"/>
+                  </Group>
+                  <EmptySpace pref="61" max="32767" attributes="0"/>
+                  <Component id="filterBtn" min="-2" pref="32" max="-2" attributes="0"/>
+                  <EmptySpace max="-2" attributes="0"/>
+              </Group>
           </Group>
         </DimensionLayout>
       </Layout>
+      <SubComponents>
+        <Component class="javax.swing.JComboBox" name="filterCategories">
+          <Properties>
+            <Property name="model" type="javax.swing.ComboBoxModel" editor="org.netbeans.modules.form.editors2.ComboBoxModelEditor">
+              <StringArray count="4">
+                <StringItem index="0" value="S&#x1ed1; l&#x1b0;&#x1ee3;ng"/>
+                <StringItem index="1" value="Gi&#xe1; nh&#x1ead;p h&#xe0;ng"/>
+                <StringItem index="2" value="Ng&#xe0;y"/>
+                <StringItem index="3" value="T&#xec;nh tr&#x1ea1;ng"/>
+              </StringArray>
+            </Property>
+            <Property name="selectedIndex" type="int" value="-1"/>
+          </Properties>
+          <Events>
+            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="filterCategoriesActionPerformed"/>
+          </Events>
+          <AuxValues>
+            <AuxValue name="JavaCodeGenerator_TypeParameters" type="java.lang.String" value="&lt;String&gt;"/>
+          </AuxValues>
+        </Component>
+        <Component class="javax.swing.JComboBox" name="filterExtraOption">
+          <Properties>
+            <Property name="model" type="javax.swing.ComboBoxModel" editor="org.netbeans.modules.form.editors2.ComboBoxModelEditor">
+              <StringArray count="0"/>
+            </Property>
+          </Properties>
+          <Events>
+            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="filterExtraOptionActionPerformed"/>
+          </Events>
+          <AuxValues>
+            <AuxValue name="JavaCodeGenerator_TypeParameters" type="java.lang.String" value="&lt;String&gt;"/>
+          </AuxValues>
+        </Component>
+        <Component class="javax.swing.JButton" name="filterBtn">
+          <Properties>
+            <Property name="text" type="java.lang.String" value="L&#x1ecd;c"/>
+          </Properties>
+          <Events>
+            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="filterBtnActionPerformed"/>
+          </Events>
+        </Component>
+      </SubComponents>
     </Container>
     <Container class="javax.swing.JPanel" name="shipmentControlPanel">
       <Properties>
@@ -285,6 +347,10 @@
           </Properties>
         </Component>
         <Component class="javax.swing.JTextField" name="importPriceTextField">
+          <Events>
+            <EventHandler event="keyReleased" listener="java.awt.event.KeyListener" parameters="java.awt.event.KeyEvent" handler="importPriceTextFieldKeyReleased"/>
+            <EventHandler event="keyTyped" listener="java.awt.event.KeyListener" parameters="java.awt.event.KeyEvent" handler="importPriceTextFieldKeyTyped"/>
+          </Events>
         </Component>
         <Component class="javax.swing.JLabel" name="quantityLabel">
           <Properties>
@@ -292,6 +358,9 @@
           </Properties>
         </Component>
         <Component class="javax.swing.JTextField" name="quantityTextField">
+          <Events>
+            <EventHandler event="keyReleased" listener="java.awt.event.KeyListener" parameters="java.awt.event.KeyEvent" handler="quantityTextFieldKeyReleased"/>
+          </Events>
         </Component>
         <Component class="javax.swing.JToggleButton" name="doesExpiredToggleBtn">
           <Events>
@@ -311,6 +380,7 @@
         <Component class="javax.swing.JTextField" name="NSXDayTextField">
           <Events>
             <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="NSXDayTextFieldActionPerformed"/>
+            <EventHandler event="keyReleased" listener="java.awt.event.KeyListener" parameters="java.awt.event.KeyEvent" handler="NSXDayTextFieldKeyReleased"/>
           </Events>
         </Component>
         <Component class="javax.swing.JLabel" name="jLabel2">
@@ -319,6 +389,9 @@
           </Properties>
         </Component>
         <Component class="javax.swing.JTextField" name="NSXMonthTextField">
+          <Events>
+            <EventHandler event="keyReleased" listener="java.awt.event.KeyListener" parameters="java.awt.event.KeyEvent" handler="NSXMonthTextFieldKeyReleased"/>
+          </Events>
         </Component>
         <Component class="javax.swing.JLabel" name="jLabel3">
           <Properties>
@@ -326,6 +399,9 @@
           </Properties>
         </Component>
         <Component class="javax.swing.JTextField" name="NSXYearTextField">
+          <Events>
+            <EventHandler event="keyReleased" listener="java.awt.event.KeyListener" parameters="java.awt.event.KeyEvent" handler="NSXYearTextFieldKeyReleased"/>
+          </Events>
         </Component>
         <Component class="javax.swing.JLabel" name="HSDLabel">
           <Properties>
@@ -333,6 +409,9 @@
           </Properties>
         </Component>
         <Component class="javax.swing.JTextField" name="HSDDayTextField">
+          <Events>
+            <EventHandler event="keyReleased" listener="java.awt.event.KeyListener" parameters="java.awt.event.KeyEvent" handler="HSDDayTextFieldKeyReleased"/>
+          </Events>
         </Component>
         <Component class="javax.swing.JLabel" name="jLabel5">
           <Properties>
@@ -340,6 +419,9 @@
           </Properties>
         </Component>
         <Component class="javax.swing.JTextField" name="HSDMonthTextField">
+          <Events>
+            <EventHandler event="keyReleased" listener="java.awt.event.KeyListener" parameters="java.awt.event.KeyEvent" handler="HSDMonthTextFieldKeyReleased"/>
+          </Events>
         </Component>
         <Component class="javax.swing.JLabel" name="jLabel6">
           <Properties>
@@ -347,6 +429,9 @@
           </Properties>
         </Component>
         <Component class="javax.swing.JTextField" name="HSDYearTextField">
+          <Events>
+            <EventHandler event="keyReleased" listener="java.awt.event.KeyListener" parameters="java.awt.event.KeyEvent" handler="HSDYearTextFieldKeyReleased"/>
+          </Events>
         </Component>
         <Component class="javax.swing.JLabel" name="DayLabel">
           <Properties>
@@ -367,21 +452,33 @@
           <Properties>
             <Property name="text" type="java.lang.String" value="Th&#xea;m"/>
           </Properties>
+          <Events>
+            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="addButtonActionPerformed"/>
+          </Events>
         </Component>
         <Component class="javax.swing.JButton" name="deleteButton">
           <Properties>
             <Property name="text" type="java.lang.String" value="X&#xf3;a"/>
           </Properties>
+          <Events>
+            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="deleteButtonActionPerformed"/>
+          </Events>
         </Component>
         <Component class="javax.swing.JButton" name="editButton">
           <Properties>
             <Property name="text" type="java.lang.String" value="S&#x1eed;a"/>
           </Properties>
+          <Events>
+            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="editButtonActionPerformed"/>
+          </Events>
         </Component>
         <Component class="javax.swing.JButton" name="cancelButton">
           <Properties>
             <Property name="text" type="java.lang.String" value="H&#x1ee7;y"/>
           </Properties>
+          <Events>
+            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="cancelButtonActionPerformed"/>
+          </Events>
         </Component>
         <Component class="javax.swing.JLabel" name="errorIDLabel">
           <Properties>
@@ -493,10 +590,16 @@
                     </Column>
                   </TableColumnModel>
                 </Property>
+                <Property name="selectionModel" type="javax.swing.ListSelectionModel" editor="org.netbeans.modules.form.editors2.JTableSelectionModelEditor">
+                  <JTableSelectionModel selectionMode="0"/>
+                </Property>
                 <Property name="tableHeader" type="javax.swing.table.JTableHeader" editor="org.netbeans.modules.form.editors2.JTableHeaderEditor">
                   <TableHeader reorderingAllowed="true" resizingAllowed="true"/>
                 </Property>
               </Properties>
+              <Events>
+                <EventHandler event="mouseReleased" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="jTable1MouseReleased"/>
+              </Events>
             </Component>
           </SubComponents>
         </Container>

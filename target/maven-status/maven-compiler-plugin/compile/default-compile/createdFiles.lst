@@ -63,7 +63,10 @@ GUI\ShiftPanel$7.class
 GUI\ShiftPanel$22.class
 Controllers\OrderController.class
 GUI\ShiftPanel$10.class
+<<<<<<< HEAD
 GUI\CustomerCardPanel$21.class
+=======
+>>>>>>> origin/Repo_Branch
 GUI\PopupShipment.class
 GUI\PurchasePanel$17.class
 GUI\RepoPanel$8.class
@@ -137,8 +140,11 @@ GUI\OpenShiftFrame$5.class
 GUI\SettingsPanel.class
 GUI\PurchasePanel$42.class
 GUI\ShipmentPanel$5.class
+<<<<<<< HEAD
 GUI\ShiftPanel$13.class
 GUI\SettingsPanel$3.class
+=======
+>>>>>>> origin/Repo_Branch
 GUI\CustomerCardPanel$13.class
 GUI\HistoryPanel$21.class
 GUI\PurchasePanel$14.class
@@ -153,9 +159,12 @@ GUI\SettingsPanel$4.class
 Models\Store.class
 Builder\CustomerBuilder.class
 GUI\OpenShiftFrame$6.class
+<<<<<<< HEAD
 GUI\HistoryPanel$18.class
 GUI\HistoryPanel$1.class
 GUI\HistoryPanel$20.class
+=======
+>>>>>>> origin/Repo_Branch
 GUI\ShipmentPanel$3.class
 GUI\EmployJPanel$9.class
 Controllers\GoodsController.class
@@ -178,7 +187,10 @@ GUI\LogInFrame$1.class
 GUI\RepoPanel$11.class
 Controllers\EmployeeListController.class
 GUI\RepoPanel$16.class
+<<<<<<< HEAD
 GUI\HistoryPanel$6.class
+=======
+>>>>>>> origin/Repo_Branch
 GUI\PurchasePanel$28.class
 GUI\EmployJPanel$3.class
 Models\PaymentOptions.class
@@ -260,7 +272,10 @@ View\StoreView.class
 GUI\HistoryPanel$9.class
 GUI\PurchasePanel$25.class
 GUI\RepoPanel$12.class
+<<<<<<< HEAD
 GUI\ShiftPanel$19.class
+=======
+>>>>>>> origin/Repo_Branch
 GUI\MainFrame$2.class
 GUI\ChangeEmployeeFrame.class
 Models\Repository.class
