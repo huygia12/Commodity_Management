@@ -249,6 +249,7 @@ public class RepoPanel extends javax.swing.JPanel {
         searchLabel.setText("Tìm kiếm:");
         tablePanel.add(searchLabel, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 0, 90, 20));
 
+        jTable1.setAutoCreateRowSorter(true);
         jTable1.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
 
@@ -477,16 +478,18 @@ public class RepoPanel extends javax.swing.JPanel {
     private void editButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_editButtonActionPerformed
         // TODO add your handling code here:
         if (jTable1.getSelectedRow() != -1) {
-            List<Shipment> editedGoodShipments = goodsList.getList().get(jTable1.getSelectedRow()).getShipments();
-            goodsList.getList().set(jTable1.getSelectedRow(), new Goods("", "", BigDecimal.ZERO, "", ""));
-            if (dupedGoodCheck()) {
-                goodsList.getList().set(jTable1.getSelectedRow(), new Goods(nameTextField.getText(), manufacturerTextField.getText(), new BigDecimal(listPriceTextField.getText()), IDTextField.getText(),unitComboBox.getSelectedItem().toString()));
-                goodsList.getList().get(jTable1.getSelectedRow()).setTotalQuantity(new BigDecimal(totalQuantityTextField.getText()));
-                goodsList.getList().get(jTable1.getSelectedRow()).setShipments(editedGoodShipments);
+            Goods editedGood = goodsList.getList().get(findGoodsIndex(goodTableModel.getValueAt(jTable1.getSelectedRow(), 0).toString()));
+            List<Shipment> editedGoodShipments = goodsList.getList().get(findGoodsIndex(goodTableModel.getValueAt(jTable1.getSelectedRow(), 0).toString())).getShipments();
+            goodsList.getList().set(findGoodsIndex(goodTableModel.getValueAt(jTable1.getSelectedRow(), 0).toString()), new Goods("", "", BigDecimal.ZERO, editedGood.getID(), ""));
+            if (dupedGoodCheck() || editedGood.getID().equals(IDTextField.getText())) {
+                String newID = goodsList.getList().set(findGoodsIndex(editedGood.getID()), new Goods(nameTextField.getText(), manufacturerTextField.getText(), new BigDecimal(listPriceTextField.getText()), IDTextField.getText(),unitComboBox.getSelectedItem().toString())).getID();
+                goodsList.getList().get(findGoodsIndex(newID)).setTotalQuantity(new BigDecimal(totalQuantityTextField.getText()));
+                goodsList.getList().get(findGoodsIndex(newID)).setShipments(editedGoodShipments);
                 reloadTable(goodsList);
                 resetVariables();
             } else {
                 JOptionPane.showMessageDialog(null, "Mặt hàng đã tồn tại!", "Oh no!", JOptionPane.WARNING_MESSAGE);
+                goodsList.getList().set(findGoodsIndex(editedGood.getID()), editedGood);
             }
         } else {
             String unitChanged = JOptionPane.showInputDialog(null, "Vui lòng nhập tên đơn vị:", "Thay đổi đơn vị", JOptionPane.QUESTION_MESSAGE);
@@ -665,6 +668,7 @@ public class RepoPanel extends javax.swing.JPanel {
                 good.getTotalQuantity()
             });
         }
+        searchTextField.setText("");
     }
     
     public void setGoodsList(GoodsList<Goods> goodsList) {
@@ -689,6 +693,15 @@ public class RepoPanel extends javax.swing.JPanel {
                 return;
             }
         }
+    }
+    
+    private int findGoodsIndex (String ID) {
+        for (Goods goods : goodsList.getList()) {
+            if (ID.equals(goods.getID())) {
+                return goodsList.getList().indexOf(goods);
+            }
+        }
+        return -1;
     }
 
     private GoodsList<Goods> goodsList;

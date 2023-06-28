@@ -4,6 +4,8 @@
  */
 package GUI;
 
+import javax.swing.ImageIcon;
+
 /**
  *
  * @author Ms Linh
@@ -15,6 +17,7 @@ public class PopupShipment extends javax.swing.JFrame {
      */
     public PopupShipment() {
         initComponents();
+        setIconImage(new ImageIcon(getClass().getResource("/ImageIcon/icons8-grocery-store-96.png")).getImage());
     }
 
     /**
@@ -29,6 +32,7 @@ public class PopupShipment extends javax.swing.JFrame {
         shipmentPanel1 = new GUI.ShipmentPanel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setTitle("Quản lý lô hàng");
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
