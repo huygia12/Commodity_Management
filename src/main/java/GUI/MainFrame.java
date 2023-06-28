@@ -14,6 +14,8 @@ import java.awt.event.WindowEvent;
 import java.io.File;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javaswingdev.drawer.Drawer;
@@ -217,7 +219,7 @@ public class MainFrame extends javax.swing.JFrame {
         // pass data vào shiftJPanel
         shiftPanel1.passData(store, shift, this);
         //pass dât vào settingsPanel
-        settingsPanel1.passData(store, header);
+        settingsPanel1.passData(store, header, storeList);
         //pass data vào historyPanel
         historyPanel1.passData(store);
         //pass data vao header
@@ -365,13 +367,15 @@ public class MainFrame extends javax.swing.JFrame {
         }.start();
     }
 
-    private static void saveData() {
-        myData.save(Path.of(STORE_DATA_FOLDER + store.getID()+".json"), store);
+    private void saveData() {
+        myData.save(Path.of(STORE_DATA_FOLDER + store.getID() + ".json"), store);
+        myData.save(Path.of(LIST_STORE_PATH), storeList);
     }
 
-    public void setUserStore(StoreShortedCut storeShortedCut) {
-        MainFrame.store = (Store) myData.load(Path.of(STORE_DATA_FOLDER + storeShortedCut.getId()+".json"),
+    public void setUserStore(StoreShortedCut storeShortedCut, List<StoreShortedCut> storeList) {
+        this.store = (Store) myData.load(Path.of(STORE_DATA_FOLDER + storeShortedCut.getId() + ".json"),
                 Store.class, store);
+        this.storeList = storeList;
         this.shift = (store.getHistory().getShiftHistory().isEmpty()) ? new Shift()
                 : store.getHistory().getShiftHistory().peek();
         passDataToComponents();
@@ -410,18 +414,22 @@ public class MainFrame extends javax.swing.JFrame {
         cardLayout = (CardLayout) displayPanel.getLayout();
         realTimeClock();
         store = new Store();
+        storeList = new ArrayList<>();
     }
 
     private boolean initNewOrdercheck = false;
+    private List<StoreShortedCut> storeList;
     private Shift shift;
-    private static Store store;
+    private Store store;
     private Header header;
     private CardLayout cardLayout;
     private DrawerController drawerCtr;
     private static final JsonDataFile myData = new JsonDataFile();
     private static final String HOME = System.getProperty("user.dir");
     private static final String SEPARATOR = File.separator;
-    private static final String STORE_DATA_FOLDER = HOME + SEPARATOR + "data" + SEPARATOR + "storeData" + SEPARATOR;
+    private static final String DATA_FOLDER = HOME + SEPARATOR + "data" + SEPARATOR;
+    private static final String STORE_DATA_FOLDER = DATA_FOLDER + "storeData" + SEPARATOR;
+    private static final String LIST_STORE_PATH = DATA_FOLDER + "storeList.json";
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private GUI.CustomerCardPanel customerCardPanel1;
     private javax.swing.JLabel dateLabel;

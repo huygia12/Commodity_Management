@@ -404,8 +404,6 @@ public class LogInFrame extends javax.swing.JFrame {
         Boolean checkIfEmailExisted = false;
         if (!storeList.isEmpty()) {
             for (StoreShortedCut store : storeList) {
-                System.out.println(store.getEmail());
-                System.out.println(store.getPassword());
                 if (store.getEmail().equals(inputEmail)) {
                     if (!loginPassword.equals(store.getPassword())) {
                         showLogInFailMessage();
@@ -446,7 +444,7 @@ public class LogInFrame extends javax.swing.JFrame {
             StoreShortedCut userStore = checkExistingEmail();
             if (userStore != null) {
                 MainFrame mainFrame = new MainFrame();
-                mainFrame.setUserStore(userStore);
+                mainFrame.setUserStore(userStore, storeList);
                 mainFrame.setVisible(true);
                 this.dispose();
             }

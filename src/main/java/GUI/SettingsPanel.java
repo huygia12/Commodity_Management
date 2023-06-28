@@ -4,10 +4,11 @@
  */
 package GUI;
 
-import Models.Settings;
 import Models.Store;
+import Models.StoreShortedCut;
 import java.math.BigDecimal;
 import java.math.BigInteger;
+import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import javax.swing.JOptionPane;
@@ -243,7 +244,7 @@ public class SettingsPanel extends javax.swing.JPanel {
         store.setName(name);
         store.setPhoneNumber(phoneNumber);
         store.setAddress(address);
-
+        
         // Gọi phương thức hiển thị thông tin mới trên Header
         header.setStoreInfor();
          */
@@ -257,14 +258,25 @@ public class SettingsPanel extends javax.swing.JPanel {
         } else if (email.isEmpty() || !emailMatcher.matches()) {
             JOptionPane.showMessageDialog(this, "Email không hợp lệ.");
             return;
+        } else {
+            for (StoreShortedCut storeShortedCut : storeList) {
+                if (storeShortedCut.getEmail().equals(email)) {
+                    JOptionPane.showMessageDialog(this, "Email đã được sử dụng.");
+                    return;
+                }
+            }
         }
+        // Cập nhật trong storeShortCutList
+        for (StoreShortedCut storeShortedCut : storeList) {
+            if (storeShortedCut.getId().compareTo(store.getID()) == 0) {
+                storeShortedCut.setEmail(email);
+            }
+        }
+
         // Cập nhật đối tượng Store
         store.setName(name);
         store.setPhoneNumber(phoneNumber);
         store.setAddress(address);
-
-        // Lưu thay đổi
-        store.getSettings().save();
 
         // Cập nhật Header với tên cửa hàng mới
         header.setTitle(name, phoneNumber, address, email);
@@ -313,9 +325,10 @@ public class SettingsPanel extends javax.swing.JPanel {
         }
     }//GEN-LAST:event_inputchangeScoreButtonActionPerformed
 
-    public void passData(Store store, Header header) {
+    public void passData(Store store, Header header, List<StoreShortedCut> storeList) {
         this.store = store;
         this.header = header;
+        this.storeList = storeList;
         //Cập nhật thông tin hiện có
         inputNameTextField.setText(store.getName());
         inputPhoneNumberTextField.setText(store.getPhoneNumber());
@@ -327,6 +340,7 @@ public class SettingsPanel extends javax.swing.JPanel {
         pointsForOneVNDTextField.setText(pointsForOneVND.toString());
     }
 
+    private List<StoreShortedCut> storeList;
     private Header header;
     private Store store;
     // Variables declaration - do not modify//GEN-BEGIN:variables

@@ -1,7 +1,7 @@
 {
   "id": "000000",
   "name": "Chang hi",
-  "email": "wangwang123@gmail.com",
+  "email": "changhi112@gmail.com",
   "passWord": "12345678",
   "address": "112-Nguyen Van Loc",
   "phoneNumber": "0705737292",
@@ -1476,7 +1476,7 @@
         "id": "000000",
         "goodsName": "Custard Cake",
         "manufacture": "TuyenIndustry",
-        "totalQuantity": 30060,
+        "totalQuantity": 30059,
         "shipments": [
           {
             "quantity": 20,
@@ -1510,7 +1510,7 @@
         "id": "000001",
         "goodsName": "Cup Cake",
         "manufacture": "TuyenIndustry",
-        "totalQuantity": 80,
+        "totalQuantity": 79,
         "shipments": [
           {
             "quantity": 49,
@@ -1612,7 +1612,7 @@
         "id": "000004",
         "goodsName": "Strawberry ice-cream",
         "manufacture": "Kem cacao",
-        "totalQuantity": 133,
+        "totalQuantity": 132,
         "shipments": [
           {
             "quantity": 56,
@@ -1646,7 +1646,7 @@
         "id": "000005",
         "goodsName": "Paddle pop",
         "manufacture": "Kem cacao",
-        "totalQuantity": 136,
+        "totalQuantity": 131,
         "shipments": [
           {
             "quantity": 21,
@@ -1680,7 +1680,7 @@
         "id": "000006",
         "goodsName": "Lemon Soda",
         "manufacture": "Kem cacao",
-        "totalQuantity": 133,
+        "totalQuantity": 131,
         "shipments": [
           {
             "quantity": 42,
@@ -1714,7 +1714,7 @@
         "id": "000007",
         "goodsName": "Ruler",
         "manufacture": "HuyStationery",
-        "totalQuantity": 198,
+        "totalQuantity": 197,
         "shipments": [
           {
             "quantity": 33,
