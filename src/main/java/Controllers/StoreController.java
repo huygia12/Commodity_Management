@@ -6,6 +6,7 @@ package Controllers;
 
 import Models.Shift;
 import Models.Store;
+import Models.StoreShortedCut;
 import View.StoreView;
 import java.util.List;
 
@@ -64,8 +65,8 @@ public class StoreController {
         } while (!choice.equalsIgnoreCase("6"));
     }
     
-    public Store containEmail(List<Store> storeList, String email){
-        for (Store store : storeList) {
+    public StoreShortedCut containEmail(List<StoreShortedCut> storeList, String email){
+        for (StoreShortedCut store : storeList) {
             if(store.getEmail().equals(email)){
                 return store;
             }

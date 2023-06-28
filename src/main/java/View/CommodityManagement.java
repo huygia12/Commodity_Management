@@ -38,37 +38,34 @@ public class CommodityManagement {
     private static final String HOME = System.getProperty("user.dir");
     private static final String SEPARATOR = File.separator;
     private static final String DATA_FOLDER = HOME + SEPARATOR + "data" + SEPARATOR;
-    private static final String REPOSITORY_PATH = DATA_FOLDER + "repositoryData.json";
-    private static final String SHIFT_PATH = DATA_FOLDER + "currentShift.json";
-    private static final String HISTORY_PATH = DATA_FOLDER + "historyData.json";
-    private static final String EMPLOYEE_LIST_PATH = DATA_FOLDER + "employeeListData.json";
-    private static final String CUSTOMER_CARD_LIST_PATH = DATA_FOLDER + "customerCardListData.json";
-    private static final String IDGENERATOR_PATH = DATA_FOLDER + "idgenerator.json";
-    private static final String SETTINGS_PATH = DATA_FOLDER + "settingsData.json";
-    private static final String UNITS_PATH = DATA_FOLDER + "units.json";
+    private static final String STORE_DATA_FOLDER = DATA_FOLDER + "storeData" + SEPARATOR;
+    private static final String STORE_ID_BUCKET_PATH = DATA_FOLDER + "storeIDBucket.json";
     private static final String LIST_STORE_PATH = DATA_FOLDER + "storeList.json";
 
     final static Scanner sc = new Scanner(System.in);
     final static JsonDataFile myData = new JsonDataFile();
     static Store store = new Store();
-    static List<Store> storeList = new ArrayList<>();
     final static GoodsController goodsCtr = new GoodsController();
+    final static IDGenerator storeIDGenerator = new IDGenerator();
+    final static List<StoreShortedCut> storeList = new ArrayList<>();
 
     public static void main(String[] args) {
         insertDataDirectly();
-        storeList.add(store);
         saveData();
     }
 
     private static void loadData() {
-        storeList = myData.load(Path.of(LIST_STORE_PATH), List.class, storeList);
+        myData.load(Path.of(LIST_STORE_PATH), List.class, storeList);
     }
 
     private static void saveData() {
+        myData.save(Path.of(STORE_ID_BUCKET_PATH), storeIDGenerator);
         myData.save(Path.of(LIST_STORE_PATH), storeList);
+        myData.save(Path.of(STORE_DATA_FOLDER+store.getID()+".json"), store);
     }
 
     private static void insertDataDirectly() {
+        store.setID(storeIDGenerator.generateID(Store.class.getName(), 6));
         IDGenerator idGenerator = store.getiDGenerator();
         Units units = store.getUnits();
         store.getUnits().getBucket().add("Hộp");
@@ -410,6 +407,8 @@ public class CommodityManagement {
         store.setSilverDiscountOffer(new CustomPair<>(new BigDecimal("8000000"), 2d));
         store.setGoldDiscountOffer(new CustomPair<>(new BigDecimal("12000000"), 3d));
         store.setDiamondDiscountOffer(new CustomPair<>(new BigDecimal("30000000"), 4d));
+        
+        storeList.add(new StoreShortedCut(store.getID(), store.getEmail(), store.getPassWord()));
 //        GoodsList<Goods> orderGoodsList1 = new GoodsList();
 //        orderGoodsList1.getList().add(repo.getList().get(0));
 //        orderGoodsList1.getList().add(repo.getList().get(2));

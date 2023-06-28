@@ -6,6 +6,8 @@ package GUI;
 
 import Controllers.StoreController;
 import Models.Store;
+import Models.StoreShortedCut;
+import Ultility.IDGenerator;
 import Ultility.JsonDataFile;
 import com.formdev.flatlaf.FlatLightLaf;
 import com.google.gson.reflect.TypeToken;
@@ -33,7 +35,7 @@ public class LogInFrame extends javax.swing.JFrame {
         initComponents();
         setUp();
         initVariable();
-        this.storeList = loadData();
+        loadData();
     }
 
     /**
@@ -334,13 +336,11 @@ public class LogInFrame extends javax.swing.JFrame {
         String passwordStr = signUpPassword.getText();
         String retypePasswordStr = retypePassword.getText();
 
-        if (!storeList.isEmpty()) {
-            if (storeCtr.containEmail(storeList, emailStr) != null) {
-                JOptionPane.showMessageDialog(LogInFrame.this,
-                        "Email đã tồn tại!",
-                        "Đăng kí thất bại!",
-                        JOptionPane.WARNING_MESSAGE);
-            }
+        if (storeCtr.containEmail(storeList, emailStr) != null) {
+            JOptionPane.showMessageDialog(LogInFrame.this,
+                    "Email đã tồn tại!",
+                    "Đăng kí thất bại!",
+                    JOptionPane.WARNING_MESSAGE);
             return;
         }
         boolean validEmail, matchPassword, rightpassword;
@@ -370,11 +370,17 @@ public class LogInFrame extends javax.swing.JFrame {
         }
 
         if (validEmail && matchPassword && rightpassword) {
+            // tao store moi
             Store newStore = new Store();
+            newStore.setID(storeIDGenerator.generateID(Store.class.getName(), 6));
             newStore.setEmail(emailStr);
-            newStore.setEmail(passwordStr);
-            storeList.add(newStore);
-            saveData();
+            newStore.setPassWord(passwordStr);
+            myData.save(Path.of(STORE_DATA_FOLDER + newStore.getID() + ".json"), newStore);
+            // tao storeShortedCut moi
+            StoreShortedCut storeShortCut = new StoreShortedCut(newStore.getID(), emailStr, passwordStr);
+            storeList.add(storeShortCut);
+            myData.save(Path.of(STORE_ID_BUCKET_PATH), storeIDGenerator);
+            myData.save(Path.of(LIST_STORE_PATH), storeList);
             JOptionPane.showMessageDialog(LogInFrame.this,
                     "Vui lòng trở lại màn hình đăng nhập",
                     "Đăng kí thành công!",
@@ -391,18 +397,18 @@ public class LogInFrame extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_retypePasswordActionPerformed
 
-    private Store checkExistingEmail() {
+    private StoreShortedCut checkExistingEmail() {
         String inputEmail = logInEmail.getText();
         String loginPassword = logInPassword.getText();
-        Store userStore = null;
+        StoreShortedCut userStore = null;
         Boolean checkIfEmailExisted = false;
         if (!storeList.isEmpty()) {
-            for (Store store : storeList) {
+            for (StoreShortedCut store : storeList) {
                 System.out.println(store.getEmail());
-                System.out.println(store.getPassWord());
+                System.out.println(store.getPassword());
                 if (store.getEmail().equals(inputEmail)) {
-                    if (!loginPassword.equals(store.getPassWord())) {
-                        logInFailMessage();
+                    if (!loginPassword.equals(store.getPassword())) {
+                        showLogInFailMessage();
                     } else {
                         userStore = store;
                     }
@@ -425,7 +431,7 @@ public class LogInFrame extends javax.swing.JFrame {
                 JOptionPane.WARNING_MESSAGE);
     }
 
-    private void logInFailMessage() {
+    private void showLogInFailMessage() {
         JOptionPane.showMessageDialog(LogInFrame.this,
                 "Sai email hoặc mật khẩu!",
                 "Đăng nhập thất bại!",
@@ -437,7 +443,7 @@ public class LogInFrame extends javax.swing.JFrame {
             illegalLogInEmailWarning.setVisible(true);
             logInEmail.setText("");
         } else {
-            Store userStore = checkExistingEmail();
+            StoreShortedCut userStore = checkExistingEmail();
             if (userStore != null) {
                 MainFrame mainFrame = new MainFrame();
                 mainFrame.setUserStore(userStore);
@@ -481,16 +487,14 @@ public class LogInFrame extends javax.swing.JFrame {
         setProperties();
     }
 
-    private List<Store> loadData() {
-        return myData.load(Path.of(LIST_STORE_PATH),
-                new TypeToken<List<Store>>() {
+    private void loadData() {
+        this.storeList = myData
+                .load(Path.of(LIST_STORE_PATH), new TypeToken<List<StoreShortedCut>>() {
                 }.getType(), storeList);
+        this.storeIDGenerator = (IDGenerator) myData
+                .load(Path.of(STORE_ID_BUCKET_PATH), IDGenerator.class, storeList);
     }
-    
-    private void saveData() {
-        myData.save(Path.of(LIST_STORE_PATH), storeList);
-    }
-    
+
     /**
      * @param args the command line arguments
      * @throws javax.swing.UnsupportedLookAndFeelException
@@ -505,12 +509,15 @@ public class LogInFrame extends javax.swing.JFrame {
     private Pattern pattern;
     private Matcher matcher;
     private String EMAIL_REGEX;
-    private final List<Store> storeList;
+    private IDGenerator storeIDGenerator;
+    private List<StoreShortedCut> storeList;
     private StoreController storeCtr;
     private static final JsonDataFile myData = new JsonDataFile();
     private static final String HOME = System.getProperty("user.dir");
     private static final String SEPARATOR = File.separator;
     private static final String DATA_FOLDER = HOME + SEPARATOR + "data" + SEPARATOR;
+    private static final String STORE_DATA_FOLDER = DATA_FOLDER + "storeData" + SEPARATOR;
+    private static final String STORE_ID_BUCKET_PATH = DATA_FOLDER + "storeIDBucket.json";
     private static final String LIST_STORE_PATH = DATA_FOLDER + "storeList.json";
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JPanel LogInPanel;

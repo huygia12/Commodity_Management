@@ -16,7 +16,9 @@ import java.math.BigInteger;
  * @author FPTSHOP
  */
 public class Store {
-
+    @SerializedName("id")
+    @Expose
+    private String ID;
     @SerializedName("name")
     @Expose
     private String name = "";
@@ -83,6 +85,14 @@ public class Store {
     }
 
     public Store() {
+    }
+
+    public String getID() {
+        return ID;
+    }
+
+    public void setID(String ID) {
+        this.ID = ID;
     }
 
     public String getName() {

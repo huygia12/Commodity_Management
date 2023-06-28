@@ -14,8 +14,6 @@ import java.awt.event.WindowEvent;
 import java.io.File;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javaswingdev.drawer.Drawer;
@@ -368,13 +366,14 @@ public class MainFrame extends javax.swing.JFrame {
     }
 
     private static void saveData() {
-        myData.save(Path.of(LIST_STORE_PATH), storeList);
+        myData.save(Path.of(STORE_DATA_FOLDER + store.getID()+".json"), store);
     }
 
-    public void setUserStore(Store store) {
+    public void setUserStore(StoreShortedCut storeShortedCut) {
+        MainFrame.store = (Store) myData.load(Path.of(STORE_DATA_FOLDER + storeShortedCut.getId()+".json"),
+                Store.class, store);
         this.shift = (store.getHistory().getShiftHistory().isEmpty()) ? new Shift()
                 : store.getHistory().getShiftHistory().peek();
-        this.store = store;
         passDataToComponents();
     }
 
@@ -410,22 +409,19 @@ public class MainFrame extends javax.swing.JFrame {
     private void initVariables() {
         cardLayout = (CardLayout) displayPanel.getLayout();
         realTimeClock();
-        storeList = new ArrayList<>();
         store = new Store();
     }
 
     private boolean initNewOrdercheck = false;
     private Shift shift;
-    private Store store;
-    private static List<Store> storeList;
+    private static Store store;
     private Header header;
     private CardLayout cardLayout;
     private DrawerController drawerCtr;
     private static final JsonDataFile myData = new JsonDataFile();
     private static final String HOME = System.getProperty("user.dir");
     private static final String SEPARATOR = File.separator;
-    private static final String DATA_FOLDER = HOME + SEPARATOR + "data" + SEPARATOR;
-    private static final String LIST_STORE_PATH = DATA_FOLDER + "storeList.json";
+    private static final String STORE_DATA_FOLDER = HOME + SEPARATOR + "data" + SEPARATOR + "storeData" + SEPARATOR;
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private GUI.CustomerCardPanel customerCardPanel1;
     private javax.swing.JLabel dateLabel;
