@@ -4,6 +4,7 @@
  */
 package GUI;
 
+import Controllers.GoodsListController;
 import Controllers.HistoryController;
 import Controllers.OrderController;
 import Models.Employee;
@@ -117,9 +118,9 @@ public class HistoryPanel extends javax.swing.JPanel {
         manufactureLabel = new javax.swing.JLabel();
         manufactureComboBox = new javax.swing.JComboBox<>();
         goodsNameLabel = new javax.swing.JLabel();
-        refreashSearchImportHistoryBtn = new javax.swing.JButton();
         searchImportHistoryBtn = new javax.swing.JButton();
         goodsNameTextField = new javax.swing.JTextField();
+        refreshImportTableLabel = new javax.swing.JButton();
         displayShipmentPanel = new javax.swing.JPanel();
         importDetailJScrollPane = new javax.swing.JScrollPane();
         importDetailTable = new javax.swing.JTable();
@@ -131,8 +132,8 @@ public class HistoryPanel extends javax.swing.JPanel {
         displayTotalOfImportLabel = new javax.swing.JLabel();
 
         setBackground(new java.awt.Color(255, 255, 255));
-        setMinimumSize(new java.awt.Dimension(980, 580));
-        setPreferredSize(new java.awt.Dimension(980, 580));
+        setMinimumSize(new java.awt.Dimension(980, 600));
+        setPreferredSize(new java.awt.Dimension(980, 600));
 
         historyTabPane.setBackground(new java.awt.Color(255, 255, 255));
 
@@ -319,7 +320,7 @@ public class HistoryPanel extends javax.swing.JPanel {
                         .addGroup(searchOrderPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(searchOrderPanelLayout.createSequentialGroup()
                                 .addComponent(searchOrderBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 83, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 8, Short.MAX_VALUE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                                 .addComponent(refreshBtn))
                             .addGroup(searchOrderPanelLayout.createSequentialGroup()
                                 .addComponent(toMonthTextField, javax.swing.GroupLayout.PREFERRED_SIZE, 31, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -350,29 +351,28 @@ public class HistoryPanel extends javax.swing.JPanel {
                     .addComponent(separatorLabel8)
                     .addComponent(fromYearTextField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(fromDayTextField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGroup(searchOrderPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(searchOrderPanelLayout.createSequentialGroup()
-                        .addGap(8, 8, 8)
-                        .addGroup(searchOrderPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(toLabel2)
-                            .addComponent(toDayTextField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(separatorLabel9)
-                            .addComponent(toMonthTextField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(separatorLabel10)
-                            .addComponent(toYearTextField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGap(18, 18, 18)
-                        .addComponent(searchOrderBtn, javax.swing.GroupLayout.DEFAULT_SIZE, 30, Short.MAX_VALUE))
-                    .addGroup(searchOrderPanelLayout.createSequentialGroup()
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(refreshBtn)))
+                .addGap(8, 8, 8)
+                .addGroup(searchOrderPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(toLabel2)
+                    .addComponent(toDayTextField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(separatorLabel9)
+                    .addComponent(toMonthTextField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(separatorLabel10)
+                    .addComponent(toYearTextField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addGroup(searchOrderPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(searchOrderBtn, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(refreshBtn, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addContainerGap())
         );
 
         orderListPanel.setBackground(new java.awt.Color(255, 255, 255));
         orderListPanel.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Danh sách hóa đơn", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Segoe UI", 1, 14))); // NOI18N
 
+        amountOfOrderLabel.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
         amountOfOrderLabel.setText("Số HĐ:");
 
+        totalProceedsLabel.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
         totalProceedsLabel.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
         totalProceedsLabel.setText("Lợi nhuận ròng:");
 
@@ -384,7 +384,7 @@ public class HistoryPanel extends javax.swing.JPanel {
 
         totalNetRevenueLabel.setFont(new java.awt.Font("Segoe UI", 2, 12)); // NOI18N
         totalNetRevenueLabel.setForeground(new java.awt.Color(255, 0, 0));
-        totalNetRevenueLabel.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
+        totalNetRevenueLabel.setHorizontalAlignment(javax.swing.SwingConstants.TRAILING);
         totalNetRevenueLabel.setText(" ");
 
         overViewJScrollPane.setHorizontalScrollBarPolicy(javax.swing.ScrollPaneConstants.HORIZONTAL_SCROLLBAR_ALWAYS);
@@ -423,10 +423,10 @@ public class HistoryPanel extends javax.swing.JPanel {
                 .addComponent(amountOfOrderLabel)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(totalOrderQuantityLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 42, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(40, 40, 40)
+                .addGap(34, 34, 34)
                 .addComponent(totalProceedsLabel)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(totalNetRevenueLabel, javax.swing.GroupLayout.DEFAULT_SIZE, 94, Short.MAX_VALUE)
+                .addComponent(totalNetRevenueLabel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addContainerGap())
             .addGroup(orderListPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                 .addGroup(orderListPanelLayout.createSequentialGroup()
@@ -437,17 +437,17 @@ public class HistoryPanel extends javax.swing.JPanel {
         orderListPanelLayout.setVerticalGroup(
             orderListPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(orderListPanelLayout.createSequentialGroup()
-                .addGap(269, 269, 269)
+                .addGap(264, 264, 264)
                 .addGroup(orderListPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE, false)
-                    .addComponent(amountOfOrderLabel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(totalOrderQuantityLabel, javax.swing.GroupLayout.DEFAULT_SIZE, 28, Short.MAX_VALUE)
-                    .addComponent(totalProceedsLabel, javax.swing.GroupLayout.DEFAULT_SIZE, 28, Short.MAX_VALUE)
-                    .addComponent(totalNetRevenueLabel, javax.swing.GroupLayout.DEFAULT_SIZE, 28, Short.MAX_VALUE))
+                    .addComponent(totalNetRevenueLabel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(totalProceedsLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 24, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(amountOfOrderLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 24, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
             .addGroup(orderListPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                 .addGroup(orderListPanelLayout.createSequentialGroup()
                     .addComponent(overViewJScrollPane, javax.swing.GroupLayout.PREFERRED_SIZE, 258, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addGap(0, 45, Short.MAX_VALUE)))
+                    .addGap(0, 40, Short.MAX_VALUE)))
         );
 
         orderDetailPanel.setBackground(new java.awt.Color(255, 255, 255));
@@ -479,6 +479,9 @@ public class HistoryPanel extends javax.swing.JPanel {
         reprintBtn.setIcon(new javax.swing.ImageIcon(getClass().getResource("/ImageIcon/icons8-print-30.png"))); // NOI18N
         reprintBtn.setText("IN LẠI HĐ");
         reprintBtn.setFocusable(false);
+        reprintBtn.setMaximumSize(new java.awt.Dimension(120, 34));
+        reprintBtn.setMinimumSize(new java.awt.Dimension(120, 34));
+        reprintBtn.setPreferredSize(new java.awt.Dimension(120, 34));
         reprintBtn.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 reprintBtnActionPerformed(evt);
@@ -504,23 +507,22 @@ public class HistoryPanel extends javax.swing.JPanel {
                 .addGroup(orderDetailPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(orderDetailJScrollPane)
                     .addGroup(orderDetailPanelLayout.createSequentialGroup()
-                        .addComponent(reprintBtn)
+                        .addComponent(reprintBtn, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addComponent(totalPayment, javax.swing.GroupLayout.PREFERRED_SIZE, 126, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(44, 44, 44)
-                        .addComponent(totalPaymentLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 89, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(17, 17, 17))))
+                        .addGap(18, 18, 18)
+                        .addComponent(totalPaymentLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 175, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(18, 18, 18))))
         );
         orderDetailPanelLayout.setVerticalGroup(
             orderDetailPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(orderDetailPanelLayout.createSequentialGroup()
                 .addComponent(orderDetailJScrollPane, javax.swing.GroupLayout.PREFERRED_SIZE, 258, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGap(5, 5, 5)
                 .addGroup(orderDetailPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(reprintBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(reprintBtn, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(totalPayment, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(totalPaymentLabel))
-                .addGap(0, 0, Short.MAX_VALUE))
+                    .addComponent(totalPaymentLabel)))
         );
 
         statisticGoodsPanel.setBackground(new java.awt.Color(255, 255, 255));
@@ -564,6 +566,9 @@ public class HistoryPanel extends javax.swing.JPanel {
         printStaticalGoodsToExcelBtn.setIcon(new javax.swing.ImageIcon(getClass().getResource("/ImageIcon/icons8-excel-30.png"))); // NOI18N
         printStaticalGoodsToExcelBtn.setText("XUẤT FILE EXCEL");
         printStaticalGoodsToExcelBtn.setFocusable(false);
+        printStaticalGoodsToExcelBtn.setMaximumSize(new java.awt.Dimension(153, 34));
+        printStaticalGoodsToExcelBtn.setMinimumSize(new java.awt.Dimension(153, 34));
+        printStaticalGoodsToExcelBtn.setPreferredSize(new java.awt.Dimension(153, 34));
         printStaticalGoodsToExcelBtn.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 printStaticalGoodsToExcelBtnActionPerformed(evt);
@@ -576,11 +581,11 @@ public class HistoryPanel extends javax.swing.JPanel {
             statisticGoodsPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(statisticGoodsPanelLayout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(printStaticalGoodsToExcelBtn)
+                .addComponent(printStaticalGoodsToExcelBtn, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(totalLabel)
-                .addGap(35, 35, 35)
-                .addComponent(totalReportProcessLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 104, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(totalReportProcessLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 175, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18))
             .addGroup(statisticGoodsPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                 .addGroup(statisticGoodsPanelLayout.createSequentialGroup()
@@ -591,15 +596,16 @@ public class HistoryPanel extends javax.swing.JPanel {
         statisticGoodsPanelLayout.setVerticalGroup(
             statisticGoodsPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(statisticGoodsPanelLayout.createSequentialGroup()
-                .addGap(167, 167, 167)
+                .addGap(172, 172, 172)
                 .addGroup(statisticGoodsPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(printStaticalGoodsToExcelBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 29, Short.MAX_VALUE)
+                    .addComponent(printStaticalGoodsToExcelBtn, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(totalLabel)
-                    .addComponent(totalReportProcessLabel)))
+                    .addComponent(totalReportProcessLabel))
+                .addContainerGap())
             .addGroup(statisticGoodsPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                 .addGroup(statisticGoodsPanelLayout.createSequentialGroup()
                     .addComponent(goodsReportScrollPane, javax.swing.GroupLayout.PREFERRED_SIZE, 166, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addGap(0, 28, Short.MAX_VALUE)))
+                    .addGap(0, 46, Short.MAX_VALUE)))
         );
 
         javax.swing.GroupLayout orderHistoryPanelLayout = new javax.swing.GroupLayout(orderHistoryPanel);
@@ -620,12 +626,13 @@ public class HistoryPanel extends javax.swing.JPanel {
             orderHistoryPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(orderHistoryPanelLayout.createSequentialGroup()
                 .addGroup(orderHistoryPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(statisticGoodsPanel, javax.swing.GroupLayout.DEFAULT_SIZE, 221, Short.MAX_VALUE)
-                    .addComponent(searchOrderPanel, javax.swing.GroupLayout.DEFAULT_SIZE, 221, Short.MAX_VALUE))
-                .addGap(5, 5, 5)
-                .addGroup(orderHistoryPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(orderDetailPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(orderListPanel, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)))
+                    .addComponent(statisticGoodsPanel, javax.swing.GroupLayout.DEFAULT_SIZE, 239, Short.MAX_VALUE)
+                    .addComponent(searchOrderPanel, javax.swing.GroupLayout.DEFAULT_SIZE, 239, Short.MAX_VALUE))
+                .addGap(0, 0, 0)
+                .addGroup(orderHistoryPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(orderListPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(orderDetailPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         historyTabPane.addTab("Lịch sử bán hàng", orderHistoryPanel);
@@ -690,11 +697,6 @@ public class HistoryPanel extends javax.swing.JPanel {
                 fromImportYearTextFieldMouseExited(evt);
             }
         });
-        fromImportYearTextField.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                fromImportYearTextFieldActionPerformed(evt);
-            }
-        });
         fromImportYearTextField.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyPressed(java.awt.event.KeyEvent evt) {
                 fromImportYearTextFieldKeyPressed(evt);
@@ -742,17 +744,28 @@ public class HistoryPanel extends javax.swing.JPanel {
 
         manufactureLabel.setText("Nhà sản xuất:");
 
-        goodsNameLabel.setText("Mặt hàng:");
+        manufactureComboBox.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "null" }));
 
-        refreashSearchImportHistoryBtn.setBackground(new java.awt.Color(0, 0, 0));
-        refreashSearchImportHistoryBtn.setForeground(new java.awt.Color(255, 255, 255));
-        refreashSearchImportHistoryBtn.setText("Làm Mới");
-        refreashSearchImportHistoryBtn.setMaximumSize(new java.awt.Dimension(80, 23));
-        refreashSearchImportHistoryBtn.setMinimumSize(new java.awt.Dimension(80, 23));
-        refreashSearchImportHistoryBtn.setPreferredSize(new java.awt.Dimension(80, 23));
+        goodsNameLabel.setText("Tên mặt hàng:");
 
         searchImportHistoryBtn.setBackground(new java.awt.Color(0, 255, 0));
+        searchImportHistoryBtn.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
         searchImportHistoryBtn.setText("Tìm Kiếm");
+        searchImportHistoryBtn.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                searchImportHistoryBtnActionPerformed(evt);
+            }
+        });
+
+        refreshImportTableLabel.setIcon(new javax.swing.ImageIcon(getClass().getResource("/ImageIcon/reload (3).png"))); // NOI18N
+        refreshImportTableLabel.setBorder(null);
+        refreshImportTableLabel.setContentAreaFilled(false);
+        refreshImportTableLabel.setFocusable(false);
+        refreshImportTableLabel.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                refreshImportTableLabelActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout searchShipmentPanelLayout = new javax.swing.GroupLayout(searchShipmentPanel);
         searchShipmentPanel.setLayout(searchShipmentPanelLayout);
@@ -768,8 +781,8 @@ public class HistoryPanel extends javax.swing.JPanel {
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, searchShipmentPanelLayout.createSequentialGroup()
                         .addComponent(orderDateLabel)
                         .addGap(18, 18, 18)
-                        .addComponent(fromLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 29, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(fromLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 23, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addComponent(fromImportDayTextField, javax.swing.GroupLayout.PREFERRED_SIZE, 31, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(separatorLabel12, javax.swing.GroupLayout.PREFERRED_SIZE, 8, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -780,56 +793,60 @@ public class HistoryPanel extends javax.swing.JPanel {
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(fromImportYearTextField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addGap(18, 18, 18)
-                .addGroup(searchShipmentPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                .addGroup(searchShipmentPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(searchShipmentPanelLayout.createSequentialGroup()
                         .addComponent(toLabel)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addComponent(toImportDayTextField, javax.swing.GroupLayout.PREFERRED_SIZE, 31, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(separatorLabel14, javax.swing.GroupLayout.PREFERRED_SIZE, 8, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(separatorLabel14, javax.swing.GroupLayout.PREFERRED_SIZE, 8, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(goodsNameLabel, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 81, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGroup(searchShipmentPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(searchShipmentPanelLayout.createSequentialGroup()
+                        .addGap(6, 6, 6)
                         .addComponent(toImportMonthTextField, javax.swing.GroupLayout.PREFERRED_SIZE, 31, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(separatorLabel11, javax.swing.GroupLayout.PREFERRED_SIZE, 8, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(toImportYearTextField, javax.swing.GroupLayout.PREFERRED_SIZE, 64, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addComponent(toImportYearTextField, javax.swing.GroupLayout.PREFERRED_SIZE, 64, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 38, Short.MAX_VALUE)
+                        .addComponent(searchImportHistoryBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 88, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(refreshImportTableLabel))
                     .addGroup(searchShipmentPanelLayout.createSequentialGroup()
-                        .addComponent(goodsNameLabel)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(goodsNameTextField, javax.swing.GroupLayout.PREFERRED_SIZE, 148, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 66, Short.MAX_VALUE)
-                .addGroup(searchShipmentPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(searchImportHistoryBtn, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 88, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(refreashSearchImportHistoryBtn, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 88, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(30, 30, 30))
+                        .addComponent(goodsNameTextField, javax.swing.GroupLayout.PREFERRED_SIZE, 148, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(0, 0, Short.MAX_VALUE)))
+                .addContainerGap())
         );
         searchShipmentPanelLayout.setVerticalGroup(
             searchShipmentPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, searchShipmentPanelLayout.createSequentialGroup()
+            .addGroup(searchShipmentPanelLayout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(searchShipmentPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(manufactureLabel)
-                    .addComponent(manufactureComboBox, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(goodsNameLabel)
-                    .addComponent(goodsNameTextField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(refreashSearchImportHistoryBtn, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addGroup(searchShipmentPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(orderDateLabel)
-                    .addComponent(fromLabel)
-                    .addComponent(fromImportDayTextField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(separatorLabel12)
-                    .addComponent(fromImportMonthTextField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(separatorLabel13)
-                    .addComponent(fromImportYearTextField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(toLabel)
-                    .addComponent(toImportDayTextField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(separatorLabel14)
-                    .addComponent(toImportMonthTextField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(separatorLabel11)
-                    .addComponent(toImportYearTextField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(searchImportHistoryBtn))
-                .addContainerGap(12, Short.MAX_VALUE))
+                .addGroup(searchShipmentPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(refreshImportTableLabel)
+                    .addGroup(searchShipmentPanelLayout.createSequentialGroup()
+                        .addGroup(searchShipmentPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(manufactureLabel)
+                            .addComponent(manufactureComboBox, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(goodsNameLabel)
+                            .addComponent(goodsNameTextField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addGroup(searchShipmentPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(orderDateLabel)
+                            .addComponent(fromLabel)
+                            .addComponent(fromImportDayTextField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(separatorLabel12)
+                            .addComponent(fromImportMonthTextField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(separatorLabel13)
+                            .addComponent(fromImportYearTextField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(toLabel)
+                            .addComponent(toImportDayTextField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(separatorLabel14)
+                            .addComponent(toImportMonthTextField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(separatorLabel11)
+                            .addComponent(toImportYearTextField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(searchImportHistoryBtn))))
+                .addContainerGap(13, Short.MAX_VALUE))
         );
 
         displayShipmentPanel.setBackground(new java.awt.Color(255, 255, 255));
@@ -840,18 +857,18 @@ public class HistoryPanel extends javax.swing.JPanel {
 
             },
             new String [] {
-                "Mã SP", "Tên SP", "Nhà sản xuất", "Ngày nhập", "ĐVT", "Tổng SL", "Mã lô", "Giá nhập", "SL hàng", "Tiền hàng"
+                "Mã SP", "Tên SP", "Nhà sản xuất", "Ngày nhập", "ĐVT", "Mã lô", "Giá nhập", "SL", "Tiền hàng"
             }
         ) {
             boolean[] canEdit = new boolean [] {
-                false, false, false, false, false, false, false, false, false, false
+                false, false, false, false, false, false, false, false, false
             };
 
             public boolean isCellEditable(int rowIndex, int columnIndex) {
                 return canEdit [columnIndex];
             }
         });
-        importDetailTable.setAutoscrolls(false);
+        importDetailTable.setAutoResizeMode(javax.swing.JTable.AUTO_RESIZE_ALL_COLUMNS);
         importDetailTable.setShowGrid(true);
         importDetailJScrollPane.setViewportView(importDetailTable);
 
@@ -872,23 +889,18 @@ public class HistoryPanel extends javax.swing.JPanel {
         displayShipmentPanel.setLayout(displayShipmentPanelLayout);
         displayShipmentPanelLayout.setHorizontalGroup(
             displayShipmentPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(displayShipmentPanelLayout.createSequentialGroup()
-                .addContainerGap()
-                .addGroup(displayShipmentPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(importDetailJScrollPane, javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, displayShipmentPanelLayout.createSequentialGroup()
-                        .addGap(0, 0, Short.MAX_VALUE)
-                        .addComponent(printImportReportBtn, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, displayShipmentPanelLayout.createSequentialGroup()
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(printImportReportBtn, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap())
+            .addComponent(importDetailJScrollPane)
         );
         displayShipmentPanelLayout.setVerticalGroup(
             displayShipmentPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(displayShipmentPanelLayout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(importDetailJScrollPane, javax.swing.GroupLayout.DEFAULT_SIZE, 365, Short.MAX_VALUE)
+                .addComponent(importDetailJScrollPane, javax.swing.GroupLayout.DEFAULT_SIZE, 383, Short.MAX_VALUE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(printImportReportBtn, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(3, 3, 3))
+                .addComponent(printImportReportBtn, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
         );
 
         staticShipmentsPanel.setBackground(new java.awt.Color(255, 255, 255));
@@ -898,9 +910,15 @@ public class HistoryPanel extends javax.swing.JPanel {
 
         totalOfImportLabel.setText("Tổng tiền hàng:");
 
-        displayNumberOfImportLabel.setText("...");
+        displayNumberOfImportLabel.setFont(new java.awt.Font("Segoe UI", 3, 14)); // NOI18N
+        displayNumberOfImportLabel.setForeground(new java.awt.Color(255, 0, 0));
+        displayNumberOfImportLabel.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        displayNumberOfImportLabel.setText("0");
 
-        displayTotalOfImportLabel.setText("...");
+        displayTotalOfImportLabel.setFont(new java.awt.Font("Segoe UI", 3, 14)); // NOI18N
+        displayTotalOfImportLabel.setForeground(new java.awt.Color(255, 0, 0));
+        displayTotalOfImportLabel.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        displayTotalOfImportLabel.setText("0");
 
         javax.swing.GroupLayout staticShipmentsPanelLayout = new javax.swing.GroupLayout(staticShipmentsPanel);
         staticShipmentsPanel.setLayout(staticShipmentsPanelLayout);
@@ -911,11 +929,11 @@ public class HistoryPanel extends javax.swing.JPanel {
                 .addGroup(staticShipmentsPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
                     .addComponent(totalOfImportLabel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(numberOfImportLabel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                .addGap(18, 18, 18)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(staticShipmentsPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(displayNumberOfImportLabel)
-                    .addComponent(displayTotalOfImportLabel))
-                .addContainerGap(105, Short.MAX_VALUE))
+                    .addComponent(displayNumberOfImportLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 140, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(displayTotalOfImportLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 140, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap())
         );
         staticShipmentsPanelLayout.setVerticalGroup(
             staticShipmentsPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -924,7 +942,7 @@ public class HistoryPanel extends javax.swing.JPanel {
                 .addGroup(staticShipmentsPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(numberOfImportLabel)
                     .addComponent(displayNumberOfImportLabel))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 18, Short.MAX_VALUE)
                 .addGroup(staticShipmentsPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(totalOfImportLabel)
                     .addComponent(displayTotalOfImportLabel))
@@ -952,7 +970,7 @@ public class HistoryPanel extends javax.swing.JPanel {
                     .addComponent(staticShipmentsPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(displayShipmentPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addGap(0, 0, 0))
+                .addContainerGap())
         );
 
         historyTabPane.addTab("Lịch sử nhập hàng", importHistoryPanel);
@@ -962,12 +980,12 @@ public class HistoryPanel extends javax.swing.JPanel {
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addContainerGap()
+                .addGap(0, 0, 0)
                 .addComponent(historyTabPane))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(historyTabPane, javax.swing.GroupLayout.PREFERRED_SIZE, 585, Short.MAX_VALUE)
+            .addComponent(historyTabPane, javax.swing.GroupLayout.DEFAULT_SIZE, 600, Short.MAX_VALUE)
         );
     }// </editor-fold>//GEN-END:initComponents
 
@@ -1077,51 +1095,109 @@ public class HistoryPanel extends javax.swing.JPanel {
     }//GEN-LAST:event_reprintBtnActionPerformed
 
     private void fromImportDayTextFieldMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_fromImportDayTextFieldMouseExited
-        // TODO add your handling code here:
+        String text = fromImportDayTextField.getText();
+        if (!ctions.checkIfANumberSequenceForGUI(text)) {
+            fromImportDayTextField.setText("00");
+        }
     }//GEN-LAST:event_fromImportDayTextFieldMouseExited
 
     private void fromImportDayTextFieldKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_fromImportDayTextFieldKeyPressed
-        // TODO add your handling code here:
+        if (evt.getKeyCode() == KeyEvent.VK_ENTER) {
+            String text = fromImportDayTextField.getText();
+            if (!ctions.checkIfANumberSequenceForGUI(text)) {
+                fromImportDayTextField.setText("00");
+            } else {
+                fromImportMonthTextField.requestFocus();
+            }
+        }
     }//GEN-LAST:event_fromImportDayTextFieldKeyPressed
 
     private void toImportMonthTextFieldMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_toImportMonthTextFieldMouseExited
-        // TODO add your handling code here:
+        String text = toImportMonthTextField.getText();
+        if (!ctions.checkIfANumberSequenceForGUI(text)) {
+            toImportMonthTextField.setText("00");
+        }
     }//GEN-LAST:event_toImportMonthTextFieldMouseExited
 
     private void toImportMonthTextFieldKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_toImportMonthTextFieldKeyPressed
-        // TODO add your handling code here:
+        if (evt.getKeyCode() == KeyEvent.VK_ENTER) {
+            String text = toImportMonthTextField.getText();
+            if (!ctions.checkIfANumberSequenceForGUI(text)) {
+                toImportMonthTextField.setText("00");
+            } else {
+                toImportYearTextField.requestFocus();
+            }
+        }
     }//GEN-LAST:event_toImportMonthTextFieldKeyPressed
 
     private void fromImportMonthTextFieldMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_fromImportMonthTextFieldMouseExited
-        // TODO add your handling code here:
+        String text = fromImportMonthTextField.getText();
+        if (!ctions.checkIfANumberSequenceForGUI(text)) {
+            fromImportMonthTextField.setText("00");
+        }
     }//GEN-LAST:event_fromImportMonthTextFieldMouseExited
 
     private void fromImportMonthTextFieldKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_fromImportMonthTextFieldKeyPressed
-        // TODO add your handling code here:
+        if (evt.getKeyCode() == KeyEvent.VK_ENTER) {
+            String text = fromImportMonthTextField.getText();
+            if (!ctions.checkIfANumberSequenceForGUI(text)) {
+                fromImportMonthTextField.setText("00");
+            } else {
+                fromImportYearTextField.requestFocus();
+            }
+        }
     }//GEN-LAST:event_fromImportMonthTextFieldKeyPressed
 
     private void fromImportYearTextFieldMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_fromImportYearTextFieldMouseExited
-        // TODO add your handling code here:
+        String text = fromImportYearTextField.getText();
+        if (!ctions.checkIfANumberSequenceForGUI(text)) {
+            fromImportYearTextField.setText(LocalDate.now().getYear() + "");
+        }
     }//GEN-LAST:event_fromImportYearTextFieldMouseExited
 
     private void fromImportYearTextFieldKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_fromImportYearTextFieldKeyPressed
-        // TODO add your handling code here:
+        if (evt.getKeyCode() == KeyEvent.VK_ENTER) {
+            String text = fromImportYearTextField.getText();
+            if (!ctions.checkIfANumberSequenceForGUI(text)) {
+                fromImportYearTextField.setText(LocalDate.now().getYear() + "");
+            } else {
+                toImportDayTextField.requestFocus();
+            }
+        }
     }//GEN-LAST:event_fromImportYearTextFieldKeyPressed
 
     private void toImportYearTextFieldMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_toImportYearTextFieldMouseExited
-        // TODO add your handling code here:
+        String text = toImportYearTextField.getText();
+        if (!ctions.checkIfANumberSequenceForGUI(text)) {
+            toImportYearTextField.setText(LocalDate.now().getYear() + "");
+        }
     }//GEN-LAST:event_toImportYearTextFieldMouseExited
 
     private void toImportYearTextFieldKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_toImportYearTextFieldKeyPressed
-        // TODO add your handling code here:
+        if (evt.getKeyCode() == KeyEvent.VK_ENTER) {
+            String text = toImportYearTextField.getText();
+            if (!ctions.checkIfANumberSequenceForGUI(text)) {
+                toImportYearTextField.setText(LocalDate.now().getYear() + "");
+            }
+        }
     }//GEN-LAST:event_toImportYearTextFieldKeyPressed
 
     private void toImportDayTextFieldMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_toImportDayTextFieldMouseExited
-        // TODO add your handling code here:
+        String text = toImportDayTextField.getText();
+        if (!ctions.checkIfANumberSequenceForGUI(text)) {
+            toImportDayTextField.setText("00");
+        }
     }//GEN-LAST:event_toImportDayTextFieldMouseExited
 
     private void toImportDayTextFieldKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_toImportDayTextFieldKeyPressed
-        // TODO add your handling code here:
+        if (evt.getKeyCode() == KeyEvent.VK_ENTER) {
+            String text = toImportDayTextField.getText();
+            if (!ctions.checkIfANumberSequenceForGUI(text)) {
+                toImportDayTextField.setText("00");
+            } else {
+                toImportMonthTextField.requestFocus();
+            }
+        }
     }//GEN-LAST:event_toImportDayTextFieldKeyPressed
 
     private void toYearTextFieldMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_toYearTextFieldMouseExited
@@ -1140,20 +1216,26 @@ public class HistoryPanel extends javax.swing.JPanel {
         }
     }//GEN-LAST:event_toYearTextFieldKeyPressed
 
-    private void fromImportYearTextFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_fromImportYearTextFieldActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_fromImportYearTextFieldActionPerformed
-
     private void printImportReportBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_printImportReportBtnActionPerformed
-        // TODO add your handling code here:
+        try ( PrintWriter pw = new PrintWriter(Files.newBufferedWriter(Path.of(IMPORT_GOODS_LIST_FILE),
+                StandardOpenOption.CREATE,
+                StandardOpenOption.WRITE,
+                StandardOpenOption.TRUNCATE_EXISTING), true)) {
+            pw.println("Ma SP,Ten SP,Nha SX,Ngay nhap,DVT,Ma lo,Gia nhap,SL,Tien hang");
+            for (Goods goods : filterImportGoodsList) {
+                pw.println(goods.toImportGoodsString());
+            }
+            JOptionPane.showMessageDialog(this,
+                    "Xuất File excel thành công!",
+                    "Thông báo",
+                    JOptionPane.INFORMATION_MESSAGE);
+        } catch (IOException ex) {
+            showWarningJOptionPane(CANNOT_PRINT_TO_EXCEL);
+        }
     }//GEN-LAST:event_printImportReportBtnActionPerformed
 
     private void printStaticalGoodsToExcelBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_printStaticalGoodsToExcelBtnActionPerformed
-        if (staticalGoodsList == null) {
-            showWarningJOptionPane(CANNOT_PRINT_TO_EXCEL);
-            return;
-        }
-        try ( PrintWriter pw = new PrintWriter(Files.newBufferedWriter(Path.of(FILE_CSV_PRINT),
+        try ( PrintWriter pw = new PrintWriter(Files.newBufferedWriter(Path.of(REPORT_GOODS_LIST_FILE),
                 StandardOpenOption.CREATE,
                 StandardOpenOption.WRITE,
                 StandardOpenOption.TRUNCATE_EXISTING), true)) {
@@ -1227,7 +1309,7 @@ public class HistoryPanel extends javax.swing.JPanel {
         clearTableModel(orderDetailModel);
         insertOrderHistoryToOverViewTable(filterOrderList);
         staticalGoodsList = historyCtr.makeStaticalGoodsList(filterOrderList, grossRevenue);
-        insertStaticalGoodsLiSTToGoodsReportTable(staticalGoodsList);
+        insertStaticalGoodsListToGoodsReportTable(staticalGoodsList);
         totalReportProcessLabel.setText(String.format("%.1f", grossRevenue));
     }//GEN-LAST:event_searchOrderBtnActionPerformed
 
@@ -1268,10 +1350,68 @@ public class HistoryPanel extends javax.swing.JPanel {
         }
     }//GEN-LAST:event_searchOrderIDTextFieldKeyPressed
 
+    private void refreshImportTableLabelActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_refreshImportTableLabelActionPerformed
+        refreshImportHistoryPanel();
+    }//GEN-LAST:event_refreshImportTableLabelActionPerformed
+
+    private void searchImportHistoryBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_searchImportHistoryBtnActionPerformed
+        filterImportGoodsList = store.getHistory().getImportGoodsList();
+        String goodsName = goodsNameTextField.getText();
+        String manufacture = manufactureComboBox.getSelectedItem().toString();
+        String fromDateStr = fromImportDayTextField.getText() + "/" + fromImportMonthTextField.getText() + "/" + fromImportYearTextField.getText();
+        String toDateStr = toImportDayTextField.getText() + "/" + toImportMonthTextField.getText() + "/" + toImportYearTextField.getText();
+        
+        if(!goodsName.isBlank()){
+            filterImportGoodsList = filterImportGoodsList
+                    .stream()
+                    .filter(goods->goods
+                            .getGoodsName()
+                            .toLowerCase()
+                            .contains(goodsName.toLowerCase()))
+                    .toList();
+        }
+        if(!manufacture.equals("null")){
+            filterImportGoodsList = filterImportGoodsList
+                    .stream()
+                    .filter(goods->goods.getManufacture().equals(manufacture))
+                    .toList();
+        }
+        if (!fromDateStr.equals(defaultDateSet) && !toDateStr.equals(defaultDateSet)) {
+            boolean check = ctions.checkIfDateIsBeforeAnotherDate(fromDateStr, toDateStr);
+            if (check) {
+                LocalDate fromDate = LocalDate.parse(fromDateStr, DateTimeFormatter.ofPattern(Date_Parttern));
+                LocalDate toDate = LocalDate.parse(toDateStr, DateTimeFormatter.ofPattern(Date_Parttern));
+                filterImportGoodsList = filterImportGoodsList
+                        .stream()
+                        .filter(goods
+                                -> goods.getShipments().get(0).getImportedDate().isEqual(fromDate)
+                        || goods.getShipments().get(0).getImportedDate().isEqual(toDate)
+                        || (goods.getShipments().get(0).getImportedDate().isAfter(fromDate)
+                        && goods.getShipments().get(0).getImportedDate().isBefore(toDate)))
+                        .toList();
+            } else {
+                showWarningJOptionPane(INVALID_FILTER_DATE);
+                return;
+            }
+        }
+        insertImportedGoodsToImportDetailTable(filterImportGoodsList);
+        displayNumberOfImportLabel.setText(importDetailTable.getRowCount() + "");
+        displayTotalOfImportLabel.setText(String.format("%.1f",
+                historyCtr.getTotalAmountOfImportGoods(filterImportGoodsList)));
+    }//GEN-LAST:event_searchImportHistoryBtnActionPerformed
+
     private void passValueToSearchCashierComboBox() {
         searchCashierComboBox.removeAllItems();
         searchCashierComboBox.addItem("null");
         store.getEmployeeList().getList().stream().forEach(e -> searchCashierComboBox.addItem(e.toString()));
+    }
+
+    private void passValueToManufactureComboBox() {
+        manufactureComboBox.removeAllItems();
+        manufactureComboBox.addItem("null");
+        List<String> manufactureList = goodsListCtr
+                .getManufactureList(store.getHistory().getImportGoodsList());
+        manufactureList.stream().forEach(manufacture -> manufactureComboBox.addItem(manufacture));
     }
 
     private void clearTableModel(DefaultTableModel tableModel) {
@@ -1337,7 +1477,7 @@ public class HistoryPanel extends javax.swing.JPanel {
         });
     }
 
-    private void insertStaticalGoodsLiSTToGoodsReportTable(GoodsList<StaticalGoods> staticalGoodsList) {
+    private void insertStaticalGoodsListToGoodsReportTable(GoodsList<StaticalGoods> staticalGoodsList) {
         clearTableModel(goodsReportModel);
         for (StaticalGoods staticalGoods : staticalGoodsList.getList()) {
             goodsReportModel.addRow(new Object[]{
@@ -1347,6 +1487,28 @@ public class HistoryPanel extends javax.swing.JPanel {
                 staticalGoods.getTotalQuantity(),
                 String.format("%.1f", staticalGoods.getRevenue()),
                 staticalGoods.getRatio()
+            });
+        }
+    }
+
+    private void insertImportedGoodsToImportDetailTable(List<Goods> goodsList) {
+        clearTableModel(importDetailModel);
+        int size = goodsList.size();
+        for (int i = size - 1; i >= 0; i--) {
+            Goods importedGoods = goodsList.get(i);
+            Shipment importedShipment = importedGoods.getShipments().get(0);
+            BigDecimal importPrice = importedShipment.getImportPrice();
+            BigDecimal quantity = importedShipment.getQuantity();
+            importDetailModel.addRow(new Object[]{
+                importedGoods.getID(),
+                importedGoods.getGoodsName(),
+                importedGoods.getManufacture(),
+                importedShipment.getImportedDate().format(DateTimeFormatter.ofPattern(Date_Parttern)),
+                importedGoods.getUnit(),
+                importedShipment.getID(),
+                String.format("%.1f", importPrice),
+                quantity,
+                String.format("%.1f", quantity.multiply(importPrice))
             });
         }
     }
@@ -1388,13 +1550,16 @@ public class HistoryPanel extends javax.swing.JPanel {
                     if (String.format(".1f", goods.getTotalQuantity()).length() + extraLength > totalQuanMaxSize) {
                         totalQuanMaxSize = String.format(".1f", goods.getTotalQuantity()).length() + extraLength;
                     }
+                    if (goods.getManufacture().length() + extraLength > manufactureMaxSize) {
+                        manufactureMaxSize = goods.getManufacture().length() + extraLength;
+                    }
                     for (Shipment shipment : goods.getShipments()) {
                         if (shipment.getID().length() + extraLength > shipmentIDMaxSize) {
                             shipmentIDMaxSize = shipment.getID().length() + extraLength;
                         }
-//                        if (shipment.getID().length() + extraLength > shipmentIDMaxSize) {
-//                            shipmentIDMaxSize = shipment.getID().length() + extraLength;
-//                        }
+                        if (String.format(".1f", shipment.getImportPrice()).length() + extraLength > importPriceMaxSize) {
+                            importPriceMaxSize = String.format(".1f", shipment.getImportPrice()).length() + extraLength;
+                        }
                         if (String.format(".1f", shipment.getQuantity()).length() + extraLength > quanMaxSize) {
                             quanMaxSize = String.format(".1f", shipment.getQuantity()).length() + extraLength;
                         }
@@ -1412,14 +1577,14 @@ public class HistoryPanel extends javax.swing.JPanel {
         orderDetailTable.getColumnModel().getColumn(4).setMinWidth(totalQuanMaxSize);
         orderDetailTable.getColumnModel().getColumn(5).setMinWidth(shipmentIDMaxSize);
         orderDetailTable.getColumnModel().getColumn(6).setMinWidth(quanMaxSize);
-//        orderDetailTable.getColumnModel().getColumn(7).setMinWidth();
+        orderDetailTable.getColumnModel().getColumn(7).setMinWidth(extraLength);
+
         goodsReportTable.getColumnModel().getColumn(0).setMinWidth(goodsIDMaxSize);
         goodsReportTable.getColumnModel().getColumn(1).setMinWidth(goodsNameMaxSize);
         goodsReportTable.getColumnModel().getColumn(2).setMinWidth(unitMaxSize);
         goodsReportTable.getColumnModel().getColumn(3).setMinWidth(totalQuanMaxSize);
         goodsReportTable.getColumnModel().getColumn(4).setMinWidth(shipmentIDMaxSize);
         goodsReportTable.getColumnModel().getColumn(5).setMinWidth(quanMaxSize);
-//        productReportTable.getColumnModel().getColumn(6).setMinWidth();
     }
 
     private void setDefaultValueToAllComponentInOrderHistoryPanel() {
@@ -1456,7 +1621,12 @@ public class HistoryPanel extends javax.swing.JPanel {
     }
 
     private void refreshImportHistoryPanel() {
-
+        passValueToManufactureComboBox();
+        insertImportedGoodsToImportDetailTable(store.getHistory().getImportGoodsList());
+        filterImportGoodsList = store.getHistory().getImportGoodsList();
+        displayNumberOfImportLabel.setText(importDetailTable.getRowCount() + "");
+        displayTotalOfImportLabel.setText(String.format("%.1f",
+                historyCtr.getTotalAmountOfImportGoods(store.getHistory().getImportGoodsList())));
     }
 
     public void refresh() {
@@ -1468,27 +1638,31 @@ public class HistoryPanel extends javax.swing.JPanel {
         // Table 
         overViewModel = (DefaultTableModel) overViewTable.getModel();
         overViewJScrollPane.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_ALWAYS);
-        overViewJScrollPane.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
+        overViewJScrollPane.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_AS_NEEDED);
         orderDetailModel = (DefaultTableModel) orderDetailTable.getModel();
         orderDetailJScrollPane.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_ALWAYS);
         orderDetailJScrollPane.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_AS_NEEDED);
         goodsReportModel = (DefaultTableModel) goodsReportTable.getModel();
         goodsReportScrollPane.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_ALWAYS);
-        goodsReportScrollPane.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
+        goodsReportScrollPane.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_AS_NEEDED);
+        importDetailModel = (DefaultTableModel) importDetailTable.getModel();
         // Biến khác
         orderCtr = new OrderController();
         historyCtr = new HistoryController();
         ctions = new Cautions();
+        goodsListCtr = new GoodsListController();
         filterOrderList = new ArrayList<>();
+        filterImportGoodsList = new ArrayList<>();
     }
 
+    private List<Goods> filterImportGoodsList;
     private List<Order> filterOrderList;
     private OrderController orderCtr;
     private HistoryController historyCtr;
-    // currentPanel == true : đang ở lịch sử hóa đơn; == false thì đang ở lịch sử nhập hàng
+    private GoodsListController goodsListCtr;
     private Store store;
     private Cautions ctions;
-    GoodsList<StaticalGoods> staticalGoodsList;
+    private GoodsList<StaticalGoods> staticalGoodsList;
     private DefaultTableModel overViewModel;
     private DefaultTableModel goodsReportModel;
     private DefaultTableModel orderDetailModel;
@@ -1499,11 +1673,12 @@ public class HistoryPanel extends javax.swing.JPanel {
     private int orderTotalMaxSize = "Tong tien".length() + extraLength;
     private int goodsNameMaxSize = "Ten SP".length() + extraLength;
     private int goodsIDMaxSize = "Ma SP".length() + extraLength;
+    private int manufactureMaxSize = "Nhà sản xuất".length() + extraLength;
+    private int importPriceMaxSize = "Giá nhập".length() + extraLength;
     private int unitMaxSize = "dvt".length() + extraLength;
     private int totalQuanMaxSize = "Tong sl".length() + extraLength;
     private int shipmentIDMaxSize = "ma lo".length() + extraLength;
     private int quanMaxSize = "SL hang".length() + extraLength;
-    private int totalPerGoodsMaxSize = "tien hang".length() + extraLength;
     private int listPriceMaxSize = "don gia".length() + extraLength;
     private final String NOTHING_CHOOSEN_WARNING = "Bạn chưa chọn hoá đơn nào!";
     private final String INVALID_FILTER_DATE = "Ngày lọc không hợp lệ!";
@@ -1513,7 +1688,8 @@ public class HistoryPanel extends javax.swing.JPanel {
     private final String Date_Parttern = "d/M/y";
     private final String HOME = System.getProperty("user.dir");
     private final String SEPARATOR = File.separator;
-    private final String FILE_CSV_PRINT = HOME + SEPARATOR + "output" + SEPARATOR + "staticalGoodsList.csv";
+    private final String REPORT_GOODS_LIST_FILE = HOME + SEPARATOR + "output" + SEPARATOR + "staticalGoodsList.csv";
+    private final String IMPORT_GOODS_LIST_FILE = HOME + SEPARATOR + "output" + SEPARATOR + "importGoodsList.csv";
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel amountOfOrderLabel;
     private javax.swing.JLabel cashierPhoneNumLable1;
@@ -1551,8 +1727,8 @@ public class HistoryPanel extends javax.swing.JPanel {
     private javax.swing.JTable overViewTable;
     private javax.swing.JButton printImportReportBtn;
     private javax.swing.JButton printStaticalGoodsToExcelBtn;
-    private javax.swing.JButton refreashSearchImportHistoryBtn;
     private javax.swing.JButton refreshBtn;
+    private javax.swing.JButton refreshImportTableLabel;
     private javax.swing.JButton reprintBtn;
     private javax.swing.JComboBox<String> searchCashierComboBox;
     private javax.swing.JButton searchImportHistoryBtn;

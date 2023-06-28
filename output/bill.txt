@@ -5,16 +5,16 @@ Store Name: Chang hi
 Email: wangwang123@gmail.com
 Address: 112-Nguyen Van Loc
 Phone Number: 0705737292
-Date: 26/06/2023 02:41:37
+Date: 26/06/2023 02:41:42
 
 Name                      Quantity   Price           Total          
 ------------------------- ---------- --------------- ---------------
-Strawberry ice-cream      1.0        9000.0          9000.0         
-SubTotal: 9000.0
+Lemon Soda                1.0        8000.0          8000.0         
+SubTotal: 8000.0
 Discount Amount(Discount=0%): 0.0
 Tax(VAT=0%): 0.0
 Payment Option: OTHER_PAYMENT
 Member Card ID: 
 Point Discount: 
-Total: 9000.0
+Total: 8000.0
 ----------------------------------------

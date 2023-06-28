@@ -63,7 +63,7 @@ public class OpenShiftFrame extends javax.swing.JFrame {
         acceptBtn = new javax.swing.JButton();
         denyBtn = new javax.swing.JButton();
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setTitle("Mở Ca Làm Việc");
         setMinimumSize(new java.awt.Dimension(530, 400));
         setResizable(false);

@@ -154,7 +154,7 @@ public class CommodityManagement {
         goods2.getShipments().add(shipment2);
         store.getHistory().getImportGoodsList().add(goods2);
         Goods goods3 = goodsCtr.cloneGoods(store.getRepository().getList().get(2));
-        Shipment shipment3 = goods2.getShipments().get(0);
+        Shipment shipment3 = goods3.getShipments().get(0);
         goods3.getShipments().clear();
         goods3.getShipments().add(shipment3);
         store.getHistory().getImportGoodsList().add(goods3);
@@ -329,7 +329,7 @@ public class CommodityManagement {
         god5.getShipments().add(ship5);
         store.getHistory().getImportGoodsList().add(god5);
         Goods god6 = goodsCtr.cloneGoods(store.getRepository().getList().get(5));
-        Shipment ship6 = good6.getShipments().get(2);
+        Shipment ship6 = god6.getShipments().get(2);
         god6.getShipments().clear();
         god6.getShipments().add(ship6);
         store.getHistory().getImportGoodsList().add(god6);

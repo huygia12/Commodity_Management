@@ -8,7 +8,6 @@ import java.nio.file.Path;
 import Models.*;
 import Ultility.*;
 import com.formdev.flatlaf.FlatLightLaf;
-import com.google.gson.reflect.TypeToken;
 import java.awt.CardLayout;
 import java.awt.Color;
 import java.awt.event.WindowEvent;
@@ -43,8 +42,8 @@ public class MainFrame extends javax.swing.JFrame {
         initSideBar();
         setUp();
         //
-        MainFrame.storeList = loadData();
-        setUserStore(storeList.get(0));
+//        MainFrame.storeList = loadData();
+//        setUserStore(storeList.get(0));
     }
 
     /**
@@ -71,6 +70,7 @@ public class MainFrame extends javax.swing.JFrame {
         employJPanel1 = new GUI.EmployJPanel();
         settingsPanel1 = new GUI.SettingsPanel();
         historyPanel1 = new GUI.HistoryPanel();
+        shiftPanel1 = new GUI.ShiftPanel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Phần mềm quản lý bán hàng");
@@ -161,6 +161,8 @@ public class MainFrame extends javax.swing.JFrame {
                 .addGap(7, 7, 7))
         );
 
+        getContentPane().add(toolBarPanel, java.awt.BorderLayout.PAGE_START);
+
         displayPanel.setFocusable(false);
         displayPanel.setMaximumSize(new java.awt.Dimension(2147483647, 630));
         displayPanel.setMinimumSize(new java.awt.Dimension(1000, 580));
@@ -177,27 +179,9 @@ public class MainFrame extends javax.swing.JFrame {
         displayPanel.add(employJPanel1, "card5");
         displayPanel.add(settingsPanel1, "card7");
         displayPanel.add(historyPanel1, "card8");
+        displayPanel.add(shiftPanel1, "card8");
 
-        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
-        getContentPane().setLayout(layout);
-        layout.setHorizontalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(toolBarPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                .addGroup(layout.createSequentialGroup()
-                    .addComponent(displayPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addGap(0, 0, Short.MAX_VALUE)))
-        );
-        layout.setVerticalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addComponent(toolBarPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(590, 590, 590))
-            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                    .addGap(0, 56, Short.MAX_VALUE)
-                    .addComponent(displayPanel, javax.swing.GroupLayout.PREFERRED_SIZE, 589, javax.swing.GroupLayout.PREFERRED_SIZE)))
-        );
+        getContentPane().add(displayPanel, java.awt.BorderLayout.CENTER);
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
@@ -222,10 +206,6 @@ public class MainFrame extends javax.swing.JFrame {
         });
     }
 
-    private void insertImportData(){
-        
-    }
-    
     private void passDataToComponents() {
         // pass data vào purchasePanel
         purchasePanel1.passData(store, shift);
@@ -237,7 +217,7 @@ public class MainFrame extends javax.swing.JFrame {
         repoPanel1.setGoodsList(store.getRepository());
         repoPanel1.setUnitsList(store.getUnits());
         // pass data vào shiftJPanel
-//        shiftPanel1.passData(store, shift, this);
+        shiftPanel1.passData(store, shift, this);
         //pass dât vào settingsPanel
         settingsPanel1.passData(store, header);
         //pass data vào historyPanel
@@ -328,14 +308,15 @@ public class MainFrame extends javax.swing.JFrame {
                 if (!shift.getState().equals(ShiftState.OPENED)) {
                     notOpenShiftWarning();
                 } else {
+                    initNewOrdercheck = true;
                     purchasePanel1.refresh(shift);
                 }
                 break;
             case 2:
-//                displayPanel.add(shiftPanel1, "shift");
+                displayPanel.add(shiftPanel1, "shift");
                 cardLayout.show(displayPanel, "shift");
                 drawerCtr.hide();
-//                shiftPanel1.reload(shift);
+                shiftPanel1.reload(shift);
                 break;
             case 3:
                 displayPanel.add(employJPanel1, "employee");
@@ -361,6 +342,10 @@ public class MainFrame extends javax.swing.JFrame {
                 drawerCtr.hide();
                 break;
             case 7:
+                showCloseMessage();
+                LogInFrame lgf = new LogInFrame();
+                lgf.setVisible(true);
+                this.dispose();
         }
     }
 
@@ -382,12 +367,6 @@ public class MainFrame extends javax.swing.JFrame {
         }.start();
     }
 
-    public List<Store> loadData() {
-        return myData.load(Path.of(LIST_STORE_PATH),
-                new TypeToken<List<Store>>() {
-                }.getType(), storeList);
-    }
-
     private static void saveData() {
         myData.save(Path.of(LIST_STORE_PATH), storeList);
     }
@@ -399,19 +378,25 @@ public class MainFrame extends javax.swing.JFrame {
         passDataToComponents();
     }
 
+    private void showCloseMessage() {
+        if (JOptionPane.showConfirmDialog(null,
+                "Bạn có muốn lưu trạng thái hiện tại?",
+                "Đóng chương trình?",
+                JOptionPane.YES_NO_OPTION,
+                JOptionPane.QUESTION_MESSAGE) == JOptionPane.YES_OPTION) {
+            if (initNewOrdercheck) {
+                int value = store.getiDGenerator().getBucket().get(Order.class.getName());
+                store.getiDGenerator().getBucket().put(Order.class.getName(), (value == 0) ? 0 : --value);
+            }
+            saveData();
+        }
+    }
+
     private void setUp() {
         this.addWindowListener(new java.awt.event.WindowAdapter() {
             @Override
             public void windowClosing(WindowEvent e) {
-                if (JOptionPane.showConfirmDialog(null,
-                        "Bạn có muốn lưu trạng thái hiện tại?",
-                        "Đóng chương trình?",
-                        JOptionPane.YES_NO_OPTION,
-                        JOptionPane.QUESTION_MESSAGE) == JOptionPane.YES_OPTION) {
-                    int value = store.getiDGenerator().getBucket().get(Order.class.getName());
-                    store.getiDGenerator().getBucket().put(Order.class.getName(), (value == 0) ? 0 : --value);
-                    saveData();
-                }
+                showCloseMessage();
                 System.exit(0);
             }
         });
@@ -429,6 +414,7 @@ public class MainFrame extends javax.swing.JFrame {
         store = new Store();
     }
 
+    private boolean initNewOrdercheck = false;
     private Shift shift;
     private Store store;
     private static List<Store> storeList;
@@ -453,6 +439,7 @@ public class MainFrame extends javax.swing.JFrame {
     private GUI.RepoPanel repoPanel1;
     private GUI.SettingsPanel settingsPanel1;
     private javax.swing.JLabel shiftIDLabel;
+    private GUI.ShiftPanel shiftPanel1;
     private javax.swing.JLabel timeLabel;
     private javax.swing.JFormattedTextField timeTextField;
     private javax.swing.JPanel toolBarPanel;

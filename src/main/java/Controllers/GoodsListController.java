@@ -9,6 +9,7 @@ import Models.GoodsList;
 import Models.Shipment;
 import View.GoodsListView;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Scanner;
 
 /**
@@ -141,5 +142,15 @@ public class GoodsListController {
             }
         }
         return true;
+    }
+    
+    public <T extends Goods> List<String> getManufactureList(List<T> goodsList){
+        List<String> manufactureList = new ArrayList<>();
+        for (T goods : goodsList) {
+            if(!manufactureList.contains(goods.getManufacture())){
+                manufactureList.add(goods.getManufacture());
+            }
+        }
+        return manufactureList;
     }
 }

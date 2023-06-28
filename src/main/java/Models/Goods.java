@@ -8,6 +8,7 @@ import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 import com.opencsv.bean.CsvBindByPosition;
 import java.math.BigDecimal;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -116,5 +117,18 @@ public class Goods {
             totalQuantityToCalculate = totalQuantityToCalculate.add(shipment.getQuantity());
         }
         totalQuantity = totalQuantityToCalculate;
+    }
+    
+    public String toImportGoodsString(){
+        Shipment shipment = this.getShipments().get(0);
+        return this.id+","
+                +this.goodsName+","
+                +this.manufacture+","
+                +shipment.getImportedDate().format(DateTimeFormatter.ofPattern("d/M/y"))+","
+                +this.unit+","
+                +shipment.getID()+","
+                +String.format("%.1f",shipment.getImportPrice())+","
+                +shipment.getQuantity()+","
+                +String.format("%.1f", shipment.getQuantity().multiply(shipment.getImportPrice()));
     }
 }

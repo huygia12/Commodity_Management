@@ -333,4 +333,13 @@ public class HistoryController {
         }
         return staticalGoodsList;
     }
+    
+    public BigDecimal getTotalAmountOfImportGoods(List<Goods> importGoodsList){
+        BigDecimal result = BigDecimal.ZERO;
+        for (Goods goods : importGoodsList) {
+            Shipment shipment = goods.getShipments().get(0);
+            result = result.add(shipment.getImportPrice().multiply(shipment.getQuantity()));
+        }
+        return result;
+    }
 }
