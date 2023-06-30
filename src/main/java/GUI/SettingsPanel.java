@@ -48,6 +48,11 @@ public class SettingsPanel extends javax.swing.JPanel {
         changeInfoButton = new javax.swing.JButton();
         jScrollPane1 = new javax.swing.JScrollPane();
         inputAndressTextPane = new javax.swing.JTextPane();
+        inputPassWord1 = new javax.swing.JLabel();
+        password1 = new javax.swing.JPasswordField();
+        inputPassword2 = new javax.swing.JLabel();
+        password2 = new javax.swing.JPasswordField();
+        changePassBtn = new javax.swing.JButton();
         inputchangeScorePanel = new javax.swing.JPanel();
         amountForOnePointLabel = new javax.swing.JLabel();
         pointsForOneVNDLabel = new javax.swing.JLabel();
@@ -96,14 +101,35 @@ public class SettingsPanel extends javax.swing.JPanel {
         });
 
         changeInfoButton.setFont(new java.awt.Font("Dialog", 1, 14)); // NOI18N
-        changeInfoButton.setText("Xác nhận");
+        changeInfoButton.setText("Sửa thông tin");
         changeInfoButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 changeInfoButtonActionPerformed(evt);
             }
         });
 
+        inputAndressTextPane.setFont(new java.awt.Font("Dialog", 0, 14)); // NOI18N
         jScrollPane1.setViewportView(inputAndressTextPane);
+
+        inputPassWord1.setFont(new java.awt.Font("Dialog", 0, 14)); // NOI18N
+        inputPassWord1.setText("Nhập mật khẩu cũ:");
+
+        password1.setFont(new java.awt.Font("Dialog", 0, 14)); // NOI18N
+        password1.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+
+        inputPassword2.setFont(new java.awt.Font("Dialog", 0, 14)); // NOI18N
+        inputPassword2.setText("Nhập mật khẩu mới:");
+
+        password2.setFont(new java.awt.Font("Dialog", 0, 14)); // NOI18N
+        password2.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+
+        changePassBtn.setFont(new java.awt.Font("Dialog", 1, 14)); // NOI18N
+        changePassBtn.setText("Sửa mật khẩu");
+        changePassBtn.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                changePassBtnActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout inputchangeInfoStorePanelLayout = new javax.swing.GroupLayout(inputchangeInfoStorePanel);
         inputchangeInfoStorePanel.setLayout(inputchangeInfoStorePanelLayout);
@@ -112,26 +138,37 @@ public class SettingsPanel extends javax.swing.JPanel {
             .addGroup(inputchangeInfoStorePanelLayout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(inputchangeInfoStorePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(inputNameLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 51, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(inputPhoneNumberLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 43, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(inputEmailLabel)
-                    .addComponent(inputAndressLabel))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addGroup(inputchangeInfoStorePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(inputPhoneNumberTextField)
-                    .addComponent(inputNameTextField)
-                    .addComponent(inputEmailTextField)
-                    .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 234, Short.MAX_VALUE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 71, Short.MAX_VALUE)
-                .addComponent(changeInfoButton)
-                .addGap(55, 55, 55))
+                    .addGroup(inputchangeInfoStorePanelLayout.createSequentialGroup()
+                        .addComponent(inputPassword2)
+                        .addGap(10, 10, 10)
+                        .addComponent(password2, javax.swing.GroupLayout.PREFERRED_SIZE, 144, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(inputchangeInfoStorePanelLayout.createSequentialGroup()
+                        .addComponent(inputPassWord1)
+                        .addGap(18, 18, 18)
+                        .addComponent(password1, javax.swing.GroupLayout.PREFERRED_SIZE, 144, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(inputchangeInfoStorePanelLayout.createSequentialGroup()
+                        .addGroup(inputchangeInfoStorePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(inputAndressLabel)
+                            .addComponent(inputEmailLabel)
+                            .addComponent(inputPhoneNumberLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 43, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(inputNameLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 51, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(23, 23, 23)
+                        .addGroup(inputchangeInfoStorePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(inputNameTextField, javax.swing.GroupLayout.PREFERRED_SIZE, 234, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(inputPhoneNumberTextField, javax.swing.GroupLayout.PREFERRED_SIZE, 234, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(inputEmailTextField, javax.swing.GroupLayout.PREFERRED_SIZE, 234, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 234, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 89, Short.MAX_VALUE)
+                .addGroup(inputchangeInfoStorePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(changePassBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 134, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(changeInfoButton, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 133, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap())
         );
         inputchangeInfoStorePanelLayout.setVerticalGroup(
             inputchangeInfoStorePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(inputchangeInfoStorePanelLayout.createSequentialGroup()
                 .addGap(36, 36, 36)
                 .addGroup(inputchangeInfoStorePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(changeInfoButton)
                     .addComponent(inputNameTextField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(inputNameLabel))
                 .addGap(18, 18, 18)
@@ -142,11 +179,25 @@ public class SettingsPanel extends javax.swing.JPanel {
                 .addGroup(inputchangeInfoStorePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(inputEmailTextField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(inputEmailLabel))
-                .addGap(18, 18, 18)
                 .addGroup(inputchangeInfoStorePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 74, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(inputAndressLabel))
-                .addContainerGap(121, Short.MAX_VALUE))
+                    .addGroup(inputchangeInfoStorePanelLayout.createSequentialGroup()
+                        .addGap(27, 27, 27)
+                        .addGroup(inputchangeInfoStorePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(inputAndressLabel)
+                            .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 74, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                    .addGroup(inputchangeInfoStorePanelLayout.createSequentialGroup()
+                        .addGap(75, 75, 75)
+                        .addComponent(changeInfoButton)))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 37, Short.MAX_VALUE)
+                .addGroup(inputchangeInfoStorePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(inputPassWord1)
+                    .addComponent(password1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(18, 18, 18)
+                .addGroup(inputchangeInfoStorePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(password2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(inputPassword2)
+                    .addComponent(changePassBtn))
+                .addGap(26, 26, 26))
         );
 
         inputchangeInfoPanel.add(inputchangeInfoStorePanel, java.awt.BorderLayout.LINE_START);
@@ -174,16 +225,17 @@ public class SettingsPanel extends javax.swing.JPanel {
             .addGroup(inputchangeScorePanelLayout.createSequentialGroup()
                 .addGap(27, 27, 27)
                 .addGroup(inputchangeScorePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(inputchangeScoreButton)
-                    .addGroup(inputchangeScorePanelLayout.createSequentialGroup()
-                        .addGroup(inputchangeScorePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(pointsForOneVNDLabel)
-                            .addComponent(amountForOnePointLabel))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addGroup(inputchangeScorePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(amountForOnePointTextField, javax.swing.GroupLayout.PREFERRED_SIZE, 109, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(pointsForOneVNDTextField, javax.swing.GroupLayout.PREFERRED_SIZE, 109, javax.swing.GroupLayout.PREFERRED_SIZE))))
-                .addContainerGap(224, Short.MAX_VALUE))
+                    .addComponent(pointsForOneVNDLabel)
+                    .addComponent(amountForOnePointLabel))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(inputchangeScorePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(amountForOnePointTextField, javax.swing.GroupLayout.PREFERRED_SIZE, 109, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(pointsForOneVNDTextField, javax.swing.GroupLayout.PREFERRED_SIZE, 109, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap(210, Short.MAX_VALUE))
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, inputchangeScorePanelLayout.createSequentialGroup()
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(inputchangeScoreButton)
+                .addGap(40, 40, 40))
         );
         inputchangeScorePanelLayout.setVerticalGroup(
             inputchangeScorePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -196,9 +248,9 @@ public class SettingsPanel extends javax.swing.JPanel {
                 .addGroup(inputchangeScorePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(pointsForOneVNDLabel)
                     .addComponent(pointsForOneVNDTextField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(38, 38, 38)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 212, Short.MAX_VALUE)
                 .addComponent(inputchangeScoreButton)
-                .addContainerGap(203, Short.MAX_VALUE))
+                .addGap(48, 48, 48))
         );
 
         inputchangeInfoPanel.add(inputchangeScorePanel, java.awt.BorderLayout.CENTER);
@@ -211,11 +263,11 @@ public class SettingsPanel extends javax.swing.JPanel {
         settingIntroductionPanel.setLayout(settingIntroductionPanelLayout);
         settingIntroductionPanelLayout.setHorizontalGroup(
             settingIntroductionPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 1015, Short.MAX_VALUE)
+            .addGap(0, 1000, Short.MAX_VALUE)
         );
         settingIntroductionPanelLayout.setVerticalGroup(
             settingIntroductionPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 282, Short.MAX_VALUE)
+            .addGap(0, 237, Short.MAX_VALUE)
         );
 
         add(settingIntroductionPanel, java.awt.BorderLayout.CENTER);
@@ -237,17 +289,7 @@ public class SettingsPanel extends javax.swing.JPanel {
         String emailRegex = "^[\\w-\\.]+@([\\w-]+\\.)+[\\w-]{2,4}$";
         Pattern emailPattern = Pattern.compile(emailRegex);
         Matcher emailMatcher = emailPattern.matcher(email);
-
-        /*
-        // Cập nhật thông tin vào đối tượng Store trong đối tượng Settings
-        Store store = settings.getStore();
-        store.setName(name);
-        store.setPhoneNumber(phoneNumber);
-        store.setAddress(address);
-        
         // Gọi phương thức hiển thị thông tin mới trên Header
-        header.setStoreInfor();
-         */
         // Kiểm tra các trường nhập liệu có bị bỏ trống hay không và điều kiện cho SĐT
         if (name.isEmpty() || phoneNumber.isEmpty() || address.isEmpty() || email.isEmpty()) {
             JOptionPane.showMessageDialog(this, "Hãy nhập thông tin cho cửa hàng của bạn.");
@@ -266,20 +308,22 @@ public class SettingsPanel extends javax.swing.JPanel {
                 }
             }
         }
+
+        // Cập nhật đối tượng Store
+        store.setName(name);
+        store.setPhoneNumber(phoneNumber);
+        store.setAddress(address);
+        store.setEmail(email);
+
         // Cập nhật trong storeShortCutList
         for (StoreShortedCut storeShortedCut : storeList) {
             if (storeShortedCut.getId().compareTo(store.getID()) == 0) {
                 storeShortedCut.setEmail(email);
             }
         }
-
-        // Cập nhật đối tượng Store
-        store.setName(name);
-        store.setPhoneNumber(phoneNumber);
-        store.setAddress(address);
-
+        
         // Cập nhật Header với tên cửa hàng mới
-        header.setTitle(name, phoneNumber, address, email);
+        header.setTitle();
 
         // Hiển thị thông báo cho người dùng thông báo rằng các thay đổi đã được lưu
         JOptionPane.showMessageDialog(this, "Các thay đổi đã được lưu.");
@@ -325,6 +369,31 @@ public class SettingsPanel extends javax.swing.JPanel {
         }
     }//GEN-LAST:event_inputchangeScoreButtonActionPerformed
 
+    private void changePassBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_changePassBtnActionPerformed
+        String oldPass = password1.getText();
+        String newPass = password2.getText();
+        if (!oldPass.isBlank() || !newPass.isBlank()) {
+            if (oldPass.equals(store.getPassWord())) {
+                if (newPass.length() >= 6) {
+                    store.setPassWord(newPass);
+                    JOptionPane.showMessageDialog(this, "Cập nhật mật khẩu thành công!");
+                } else {
+                    JOptionPane.showMessageDialog(this, "Mật khẩu phải chứa tối thiểu 6 ký tự.");
+                    return;
+                }
+            } else {
+                JOptionPane.showMessageDialog(this, "Nhập sai mật khẩu cũ.");
+                return;
+            }
+        }
+        
+        for (StoreShortedCut storeShortedCut : storeList) {
+            if (storeShortedCut.getId().compareTo(store.getID()) == 0) {
+                storeShortedCut.setPassword(store.getPassWord());
+            }
+        }
+    }//GEN-LAST:event_changePassBtnActionPerformed
+
     public void passData(Store store, Header header, List<StoreShortedCut> storeList) {
         this.store = store;
         this.header = header;
@@ -347,12 +416,15 @@ public class SettingsPanel extends javax.swing.JPanel {
     private javax.swing.JLabel amountForOnePointLabel;
     private javax.swing.JTextField amountForOnePointTextField;
     private javax.swing.JButton changeInfoButton;
+    private javax.swing.JButton changePassBtn;
     private javax.swing.JLabel inputAndressLabel;
     private javax.swing.JTextPane inputAndressTextPane;
     private javax.swing.JLabel inputEmailLabel;
     private javax.swing.JTextField inputEmailTextField;
     private javax.swing.JLabel inputNameLabel;
     private javax.swing.JTextField inputNameTextField;
+    private javax.swing.JLabel inputPassWord1;
+    private javax.swing.JLabel inputPassword2;
     private javax.swing.JLabel inputPhoneNumberLabel;
     private javax.swing.JTextField inputPhoneNumberTextField;
     private javax.swing.JPanel inputchangeInfoPanel;
@@ -360,6 +432,8 @@ public class SettingsPanel extends javax.swing.JPanel {
     private javax.swing.JButton inputchangeScoreButton;
     private javax.swing.JPanel inputchangeScorePanel;
     private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JPasswordField password1;
+    private javax.swing.JPasswordField password2;
     private javax.swing.JLabel pointsForOneVNDLabel;
     private javax.swing.JTextField pointsForOneVNDTextField;
     private javax.swing.JPanel settingIntroductionPanel;

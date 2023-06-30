@@ -18,6 +18,7 @@ public class PopupShipment extends javax.swing.JFrame {
     public PopupShipment() {
         initComponents();
         setIconImage(new ImageIcon(getClass().getResource("/ImageIcon/icons8-grocery-store-96.png")).getImage());
+        this.setLocationRelativeTo(null);
     }
 
     /**

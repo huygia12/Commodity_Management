@@ -1,8 +1,8 @@
 {
   "id": "000000",
   "name": "Chang hi",
-  "email": "changhi112@gmail.com",
-  "passWord": "12345678",
+  "email": "changhi@gmail.com",
+  "passWord": "00000000",
   "address": "112-Nguyen Van Loc",
   "phoneNumber": "0705737292",
   "amountForOnePoint": 10000,
@@ -47,7 +47,8 @@
           "gender": "MALE"
         },
         "IDOfBoughtOrders": [],
-        "rank": "SILVER"
+        "rank": "SILVER",
+        "usedPoint": 0
       },
       {
         "ID": "000001",
@@ -61,7 +62,8 @@
           "gender": "OTHER"
         },
         "IDOfBoughtOrders": [],
-        "rank": "NONE"
+        "rank": "NONE",
+        "usedPoint": 0
       },
       {
         "ID": "000002",
@@ -75,7 +77,8 @@
           "gender": "FEMALE"
         },
         "IDOfBoughtOrders": [],
-        "rank": "NONE"
+        "rank": "NONE",
+        "usedPoint": 0
       },
       {
         "ID": "000003",
@@ -89,7 +92,8 @@
           "gender": "MALE"
         },
         "IDOfBoughtOrders": [],
-        "rank": "NONE"
+        "rank": "NONE",
+        "usedPoint": 0
       }
     ]
   },
@@ -583,6 +587,44 @@
           ]
         },
         "state": "CLOSED",
+        "note": ""
+      },
+      {
+        "openDateTime": "01/07/2023 01:09:38",
+        "openingBalance": 0,
+        "surCharge": 0,
+        "cashier": {
+          "salaryPerDay": 23000,
+          "CCCD": "3553646623",
+          "IDOfOrdersInCharge": [],
+          "stt": 0,
+          "firstName": "Vu Hung",
+          "lastName": "Tung",
+          "phoneNumber": "0905737293",
+          "address": "AeonMall HaDong",
+          "age": 16,
+          "gender": "MALE"
+        },
+        "ID": "000002",
+        "VAT": 0,
+        "orderHisPerShift": [],
+        "employeeOfThisShift": {
+          "": [
+            {
+              "salaryPerDay": 22000,
+              "CCCD": "7337593977",
+              "IDOfOrdersInCharge": [],
+              "stt": 0,
+              "firstName": "Dao Van",
+              "lastName": "Tuyen",
+              "phoneNumber": "0805737293",
+              "address": "220-TrieuKhuc-TanTrieu-ThanhTri",
+              "age": 20,
+              "gender": "MALE"
+            }
+          ]
+        },
+        "state": "OPENED",
         "note": ""
       }
     ],
@@ -1458,7 +1500,7 @@
       "Models.CustomerCard": 3,
       "Models.Shipment": 47,
       "Models.Goods": 15,
-      "Models.Shift": 1,
+      "Models.Shift": 2,
       "Models.Order": 6
     }
   },

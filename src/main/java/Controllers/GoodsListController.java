@@ -92,18 +92,18 @@ public class GoodsListController {
         return searchingGoods;
     }
 
-    public <T extends Goods> Object searchGoodsForGUI(String searchedGoodsID, GoodsList<T> goodsList) {
+    public <T extends Goods> Object searchGoodsForGUI(String searchingKey, GoodsList<T> goodsList) {
         // trả về null nếu không tìm thấy bất kỳ kết quả nào phù hợp
         try {
-            int key = Integer.parseInt(searchedGoodsID);
+            int key = Integer.parseInt(searchingKey);
 
             // nếu searchingKey là 1 chuỗi toàn số
-            containGoods(goodsList, searchedGoodsID);
-            return containGoods(goodsList, searchedGoodsID);
+            containGoods(goodsList, searchingKey);
+            return containGoods(goodsList, searchingKey);
         } catch (NumberFormatException nfe) {
             // nếu searchingKey là 1 chuỗi gồm ít nhất 1 ký tự là chữ
             GoodsList<T> bucket = new GoodsList(new ArrayList<>());
-            String inputToLowerCase = searchedGoodsID.toLowerCase();
+            String inputToLowerCase = searchingKey.toLowerCase();
             for (T tmpGoods : goodsList.getList()) {
                 String nameToLowerCase = tmpGoods.getGoodsName().toLowerCase();
                 if (nameToLowerCase.contains(inputToLowerCase)) {

@@ -9,11 +9,19 @@ import Models.Store;
 import Models.StoreShortedCut;
 import Ultility.IDGenerator;
 import Ultility.JsonDataFile;
+import View.CommodityManagement;
 import com.formdev.flatlaf.FlatLightLaf;
 import com.google.gson.reflect.TypeToken;
+import java.io.BufferedReader;
 import java.io.File;
+import java.io.IOException;
+import java.io.PrintWriter;
+import java.nio.file.Files;
 import java.nio.file.Path;
+import java.nio.file.StandardOpenOption;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import javax.swing.ImageIcon;
@@ -33,9 +41,9 @@ public class LogInFrame extends javax.swing.JFrame {
      */
     public LogInFrame() {
         initComponents();
-        setUp();
         initVariable();
         loadData();
+        setUp();
     }
 
     /**
@@ -77,34 +85,17 @@ public class LogInFrame extends javax.swing.JFrame {
         setLocation(new java.awt.Point(500, 150));
         setResizable(false);
 
-        tabPane.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
-                tabPaneMouseClicked(evt);
-            }
-        });
-
         LogInPanel.setBackground(new java.awt.Color(255, 255, 255));
         LogInPanel.setBorder(javax.swing.BorderFactory.createEmptyBorder(1, 1, 1, 1));
         LogInPanel.setMaximumSize(new java.awt.Dimension(400, 450));
         LogInPanel.setMinimumSize(new java.awt.Dimension(400, 400));
         LogInPanel.setPreferredSize(new java.awt.Dimension(400, 400));
 
-        logInEmail.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                logInEmailActionPerformed(evt);
-            }
-        });
-
         jLabel1.setFont(new java.awt.Font("Segoe UI", 1, 24)); // NOI18N
         jLabel1.setText("Đăng nhập tài khoản");
 
         rememberPasswordCheckBox.setForeground(new java.awt.Color(102, 102, 102));
         rememberPasswordCheckBox.setText("Nhớ mật khẩu");
-        rememberPasswordCheckBox.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                rememberPasswordCheckBoxActionPerformed(evt);
-            }
-        });
 
         forgotPasswordButton.setFont(new java.awt.Font("Segoe UI", 2, 12)); // NOI18N
         forgotPasswordButton.setForeground(new java.awt.Color(0, 102, 255));
@@ -202,12 +193,6 @@ public class LogInFrame extends javax.swing.JFrame {
         SignUpPanel.setMinimumSize(new java.awt.Dimension(400, 400));
         SignUpPanel.setPreferredSize(new java.awt.Dimension(400, 400));
 
-        signUpEmail.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                signUpEmailActionPerformed(evt);
-            }
-        });
-
         jLabel5.setFont(new java.awt.Font("Segoe UI", 1, 24)); // NOI18N
         jLabel5.setText("Đăng ký tài khoản");
 
@@ -224,19 +209,6 @@ public class LogInFrame extends javax.swing.JFrame {
         });
 
         jLabel8.setText("Nhập lại mật khẩu");
-
-        retypePassword.addInputMethodListener(new java.awt.event.InputMethodListener() {
-            public void caretPositionChanged(java.awt.event.InputMethodEvent evt) {
-            }
-            public void inputMethodTextChanged(java.awt.event.InputMethodEvent evt) {
-                retypePasswordInputMethodTextChanged(evt);
-            }
-        });
-        retypePassword.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                retypePasswordActionPerformed(evt);
-            }
-        });
 
         passwordWarning.setFont(new java.awt.Font("Segoe UI", 2, 12)); // NOI18N
         passwordWarning.setForeground(new java.awt.Color(255, 0, 51));
@@ -319,18 +291,6 @@ public class LogInFrame extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_forgotPasswordButtonActionPerformed
 
-    private void logInEmailActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_logInEmailActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_logInEmailActionPerformed
-
-    private void rememberPasswordCheckBoxActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_rememberPasswordCheckBoxActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_rememberPasswordCheckBoxActionPerformed
-
-    private void signUpEmailActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_signUpEmailActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_signUpEmailActionPerformed
-
     private void signUpButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_signUpButtonActionPerformed
         String emailStr = signUpEmail.getText();
         String passwordStr = signUpPassword.getText();
@@ -352,7 +312,7 @@ public class LogInFrame extends javax.swing.JFrame {
             validEmail = true;
         }
 
-        if (passwordStr.length() < 4) {
+        if (passwordStr.length() < 6) {
             blankSignUpPasswordWarning.setVisible(true);
             signUpPassword.setText("");
             rightpassword = false;
@@ -389,14 +349,6 @@ public class LogInFrame extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_signUpButtonActionPerformed
 
-    private void retypePasswordInputMethodTextChanged(java.awt.event.InputMethodEvent evt) {//GEN-FIRST:event_retypePasswordInputMethodTextChanged
-        // TODO add your handling code here:
-    }//GEN-LAST:event_retypePasswordInputMethodTextChanged
-
-    private void retypePasswordActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_retypePasswordActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_retypePasswordActionPerformed
-
     private StoreShortedCut checkExistingEmail() {
         String inputEmail = logInEmail.getText();
         String loginPassword = logInPassword.getText();
@@ -418,7 +370,6 @@ public class LogInFrame extends javax.swing.JFrame {
         if (!checkIfEmailExisted) {
             showNoneExistEmailWarning();
         }
-        setProperties();
         return userStore;
     }
 
@@ -442,18 +393,44 @@ public class LogInFrame extends javax.swing.JFrame {
             logInEmail.setText("");
         } else {
             StoreShortedCut userStore = checkExistingEmail();
-            if (userStore != null) {
+            if (userStore != null) { // dang nhap thanh cong
+                rememberPassWordCheck();
                 MainFrame mainFrame = new MainFrame();
                 mainFrame.setUserStore(userStore, storeList);
                 mainFrame.setVisible(true);
                 this.dispose();
+            } else {
+                setProperties();
             }
         }
     }//GEN-LAST:event_logInButtonActionPerformed
 
-    private void tabPaneMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tabPaneMouseClicked
-        setProperties();
-    }//GEN-LAST:event_tabPaneMouseClicked
+    private void rememberPassWordCheck() {
+        try ( PrintWriter pw = new PrintWriter(Files.newBufferedWriter(Path.of(REMEBER_PASSWORD_PATH),
+                StandardOpenOption.CREATE,
+                StandardOpenOption.WRITE,
+                StandardOpenOption.TRUNCATE_EXISTING))) {
+            pw.print(rememberPasswordCheckBox.isSelected() + "," + logInPassword.getText());
+        } catch (IOException ex) {
+            System.out.println("Loi");
+        }
+    }
+
+    private boolean setValueToRemeberCheckBox() {
+        boolean check = false;
+        try ( BufferedReader br = new BufferedReader(
+                Files.newBufferedReader(Path.of(REMEBER_PASSWORD_PATH)))) {
+            String[] str = br.readLine().split(",");
+            rememberCheck = str[0].equals("true");
+            if (rememberCheck) {
+                rememberPasswordCheckBox.setSelected(rememberCheck);
+                logInPassword.setText(str[1]);
+            }
+        } catch (IOException ex) {
+            Logger.getLogger(CommodityManagement.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return check;
+    }
 
     private boolean checkValidEmail(String regex) {
         pattern = Pattern.compile(EMAIL_REGEX);
@@ -465,6 +442,7 @@ public class LogInFrame extends javax.swing.JFrame {
         setLocationRelativeTo(null);
         setIconImage(new ImageIcon(getClass()
                 .getResource("/ImageIcon/icons8-grocery-store-96.png")).getImage());
+        setValueToRemeberCheckBox();
     }
 
     private void setProperties() {
@@ -482,6 +460,7 @@ public class LogInFrame extends javax.swing.JFrame {
     private void initVariable() {
         storeCtr = new StoreController();
         EMAIL_REGEX = "^[A-Za-z0-9]+[A-Za-z0-9]*@[A-Za-z0-9]+(\\.[A-Za-z0-9]+)$";
+        rememberCheck = false;
         setProperties();
     }
 
@@ -504,6 +483,7 @@ public class LogInFrame extends javax.swing.JFrame {
         });
     }
 
+    private boolean rememberCheck;
     private Pattern pattern;
     private Matcher matcher;
     private String EMAIL_REGEX;
@@ -517,6 +497,7 @@ public class LogInFrame extends javax.swing.JFrame {
     private static final String STORE_DATA_FOLDER = DATA_FOLDER + "storeData" + SEPARATOR;
     private static final String STORE_ID_BUCKET_PATH = DATA_FOLDER + "storeIDBucket.json";
     private static final String LIST_STORE_PATH = DATA_FOLDER + "storeList.json";
+    private static final String REMEBER_PASSWORD_PATH = DATA_FOLDER + "rememberPass.csv";
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JPanel LogInPanel;
     private javax.swing.JPanel SignUpPanel;

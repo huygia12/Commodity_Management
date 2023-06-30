@@ -210,6 +210,7 @@ public class OrderController extends GoodsListController {
             cardCtr.gainPoint(card, getTotal(order, store), store);
             cardCtr.usePoint(card, order.getPointDiscount());
             cardCtr.updateRank(card, store);
+            card.setUsedPoint(order.getPointDiscount().add(card.getUsedPoint()));
             card.getIDOfBoughtOrders().add(order.getID());
         }
         order.setOrderDateTime();

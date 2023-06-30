@@ -196,6 +196,8 @@ public class HistoryPanel extends javax.swing.JPanel {
 
         orderDateLabel1.setText("Ngày lập HĐ:");
 
+        searchCashierComboBox.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Tất cả" }));
+
         toLabel2.setText("Đến:");
 
         toDayTextField.setHorizontalAlignment(javax.swing.JTextField.CENTER);
@@ -744,7 +746,7 @@ public class HistoryPanel extends javax.swing.JPanel {
 
         manufactureLabel.setText("Nhà sản xuất:");
 
-        manufactureComboBox.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "null" }));
+        manufactureComboBox.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Tất cả" }));
 
         goodsNameLabel.setText("Tên mặt hàng:");
 
@@ -754,6 +756,12 @@ public class HistoryPanel extends javax.swing.JPanel {
         searchImportHistoryBtn.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 searchImportHistoryBtnActionPerformed(evt);
+            }
+        });
+
+        goodsNameTextField.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                goodsNameTextFieldKeyReleased(evt);
             }
         });
 
@@ -1400,15 +1408,30 @@ public class HistoryPanel extends javax.swing.JPanel {
                 historyCtr.getTotalAmountOfImportGoods(filterImportGoodsList)));
     }//GEN-LAST:event_searchImportHistoryBtnActionPerformed
 
+    private void goodsNameTextFieldKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_goodsNameTextFieldKeyReleased
+        String key = goodsNameTextField.getText();
+        GoodsList<Goods> goodsList = new GoodsList<>();
+        Object searchedObject = orderCtr.searchGoodsForGUI(key, new GoodsList<>(filterImportGoodsList));
+        if (searchedObject == null) {
+            clearTableModel(importDetailModel);
+            return;
+        } else if (searchedObject instanceof Goods goods) {
+            goodsList.getList().add(goods);
+        } else if (searchedObject instanceof GoodsList) {
+            goodsList = (GoodsList<Goods>) searchedObject;
+        }
+        insertImportedGoodsToImportDetailTable(goodsList.getList());
+    }//GEN-LAST:event_goodsNameTextFieldKeyReleased
+
     private void passValueToSearchCashierComboBox() {
         searchCashierComboBox.removeAllItems();
-        searchCashierComboBox.addItem("null");
+        searchCashierComboBox.addItem("Tất cả");
         store.getEmployeeList().getList().stream().forEach(e -> searchCashierComboBox.addItem(e.toString()));
     }
 
     private void passValueToManufactureComboBox() {
         manufactureComboBox.removeAllItems();
-        manufactureComboBox.addItem("null");
+        manufactureComboBox.addItem("Tất cả");
         List<String> manufactureList = goodsListCtr
                 .getManufactureList(store.getHistory().getImportGoodsList());
         manufactureList.stream().forEach(manufacture -> manufactureComboBox.addItem(manufacture));

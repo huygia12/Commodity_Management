@@ -5,6 +5,7 @@
 package Controllers;
 
 import Models.Employee;
+import Models.Goods;
 import Models.Settings;
 import Models.Shift;
 import Models.ShiftState;
@@ -34,12 +35,9 @@ public class test {
     static Map<String, Integer> staticalList = new HashMap<>();
 
     public static void main(String[] args) {
-        Float customerDisOffer = (100f - 3)/100;
-        System.out.println(customerDisOffer*50000);
-        
-        Store store = new Store();
-        store.setBronzeDiscountOffer(new CustomPair<>(BigDecimal.valueOf(0),0d));
-        store.getBronzeDiscountOffer().getV();
+        List<Goods> goodsList = new ArrayList<>();
+        goodsList.add(null);
+        System.out.println(goodsList.size());
     }
 
 

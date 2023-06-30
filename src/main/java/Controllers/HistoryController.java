@@ -208,6 +208,16 @@ public class HistoryController {
         return null;
     }
 
+    public Goods containImportGoods(String shipmentID, History history) {
+        for (Goods importedGoods : history.getImportGoodsList()) {
+            Shipment firstShipment = importedGoods.getShipments().get(0);
+            if (firstShipment.getID().equals(shipmentID)) {
+                return importedGoods;
+            }
+        }
+        return null;
+    }
+
     public Order searchOrder(History history) {
         // tra ve null neu nguoi dung nhap 'back', nguoc lai, tra ve 1 order duoc tim kiem
         if (history.getShiftHistory().isEmpty()) {
@@ -293,7 +303,7 @@ public class HistoryController {
         }
         return result;
     }
-    
+
     public GoodsList<StaticalGoods> makeStaticalGoodsList(List<Order> orderList, BigDecimal totalRevenue) {
         ShipmentController shipmentCtr = new ShipmentController();
         GoodsController goodsCtr = new GoodsController();
@@ -333,8 +343,8 @@ public class HistoryController {
         }
         return staticalGoodsList;
     }
-    
-    public BigDecimal getTotalAmountOfImportGoods(List<Goods> importGoodsList){
+
+    public BigDecimal getTotalAmountOfImportGoods(List<Goods> importGoodsList) {
         BigDecimal result = BigDecimal.ZERO;
         for (Goods goods : importGoodsList) {
             Shipment shipment = goods.getShipments().get(0);

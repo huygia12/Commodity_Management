@@ -810,7 +810,7 @@ public class PurchasePanel extends javax.swing.JPanel {
         toLabel.setText("Đến:");
 
         unitComboBox.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
-        unitComboBox.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "none" }));
+        unitComboBox.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Trống" }));
         unitComboBox.setDoubleBuffered(true);
         unitComboBox.setFocusCycleRoot(true);
         unitComboBox.addItemListener(new java.awt.event.ItemListener() {
@@ -828,7 +828,7 @@ public class PurchasePanel extends javax.swing.JPanel {
         shipmentIDTextField.setHorizontalAlignment(javax.swing.JTextField.CENTER);
 
         priceRangeComboBox.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
-        priceRangeComboBox.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "none" }));
+        priceRangeComboBox.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Trống" }));
         priceRangeComboBox.addItemListener(new java.awt.event.ItemListener() {
             public void itemStateChanged(java.awt.event.ItemEvent evt) {
                 priceRangeComboBoxItemStateChanged(evt);
@@ -865,6 +865,9 @@ public class PurchasePanel extends javax.swing.JPanel {
         keyWordTextField.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyPressed(java.awt.event.KeyEvent evt) {
                 keyWordTextFieldKeyPressed(evt);
+            }
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                keyWordTextFieldKeyReleased(evt);
             }
         });
 
@@ -1898,6 +1901,25 @@ public class PurchasePanel extends javax.swing.JPanel {
         // TODO add your handling code here:
     }//GEN-LAST:event_productionDateRadioBtnActionPerformed
 
+    private void keyWordTextFieldKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_keyWordTextFieldKeyReleased
+        String keyString = keyWordTextField.getText();
+        GoodsList<Goods> goodsList = new GoodsList<>();
+        Object searchedObject = orderCtr.searchGoodsForGUI(keyString, draftGoodsList);
+        if (searchedObject == null) {
+            insertWarningToTextField(warningTextField, NOTHING_FOUND_WARNING, 12);
+            clearTableModel(goodsListModel);
+            return;
+        } else if (searchedObject instanceof Goods goods) {
+            goodsList.getList().add(goods);
+        } else if (searchedObject instanceof GoodsList) {
+            goodsList = (GoodsList<Goods>) searchedObject;
+        }
+        if (!goodsList.getList().isEmpty()) {
+            setDefaultOptionToTextField(warningTextField, 12);
+        }
+        insertGoodsListToGoodsListTable(goodsList);
+    }//GEN-LAST:event_keyWordTextFieldKeyReleased
+
     private void textFieldMouseClick(javax.swing.JTextField textField, int size) {
         setDefaultOptionToTextField(textField, size);
         textField.setEditable(true);
@@ -2271,7 +2293,7 @@ public class PurchasePanel extends javax.swing.JPanel {
         computeSizeOfEachColumnInGoodsListTable();
         computeSizeOfEachColumnInOrderGoodsListTable();
         insertGoodsListToGoodsListTable(draftGoodsList);
-        orderIDLabel.setText("Mã Hóa Đơn: "+order.getID());
+        orderIDLabel.setText("Mã Hóa Đơn: " + order.getID());
         employeeAndCustomerPanel.setEnabled(false);
     }
 
@@ -2356,7 +2378,6 @@ public class PurchasePanel extends javax.swing.JPanel {
         loadMainFee(order);
     }
 
-    
     private TitledBorder tb;
     private int orderSelectedRow = -1;
     private String productionDateFrom;

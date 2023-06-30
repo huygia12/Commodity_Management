@@ -31,7 +31,11 @@ public class CustomerCard {
     @SerializedName("rank")
     @Expose
     private CustomerRank rank = CustomerRank.NONE; 
-            
+    @SerializedName("usedPoint")
+    @Expose
+    private BigInteger usedPoint = BigInteger.ZERO; 
+    
+    
     public CustomerCard() {
     }
 
@@ -79,6 +83,12 @@ public class CustomerCard {
     public void setRank(CustomerRank rank) {
         this.rank = rank;
     }
-    
-    
+
+    public BigInteger getUsedPoint() {
+        return usedPoint;
+    }
+
+    public void setUsedPoint(BigInteger usedPoint) {
+        this.usedPoint = usedPoint;
+    }
 }

@@ -214,8 +214,7 @@ public class MainFrame extends javax.swing.JFrame {
         // pass data vào employPanel
         employJPanel1.passData(store.getEmployeeList(), shift);
         // pass data vào repoPanel
-        repoPanel1.setGoodsList(store.getRepository());
-        repoPanel1.setUnitsList(store.getUnits());
+        repoPanel1.passData(store);
         // pass data vào shiftJPanel
         shiftPanel1.passData(store, shift, this);
         //pass dât vào settingsPanel

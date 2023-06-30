@@ -4,17 +4,18 @@
  */
 package GUI;
 
+import Controllers.GoodsController;
+import Controllers.HistoryController;
+import Controllers.ShipmentController;
 import Models.Goods;
 import Models.Shipment;
+import Models.Store;
 import java.awt.Component;
 import java.math.BigDecimal;
 import java.time.DateTimeException;
 import java.time.LocalDate;
-import java.time.Month;
-import java.time.format.DateTimeFormatter;
-import java.util.Collections;
 import java.util.List;
-import java.util.stream.Collectors;
+import java.util.stream.*;
 import javax.swing.JOptionPane;
 import javax.swing.JTextField;
 import javax.swing.table.DefaultTableModel;
@@ -664,8 +665,8 @@ public class ShipmentPanel extends javax.swing.JPanel {
 
     private void deleteButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_deleteButtonActionPerformed
         // TODO add your handling code here:
-        String deletedGoodID = jTable1.getModel().getValueAt(jTable1.getSelectedRow(), 0).toString();
-        shipments = shipments.stream().filter(x -> !x.getID().equals(deletedGoodID)).collect(Collectors.toList());
+        String deletedShipmentID = jTable1.getModel().getValueAt(jTable1.getSelectedRow(), 0).toString();
+        shipments = shipments.stream().filter(x -> !x.getID().equals(deletedShipmentID)).collect(Collectors.toList());
         reloadTable(shipments);
         transferData();
         defaultSettings();
@@ -745,12 +746,15 @@ public class ShipmentPanel extends javax.swing.JPanel {
             if (doesExpiredToggleBtn.isSelected()) {
                 try {
                     if (LocalDate.of(Integer.parseInt(NSXYear), Integer.parseInt(NSXMonth), Integer.parseInt(NSXDay)).isBefore(LocalDate.of(Integer.parseInt(HSDYear), Integer.parseInt(HSDMonth), Integer.parseInt(HSDDay))) || LocalDate.of(Integer.parseInt(NSXYear), Integer.parseInt(NSXMonth), Integer.parseInt(NSXDay)).isAfter(LocalDate.now())) {
-                        shipments.add(new Shipment(shipmentQuantity,
+                        Shipment newShipment = new Shipment(shipmentQuantity,
                                 shipmentPrice,
                                 LocalDate.of(Integer.parseInt(NSXYear),
                                         Integer.parseInt(NSXMonth), Integer.parseInt(NSXDay)),
                                 LocalDate.of(Integer.parseInt(HSDYear), Integer.parseInt(HSDMonth), Integer.parseInt(HSDDay)),
-                                shipmentID));
+                                shipmentID, LocalDate.now());
+                        shipments.add(newShipment);
+                        //
+                        addToImportHistory(newShipment);
                     } else {
                         JOptionPane.showMessageDialog(null, "Ngày sản xuất không thể trước hạn sử dụng!", "Oh no!", JOptionPane.WARNING_MESSAGE);
                         return;
@@ -760,7 +764,10 @@ public class ShipmentPanel extends javax.swing.JPanel {
                     return;
                 }
             } else {
-                shipments.add(new Shipment(shipmentQuantity, shipmentPrice, null, null, shipmentID));
+                Shipment newShipment = new Shipment(shipmentQuantity, shipmentPrice, null, null, shipmentID, LocalDate.now());
+                shipments.add(newShipment);
+                //
+                addToImportHistory(newShipment);
             }
             defaultSettings();
             reloadTable(shipments);
@@ -779,10 +786,13 @@ public class ShipmentPanel extends javax.swing.JPanel {
                 return;
             }
         }
-        shipments.set(findShipmentIndex(shipmentTableModel.getValueAt(jTable1.getSelectedRow(), 0).toString()), new Shipment(BigDecimal.ZERO, BigDecimal.ZERO, null, null, shipmentIDTextField.getText()));
+        LocalDate importedDate = shipments.get(findShipmentIndex(shipmentTableModel.getValueAt(jTable1.getSelectedRow(), 0).toString())).getImportedDate();
+//        String shipmentIDBeforeEdit = shipments.get(findShipmentIndex(shipmentTableModel.getValueAt(jTable1.getSelectedRow(), 0).toString())).getID();
+        
+        shipments.set(findShipmentIndex(shipmentTableModel.getValueAt(jTable1.getSelectedRow(), 0).toString()), new Shipment(BigDecimal.ZERO, BigDecimal.ZERO, null, null, shipmentIDTextField.getText(), null));
         shipments.set(jTable1.getSelectedRow(), new Shipment(new BigDecimal(quantityTextField.getText()),
                 new BigDecimal(importPriceTextField.getText()),
-                null, null, shipmentIDTextField.getText()));
+                null, null, shipmentIDTextField.getText(), importedDate));
         if (doesExpiredToggleBtn.isSelected()) {
             shipments.get(findShipmentIndex(shipmentIDTextField.getText())).setNsx(LocalDate.of(Integer.parseInt(NSXYearTextField.getText()), Integer.parseInt(NSXMonthTextField.getText()), Integer.parseInt(NSXDayTextField.getText())));
             shipments.get(findShipmentIndex(shipmentIDTextField.getText())).setHsd(LocalDate.of(Integer.parseInt(HSDYearTextField.getText()), Integer.parseInt(HSDMonthTextField.getText()), Integer.parseInt(HSDDayTextField.getText())));
@@ -875,28 +885,47 @@ public class ShipmentPanel extends javax.swing.JPanel {
 
         }
         cancelCheck();
-            errorDateLabel.setVisible(false);
-            errorIDLabel.setVisible(false);
-            errorPriceLabel.setVisible(false);
-            errorQuantityLabel.setVisible(false);
-            setVisibleDate(false, false);
-            doesExpiredToggleBtn.setSelected(false);
-            shipmentIDTextField.setText("");
-            importPriceTextField.setText("");
-            quantityTextField.setText("");
+        errorDateLabel.setVisible(false);
+        errorIDLabel.setVisible(false);
+        errorPriceLabel.setVisible(false);
+        errorQuantityLabel.setVisible(false);
+        setVisibleDate(false, false);
+        doesExpiredToggleBtn.setSelected(false);
+        shipmentIDTextField.setText("");
+        importPriceTextField.setText("");
+        quantityTextField.setText("");
 
-            NSXDay = "";
-            NSXMonth = "";
-            NSXYear = "";
-            HSDDay = "";
-            HSDMonth = "";
-            HSDYear = "";
+        NSXDay = "";
+        NSXMonth = "";
+        NSXYear = "";
+        HSDDay = "";
+        HSDMonth = "";
+        HSDYear = "";
 
-            shipmentID = "";
-            shipmentPrice = BigDecimal.ZERO;
-            shipmentQuantity = BigDecimal.ZERO;
+        shipmentID = "";
+        shipmentPrice = BigDecimal.ZERO;
+        shipmentQuantity = BigDecimal.ZERO;
     }//GEN-LAST:event_filterBtnActionPerformed
 
+    private void addToImportHistory(Shipment shipment) {
+        Goods goodsCloned = new GoodsController().cloneGoods(attachedGood);
+        Shipment shipmentCloned = new ShipmentController().cloneShipment(shipment);
+        goodsCloned.getShipments().clear();
+        goodsCloned.getShipments().add(shipmentCloned);
+        store.getHistory().getImportGoodsList().add(goodsCloned);
+    }
+//    
+//    private void editShipmentInImportHistory(String shipmentID, Shipment shipment) {
+//        Goods goods = new HistoryController().containImportGoods(shipmentID, store.getHistory());
+//        goods.getShipments().clear();
+//        goods.getShipments().add(new ShipmentController().cloneShipment(shipment));
+//    }
+//
+//    private void removeShipmentInToImportHistory(String shipmentID) {
+//        Goods goods = new HistoryController().containImportGoods(shipmentID, store.getHistory());
+//        store.getHistory().getImportGoodsList().remove(goods);
+//    }
+    
     private void addCheck() {
         if (doesExpiredToggleBtn.isSelected()) {
             if (!shipmentIDTextField.getText().isEmpty()
@@ -1037,7 +1066,8 @@ public class ShipmentPanel extends javax.swing.JPanel {
         return -1;
     }
 
-    public void attachGood(Goods good) {
+    public void attachGood(Goods good, Store store) {
+        this.store = store;
         this.attachedGood = good;
         this.shipments = good.getShipments();
     }
@@ -1049,7 +1079,7 @@ public class ShipmentPanel extends javax.swing.JPanel {
     // Custom variables declaration
     private Goods attachedGood;
     private List<Shipment> shipments;
-
+    private Store store;
     private String shipmentID = "";
     private BigDecimal shipmentPrice = BigDecimal.ZERO;
     private BigDecimal shipmentQuantity = BigDecimal.ZERO;

@@ -31,12 +31,7 @@ public final class Header extends javax.swing.JPanel {
 
     }
 
-    public void setTitle(String name, String phoneNumber, String address,String email) {
-        this.store.setName(name);
-        this.store.setPhoneNumber(phoneNumber);
-        this.store.setAddress(address);
-        this.store.setEmail(email);
-
+    public void setTitle() {
         this.storeNameLabel.setText(store.getName());
         this.storePhoneNumLabel.setText("Liên hệ: " + store.getPhoneNumber());
         this.storeAndressLabel.setText("Địa chỉ: " + store.getAddress());

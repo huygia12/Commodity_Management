@@ -4,16 +4,14 @@ import Controllers.GoodsListController;
 import Models.Goods;
 import Models.GoodsList;
 import Models.Shipment;
+import Models.Store;
 import Models.Units;
-import java.awt.Point;
 import java.math.BigDecimal;
 import java.util.List;
-import java.util.stream.Collectors;
+import java.util.stream.*;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 import org.jdesktop.animation.timing.Animator;
-import org.jdesktop.animation.timing.TimingTargetAdapter;
-import org.jdesktop.animation.timing.interpolation.PropertySetter;
 
 /*
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
@@ -479,6 +477,7 @@ public class RepoPanel extends javax.swing.JPanel {
         // TODO add your handling code here:
         if (jTable1.getSelectedRow() != -1) {
             Goods editedGood = goodsList.getList().get(findGoodsIndex(goodTableModel.getValueAt(jTable1.getSelectedRow(), 0).toString()));
+            String editedGoodsIDBefore = editedGood.getID();
             List<Shipment> editedGoodShipments = goodsList.getList().get(findGoodsIndex(goodTableModel.getValueAt(jTable1.getSelectedRow(), 0).toString())).getShipments();
             goodsList.getList().set(findGoodsIndex(goodTableModel.getValueAt(jTable1.getSelectedRow(), 0).toString()), new Goods("", "", BigDecimal.ZERO, editedGood.getID(), ""));
             if (dupedGoodCheck() || editedGood.getID().equals(IDTextField.getText())) {
@@ -487,6 +486,9 @@ public class RepoPanel extends javax.swing.JPanel {
                 goodsList.getList().get(findGoodsIndex(newID)).setShipments(editedGoodShipments);
                 reloadTable(goodsList);
                 resetVariables();
+                //
+                editImportGoodsInHistory(editedGoodsIDBefore, goodsList.getList().get(findGoodsIndex(newID)));
+                //
             } else {
                 JOptionPane.showMessageDialog(null, "Mặt hàng đã tồn tại!", "Oh no!", JOptionPane.WARNING_MESSAGE);
                 goodsList.getList().set(findGoodsIndex(editedGood.getID()), editedGood);
@@ -571,7 +573,7 @@ public class RepoPanel extends javax.swing.JPanel {
         try {
             PopupShipment shipmentPanel = new PopupShipment();
             shipmentPanel.setVisible(true);
-            shipmentPanel.getShipmentPanel().attachGood(selectedGood);
+            shipmentPanel.getShipmentPanel().attachGood(selectedGood, store);
             shipmentPanel.getShipmentPanel().reloadTable(selectedGood.getShipments());
             shipmentPanel.setDefaultCloseOperation(shipmentPanel.DISPOSE_ON_CLOSE);
             reloadTable(goodsList);
@@ -580,6 +582,18 @@ public class RepoPanel extends javax.swing.JPanel {
         }
     }//GEN-LAST:event_shipmentsButtonActionPerformed
 
+    private void editImportGoodsInHistory(String goodsIDBefore, Goods editedGoods){
+        for (Goods goods : store.getHistory().getImportGoodsList()) {
+            if(goods.getID().equals(goodsIDBefore)){
+                goods.setGoodsName(editedGoods.getGoodsName());
+                goods.setID(editedGoods.getID());
+                goods.setManufacture(editedGoods.getManufacture());
+                goods.setListPrice(editedGoods.getListPrice());
+                goods.setUnit(editedGoods.getUnit());
+            }
+        }
+    }
+    
     public void addCheck () {
         if(!nameTextField.getText().isBlank() && unitComboBox.getSelectedIndex()!=-1 && !listPriceTextField.getText().isBlank() && !IDTextField.getText().isBlank() && !goodID.isBlank() && goodListedPrice != BigDecimal.valueOf(-1)) {
             addButton.setEnabled(true);
@@ -671,12 +685,18 @@ public class RepoPanel extends javax.swing.JPanel {
         searchTextField.setText("");
     }
     
-    public void setGoodsList(GoodsList<Goods> goodsList) {
+    public void passData(Store store){
+        this.store = store;
+        setGoodsList(store.getRepository());
+        setUnitsList(store.getUnits());
+    }
+    
+    private void setGoodsList(GoodsList<Goods> goodsList) {
         this.goodsList = goodsList;
         reloadTable(goodsList);
     }
 
-    public void setUnitsList(Units unitsList) {
+    private void setUnitsList(Units unitsList) {
         this.unitsList = unitsList;
         reloadUnitList();
     }
@@ -704,6 +724,7 @@ public class RepoPanel extends javax.swing.JPanel {
         return -1;
     }
 
+    private Store store;
     private GoodsList<Goods> goodsList;
     private Units unitsList;
     private GoodsListController glc = new GoodsListController();
