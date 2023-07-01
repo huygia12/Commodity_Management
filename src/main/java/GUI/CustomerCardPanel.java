@@ -5,11 +5,15 @@
 package GUI;
 
 import Controllers.CustomerCardListController;
+import Controllers.GoodsListController;
+import Controllers.HistoryController;
+import Controllers.OrderController;
 import Models.Customer;
 import Models.CustomerCard;
 import Models.CustomerCardList;
 import Models.Gender;
 import Models.History;
+import Models.Order;
 import Models.Settings;
 import Models.Store;
 import Ultility.Cautions;
@@ -393,7 +397,7 @@ public class CustomerCardPanel extends javax.swing.JPanel {
                         .addComponent(needMore)
                         .addComponent(toNextRank))
                     .addComponent(morePayToNextRank, javax.swing.GroupLayout.PREFERRED_SIZE, 20, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(10, Short.MAX_VALUE))
+                .addContainerGap(19, Short.MAX_VALUE))
         );
 
         jLabel36.setText("Họ:");
@@ -538,7 +542,7 @@ public class CustomerCardPanel extends javax.swing.JPanel {
                         .addComponent(DeleteCardButton, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addComponent(CreateNewCardButton, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addComponent(UpdateCustomerDateButton, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addGap(18, 18, 18)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(CardInforPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
@@ -808,7 +812,7 @@ public class CustomerCardPanel extends javax.swing.JPanel {
                         .addGroup(jPanel8Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(diamondDiscount, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(jLabel19))))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 21, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 30, Short.MAX_VALUE)
                 .addComponent(jLabel22)
                 .addGap(18, 18, 18)
                 .addGroup(jPanel8Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
@@ -842,7 +846,8 @@ public class CustomerCardPanel extends javax.swing.JPanel {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 254, Short.MAX_VALUE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jPanel8, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addComponent(jPanel8, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap())
         );
 
         javax.swing.GroupLayout MainPanelLayout = new javax.swing.GroupLayout(MainPanel);
@@ -1104,11 +1109,19 @@ public class CustomerCardPanel extends javax.swing.JPanel {
         int rowIndex = customerTable.getSelectedRow();
 
         CustomerCard cc = customerCardList.getList().get(rowIndex);
-        BigInteger usedPoint = BigInteger.valueOf(0);
-        BigInteger pay = BigInteger.valueOf(0);
-        BigInteger usagePoint = cc.getPoint().subtract(usedPoint);
+        BigInteger usedPoint = cc.getUsedPoint();
+
+        BigDecimal pay = BigDecimal.ZERO;
+        for (int i = 0; i < cc.getIDOfBoughtOrders().size(); i++) {
+            String orderID = cc.getIDOfBoughtOrders().get(i);
+            Order order = historyCtl.containOrder(orderID, store.getHistory());
+            BigDecimal bill = orderCtl.getTotal(order, store);
+            pay = pay.add(bill);
+        }
+
+        BigInteger usagePoint = cc.getPoint();
         String rank = cardRank(cc.getPoint());
-        BigInteger needPay;
+        BigDecimal needPay;
 
         memberCardRankTextField.setText(rank);
         memberUsagePointTextField.setText(usagePoint.toString());
@@ -1117,17 +1130,17 @@ public class CustomerCardPanel extends javax.swing.JPanel {
 
         switch (rank) {
             case "Đồng":
-                needPay = BigInteger.valueOf(silvePay).subtract(pay);
+                needPay = BigDecimal.valueOf(silvePay).subtract(pay);
                 morePayToNextRank.setText(needPay.toString());
                 setVisibleNeedPay(true);
                 break;
             case "Bạc":
-                needPay = BigInteger.valueOf(goldenPay).subtract(pay);
+                needPay = BigDecimal.valueOf(goldenPay).subtract(pay);
                 morePayToNextRank.setText(needPay.toString());
                 setVisibleNeedPay(true);
                 break;
             case "Vàng":
-                needPay = BigInteger.valueOf(diamondPay).subtract(pay);
+                needPay = BigDecimal.valueOf(diamondPay).subtract(pay);
                 morePayToNextRank.setText(needPay.toString());
                 setVisibleNeedPay(true);
                 break;
@@ -1255,7 +1268,7 @@ public class CustomerCardPanel extends javax.swing.JPanel {
         }
         return false;
     }
-    
+
     private boolean checkDiscount(String s) {
         double d = Double.parseDouble(s);
         if (d > 100) {
@@ -1363,8 +1376,7 @@ public class CustomerCardPanel extends javax.swing.JPanel {
 
     private void reloadButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_reloadButtonActionPerformed
         // TODO add your handling code here:
-            reload();
-            showPoint();       
+        reload();
     }//GEN-LAST:event_reloadButtonActionPerformed
 
     private void getPolicy() {
@@ -1378,7 +1390,7 @@ public class CustomerCardPanel extends javax.swing.JPanel {
         diamondPayment = diamondPay.getText();
     }
 
-    public void reload() {
+    public void setPolicyValue() {
         copperPayment = store.getBronzeDiscountOffer().getK().toString();
         silvePayment = store.getSilverDiscountOffer().getK().toString();
         goldenPayment = store.getGoldDiscountOffer().getK().toString();
@@ -1388,9 +1400,13 @@ public class CustomerCardPanel extends javax.swing.JPanel {
         silveDis = store.getSilverDiscountOffer().getV().toString();
         goldenDis = store.getGoldDiscountOffer().getV().toString();
         diamondDis = store.getDiamondDiscountOffer().getV().toString();
-
     }
     
+    public void reload() {
+        setPolicyValue();
+        showPoint();
+    }
+
     private void defaultPolicy() {
         setPolicy("0", "0.0", "8000000", "2.0", "12000000", "3.0", "20000000", "4.0");
     }
@@ -1407,8 +1423,11 @@ public class CustomerCardPanel extends javax.swing.JPanel {
         searchResultQuantity.setText("");
         copperPay.setEditable(false);
         copperDiscount.setEditable(false);
-        defaultPolicy();
-        
+        setPolicyValue();
+        setPolicy(copperPayment, copperDis, 
+                silvePayment, silveDis, 
+                goldenPayment, goldenDis, 
+                diamondPayment, diamondDis);
     }
 
     private CustomerCardList customerCardList;
@@ -1416,17 +1435,18 @@ public class CustomerCardPanel extends javax.swing.JPanel {
     private History history;
     private Cautions cautions = new Cautions();
     private DefaultTableModel customerModel;
-    private CustomerCardListController customerCardListCtl;
+    private OrderController orderCtl = new OrderController();
+    private HistoryController historyCtl = new HistoryController();
     private Store store;
 
-    private String copperPayment;
-    private String copperDis;
-    private String silvePayment;
-    private String silveDis;
-    private String goldenPayment;
-    private String goldenDis;
-    private String diamondPayment;
-    private String diamondDis;
+    public String copperPayment;
+    public String copperDis;
+    public String silvePayment;
+    public String silveDis;
+    public String goldenPayment;
+    public String goldenDis;
+    public String diamondPayment;
+    public String diamondDis;
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JPanel CardInforPanel;

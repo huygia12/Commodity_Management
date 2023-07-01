@@ -1,8 +1,8 @@
 {
   "id": "000000",
   "name": "Chang hi",
-  "email": "changhi@gmail.com",
-  "passWord": "00000000",
+  "email": "wangwang123@gmail.com",
+  "passWord": "12345678",
   "address": "112-Nguyen Van Loc",
   "phoneNumber": "0705737292",
   "amountForOnePoint": 10000,
@@ -36,23 +36,8 @@
   "customerCardList": {
     "cardList": [
       {
-        "ID": "000000",
-        "point": 100,
-        "customer": {
-          "firstName": "Nguyen Duc",
-          "lastName": "Anh",
-          "phoneNumber": "0975268264",
-          "address": "34 Nguyen Du",
-          "age": 20,
-          "gender": "MALE"
-        },
-        "IDOfBoughtOrders": [],
-        "rank": "SILVER",
-        "usedPoint": 0
-      },
-      {
         "ID": "000001",
-        "point": 0,
+        "point": 10,
         "customer": {
           "firstName": "Le Van",
           "lastName": "Quyet",
@@ -61,24 +46,10 @@
           "age": 20,
           "gender": "OTHER"
         },
-        "IDOfBoughtOrders": [],
-        "rank": "NONE",
-        "usedPoint": 0
-      },
-      {
-        "ID": "000002",
-        "point": 0,
-        "customer": {
-          "firstName": "Do Quynh",
-          "lastName": "Anh",
-          "phoneNumber": "0971345298",
-          "address": "16 Cau Giay",
-          "age": 22,
-          "gender": "FEMALE"
-        },
-        "IDOfBoughtOrders": [],
-        "rank": "NONE",
-        "usedPoint": 0
+        "IDOfBoughtOrders": [
+          "000007"
+        ],
+        "rank": "BRONZE"
       },
       {
         "ID": "000003",
@@ -92,8 +63,35 @@
           "gender": "MALE"
         },
         "IDOfBoughtOrders": [],
-        "rank": "NONE",
-        "usedPoint": 0
+        "rank": "NONE"
+      },
+      {
+        "ID": "000004",
+        "point": 0,
+        "customer": {
+          "firstName": "guyrn",
+          "lastName": "anh",
+          "phoneNumber": "0987654321",
+          "address": "vn",
+          "age": 12,
+          "gender": "FEMALE"
+        },
+        "IDOfBoughtOrders": [],
+        "rank": "NONE"
+      },
+      {
+        "ID": "000005",
+        "point": 0,
+        "customer": {
+          "firstName": "Le Duc",
+          "lastName": "Cuong",
+          "phoneNumber": "0916254168",
+          "address": "41 Minh Khai",
+          "age": 17,
+          "gender": "MALE"
+        },
+        "IDOfBoughtOrders": [],
+        "rank": "NONE"
       }
     ]
   },
@@ -590,41 +588,119 @@
         "note": ""
       },
       {
-        "openDateTime": "01/07/2023 01:09:38",
+        "openDateTime": "30/06/2023 10:12:20",
+        "endDateTime": "30/06/2023 10:44:56",
         "openingBalance": 0,
-        "surCharge": 0,
+        "surCharge": 0.0,
         "cashier": {
-          "salaryPerDay": 23000,
-          "CCCD": "3553646623",
+          "salaryPerDay": 25000,
+          "CCCD": "3957577777",
           "IDOfOrdersInCharge": [],
           "stt": 0,
-          "firstName": "Vu Hung",
-          "lastName": "Tung",
-          "phoneNumber": "0905737293",
-          "address": "AeonMall HaDong",
-          "age": 16,
-          "gender": "MALE"
+          "firstName": "Nguyen Thao",
+          "lastName": "Chi",
+          "phoneNumber": "0505737293",
+          "address": "141-ChienThang-TanTrieu",
+          "age": 20,
+          "gender": "FEMALE"
         },
         "ID": "000002",
         "VAT": 0,
-        "orderHisPerShift": [],
+        "orderHisPerShift": [
+          {
+            "orderDateTime": "30/06/2023 10:13:36",
+            "ID": "000007",
+            "VAT": 0,
+            "cusMoney": 110000,
+            "discount": 0,
+            "paymentOptions": "CASH_PAYMENT",
+            "customerCard": {
+              "ID": "000001",
+              "point": 10,
+              "customer": {
+                "firstName": "Le Van",
+                "lastName": "Quyet",
+                "phoneNumber": "0906333164",
+                "address": "26 Do Duc Duc",
+                "age": 20,
+                "gender": "OTHER"
+              },
+              "IDOfBoughtOrders": [
+                "000007"
+              ],
+              "rank": "BRONZE"
+            },
+            "pointDiscount": 0,
+            "cashier": {
+              "salaryPerDay": 25000,
+              "CCCD": "3957577777",
+              "IDOfOrdersInCharge": [],
+              "stt": 0,
+              "firstName": "Nguyen Thao",
+              "lastName": "Chi",
+              "phoneNumber": "0505737293",
+              "address": "141-ChienThang-TanTrieu",
+              "age": 20,
+              "gender": "FEMALE"
+            },
+            "shippingFee": 0.0,
+            "myGoodsList": [
+              {
+                "id": "000001",
+                "goodsName": "Cup Cake",
+                "manufacture": "TuyenIndustry",
+                "totalQuantity": 10,
+                "shipments": [
+                  {
+                    "quantity": 10,
+                    "importPrice": 3000,
+                    "id": "00000003",
+                    "nsx": "13/3/2023",
+                    "hsd": "14/11/2023",
+                    "importedDate": "20/3/2023"
+                  }
+                ],
+                "unit": "Cái",
+                "listPrice": 8000
+              },
+              {
+                "id": "000003",
+                "goodsName": "Flan",
+                "manufacture": "Kem cacao",
+                "totalQuantity": 5,
+                "shipments": [
+                  {
+                    "quantity": 5,
+                    "importPrice": 2500,
+                    "id": "00000009",
+                    "nsx": "13/3/2023",
+                    "hsd": "14/11/2023",
+                    "importedDate": "20/3/2023"
+                  }
+                ],
+                "unit": "Hộp",
+                "listPrice": 5000
+              }
+            ]
+          }
+        ],
         "employeeOfThisShift": {
           "": [
             {
               "salaryPerDay": 22000,
-              "CCCD": "7337593977",
+              "CCCD": "2223666611",
               "IDOfOrdersInCharge": [],
               "stt": 0,
-              "firstName": "Dao Van",
-              "lastName": "Tuyen",
-              "phoneNumber": "0805737293",
-              "address": "220-TrieuKhuc-TanTrieu-ThanhTri",
-              "age": 20,
+              "firstName": "Nguyen Gia",
+              "lastName": "Huy",
+              "phoneNumber": "0705737293",
+              "address": "so10-Ngo2-YenPhuc-PhucLa-HaDong",
+              "age": 19,
               "gender": "MALE"
             }
           ]
         },
-        "state": "OPENED",
+        "state": "CLOSED",
         "note": ""
       }
     ],
@@ -1497,11 +1573,11 @@
   },
   "iDGenerator": {
     "bucket": {
-      "Models.CustomerCard": 3,
+      "Models.CustomerCard": 5,
       "Models.Shipment": 47,
       "Models.Goods": 15,
       "Models.Shift": 2,
-      "Models.Order": 6
+      "Models.Order": 7
     }
   },
   "settings": {
@@ -1552,10 +1628,10 @@
         "id": "000001",
         "goodsName": "Cup Cake",
         "manufacture": "TuyenIndustry",
-        "totalQuantity": 79,
+        "totalQuantity": 69,
         "shipments": [
           {
-            "quantity": 49,
+            "quantity": 39,
             "importPrice": 3000,
             "id": "00000003",
             "nsx": "13/3/2023",
@@ -1620,10 +1696,10 @@
         "id": "000003",
         "goodsName": "Flan",
         "manufacture": "Kem cacao",
-        "totalQuantity": 134,
+        "totalQuantity": 129,
         "shipments": [
           {
-            "quantity": 50,
+            "quantity": 45,
             "importPrice": 2500,
             "id": "00000009",
             "nsx": "13/3/2023",
