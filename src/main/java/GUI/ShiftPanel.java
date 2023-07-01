@@ -365,7 +365,7 @@ public class ShiftPanel extends javax.swing.JPanel {
                 return canEdit [columnIndex];
             }
         });
-        orderListTable.setAutoResizeMode(javax.swing.JTable.AUTO_RESIZE_OFF);
+        orderListTable.setAutoResizeMode(javax.swing.JTable.AUTO_RESIZE_ALL_COLUMNS);
         orderListTable.setShowGrid(true);
         orderListTable.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {

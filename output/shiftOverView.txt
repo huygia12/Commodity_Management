@@ -1,25 +1,23 @@
-                              BÁO CÁO CA : 000000
+                              BÁO CÁO CA : 000003
                                 Cửa hàng | Chang hi                                
 -----------------------------------------------------------------------------------
-                               Giờ mở ca | 2023-06-28T18:02:25                     
-                             Giờ đóng ca | 2023-06-28T18:03:49                     
+                               Giờ mở ca | 2023-07-01T02:11:52                     
+                             Giờ đóng ca | 2023-07-01T16:38:12                     
                                 Thu ngân | Nguyen Gia Huy                          
                             Số dư đầu ca | 0.0                                     
-                        Doanh thu(gross) | 47000.0                                 
+                        Doanh thu(gross) | 874000.0                                
                Tổng chiết khấu trực tiếp | 0.0                                     
                     Tổng chiết khấu điểm | 0.0                                     
                    Tổng tiền thuế(VAT)0% | 0.0                                     
-                           Phí phát sinh | 40000.0                                 
-                     Lợi nhuận ròng(net) | 47000.0                                 
+                           Phí phát sinh | 0.0                                     
+                     Lợi nhuận ròng(net) | 874000.0                                
                          Tổng số hóa đơn | 4                                       
-                      Trung bình/hóa đơn | 11750.0                                 
+                      Trung bình/hóa đơn | 218500.0                                
 <+> CÁC PHƯƠNG THỨC THANH TOÁN:                                       
-                                Tiền mặt | 0.0                                     
-                  Chuyển khoản&Ngân hàng | 47000.0                                 
+                                Tiền mặt | 874000.0                                
+                  Chuyển khoản&Ngân hàng | 0.0                                     
 <+> MẶT HÀNG TIÊU THỤ:                                                
           Goods Name | Quantity             | Revenue              | Ratio               
-        Custard Cake | 1.0                  | 30000.0              | 0.6%                
-Strawberry ice-cream | 1.0                  | 9000.0               | 0.2%                
-          Paddle pop | 1.0                  | 5000.0               | 0.1%                
-               Ruler | 1.0                  | 3000.0               | 0.1%                
+        Custard Cake | 23.0                 | 690000.0             | 0.8%                
+            Cup Cake | 23.0                 | 184000.0             | 0.2%                
 <+> GHI CHÚ CA:                                                       

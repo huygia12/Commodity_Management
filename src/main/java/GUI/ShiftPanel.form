@@ -426,7 +426,7 @@
                         <Column editable="false" title="T&#x1ed5;ng ti&#x1ec1;n" type="java.lang.Object"/>
                       </Table>
                     </Property>
-                    <Property name="autoResizeMode" type="int" value="0"/>
+                    <Property name="autoResizeMode" type="int" value="4"/>
                     <Property name="showGrid" type="boolean" value="true"/>
                   </Properties>
                   <Events>

@@ -288,7 +288,7 @@ public class RepoPanel extends javax.swing.JPanel {
             jTable1.getColumnModel().getColumn(5).setHeaderValue("Tổng số lượng");
         }
 
-        tablePanel.add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 30, 940, 410));
+        tablePanel.add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 30, 960, 420));
 
         searchTextField.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyReleased(java.awt.event.KeyEvent evt) {
@@ -297,9 +297,9 @@ public class RepoPanel extends javax.swing.JPanel {
         });
         tablePanel.add(searchTextField, new org.netbeans.lib.awtextra.AbsoluteConstraints(110, 0, 153, -1));
 
-        repoManagementPanel.add(tablePanel, new org.netbeans.lib.awtextra.AbsoluteConstraints(16, 129, 940, 440));
+        repoManagementPanel.add(tablePanel, new org.netbeans.lib.awtextra.AbsoluteConstraints(16, 129, 960, 440));
 
-        add(repoManagementPanel, new org.netbeans.lib.awtextra.AbsoluteConstraints(4, 3, 970, 610));
+        add(repoManagementPanel, new org.netbeans.lib.awtextra.AbsoluteConstraints(4, 3, 990, 590));
     }// </editor-fold>//GEN-END:initComponents
 
     private void nameTextFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_nameTextFieldActionPerformed
@@ -571,11 +571,7 @@ public class RepoPanel extends javax.swing.JPanel {
         }
         
         try {
-            PopupShipment shipmentPanel = new PopupShipment();
-            shipmentPanel.setVisible(true);
-            shipmentPanel.getShipmentPanel().attachGood(selectedGood, store);
-            shipmentPanel.getShipmentPanel().reloadTable(selectedGood.getShipments());
-            shipmentPanel.setDefaultCloseOperation(PopupShipment.DISPOSE_ON_CLOSE);
+            mf.switchShipmentPanel(selectedGood);
             reloadTable(goodsList);
             jTable1.setRowSelectionInterval(findGoodsIndex(selectedGood.getID()), findGoodsIndex(selectedGood.getID()));
         } catch (NullPointerException npe) {
@@ -685,8 +681,9 @@ public class RepoPanel extends javax.swing.JPanel {
         }
     }
     
-    public void passData(Store store){
+    public void passData(Store store, MainFrame mf){
         this.store = store;
+        this.mf = mf;
         setGoodsList(store.getRepository());
         setUnitsList(store.getUnits());
     }
@@ -724,6 +721,7 @@ public class RepoPanel extends javax.swing.JPanel {
         return -1;
     }
 
+    private MainFrame mf;
     private Store store;
     private GoodsList<Goods> goodsList;
     private Units unitsList;

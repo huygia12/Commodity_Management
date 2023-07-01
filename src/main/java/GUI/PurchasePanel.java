@@ -1973,8 +1973,8 @@ public class PurchasePanel extends javax.swing.JPanel {
             goods.getUnit(),
             goods.getListPrice(),
             shipment.getID(),
-            shipment.getNsx().format(DateTimeFormatter.ofPattern(OUTPUT_DATE_PATTERN)),
-            shipment.getHsd().format(DateTimeFormatter.ofPattern(OUTPUT_DATE_PATTERN)),
+            (shipment.getNsx() == null) ? "" : shipment.getNsx().format(DateTimeFormatter.ofPattern(OUTPUT_DATE_PATTERN)),
+            (shipment.getHsd() == null) ? "" : shipment.getHsd().format(DateTimeFormatter.ofPattern(OUTPUT_DATE_PATTERN)),
             shipment.getQuantity()
         });
     }
@@ -1987,8 +1987,8 @@ public class PurchasePanel extends javax.swing.JPanel {
             "",
             "",
             shipment.getID(),
-            shipment.getNsx().format(DateTimeFormatter.ofPattern(OUTPUT_DATE_PATTERN)),
-            shipment.getHsd().format(DateTimeFormatter.ofPattern(OUTPUT_DATE_PATTERN)),
+            (shipment.getNsx() == null) ? "" : shipment.getNsx().format(DateTimeFormatter.ofPattern(OUTPUT_DATE_PATTERN)),
+            (shipment.getHsd() == null) ? "" : shipment.getHsd().format(DateTimeFormatter.ofPattern(OUTPUT_DATE_PATTERN)),
             shipment.getQuantity()
         });
     }
@@ -2062,20 +2062,6 @@ public class PurchasePanel extends javax.swing.JPanel {
             for (Shipment shipment : goods.getShipments()) {
                 if (shipment.getID().length() + extraLength > shipmentIDMaxSize) {
                     shipmentIDMaxSize = shipment.getID().length() + extraLength;
-                }
-                if (shipment.getNsx()
-                        .format(DateTimeFormatter.ofPattern(OUTPUT_DATE_PATTERN))
-                        .length() + extraLength > productionDateMaxSize) {
-                    productionDateMaxSize = shipment.getNsx()
-                            .format(DateTimeFormatter.ofPattern(OUTPUT_DATE_PATTERN))
-                            .length() + extraLength;
-                }
-                if (shipment.getHsd()
-                        .format(DateTimeFormatter.ofPattern(OUTPUT_DATE_PATTERN))
-                        .length() + extraLength > expirationDateMaxSize) {
-                    expirationDateMaxSize = shipment.getHsd()
-                            .format(DateTimeFormatter.ofPattern(OUTPUT_DATE_PATTERN))
-                            .length() + extraLength;
                 }
                 if (String.format(".1f", shipment.getQuantity()).length() + extraLength > shipmentQuantityMaxSize) {
                     shipmentQuantityMaxSize = String.format(".1f", shipment.getQuantity()).length() + extraLength;

@@ -5,7 +5,6 @@
 package GUI;
 
 import Controllers.GoodsController;
-import Controllers.HistoryController;
 import Controllers.ShipmentController;
 import Models.Goods;
 import Models.Shipment;
@@ -80,6 +79,7 @@ public class ShipmentPanel extends javax.swing.JPanel {
         errorPriceLabel = new javax.swing.JLabel();
         errorQuantityLabel = new javax.swing.JLabel();
         errorDateLabel = new javax.swing.JLabel();
+        backBtn = new javax.swing.JButton();
         shipmentTablePanel = new javax.swing.JPanel();
         jScrollPane1 = new javax.swing.JScrollPane();
         jTable1 = new javax.swing.JTable();
@@ -123,7 +123,7 @@ public class ShipmentPanel extends javax.swing.JPanel {
                 .addComponent(filterCategories, javax.swing.GroupLayout.PREFERRED_SIZE, 221, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
                 .addComponent(filterExtraOption, javax.swing.GroupLayout.PREFERRED_SIZE, 221, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(194, Short.MAX_VALUE))
+                .addContainerGap(214, Short.MAX_VALUE))
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, goodsInfoPanelLayout.createSequentialGroup()
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(filterBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 93, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -141,9 +141,11 @@ public class ShipmentPanel extends javax.swing.JPanel {
                 .addContainerGap())
         );
 
-        add(goodsInfoPanel, new org.netbeans.lib.awtextra.AbsoluteConstraints(290, 40, 670, 150));
+        add(goodsInfoPanel, new org.netbeans.lib.awtextra.AbsoluteConstraints(290, 40, 690, 150));
 
         shipmentControlPanel.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Lô hàng", javax.swing.border.TitledBorder.CENTER, javax.swing.border.TitledBorder.DEFAULT_POSITION));
+        shipmentControlPanel.setMinimumSize(new java.awt.Dimension(261, 540));
+        shipmentControlPanel.setPreferredSize(new java.awt.Dimension(261, 540));
 
         shipmentIDLabel.setText("Mã lô hàng:");
 
@@ -279,6 +281,13 @@ public class ShipmentPanel extends javax.swing.JPanel {
         errorDateLabel.setForeground(new java.awt.Color(255, 51, 51));
         errorDateLabel.setText("Ngày không hợp lệ!");
 
+        backBtn.setText("Quay lại");
+        backBtn.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                backBtnActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout shipmentControlPanelLayout = new javax.swing.GroupLayout(shipmentControlPanel);
         shipmentControlPanel.setLayout(shipmentControlPanelLayout);
         shipmentControlPanelLayout.setHorizontalGroup(
@@ -334,10 +343,6 @@ public class ShipmentPanel extends javax.swing.JPanel {
                         .addGap(13, 13, 13)
                         .addComponent(editButton, javax.swing.GroupLayout.PREFERRED_SIZE, 116, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(shipmentControlPanelLayout.createSequentialGroup()
-                        .addComponent(deleteButton, javax.swing.GroupLayout.PREFERRED_SIZE, 116, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(13, 13, 13)
-                        .addComponent(cancelButton, javax.swing.GroupLayout.PREFERRED_SIZE, 116, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(shipmentControlPanelLayout.createSequentialGroup()
                         .addGap(6, 6, 6)
                         .addComponent(quantityLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 104, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(12, 12, 12)
@@ -354,7 +359,13 @@ public class ShipmentPanel extends javax.swing.JPanel {
                                 .addGap(17, 17, 17)
                                 .addComponent(MonthLabel)
                                 .addGap(30, 30, 30)
-                                .addComponent(YearLabel)))))
+                                .addComponent(YearLabel))))
+                    .addGroup(shipmentControlPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                        .addComponent(backBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 116, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGroup(shipmentControlPanelLayout.createSequentialGroup()
+                            .addComponent(deleteButton, javax.swing.GroupLayout.PREFERRED_SIZE, 116, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addGap(13, 13, 13)
+                            .addComponent(cancelButton, javax.swing.GroupLayout.PREFERRED_SIZE, 116, javax.swing.GroupLayout.PREFERRED_SIZE))))
                 .addContainerGap())
         );
         shipmentControlPanelLayout.setVerticalGroup(
@@ -425,10 +436,12 @@ public class ShipmentPanel extends javax.swing.JPanel {
                 .addGroup(shipmentControlPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(deleteButton)
                     .addComponent(cancelButton))
-                .addGap(118, 118, 118))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 69, Short.MAX_VALUE)
+                .addComponent(backBtn)
+                .addContainerGap())
         );
 
-        add(shipmentControlPanel, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 40, 260, 560));
+        add(shipmentControlPanel, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 40, 260, 540));
 
         jTable1.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -461,16 +474,14 @@ public class ShipmentPanel extends javax.swing.JPanel {
         shipmentTablePanel.setLayout(shipmentTablePanelLayout);
         shipmentTablePanelLayout.setHorizontalGroup(
             shipmentTablePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 670, Short.MAX_VALUE)
+            .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 690, Short.MAX_VALUE)
         );
         shipmentTablePanelLayout.setVerticalGroup(
             shipmentTablePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(shipmentTablePanelLayout.createSequentialGroup()
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 400, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(0, 0, Short.MAX_VALUE))
+            .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 380, Short.MAX_VALUE)
         );
 
-        add(shipmentTablePanel, new org.netbeans.lib.awtextra.AbsoluteConstraints(290, 200, 670, 400));
+        add(shipmentTablePanel, new org.netbeans.lib.awtextra.AbsoluteConstraints(290, 200, 690, 380));
     }// </editor-fold>//GEN-END:initComponents
 
     public void defaultSettings() {
@@ -907,6 +918,10 @@ public class ShipmentPanel extends javax.swing.JPanel {
         shipmentQuantity = BigDecimal.ZERO;
     }//GEN-LAST:event_filterBtnActionPerformed
 
+    private void backBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_backBtnActionPerformed
+        mf.switchRepoPanel();
+    }//GEN-LAST:event_backBtnActionPerformed
+
     private void addToImportHistory(Shipment shipment) {
         Goods goodsCloned = new GoodsController().cloneGoods(attachedGood);
         Shipment shipmentCloned = new ShipmentController().cloneShipment(shipment);
@@ -1066,8 +1081,9 @@ public class ShipmentPanel extends javax.swing.JPanel {
         return -1;
     }
 
-    public void attachGood(Goods good, Store store) {
+    public void attachGood(Goods good, Store store, MainFrame mf) {
         this.store = store;
+        this.mf = mf;
         this.attachedGood = good;
         this.shipments = good.getShipments();
     }
@@ -1077,6 +1093,7 @@ public class ShipmentPanel extends javax.swing.JPanel {
     }
 
     // Custom variables declaration
+    private MainFrame mf;
     private Goods attachedGood;
     private List<Shipment> shipments;
     private Store store;
@@ -1107,6 +1124,7 @@ public class ShipmentPanel extends javax.swing.JPanel {
     private javax.swing.JTextField NSXYearTextField;
     private javax.swing.JLabel YearLabel;
     private javax.swing.JButton addButton;
+    private javax.swing.JButton backBtn;
     private javax.swing.JButton cancelButton;
     private javax.swing.JButton deleteButton;
     private javax.swing.JLabel doesExpiredLabel;

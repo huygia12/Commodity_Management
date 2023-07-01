@@ -10,6 +10,7 @@ import View.OrderView;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.stream.*;
 
 /**
@@ -85,9 +86,15 @@ public class OrderController extends GoodsListController {
                 .collect(Collectors.toList()));
         // draftGoodsList chi duoc phep chua nhung Shipment con hsd
         for (Goods draftGoods : draftGoodsList.getList()) {
+//            List<Shipment> shipments = new ArrayList<>();
+//            for (Shipment shipment : draftGoods.getShipments()) {
+//                if(shipment.getHsd() != null){
+//                    
+//                }
+//            }
             draftGoods.setShipments(draftGoods.getShipments()
                     .stream()
-                    .filter(x -> x.getHsd().isAfter(this.CURRENT_DATE))
+                    .filter(x -> (x.getHsd()==null)||(x.getHsd().isAfter(this.CURRENT_DATE)))
                     .collect(Collectors.toList()));
         }
         // draftGoodsList chi duoc phep chua Goods van con shipment

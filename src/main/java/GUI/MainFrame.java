@@ -71,6 +71,7 @@ public class MainFrame extends javax.swing.JFrame {
         settingsPanel1 = new GUI.SettingsPanel();
         historyPanel1 = new GUI.HistoryPanel();
         shiftPanel1 = new GUI.ShiftPanel();
+        shipmentPanel1 = new GUI.ShipmentPanel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Phần mềm quản lý bán hàng");
@@ -180,6 +181,7 @@ public class MainFrame extends javax.swing.JFrame {
         displayPanel.add(settingsPanel1, "card7");
         displayPanel.add(historyPanel1, "card8");
         displayPanel.add(shiftPanel1, "card8");
+        displayPanel.add(shipmentPanel1, "card9");
 
         getContentPane().add(displayPanel, java.awt.BorderLayout.CENTER);
 
@@ -214,7 +216,7 @@ public class MainFrame extends javax.swing.JFrame {
         // pass data vào employPanel
         employJPanel1.passData(store.getEmployeeList(), shift);
         // pass data vào repoPanel
-        repoPanel1.passData(store);
+        repoPanel1.passData(store, this);
         // pass data vào shiftJPanel
         shiftPanel1.passData(store, shift, this);
         //pass dât vào settingsPanel
@@ -294,10 +296,15 @@ public class MainFrame extends javax.swing.JFrame {
         }
         switch (i) {
             case 0:
-                displayPanel.add(repoPanel1, "repo");
-                cardLayout.show(displayPanel, "repo");
+                if (repoPanelStateCheck) {
+                    displayPanel.add(repoPanel1, "repo");
+                    cardLayout.show(displayPanel, "repo");
+                    repoPanel1.externalRefresh();
+                } else {
+                    displayPanel.add(shipmentPanel1, "shipment");
+                    cardLayout.show(displayPanel, "shipment");
+                }
                 drawerCtr.hide();
-                repoPanel1.externalRefresh();
                 break;
             case 1:
                 purchasePanel1.setEnableToAllPanel(shift.getState().equals(ShiftState.OPENED));
@@ -348,6 +355,18 @@ public class MainFrame extends javax.swing.JFrame {
         }
     }
 
+    public void switchShipmentPanel(Goods attachGoods) {
+        shipmentPanel1.attachGood(attachGoods, store, this);
+        shipmentPanel1.reloadTable(attachGoods.getShipments());
+        repoPanelStateCheck = false;
+        switchPanel(0);
+    }
+
+    public void switchRepoPanel() {
+        repoPanelStateCheck = true;
+        switchPanel(0);
+    }
+    
     private void realTimeClock() {
         new Thread() {
             @Override
@@ -416,6 +435,7 @@ public class MainFrame extends javax.swing.JFrame {
         storeList = new ArrayList<>();
     }
 
+    private boolean repoPanelStateCheck = true;
     private boolean initNewOrdercheck = false;
     private List<StoreShortedCut> storeList;
     private Shift shift;
@@ -443,6 +463,7 @@ public class MainFrame extends javax.swing.JFrame {
     private GUI.SettingsPanel settingsPanel1;
     private javax.swing.JLabel shiftIDLabel;
     private GUI.ShiftPanel shiftPanel1;
+    private GUI.ShipmentPanel shipmentPanel1;
     private javax.swing.JLabel timeLabel;
     private javax.swing.JFormattedTextField timeTextField;
     private javax.swing.JPanel toolBarPanel;
