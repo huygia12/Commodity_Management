@@ -247,7 +247,6 @@ public class RepoPanel extends javax.swing.JPanel {
         searchLabel.setText("Tìm kiếm:");
         tablePanel.add(searchLabel, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 0, 90, 20));
 
-        jTable1.setAutoCreateRowSorter(true);
         jTable1.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
 
@@ -265,6 +264,7 @@ public class RepoPanel extends javax.swing.JPanel {
             }
         });
         jTable1.setColumnSelectionAllowed(true);
+        jTable1.setRowSorter(null);
         jTable1.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
         jTable1.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
         jTable1.getTableHeader().setReorderingAllowed(false);

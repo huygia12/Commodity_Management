@@ -76,21 +76,10 @@ public class EmployJPanel extends javax.swing.JPanel {
         inputFirstNameLabel.setText("Họ:");
         inputFirstNameLabel.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
 
-        inputFirstNameTextField.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
-                inputFirstNameTextFieldMouseClicked(evt);
-            }
-        });
-
         inputLastNameLabel.setFont(new java.awt.Font("Dialog", 1, 11)); // NOI18N
         inputLastNameLabel.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
         inputLastNameLabel.setText("Tên:");
 
-        inputLastNameTextField1.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
-                inputLastNameTextField1MouseClicked(evt);
-            }
-        });
         inputLastNameTextField1.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 inputLastNameTextField1ActionPerformed(evt);
@@ -125,12 +114,6 @@ public class EmployJPanel extends javax.swing.JPanel {
         inputPhoneLabel.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
         inputPhoneLabel.setText("SĐT:");
 
-        inputPhoneTextField.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
-                inputPhoneTextFieldMouseClicked(evt);
-            }
-        });
-
         inputAdressLabel.setFont(new java.awt.Font("Dialog", 1, 11)); // NOI18N
         inputAdressLabel.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
         inputAdressLabel.setText("Địa chỉ:");
@@ -138,12 +121,6 @@ public class EmployJPanel extends javax.swing.JPanel {
         inputCCCDLabel.setFont(new java.awt.Font("Dialog", 1, 11)); // NOI18N
         inputCCCDLabel.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
         inputCCCDLabel.setText("CCCD:");
-
-        inputCCCDTextField.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
-                inputCCCDTextFieldMouseClicked(evt);
-            }
-        });
 
         inputSalaryLabel.setFont(new java.awt.Font("Dialog", 1, 11)); // NOI18N
         inputSalaryLabel.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
@@ -841,49 +818,6 @@ public class EmployJPanel extends javax.swing.JPanel {
         // TODO add your handling code here:
         clearInputFields();
     }//GEN-LAST:event_cancelButtonActionPerformed
-
-    private void inputCCCDTextFieldMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_inputCCCDTextFieldMouseClicked
-        // TODO add your handling code here:
-
-        if (!validateRequiredFields()) {
-            textFieldMouseClick(inputCCCDTextField, 11);
-
-            return;
-        }
-
-
-    }//GEN-LAST:event_inputCCCDTextFieldMouseClicked
-
-    private void inputPhoneTextFieldMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_inputPhoneTextFieldMouseClicked
-        // TODO add your handling code here:
-        if (!validateRequiredFields()) {
-            textFieldMouseClick(inputPhoneTextField, 11);
-
-            return;
-        }
-
-    }//GEN-LAST:event_inputPhoneTextFieldMouseClicked
-
-    private void inputFirstNameTextFieldMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_inputFirstNameTextFieldMouseClicked
-        // TODO add your handling code here:
-        // Kiểm tra các trường bắt buộc
-        if (!validateRequiredFields()) {
-            textFieldMouseClick(inputFirstNameTextField, 11);
-
-            return;
-        }
-
-    }//GEN-LAST:event_inputFirstNameTextFieldMouseClicked
-
-    private void inputLastNameTextField1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_inputLastNameTextField1MouseClicked
-        // TODO add your handling code here:
-        if (!validateRequiredFields()) {
-            textFieldMouseClick(inputLastNameTextField1, 11);
-
-            return;
-        }
-
-    }//GEN-LAST:event_inputLastNameTextField1MouseClicked
 
     public void passData(EmployeeList employeelist, Shift shift) {
         this.employeelist = employeelist;
