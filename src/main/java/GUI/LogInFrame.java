@@ -99,7 +99,7 @@ public class LogInFrame extends javax.swing.JFrame {
 
         forgotPasswordButton.setFont(new java.awt.Font("Segoe UI", 2, 12)); // NOI18N
         forgotPasswordButton.setForeground(new java.awt.Color(0, 102, 255));
-        forgotPasswordButton.setText("Quên mật khẩu?");
+        forgotPasswordButton.setText("Quên mật khẩu? ");
         forgotPasswordButton.setBorder(null);
         forgotPasswordButton.setContentAreaFilled(false);
         forgotPasswordButton.setFocusable(false);
@@ -123,7 +123,7 @@ public class LogInFrame extends javax.swing.JFrame {
 
         illegalLogInEmailWarning.setFont(new java.awt.Font("Segoe UI", 2, 12)); // NOI18N
         illegalLogInEmailWarning.setForeground(new java.awt.Color(255, 0, 51));
-        illegalLogInEmailWarning.setText("Email không hợp lệ");
+        illegalLogInEmailWarning.setText("Email không hợp lệ ");
 
         javax.swing.GroupLayout LogInPanelLayout = new javax.swing.GroupLayout(LogInPanel);
         LogInPanel.setLayout(LogInPanelLayout);
@@ -212,15 +212,15 @@ public class LogInFrame extends javax.swing.JFrame {
 
         passwordWarning.setFont(new java.awt.Font("Segoe UI", 2, 12)); // NOI18N
         passwordWarning.setForeground(new java.awt.Color(255, 0, 51));
-        passwordWarning.setText("Mật khẩu không khớp");
+        passwordWarning.setText("Mật khẩu không khớp ");
 
         illegalSignUpEmailWarning.setFont(new java.awt.Font("Segoe UI", 2, 12)); // NOI18N
         illegalSignUpEmailWarning.setForeground(new java.awt.Color(255, 0, 51));
-        illegalSignUpEmailWarning.setText("Email không hợp lệ");
+        illegalSignUpEmailWarning.setText("Email không hợp lệ ");
 
         blankSignUpPasswordWarning.setFont(new java.awt.Font("Segoe UI", 2, 12)); // NOI18N
         blankSignUpPasswordWarning.setForeground(new java.awt.Color(255, 0, 51));
-        blankSignUpPasswordWarning.setText("Mật khẩu phải chứa ít nhất 4 kí tự");
+        blankSignUpPasswordWarning.setText("Mật khẩu phải chứa ít nhất 6 kí tự ");
 
         javax.swing.GroupLayout SignUpPanelLayout = new javax.swing.GroupLayout(SignUpPanel);
         SignUpPanel.setLayout(SignUpPanelLayout);

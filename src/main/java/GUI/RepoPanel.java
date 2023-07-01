@@ -575,8 +575,9 @@ public class RepoPanel extends javax.swing.JPanel {
             shipmentPanel.setVisible(true);
             shipmentPanel.getShipmentPanel().attachGood(selectedGood, store);
             shipmentPanel.getShipmentPanel().reloadTable(selectedGood.getShipments());
-            shipmentPanel.setDefaultCloseOperation(shipmentPanel.DISPOSE_ON_CLOSE);
+            shipmentPanel.setDefaultCloseOperation(PopupShipment.DISPOSE_ON_CLOSE);
             reloadTable(goodsList);
+            jTable1.setRowSelectionInterval(findGoodsIndex(selectedGood.getID()), findGoodsIndex(selectedGood.getID()));
         } catch (NullPointerException npe) {
             
         }
@@ -682,7 +683,6 @@ public class RepoPanel extends javax.swing.JPanel {
                 good.getTotalQuantity()
             });
         }
-        searchTextField.setText("");
     }
     
     public void passData(Store store){

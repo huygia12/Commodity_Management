@@ -13,5 +13,10 @@
     "id": "000002",
     "email": "chinguyen@gmai.com",
     "password": "12345678"
+  },
+  {
+    "id": "000003",
+    "email": "h12@gmail.com",
+    "password": "123456"
   }
 ]

@@ -173,7 +173,7 @@
                 <Property name="foreground" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
                   <Color blue="ff" green="66" red="0" type="rgb"/>
                 </Property>
-                <Property name="text" type="java.lang.String" value="Qu&#xea;n m&#x1ead;t kh&#x1ea9;u?"/>
+                <Property name="text" type="java.lang.String" value="Qu&#xea;n m&#x1ead;t kh&#x1ea9;u? "/>
                 <Property name="border" type="javax.swing.border.Border" editor="org.netbeans.modules.form.editors2.BorderEditor">
                   <Border info="null"/>
                 </Property>
@@ -215,7 +215,7 @@
                 <Property name="foreground" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
                   <Color blue="33" green="0" red="ff" type="rgb"/>
                 </Property>
-                <Property name="text" type="java.lang.String" value="Email kh&#xf4;ng h&#x1ee3;p l&#x1ec7;"/>
+                <Property name="text" type="java.lang.String" value="Email kh&#xf4;ng h&#x1ee3;p l&#x1ec7; "/>
               </Properties>
             </Component>
           </SubComponents>
@@ -369,7 +369,7 @@
                 <Property name="foreground" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
                   <Color blue="33" green="0" red="ff" type="rgb"/>
                 </Property>
-                <Property name="text" type="java.lang.String" value="M&#x1ead;t kh&#x1ea9;u kh&#xf4;ng kh&#x1edb;p"/>
+                <Property name="text" type="java.lang.String" value="M&#x1ead;t kh&#x1ea9;u kh&#xf4;ng kh&#x1edb;p "/>
               </Properties>
             </Component>
             <Component class="javax.swing.JLabel" name="illegalSignUpEmailWarning">
@@ -380,7 +380,7 @@
                 <Property name="foreground" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
                   <Color blue="33" green="0" red="ff" type="rgb"/>
                 </Property>
-                <Property name="text" type="java.lang.String" value="Email kh&#xf4;ng h&#x1ee3;p l&#x1ec7;"/>
+                <Property name="text" type="java.lang.String" value="Email kh&#xf4;ng h&#x1ee3;p l&#x1ec7; "/>
               </Properties>
             </Component>
             <Component class="javax.swing.JLabel" name="blankSignUpPasswordWarning">
@@ -391,7 +391,7 @@
                 <Property name="foreground" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
                   <Color blue="33" green="0" red="ff" type="rgb"/>
                 </Property>
-                <Property name="text" type="java.lang.String" value="M&#x1ead;t kh&#x1ea9;u ph&#x1ea3;i ch&#x1ee9;a &#xed;t nh&#x1ea5;t 4 k&#xed; t&#x1ef1;"/>
+                <Property name="text" type="java.lang.String" value="M&#x1ead;t kh&#x1ea9;u ph&#x1ea3;i ch&#x1ee9;a &#xed;t nh&#x1ea5;t 6 k&#xed; t&#x1ef1; "/>
               </Properties>
             </Component>
           </SubComponents>

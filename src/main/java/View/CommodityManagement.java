@@ -4,14 +4,7 @@
  */
 package View;
 
-import Controllers.CustomerCardListController;
-import Controllers.EmployeeListController;
 import Controllers.GoodsController;
-import Controllers.HistoryController;
-import Controllers.OrderController;
-import Controllers.RepositoryController;
-import Controllers.SettingsController;
-import Controllers.ShiftController;
 import Ultility.JsonDataFile;
 import Models.*;
 import Ultility.CustomPair;

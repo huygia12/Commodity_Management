@@ -1,0 +1,80 @@
+{
+  "id": "000003",
+  "name": "",
+  "email": "h12@gmail.com",
+  "passWord": "123456",
+  "address": "",
+  "phoneNumber": "",
+  "amountForOnePoint": 1,
+  "pointsForOneVND": 1,
+  "bronzeDiscountOffer": {
+    "k": 0,
+    "v": 0.0
+  },
+  "silverDiscountOffer": {
+    "k": 0,
+    "v": 0.0
+  },
+  "goldDiscountOffer": {
+    "k": 0,
+    "v": 0.0
+  },
+  "diamondDiscountOffer": {
+    "k": 0,
+    "v": 0.0
+  },
+  "shift": {
+    "openingBalance": 0,
+    "surCharge": 0,
+    "VAT": 0,
+    "orderHisPerShift": [],
+    "employeeOfThisShift": {
+      "": []
+    },
+    "state": "STAGED"
+  },
+  "customerCardList": {
+    "cardList": []
+  },
+  "employeeList": {
+    "": []
+  },
+  "history": {
+    "shiftHistory": [],
+    "importHistory": []
+  },
+  "iDGenerator": {
+    "bucket": {}
+  },
+  "settings": {
+    "priceAmountList": []
+  },
+  "repository": {
+    "myGoodsList": [
+      {
+        "id": "12",
+        "goodsName": "chim cut",
+        "manufacture": "dao van tuyen",
+        "totalQuantity": 0,
+        "shipments": [],
+        "unit": "cai",
+        "listPrice": 12000.0
+      },
+      {
+        "id": "13",
+        "goodsName": "Thung rac",
+        "manufacture": "nguyen gia huy",
+        "totalQuantity": 0,
+        "shipments": [],
+        "unit": "Thùng",
+        "listPrice": 15000.0
+      }
+    ]
+  },
+  "units": {
+    "bucket": [
+      "cai",
+      "Thùng"
+    ]
+  }
+}

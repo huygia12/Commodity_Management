@@ -1100,14 +1100,16 @@ public class CustomerCardPanel extends javax.swing.JPanel {
     }
 
     private void showPoint() {
-
-        long silvePay, goldenPay, diamondPay;
-        diamondPay = Long.parseLong(this.diamondPay.getText());
-        silvePay = Long.parseLong(this.silvePay.getText());
-        goldenPay = Long.parseLong(this.goldenPay.getText());
+        
+        long silverPay, goldPay, diamonPay;
+        diamonPay = Long.parseLong(this.diamondPay.getText());
+        silverPay = Long.parseLong(this.silvePay.getText());
+        goldPay = Long.parseLong(this.goldenPay.getText());
 
         int rowIndex = customerTable.getSelectedRow();
-
+        if(rowIndex == -1){
+            return;
+        }
         CustomerCard cc = customerCardList.getList().get(rowIndex);
         BigInteger usedPoint = cc.getUsedPoint();
 
@@ -1130,17 +1132,17 @@ public class CustomerCardPanel extends javax.swing.JPanel {
 
         switch (rank) {
             case "Đồng":
-                needPay = BigDecimal.valueOf(silvePay).subtract(pay);
+                needPay = BigDecimal.valueOf(silverPay).subtract(pay);
                 morePayToNextRank.setText(needPay.toString());
                 setVisibleNeedPay(true);
                 break;
             case "Bạc":
-                needPay = BigDecimal.valueOf(goldenPay).subtract(pay);
+                needPay = BigDecimal.valueOf(goldPay).subtract(pay);
                 morePayToNextRank.setText(needPay.toString());
                 setVisibleNeedPay(true);
                 break;
             case "Vàng":
-                needPay = BigDecimal.valueOf(diamondPay).subtract(pay);
+                needPay = BigDecimal.valueOf(diamonPay).subtract(pay);
                 morePayToNextRank.setText(needPay.toString());
                 setVisibleNeedPay(true);
                 break;
