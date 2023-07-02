@@ -1,7 +1,7 @@
 [
   {
     "id": "000000",
-    "email": "changhi@gmail.com",
+    "email": "wangwang@gmail.com",
     "password": "00000000"
   },
   {
@@ -18,5 +18,15 @@
     "id": "000003",
     "email": "h12@gmail.com",
     "password": "123456"
+  },
+  {
+    "id": "000004",
+    "email": "changhi112@gmail.com",
+    "password": "12345678"
+  },
+  {
+    "id": "000005",
+    "email": "giahuy12@gmail.com",
+    "password": "12345678"
   }
 ]

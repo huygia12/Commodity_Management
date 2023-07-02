@@ -73,7 +73,7 @@ public class MainFrame extends javax.swing.JFrame {
         shiftPanel1 = new GUI.ShiftPanel();
         shipmentPanel1 = new GUI.ShipmentPanel();
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setDefaultCloseOperation(javax.swing.WindowConstants.DO_NOTHING_ON_CLOSE);
         setTitle("Phần mềm quản lý bán hàng");
         setAutoRequestFocus(false);
         setFocusable(false);
@@ -348,10 +348,11 @@ public class MainFrame extends javax.swing.JFrame {
                 drawerCtr.hide();
                 break;
             case 7:
-                showCloseMessage();
-                LogInFrame lgf = new LogInFrame();
-                lgf.setVisible(true);
-                this.dispose();
+                if (showCloseMessage()) {
+                    LogInFrame lgf = new LogInFrame();
+                    lgf.setVisible(true);
+                    this.dispose();
+                }
         }
     }
 
@@ -366,7 +367,7 @@ public class MainFrame extends javax.swing.JFrame {
         repoPanelStateCheck = true;
         switchPanel(0);
     }
-    
+
     private void realTimeClock() {
         new Thread() {
             @Override
@@ -399,26 +400,29 @@ public class MainFrame extends javax.swing.JFrame {
         passDataToComponents();
     }
 
-    private void showCloseMessage() {
-        if (JOptionPane.showConfirmDialog(null,
+    private boolean showCloseMessage() {
+        int choice = JOptionPane.showConfirmDialog(null,
                 "Bạn có muốn lưu trạng thái hiện tại?",
                 "Đóng chương trình?",
                 JOptionPane.YES_NO_OPTION,
-                JOptionPane.QUESTION_MESSAGE) == JOptionPane.YES_OPTION) {
+                JOptionPane.QUESTION_MESSAGE);
+        if (choice == JOptionPane.YES_OPTION) {
             if (initNewOrdercheck) {
                 int value = store.getiDGenerator().getBucket().get(Order.class.getName());
                 store.getiDGenerator().getBucket().put(Order.class.getName(), (value == 0) ? 0 : --value);
             }
             saveData();
         }
+        return choice != JOptionPane.CLOSED_OPTION;
     }
 
     private void setUp() {
         this.addWindowListener(new java.awt.event.WindowAdapter() {
             @Override
             public void windowClosing(WindowEvent e) {
-                showCloseMessage();
-                System.exit(0);
+                if (showCloseMessage()) {
+                    System.exit(0);
+                }
             }
         });
         setIconImage(new ImageIcon(getClass()

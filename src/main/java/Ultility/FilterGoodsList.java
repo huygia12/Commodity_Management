@@ -9,12 +9,11 @@ import Models.GoodsList;
 import Controllers.GoodsController;
 import Controllers.ShipmentController;
 import Models.Shipment;
-import View.GoodsListView;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
+import java.util.stream.*;
 
 /**
  *
@@ -54,16 +53,20 @@ public class FilterGoodsList {
     public GoodsList<Goods> withinProductionDateRange(LocalDate fromDate, LocalDate toDate) {
         GoodsList<Goods> filterGoodsList = new GoodsList();
         for (Goods goods : this.goodsList.getList()) {
+            // Lọc shipment không nằm trong khoảng nsx
             List<Shipment> shipmentList = new ArrayList<>();
-            shipmentList = goods.getShipments()
-                    .stream()
-                    .filter(shipment -> (shipment.getNsx().isAfter(fromDate)
-                    && shipment.getNsx().isBefore(toDate))
-                    || (shipment.getNsx().isEqual(fromDate))
-                    || (shipment.getNsx().isEqual(toDate)))
-                    .map(x -> shipmentCtr.cloneShipment(x))
-                    .collect(Collectors.toList());
+            for (Shipment shipment : goods.getShipments()) {
+                if ((shipment.getNsx() != null)
+                        && ((shipment.getNsx().isAfter(fromDate)
+                        && shipment.getNsx().isBefore(toDate))
+                        || (shipment.getNsx().isEqual(fromDate))
+                        || (shipment.getNsx().isEqual(toDate)))) {
+
+                    shipmentList.add(shipmentCtr.cloneShipment(shipment));
+                }
+            }
             if (!shipmentList.isEmpty()) {
+                // nếu shipmentList khác rỗng, tạo clone của goods rồi thêm vào filterGoodsList
                 Goods filterGoods = goodsCtr.cloneGoods(goods);
                 filterGoods.setShipments(shipmentList);
                 filterGoodsList
@@ -71,7 +74,6 @@ public class FilterGoodsList {
                         .add(filterGoods);
             }
         }
-        new GoodsListView().showGoodsList(filterGoodsList);
         return filterGoodsList;
     }
 
@@ -79,14 +81,16 @@ public class FilterGoodsList {
         GoodsList<Goods> filterGoodsList = new GoodsList();
         for (Goods goods : this.goodsList.getList()) {
             List<Shipment> shipmentList = new ArrayList<>();
-            shipmentList = goods.getShipments()
-                    .stream()
-                    .filter(shipment -> (shipment.getHsd().isAfter(fromDate)
-                    && shipment.getHsd().isBefore(toDate))
-                    || (shipment.getHsd().isEqual(fromDate))
-                    || (shipment.getHsd().isEqual(toDate)))
-                    .map(x -> shipmentCtr.cloneShipment(x))
-                    .collect(Collectors.toList());
+            for (Shipment shipment : goods.getShipments()) {
+                if ((shipment.getHsd() != null)
+                        && ((shipment.getHsd().isAfter(fromDate)
+                        && shipment.getHsd().isBefore(toDate))
+                        || (shipment.getHsd().isEqual(fromDate))
+                        || (shipment.getHsd().isEqual(toDate)))) {
+
+                    shipmentList.add(shipmentCtr.cloneShipment(shipment));
+                }
+            }
             if (!shipmentList.isEmpty()) {
                 Goods filterGoods = goodsCtr.cloneGoods(goods);
                 filterGoods.setShipments(shipmentList);

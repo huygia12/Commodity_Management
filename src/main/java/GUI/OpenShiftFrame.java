@@ -502,7 +502,7 @@ public class OpenShiftFrame extends javax.swing.JFrame {
                     "Lỗi", JOptionPane.WARNING_MESSAGE);
             return;
         } else {
-            shiftCtr.openShiftForGUI(store, shift, shiftTax,
+            shiftCtr.openShift(store, shift, shiftTax,
                     shiftOpenBalance, shiftCashier,
                     shiftEmployeeList, noteArea.getText());
         }

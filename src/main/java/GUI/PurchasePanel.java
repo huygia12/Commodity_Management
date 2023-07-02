@@ -24,7 +24,6 @@ import java.util.stream.*;
 import javax.swing.ImageIcon;
 import javax.swing.JOptionPane;
 import javax.swing.ScrollPaneConstants;
-import javax.swing.border.TitledBorder;
 import javax.swing.table.DefaultTableModel;
 
 /**
@@ -901,9 +900,6 @@ public class PurchasePanel extends javax.swing.JPanel {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 fromDateTextFieldMouseClicked(evt);
             }
-            public void mouseExited(java.awt.event.MouseEvent evt) {
-                fromDateTextFieldMouseExited(evt);
-            }
         });
         fromDateTextField.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyPressed(java.awt.event.KeyEvent evt) {
@@ -916,9 +912,6 @@ public class PurchasePanel extends javax.swing.JPanel {
         toDateTextField.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 toDateTextFieldMouseClicked(evt);
-            }
-            public void mouseExited(java.awt.event.MouseEvent evt) {
-                toDateTextFieldMouseExited(evt);
             }
         });
         toDateTextField.addKeyListener(new java.awt.event.KeyAdapter() {
@@ -1513,7 +1506,7 @@ public class PurchasePanel extends javax.swing.JPanel {
             return;
         }
         // thực hiện chức năng
-        Object searchedObject = orderCtr.searchGoodsForGUI(keyString, draftGoodsList);
+        Object searchedObject = orderCtr.searchGoods(keyString, draftGoodsList);
         if (searchedObject == null) {
             insertWarningToTextField(warningTextField, NOTHING_FOUND_WARNING, 12);
             return;
@@ -1676,7 +1669,7 @@ public class PurchasePanel extends javax.swing.JPanel {
         if (evt.getKeyCode() == KeyEvent.VK_ENTER) {
             String fromDateStr = fromDateTextField.getText();
             if (productionDateRadioBtn.isSelected()) {
-                if (!ctions.checkIfValidDate(fromDateStr)) {// kiểm tra dateString có hợp lệ không
+                if (!fromDateStr.isBlank() && !ctions.checkIfValidDate(fromDateStr)) {// kiểm tra dateString có hợp lệ không
                     insertWarningToTextField(fromDateTextField, INVALID_WARNING, 12);
                     productionDateFromValid = false;
                     productionDateFrom = "";
@@ -1685,7 +1678,7 @@ public class PurchasePanel extends javax.swing.JPanel {
                 productionDateFrom = fromDateStr;
                 productionDateFromValid = true;
             } else if (expirDateRadioBtn.isSelected()) {
-                if (!ctions.checkIfValidDate(fromDateStr)) {// kiểm tra dateString có hợp lệ không
+                if (!fromDateStr.isBlank() && !ctions.checkIfValidDate(fromDateStr)) {// kiểm tra dateString có hợp lệ không
                     insertWarningToTextField(fromDateTextField, INVALID_WARNING, 12);
                     expirationDateFromValid = false;
                     expirDateFrom = "";
@@ -1701,7 +1694,7 @@ public class PurchasePanel extends javax.swing.JPanel {
         if (evt.getKeyCode() == KeyEvent.VK_ENTER) {
             String toDateStr = toDateTextField.getText();
             if (productionDateRadioBtn.isSelected()) {
-                if (!ctions.checkIfValidDate(toDateStr)) {// kiểm tra dateString có hợp lệ không
+                if (!toDateStr.isBlank()&&!ctions.checkIfValidDate(toDateStr)) {// kiểm tra dateString có hợp lệ không
                     insertWarningToTextField(toDateTextField, INVALID_WARNING, 12);
                     productionDateToValid = false;
                     productionDateTo = "";
@@ -1710,7 +1703,7 @@ public class PurchasePanel extends javax.swing.JPanel {
                 productionDateTo = toDateStr;
                 productionDateToValid = true;
             } else if (expirDateRadioBtn.isSelected()) {
-                if (!ctions.checkIfValidDate(toDateStr)) {// kiểm tra dateString có hợp lệ không
+                if (!toDateStr.isBlank()&&!ctions.checkIfValidDate(toDateStr)) {// kiểm tra dateString có hợp lệ không
                     insertWarningToTextField(toDateTextField, INVALID_WARNING, 12);
                     expirationDateToValid = false;
                     expirDateTo = "";
@@ -1732,32 +1725,6 @@ public class PurchasePanel extends javax.swing.JPanel {
             toDateTextField.setText(expirDateTo);
         }
     }//GEN-LAST:event_expirDateRadioBtnItemStateChanged
-
-    private void fromDateTextFieldMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_fromDateTextFieldMouseExited
-        if (!fromDateTextField.isEnabled()) {
-            return;
-        }
-        String fromDateStr = fromDateTextField.getText();
-        if (productionDateRadioBtn.isSelected()) {
-            if (!ctions.checkIfValidDate(fromDateStr)) {// kiểm tra dateString có hợp lệ không
-                insertWarningToTextField(fromDateTextField, INVALID_WARNING, 12);
-                productionDateFromValid = false;
-                productionDateFrom = "";
-                return;
-            }
-            productionDateFrom = fromDateStr;
-            productionDateFromValid = true;
-        } else if (expirDateRadioBtn.isSelected()) {
-            if (!ctions.checkIfValidDate(fromDateStr)) {// kiểm tra dateString có hợp lệ không
-                insertWarningToTextField(fromDateTextField, INVALID_WARNING, 12);
-                expirationDateFromValid = false;
-                expirDateFrom = "";
-                return;
-            }
-            expirDateFrom = fromDateStr;
-            expirationDateFromValid = true;
-        }
-    }//GEN-LAST:event_fromDateTextFieldMouseExited
 
     private void fromDateTextFieldMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_fromDateTextFieldMouseClicked
         if (productionDateRadioBtn.isSelected()) {
@@ -1783,32 +1750,6 @@ public class PurchasePanel extends javax.swing.JPanel {
         }
     }//GEN-LAST:event_toDateTextFieldMouseClicked
 
-    private void toDateTextFieldMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_toDateTextFieldMouseExited
-        if (!toDateTextField.isEnabled()) {
-            return;
-        }
-        String toDateStr = toDateTextField.getText();
-        if (productionDateRadioBtn.isSelected()) {
-            if (!ctions.checkIfValidDate(toDateStr)) {// kiểm tra dateString có hợp lệ không
-                insertWarningToTextField(toDateTextField, INVALID_WARNING, 12);
-                productionDateToValid = false;
-                productionDateTo = "";
-                return;
-            }
-            productionDateTo = toDateStr;
-            productionDateToValid = true;
-        } else if (expirDateRadioBtn.isSelected()) {
-            if (!ctions.checkIfValidDate(toDateStr)) {// kiểm tra dateString có hợp lệ không
-                insertWarningToTextField(toDateTextField, INVALID_WARNING, 12);
-                expirationDateToValid = false;
-                expirDateTo = "";
-                return;
-            }
-            expirDateTo = toDateStr;
-            expirationDateToValid = true;
-        }
-    }//GEN-LAST:event_toDateTextFieldMouseExited
-
     private void filterBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_filterBtnActionPerformed
         filterGoodsList = orderCtr.makeDraftGoodsList(draftGoodsList);
         if (rangeFilterCheck) {
@@ -1821,20 +1762,62 @@ public class PurchasePanel extends javax.swing.JPanel {
             String selectedUnit = unitComboBox.getSelectedItem().toString();
             filterGoodsList = new FilterGoodsList(filterGoodsList).withSameUnit(selectedUnit);
         }
-        if (productionDateFromValid && productionDateToValid) {
+        if (productionDateFromValid 
+                && productionDateToValid 
+                && !fromDateTextField.getText().isBlank()
+                && !toDateTextField.getText().isBlank()) {
+            productionDateFrom = fromDateTextField.getText();
+            productionDateTo = toDateTextField.getText();
             if (ctions.checkIfDateIsBeforeAnotherDate(productionDateFrom, productionDateTo)) {
                 filterGoodsList = new FilterGoodsList(filterGoodsList)
                         .withinProductionDateRange(
                                 LocalDate.parse(productionDateFrom, DateTimeFormatter.ofPattern(INPUT_DATE_PATTERN)),
                                 LocalDate.parse(productionDateTo, DateTimeFormatter.ofPattern(INPUT_DATE_PATTERN)));
+                productionDateFromValid = true;
+                productionDateToValid = true;
+            } else {
+                if (!ctions.checkIfValidDate(productionDateFrom)) {// kiểm tra dateString có hợp lệ không
+                    productionDateRadioBtn.setSelected(true);
+                    insertWarningToTextField(fromDateTextField, INVALID_WARNING, 12);
+                    productionDateFromValid = false;
+                    productionDateFrom = "";
+                } 
+                if (!ctions.checkIfValidDate(productionDateTo)) {// kiểm tra dateString có hợp lệ không
+                    productionDateRadioBtn.setSelected(true);
+                    insertWarningToTextField(toDateTextField, INVALID_WARNING, 12);
+                    productionDateToValid = false;
+                    productionDateTo = "";
+                }
+                return;
             }
         }
-        if (expirationDateFromValid && expirationDateToValid) {
+        if (expirationDateFromValid 
+                && expirationDateToValid
+                && !fromDateTextField.getText().isBlank()
+                && !toDateTextField.getText().isBlank()) {
+            expirDateFrom = fromDateTextField.getText();
+            expirDateTo = toDateTextField.getText();
             if (ctions.checkIfDateIsBeforeAnotherDate(expirDateFrom, expirDateTo)) {
                 filterGoodsList = new FilterGoodsList(filterGoodsList)
                         .withinExpirDateRange(
                                 LocalDate.parse(expirDateFrom, DateTimeFormatter.ofPattern(INPUT_DATE_PATTERN)),
                                 LocalDate.parse(expirDateTo, DateTimeFormatter.ofPattern(INPUT_DATE_PATTERN)));
+                expirationDateFromValid  = true;
+                expirationDateToValid = true;
+            } else {
+                if (!ctions.checkIfValidDate(expirDateFrom)) {// kiểm tra dateString có hợp lệ không
+                    expirDateRadioBtn.setSelected(true);
+                    insertWarningToTextField(fromDateTextField, INVALID_WARNING, 12);
+                    expirationDateFromValid = false;
+                    expirDateFrom = "";
+                }
+                if (!ctions.checkIfValidDate(expirDateTo)) {// kiểm tra dateString có hợp lệ không
+                    expirDateRadioBtn.setSelected(true);
+                    insertWarningToTextField(toDateTextField, INVALID_WARNING, 12);
+                    expirationDateToValid = false;
+                    expirDateTo = "";
+                }
+                return;
             }
         }
         insertGoodsListToGoodsListTable(filterGoodsList);
@@ -1904,7 +1887,7 @@ public class PurchasePanel extends javax.swing.JPanel {
     private void keyWordTextFieldKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_keyWordTextFieldKeyReleased
         String keyString = keyWordTextField.getText();
         GoodsList<Goods> goodsList = new GoodsList<>();
-        Object searchedObject = orderCtr.searchGoodsForGUI(keyString, draftGoodsList);
+        Object searchedObject = orderCtr.searchGoods(keyString, draftGoodsList);
         if (searchedObject == null) {
             insertWarningToTextField(warningTextField, NOTHING_FOUND_WARNING, 12);
             clearTableModel(goodsListModel);
@@ -2364,18 +2347,17 @@ public class PurchasePanel extends javax.swing.JPanel {
         loadMainFee(order);
     }
 
-    private TitledBorder tb;
     private int orderSelectedRow = -1;
     private String productionDateFrom;
     private String productionDateTo;
     private String expirDateFrom;
     private String expirDateTo;
     private boolean rangeFilterCheck = false;
-    private boolean productionDateFromValid = false;
-    private boolean productionDateToValid = false;
+    private boolean productionDateFromValid = true;
+    private boolean productionDateToValid = true;
     private boolean expirationDateFromValid = false;
     private boolean expirationDateToValid = false;
-    private boolean unitFilterCheck = false;
+    private boolean unitFilterCheck = true;
     private boolean pointDiscountWarningCheck = false;
     private boolean discountWarningCheck = false;
     private boolean customerIDWarningCheck = false;
@@ -2415,8 +2397,8 @@ public class PurchasePanel extends javax.swing.JPanel {
     private int unitMaxSize = "ĐV".length() + extraLength;
     private int listPriceMaxSize = "Giá Bán/ĐV".length() + extraLength;
     private int shipmentIDMaxSize = "Mã lô".length() + extraLength;
-    private int productionDateMaxSize = "Ngày sx".length() + extraLength;
-    private int expirationDateMaxSize = "Hạn SD".length() + extraLength;
+    private final int productionDateMaxSize = "Ngày sx".length() + extraLength;
+    private final int expirationDateMaxSize = "Hạn SD".length() + extraLength;
     private int shipmentQuantityMaxSize = "SL".length() + extraLength;
     private int totalQuantityMaxSize = "Tong SL".length() + extraLength;
     // Variables declaration - do not modify//GEN-BEGIN:variables

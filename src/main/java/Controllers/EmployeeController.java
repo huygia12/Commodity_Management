@@ -5,21 +5,15 @@
 package Controllers;
 
 import Models.Employee;
-import View.EmployeeView;
 
 /**
  *
  * @author FPTSHOP
  */
 public class EmployeeController {
-    private final EmployeeView view = new EmployeeView();
 
     public EmployeeController(){}
 
-    public EmployeeView getView() {
-        return view;
-    }
-    
     public Employee cloneEmployee(Employee employee) {
         Employee cloneEmployee = new Employee();
         cloneEmployee.setAddress(employee.getAddress());

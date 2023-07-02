@@ -8,7 +8,6 @@ import Models.Goods;
 import Models.GoodsList;
 import Models.Shipment;
 import Ultility.Cautions;
-import View.GoodsView;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
@@ -20,15 +19,9 @@ import java.util.Scanner;
  */
 public class GoodsController {
 
-    private final GoodsView view = new GoodsView();
     final Cautions ctions = new Cautions();
     private final Scanner sc = new Scanner(System.in);
-
     public GoodsController() {
-    }
-
-    public GoodsView getView() {
-        return view;
     }
 
     public BigDecimal getVATMoneyPerGoods(Goods goods, int vat) {
@@ -84,32 +77,6 @@ public class GoodsController {
             }
         }
         return null;
-    }
-
-    public Shipment searchShipment(Goods goods) {
-        // tim kiem shipment trong goods goi den method seachShipment() nay
-        GoodsList<Goods> bucket = new GoodsList(new ArrayList<>());
-        if (ctions.checkIfListEmpty(goods.getShipments())) {
-            return null;
-        }
-        bucket.getList().add(goods);
-        do {
-            new GoodsListController().getView().showGoodsList(bucket);
-            System.out.print("Input shipment ID or type BACK to go back: ");
-            String inputStr = sc.nextLine();
-            if ("back".equalsIgnoreCase(inputStr)) {
-                System.out.println("Back...");
-                return null;
-            } else if (ctions.checkIfNoInput(inputStr)) {
-            } else {
-                for (Shipment shipment : goods.getShipments()) {
-                    if (inputStr.equals(shipment.getID())) {
-                        return shipment;
-                    }
-                }
-                System.out.println("No shipment found!");
-            }
-        } while (true);
     }
     
     public boolean compare(Goods goods, Goods anotherGoods) {

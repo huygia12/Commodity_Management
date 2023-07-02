@@ -4,15 +4,11 @@
  */
 package Controllers;
 
-import Ultility.IDGenerator;
 import Models.*;
 import View.ShiftView;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
-import java.util.Scanner;
 
 /**
  *
@@ -21,89 +17,13 @@ import java.util.Scanner;
 public class ShiftController {
 
     private final ShiftView shiftView = new ShiftView();
-    final Scanner sc = new Scanner(System.in);
     final OrderController orderCtr = new OrderController();
-    final GoodsController goodsCtr = new GoodsController();
-    final EmployeeListController employeeListCtr = new EmployeeListController();
 
     public ShiftController() {
     }
 
     public ShiftView getView() {
         return this.shiftView;
-    }
-
-    public Shift ShiftManagement(EmployeeList employeeList, Store myStore, IDGenerator idGenerator, History currentHistory, Shift shift) {
-        HistoryController hisCtr = new HistoryController();
-        if (employeeList.getList().isEmpty()) {
-            System.out.println("Please add employees first to open shift!\n(Go to 'Employee Management'->'Add new Employee')");
-            return null;
-        }
-        String choice;
-        do {
-            this.shiftView.menuOfShiftManagement();
-            choice = sc.nextLine();
-            switch (choice) {
-                case "1":
-                    
-                    break;
-                case "2":
-                    if (shift == null) {
-                        this.shiftView.shiftNotOpenCaution();
-                        break;
-                    }
-                    this.shiftView.typeInSurcharge(shift);
-                    break;
-                case "3":
-                    if (shift == null) {
-                        this.shiftView.shiftNotOpenCaution();
-                        break;
-                    }
-                    modifyEmployeeOfThisShift(employeeList, shift);
-                    break;
-                case "4":
-                    if (shift == null) {
-                        this.shiftView.shiftNotOpenCaution();
-                        break;
-                    }
-                    this.shiftView.typeInOpeningBalance(shift);
-                    break;
-                case "5":
-                    if (shift == null) {
-                        this.shiftView.shiftNotOpenCaution();
-                        break;
-                    }
-                    break;
-                case "6":
-                    if (shift == null) {
-                        this.shiftView.shiftNotOpenCaution();
-                        break;
-                    }
-                    break;
-                case "7":
-                    if (shift == null) {
-                        this.shiftView.shiftNotOpenCaution();
-                        break;
-                    }
-                    break;
-                case "8":
-                    if (shift == null) {
-                        this.shiftView.shiftNotOpenCaution();
-                        break;
-                    }
-                    if (endShift(myStore, shift)) {
-                        shift = null;
-                    }
-                    break;
-                case "9":
-                    System.out.println("Back...");
-                    break;
-                default:
-                    System.out.println("Wrong input, Please type from 1->9!");
-                    break;
-            }
-        } while (!choice.equals("9"));
-        return shift;
     }
 
     public BigDecimal getGrossRevenue(Shift shift) {
@@ -196,83 +116,7 @@ public class ShiftController {
         return null;
     }
 
-    private void addEmployeeToShift(EmployeeList employeeList, Shift shift) {
-        Employee e = employeeListCtr.searchEmployee(employeeList);
-        if (e != null) {
-            if (this.shiftView.checkIfThisShiftContainThisEmployee(shift, e.getCCCD())) {
-                return;
-            }
-            shift.getEmployeeOfThisShift().getList().add(e);
-        }
-    }
-
-    private void deleteEmployeeFromShift(EmployeeList employeeList, Shift shift) {
-        Employee e = employeeListCtr.searchEmployee(employeeList);
-        if (e != null) {
-            boolean checkRemoving = true;
-            if (e.getCCCD().equalsIgnoreCase(shift.getCashier().getCCCD())) {
-                if (this.shiftView.removeEmployeeCaution(shift)) {
-                    int check = -1;
-                    while (check == -1) {
-                        check = shiftView.typeInCashier(shift, employeeList);
-                    }
-                }
-                checkRemoving = false;
-            }
-            if (checkRemoving) {
-                shift.getEmployeeOfThisShift().getList().remove(e);
-            }
-        }
-    }
-
-    private void retypeEmployeeListOfThisShift(EmployeeList employeeList, Shift shift) {
-        shift.getEmployeeOfThisShift().getList().clear();
-        System.out.println("EmployeeList clear!");
-        int check = -1;
-        while (check == -1) {
-            check = this.shiftView.typeInEmployeesOfThisShift(shift, employeeList);
-        }
-        if (check == 1) {
-            check = shiftView.typeInCashier(shift, employeeList);
-        }
-    }
-
-    private void modifyEmployeeOfThisShift(EmployeeList employeeList, Shift shift) {
-        String choice;
-        do {
-            shiftView.menuOfModifyEmployeeListOfThisShift();
-            choice = sc.nextLine();
-            switch (choice) {
-                case "1":
-                    addEmployeeToShift(employeeList, shift);
-                    break;
-                case "2":
-                    deleteEmployeeFromShift(employeeList, shift);
-                    break;
-                case "3":
-                    retypeEmployeeListOfThisShift(employeeList, shift);
-                    break;
-                case "4":
-                    System.out.println("Back...");
-                    break;
-                default:
-                    System.out.println("Wrong input, Please type from 1->4!");
-            }
-        } while (!choice.equalsIgnoreCase("4"));
-    }
-
-    private boolean endShift(Store myStore, Shift shift) {
-        if (shift.getSurcharge() == BigDecimal.ZERO) {
-            if (this.shiftView.typeInSurcharge(shift) != 1) {
-                return false;
-            }
-        }
-        shift.setEndTime();
-        shiftView.printFileOfThisShiftOverView(myStore, shift, this);
-        return true;
-    }
-
-    public void openShiftForGUI(Store store, Shift shift, 
+    public void openShift(Store store, Shift shift, 
             int tax, BigDecimal openBalance, 
             Employee cashier, EmployeeList employeeList,
             String note) {
@@ -287,7 +131,7 @@ public class ShiftController {
         store.getHistory().getShiftHistory().add(shift);
     }
     
-    public void endShiftForGUI(Shift shift, String note, BigDecimal surcharge) {
+    public void endShift(Shift shift, String note, BigDecimal surcharge) {
         shift.setEndTime();
         shift.setNote(note);
         shift.setSurcharge(surcharge);

@@ -9,8 +9,6 @@ import Ultility.JsonDataFile;
 import Models.*;
 import Ultility.CustomPair;
 import Ultility.IDGenerator;
-import java.awt.AWTException;
-import java.awt.Robot;
 import java.io.File;
 import java.math.BigDecimal;
 import java.math.BigInteger;
@@ -18,9 +16,6 @@ import java.nio.file.Path;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Scanner;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 /**
  *
@@ -35,7 +30,6 @@ public class CommodityManagement {
     private static final String STORE_ID_BUCKET_PATH = DATA_FOLDER + "storeIDBucket.json";
     private static final String LIST_STORE_PATH = DATA_FOLDER + "storeList.json";
 
-    final static Scanner sc = new Scanner(System.in);
     final static JsonDataFile myData = new JsonDataFile();
     static Store store = new Store();
     final static GoodsController goodsCtr = new GoodsController();
@@ -427,22 +421,4 @@ public class CommodityManagement {
 //        shift.getImportGoodsHis().getList().add(new ImportedGoods(repo.getList().get(12)));
 //        
     }
-
-    public void clearScreen() {
-        try {
-            Robot pressbot = new Robot();
-            pressbot.keyPress(17); // Holds CTRL key.
-            pressbot.keyPress(76); // Holds L key.
-            pressbot.keyRelease(17); // Releases CTRL key.
-            pressbot.keyRelease(76); // Releases L key.
-        } catch (AWTException ex) {
-            Logger.getLogger(Logger.class.getName()).log(Level.SEVERE, null, ex);
-        }
-    }
-
-    public void typeAnyKeyToContinue() {
-        System.out.println("\nType any key to continue...");
-        sc.nextLine();
-    }
-
 }

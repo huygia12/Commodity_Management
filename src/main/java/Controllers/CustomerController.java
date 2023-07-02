@@ -5,26 +5,16 @@
 package Controllers;
 
 import Models.Customer;
-import View.CustomerView;
 
 /**
  *
  * @author FPTSHOP
  */
 public class CustomerController {
-    private CustomerView view = new CustomerView();
 
     public CustomerController() {
     }
 
-    public CustomerView getView() {
-        return view;
-    }
-
-    public void setView(CustomerView view) {
-        this.view = view;
-    }
-    
     public Customer cloneCustomer(Customer customer) {
         Customer cus = new Customer();
         cus.setAddress(customer.getAddress());

@@ -28,11 +28,11 @@ public class RepoPanel extends javax.swing.JPanel {
      */
     public RepoPanel() {
         initComponents();
-        
+
         defaultSettings();
 
     }
-    
+
     public void defaultSettings() {
         unitComboBox.setPrototypeDisplayValue("                           ");
         invalidPriceLabel.setVisible(false);
@@ -46,7 +46,7 @@ public class RepoPanel extends javax.swing.JPanel {
         Instance = this;
         shipmentsButton.setEnabled(false);
     }
-    
+
     public void externalRefresh() {
         defaultSettings();
         reloadTable(goodsList);
@@ -263,10 +263,9 @@ public class RepoPanel extends javax.swing.JPanel {
                 return canEdit [columnIndex];
             }
         });
-        jTable1.setColumnSelectionAllowed(true);
-        jTable1.setRowSorter(null);
         jTable1.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
         jTable1.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
+        jTable1.setShowGrid(true);
         jTable1.getTableHeader().setReorderingAllowed(false);
         jTable1.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
@@ -312,8 +311,8 @@ public class RepoPanel extends javax.swing.JPanel {
 
     private void addButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_addButtonActionPerformed
         // TODO add your handling code here:
-        if(dupedGoodCheck()) {
-            goodTableModel.addRow(new Object[] {
+        if (dupedGoodCheck()) {
+            goodTableModel.addRow(new Object[]{
                 goodID,
                 goodName,
                 goodUnit,
@@ -332,10 +331,10 @@ public class RepoPanel extends javax.swing.JPanel {
         editCheck();
         cancelCheck();
     }//GEN-LAST:event_addButtonActionPerformed
-    
+
     private void unitComboBoxActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_unitComboBoxActionPerformed
         // TODO add your handling code here:
-        if ((deleteButton.isEnabled()&&jTable1.getSelectedRow()==-1) || unitComboBox.getSelectedItem() == null || isReloadingUnits) {
+        if ((deleteButton.isEnabled() && jTable1.getSelectedRow() == -1) || unitComboBox.getSelectedItem() == null || isReloadingUnits) {
             return;
         }
         if (unitComboBox.getSelectedIndex() == 0) {
@@ -436,11 +435,11 @@ public class RepoPanel extends javax.swing.JPanel {
         // TODO add your handling code here:
         if (jTable1.getSelectedRow() != -1) {
             String deletedGoodID = jTable1.getModel().getValueAt(jTable1.getSelectedRow(), 0).toString();
-            goodsList.setGoodsList(goodsList.getList().stream().filter(x->!x.getID().equals(deletedGoodID)).collect(Collectors.toList()));
+            goodsList.setGoodsList(goodsList.getList().stream().filter(x -> !x.getID().equals(deletedGoodID)).collect(Collectors.toList()));
             reloadTable(goodsList);
             resetVariables();
         } else {
-            unitsList.setBucket(unitsList.getBucket().stream().filter(x->!x.equalsIgnoreCase(unitComboBox.getSelectedItem().toString())).collect(Collectors.toList()));
+            unitsList.setBucket(unitsList.getBucket().stream().filter(x -> !x.equalsIgnoreCase(unitComboBox.getSelectedItem().toString())).collect(Collectors.toList()));
             unitComboBox.removeItem(unitComboBox.getSelectedItem());
             unitComboBox.setSelectedIndex(-1);
             deleteButton.setEnabled(false);
@@ -453,7 +452,7 @@ public class RepoPanel extends javax.swing.JPanel {
 
     private void IDTextFieldKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_IDTextFieldKeyReleased
         // TODO add your handling code here:
-        long dupedID = goodsList.getList().stream().filter(x->x.getID().equalsIgnoreCase(IDTextField.getText())).count();
+        long dupedID = goodsList.getList().stream().filter(x -> x.getID().equalsIgnoreCase(IDTextField.getText())).count();
         if (IDTextField.getText().isEmpty()) {
             invalidIDLabel.setVisible(false);
         }
@@ -467,7 +466,7 @@ public class RepoPanel extends javax.swing.JPanel {
             goodID = IDTextField.getText();
             addCheck();
             invalidIDLabel.setVisible(false);
-        }  else {
+        } else {
             invalidIDLabel.setVisible(true);
         }
         cancelCheck();
@@ -481,7 +480,7 @@ public class RepoPanel extends javax.swing.JPanel {
             List<Shipment> editedGoodShipments = goodsList.getList().get(findGoodsIndex(goodTableModel.getValueAt(jTable1.getSelectedRow(), 0).toString())).getShipments();
             goodsList.getList().set(findGoodsIndex(goodTableModel.getValueAt(jTable1.getSelectedRow(), 0).toString()), new Goods("", "", BigDecimal.ZERO, editedGood.getID(), ""));
             if (dupedGoodCheck() || editedGood.getID().equals(IDTextField.getText())) {
-                String newID = goodsList.getList().set(findGoodsIndex(editedGood.getID()), new Goods(nameTextField.getText(), manufacturerTextField.getText(), new BigDecimal(listPriceTextField.getText()), IDTextField.getText(),unitComboBox.getSelectedItem().toString())).getID();
+                String newID = goodsList.getList().set(findGoodsIndex(editedGood.getID()), new Goods(nameTextField.getText(), manufacturerTextField.getText(), new BigDecimal(listPriceTextField.getText()), IDTextField.getText(), unitComboBox.getSelectedItem().toString())).getID();
                 goodsList.getList().get(findGoodsIndex(newID)).setTotalQuantity(new BigDecimal(totalQuantityTextField.getText()));
                 goodsList.getList().get(findGoodsIndex(newID)).setShipments(editedGoodShipments);
                 reloadTable(goodsList);
@@ -495,7 +494,7 @@ public class RepoPanel extends javax.swing.JPanel {
             }
         } else {
             String unitChanged = JOptionPane.showInputDialog(null, "Vui lòng nhập tên đơn vị:", "Thay đổi đơn vị", JOptionPane.QUESTION_MESSAGE);
-            unitsList.getBucket().set(unitComboBox.getSelectedIndex()-1, unitChanged);
+            unitsList.getBucket().set(unitComboBox.getSelectedIndex() - 1, unitChanged);
             reloadUnitList();
             unitComboBox.setSelectedIndex(-1);
         }
@@ -503,7 +502,7 @@ public class RepoPanel extends javax.swing.JPanel {
         deleteCheck();
         editCheck();
         cancelCheck();
-        
+
     }//GEN-LAST:event_editButtonActionPerformed
 
     private void jTable1MouseReleased(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jTable1MouseReleased
@@ -546,12 +545,12 @@ public class RepoPanel extends javax.swing.JPanel {
     private void searchTextFieldKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_searchTextFieldKeyReleased
         // TODO add your handling code here:
         GoodsList<Goods> goodsListToSearch = new GoodsList<>();
-        Object searchedObject = glc.searchGoodsForGUI(searchTextField.getText(), goodsList);
+        Object searchedObject = glc.searchGoods(searchTextField.getText(), goodsList);
         if (searchedObject == null) {
             int rowToRemove = goodTableModel.getRowCount();
             for (int i = 0; i < rowToRemove; i++) {
                 goodTableModel.removeRow(0);
-            }            
+            }
             return;
         } else if (searchedObject instanceof Goods goods) {
             goodsListToSearch.getList().add(goods);
@@ -569,19 +568,19 @@ public class RepoPanel extends javax.swing.JPanel {
                 selectedGood = good;
             }
         }
-        
+
         try {
             mf.switchShipmentPanel(selectedGood);
             reloadTable(goodsList);
             jTable1.setRowSelectionInterval(findGoodsIndex(selectedGood.getID()), findGoodsIndex(selectedGood.getID()));
         } catch (NullPointerException npe) {
-            
+
         }
     }//GEN-LAST:event_shipmentsButtonActionPerformed
 
-    private void editImportGoodsInHistory(String goodsIDBefore, Goods editedGoods){
+    private void editImportGoodsInHistory(String goodsIDBefore, Goods editedGoods) {
         for (Goods goods : store.getHistory().getImportGoodsList()) {
-            if(goods.getID().equals(goodsIDBefore)){
+            if (goods.getID().equals(goodsIDBefore)) {
                 goods.setGoodsName(editedGoods.getGoodsName());
                 goods.setID(editedGoods.getID());
                 goods.setManufacture(editedGoods.getManufacture());
@@ -590,15 +589,15 @@ public class RepoPanel extends javax.swing.JPanel {
             }
         }
     }
-    
-    public void addCheck () {
-        if(!nameTextField.getText().isBlank() && unitComboBox.getSelectedIndex()!=-1 && !listPriceTextField.getText().isBlank() && !IDTextField.getText().isBlank() && !goodID.isBlank() && goodListedPrice != BigDecimal.valueOf(-1)) {
+
+    public void addCheck() {
+        if (!nameTextField.getText().isBlank() && unitComboBox.getSelectedIndex() != -1 && !listPriceTextField.getText().isBlank() && !IDTextField.getText().isBlank() && !goodID.isBlank() && goodListedPrice != BigDecimal.valueOf(-1)) {
             addButton.setEnabled(true);
         } else {
             addButton.setEnabled(false);
         }
     }
-    
+
     public void deleteCheck() {
         if (jTable1.getSelectedRow() != -1 || unitComboBox.getSelectedIndex() != -1) {
             deleteButton.setEnabled(true);
@@ -606,7 +605,7 @@ public class RepoPanel extends javax.swing.JPanel {
             deleteButton.setEnabled(false);
         }
     }
-    
+
     public void editCheck() {
         if (jTable1.getSelectedRow() != -1 || unitComboBox.getSelectedIndex() != -1) {
             editButton.setEnabled(true);
@@ -614,23 +613,23 @@ public class RepoPanel extends javax.swing.JPanel {
             editButton.setEnabled(false);
         }
     }
-    
+
     public void cancelCheck() {
-        if (jTable1.getSelectedRow() != -1 || !nameTextField.getText().isBlank() || !manufacturerTextField.getText().isBlank() || unitComboBox.getSelectedIndex()!=-1 || !listPriceTextField.getText().isBlank() || !IDTextField.getText().isBlank()) {
+        if (jTable1.getSelectedRow() != -1 || !nameTextField.getText().isBlank() || !manufacturerTextField.getText().isBlank() || unitComboBox.getSelectedIndex() != -1 || !listPriceTextField.getText().isBlank() || !IDTextField.getText().isBlank()) {
             cancelButton.setEnabled(true);
         } else {
             cancelButton.setEnabled(false);
         }
     }
-    
+
     public boolean dupedGoodCheck() {
-        long dupedGood = goodsList.getList().stream().filter(x->x.getGoodsName().equalsIgnoreCase(goodName)&&
-                                                                      x.getManufacture().equals(goodManufacturer)&&
-                                                                        x.getUnit().equals(goodUnit)).count();
-        long dupedID = goodsList.getList().stream().filter(x->x.getID().equals(goodID)).count();
+        long dupedGood = goodsList.getList().stream().filter(x -> x.getGoodsName().equalsIgnoreCase(goodName)
+                && x.getManufacture().equals(goodManufacturer)
+                && x.getUnit().equals(goodUnit)).count();
+        long dupedID = goodsList.getList().stream().filter(x -> x.getID().equals(goodID)).count();
         return dupedGood == 0 && dupedID == 0;
     }
-    
+
     public void resetVariables() {
         IDTextField.setText("");
         nameTextField.setText("");
@@ -638,39 +637,39 @@ public class RepoPanel extends javax.swing.JPanel {
         manufacturerTextField.setText("");
         listPriceTextField.setText("");
         totalQuantityTextField.setText("");
-        
+
         invalidIDLabel.setVisible(false);
         invalidPriceLabel.setVisible(false);
-        
+
         goodID = "";
         goodListedPrice = BigDecimal.valueOf(-1);
         goodManufacturer = "";
         goodName = "";
         goodUnit = "";
-        
+
         addButton.setEnabled(false);
         deleteButton.setEnabled(false);
         editButton.setEnabled(false);
         shipmentsButton.setEnabled(false);
         cancelButton.setEnabled(false);
     }
-    
+
     public void reloadUnitList() {
         isReloadingUnits = true;
         unitComboBox.removeAllItems();
         unitComboBox.addItem("Thêm đơn vị");
-        unitsList.getBucket().stream().forEach(x->unitComboBox.addItem(x));
+        unitsList.getBucket().stream().forEach(x -> unitComboBox.addItem(x));
         unitComboBox.setSelectedIndex(-1);
         isReloadingUnits = false;
     }
-    
+
     public void reloadTable(GoodsList<Goods> list) {
         int rowToRemove = goodTableModel.getRowCount();
         for (int i = 0; i < rowToRemove; i++) {
             goodTableModel.removeRow(0);
         }
         for (Goods good : list.getList()) {
-            goodTableModel.addRow(new Object[] {
+            goodTableModel.addRow(new Object[]{
                 good.getID(),
                 good.getGoodsName(),
                 good.getUnit(),
@@ -680,14 +679,14 @@ public class RepoPanel extends javax.swing.JPanel {
             });
         }
     }
-    
-    public void passData(Store store, MainFrame mf){
+
+    public void passData(Store store, MainFrame mf) {
         this.store = store;
         this.mf = mf;
         setGoodsList(store.getRepository());
         setUnitsList(store.getUnits());
     }
-    
+
     private void setGoodsList(GoodsList<Goods> goodsList) {
         this.goodsList = goodsList;
         reloadTable(goodsList);
@@ -697,12 +696,12 @@ public class RepoPanel extends javax.swing.JPanel {
         this.unitsList = unitsList;
         reloadUnitList();
     }
-    
+
     public int findUnit(String unit) {
-        return (int) unitsList.getBucket().stream().filter(x->x.equals(unit)).count();
+        return (int) unitsList.getBucket().stream().filter(x -> x.equals(unit)).count();
     }
-    
-    public void findSelectedGood (String ID, List<Shipment> shipments) {
+
+    public void findSelectedGood(String ID, List<Shipment> shipments) {
         for (Goods goods : goodsList.getList()) {
             if (ID.equals(goods.getID())) {
                 goods.setShipments(shipments);
@@ -711,8 +710,8 @@ public class RepoPanel extends javax.swing.JPanel {
             }
         }
     }
-    
-    private int findGoodsIndex (String ID) {
+
+    private int findGoodsIndex(String ID) {
         for (Goods goods : goodsList.getList()) {
             if (ID.equals(goods.getID())) {
                 return goodsList.getList().indexOf(goods);
@@ -728,10 +727,10 @@ public class RepoPanel extends javax.swing.JPanel {
     private GoodsListController glc = new GoodsListController();
     private boolean isReloadingUnits = false;
     public static RepoPanel Instance;
-    
+
     private Animator animator;
     private Animator animator2;
-    
+
     private String goodName = "";
     private String goodUnit = "";
     private String goodManufacturer = "";
@@ -739,7 +738,7 @@ public class RepoPanel extends javax.swing.JPanel {
     private BigDecimal goodListedPrice = BigDecimal.valueOf(-1);
     private BigDecimal goodTotalQuantity = BigDecimal.valueOf(-1);
     private DefaultTableModel goodTableModel;
-    
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel IDLabel;
     private javax.swing.JTextField IDTextField;

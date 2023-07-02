@@ -123,7 +123,7 @@ public class ShiftPanel extends javax.swing.JPanel {
         });
 
         cashierPhoneNumLable.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
-        cashierPhoneNumLable.setText("SĐT Thu Ngân:");
+        cashierPhoneNumLable.setText("Thu Ngân(SĐT/Tên):");
 
         cashierPhoneNumTextField.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         cashierPhoneNumTextField.setHorizontalAlignment(javax.swing.JTextField.CENTER);
@@ -191,10 +191,10 @@ public class ShiftPanel extends javax.swing.JPanel {
         });
 
         separatorLabel4.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
-        separatorLabel4.setText("/");
+        separatorLabel4.setText(":");
 
         separatorLabel3.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
-        separatorLabel3.setText("/");
+        separatorLabel3.setText(":");
 
         toHourTextField.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         toHourTextField.setHorizontalAlignment(javax.swing.JTextField.CENTER);
@@ -211,7 +211,7 @@ public class ShiftPanel extends javax.swing.JPanel {
         });
 
         separatorLabel1.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
-        separatorLabel1.setText("/");
+        separatorLabel1.setText(":");
 
         toMinuteTextField.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         toMinuteTextField.setHorizontalAlignment(javax.swing.JTextField.CENTER);
@@ -242,7 +242,7 @@ public class ShiftPanel extends javax.swing.JPanel {
         });
 
         separatorLabel2.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
-        separatorLabel2.setText("/");
+        separatorLabel2.setText(":");
 
         orderDateTextField.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         orderDateTextField.setHorizontalAlignment(javax.swing.JTextField.CENTER);
@@ -274,20 +274,10 @@ public class ShiftPanel extends javax.swing.JPanel {
                         .addComponent(refreshBtn)
                         .addGap(18, 18, 18))
                     .addGroup(searchPanelLayout.createSequentialGroup()
-                        .addComponent(fromLabel)
-                        .addGap(0, 0, 0)
                         .addGroup(searchPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(searchPanelLayout.createSequentialGroup()
-                                .addGroup(searchPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(orderDateLabel)
-                                    .addComponent(cashierPhoneNumLable)
-                                    .addComponent(orderIDLabel))
-                                .addGap(45, 45, 45)
-                                .addGroup(searchPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                    .addComponent(orderDateTextField, javax.swing.GroupLayout.DEFAULT_SIZE, 152, Short.MAX_VALUE)
-                                    .addComponent(cashierPhoneNumTextField)
-                                    .addComponent(orderIDTextField)))
-                            .addGroup(searchPanelLayout.createSequentialGroup()
+                                .addComponent(fromLabel)
+                                .addGap(0, 0, 0)
                                 .addComponent(fromHourTextField, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addGap(2, 2, 2)
                                 .addComponent(separatorLabel4, javax.swing.GroupLayout.PREFERRED_SIZE, 8, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -308,8 +298,18 @@ public class ShiftPanel extends javax.swing.JPanel {
                                 .addGap(2, 2, 2)
                                 .addComponent(separatorLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 8, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addGap(2, 2, 2)
-                                .addComponent(toSecondTextField, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                        .addContainerGap(16, Short.MAX_VALUE))))
+                                .addComponent(toSecondTextField, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGroup(searchPanelLayout.createSequentialGroup()
+                                .addGroup(searchPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(orderDateLabel)
+                                    .addComponent(orderIDLabel)
+                                    .addComponent(cashierPhoneNumLable))
+                                .addGap(46, 46, 46)
+                                .addGroup(searchPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(orderDateTextField, javax.swing.GroupLayout.PREFERRED_SIZE, 152, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(cashierPhoneNumTextField, javax.swing.GroupLayout.PREFERRED_SIZE, 152, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(orderIDTextField, javax.swing.GroupLayout.PREFERRED_SIZE, 152, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                        .addContainerGap(11, Short.MAX_VALUE))))
         );
         searchPanelLayout.setVerticalGroup(
             searchPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -382,6 +382,7 @@ public class ShiftPanel extends javax.swing.JPanel {
 
         otherFunctionPanel.setLayout(new java.awt.BorderLayout(0, 10));
 
+        currentShiftOverViewPanel.setBackground(new java.awt.Color(0, 153, 255));
         currentShiftOverViewPanel.setBorder(javax.swing.BorderFactory.createTitledBorder(""));
         currentShiftOverViewPanel.setFocusable(false);
         currentShiftOverViewPanel.setOpaque(false);
@@ -623,7 +624,7 @@ public class ShiftPanel extends javax.swing.JPanel {
             showWarningJOptionPane("Khoản chi tiêu không hợp lệ!");
             return;
         }
-        shiftCtr.endShiftForGUI(shift, noteArea.getText(), new BigDecimal(surcharge));
+        shiftCtr.endShift(shift, noteArea.getText(), new BigDecimal(surcharge));
         int choice = JOptionPane.showConfirmDialog(this, "In báo cáo tổng kết cuối ca?",
                 "Đóng ca hoàn tất", JOptionPane.OK_CANCEL_OPTION);
         if (choice == JOptionPane.OK_OPTION) {

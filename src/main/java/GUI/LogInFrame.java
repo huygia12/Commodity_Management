@@ -4,7 +4,7 @@
  */
 package GUI;
 
-import Controllers.StoreController;
+import Controllers.StoreShortCutListController;
 import Models.Store;
 import Models.StoreShortedCut;
 import Ultility.IDGenerator;
@@ -60,20 +60,20 @@ public class LogInFrame extends javax.swing.JFrame {
         logInEmail = new javax.swing.JTextField();
         jLabel1 = new javax.swing.JLabel();
         rememberPasswordCheckBox = new javax.swing.JCheckBox();
-        forgotPasswordButton = new javax.swing.JButton();
+        eyeBtn = new javax.swing.JButton();
         logInPassword = new javax.swing.JPasswordField();
-        jLabel2 = new javax.swing.JLabel();
-        jLabel3 = new javax.swing.JLabel();
+        logInEmailLabel = new javax.swing.JLabel();
+        logInPasswordLabel = new javax.swing.JLabel();
         logInButton = new javax.swing.JButton();
         illegalLogInEmailWarning = new javax.swing.JLabel();
         SignUpPanel = new javax.swing.JPanel();
         signUpEmail = new javax.swing.JTextField();
         jLabel5 = new javax.swing.JLabel();
         signUpPassword = new javax.swing.JPasswordField();
-        jLabel6 = new javax.swing.JLabel();
-        jLabel7 = new javax.swing.JLabel();
+        signInEmailLabel = new javax.swing.JLabel();
+        signInPasswordLabel = new javax.swing.JLabel();
         signUpButton = new javax.swing.JButton();
-        jLabel8 = new javax.swing.JLabel();
+        retypeSignInPasswordLabel = new javax.swing.JLabel();
         retypePassword = new javax.swing.JPasswordField();
         passwordWarning = new javax.swing.JLabel();
         illegalSignUpEmailWarning = new javax.swing.JLabel();
@@ -97,21 +97,21 @@ public class LogInFrame extends javax.swing.JFrame {
         rememberPasswordCheckBox.setForeground(new java.awt.Color(102, 102, 102));
         rememberPasswordCheckBox.setText("Nhớ mật khẩu");
 
-        forgotPasswordButton.setFont(new java.awt.Font("Segoe UI", 2, 12)); // NOI18N
-        forgotPasswordButton.setForeground(new java.awt.Color(0, 102, 255));
-        forgotPasswordButton.setText("Quên mật khẩu? ");
-        forgotPasswordButton.setBorder(null);
-        forgotPasswordButton.setContentAreaFilled(false);
-        forgotPasswordButton.setFocusable(false);
-        forgotPasswordButton.addActionListener(new java.awt.event.ActionListener() {
+        eyeBtn.setFont(new java.awt.Font("Segoe UI", 2, 12)); // NOI18N
+        eyeBtn.setForeground(new java.awt.Color(0, 102, 255));
+        eyeBtn.setIcon(new javax.swing.ImageIcon(getClass().getResource("/ImageIcon/icons8-eyesClosed-15.png"))); // NOI18N
+        eyeBtn.setBorder(null);
+        eyeBtn.setContentAreaFilled(false);
+        eyeBtn.setFocusable(false);
+        eyeBtn.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                forgotPasswordButtonActionPerformed(evt);
+                eyeBtnActionPerformed(evt);
             }
         });
 
-        jLabel2.setText("Email");
+        logInEmailLabel.setText("Email");
 
-        jLabel3.setText("Mật khẩu");
+        logInPasswordLabel.setText("Mật khẩu");
 
         logInButton.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
         logInButton.setText("Đăng nhập");
@@ -135,22 +135,20 @@ public class LogInFrame extends javax.swing.JFrame {
                         .addGap(50, 50, 50)
                         .addGroup(LogInPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(LogInPanelLayout.createSequentialGroup()
-                                .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 90, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addComponent(logInEmailLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 90, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                 .addComponent(logInEmail, javax.swing.GroupLayout.PREFERRED_SIZE, 189, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addGroup(LogInPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                                .addGroup(javax.swing.GroupLayout.Alignment.LEADING, LogInPanelLayout.createSequentialGroup()
-                                    .addComponent(rememberPasswordCheckBox)
-                                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                    .addComponent(forgotPasswordButton))
-                                .addGroup(javax.swing.GroupLayout.Alignment.LEADING, LogInPanelLayout.createSequentialGroup()
-                                    .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 90, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                    .addComponent(logInPassword, javax.swing.GroupLayout.PREFERRED_SIZE, 189, javax.swing.GroupLayout.PREFERRED_SIZE)))))
+                            .addComponent(rememberPasswordCheckBox)
+                            .addGroup(LogInPanelLayout.createSequentialGroup()
+                                .addComponent(logInPasswordLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 90, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(logInPassword, javax.swing.GroupLayout.PREFERRED_SIZE, 189, javax.swing.GroupLayout.PREFERRED_SIZE))))
                     .addGroup(LogInPanelLayout.createSequentialGroup()
-                        .addGap(0, 0, Short.MAX_VALUE)
+                        .addGap(0, 233, Short.MAX_VALUE)
                         .addComponent(illegalLogInEmailWarning)))
-                .addGap(60, 60, 60))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(eyeBtn)
+                .addGap(33, 33, 33))
             .addGroup(LogInPanelLayout.createSequentialGroup()
                 .addGroup(LogInPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(LogInPanelLayout.createSequentialGroup()
@@ -168,18 +166,18 @@ public class LogInFrame extends javax.swing.JFrame {
                 .addComponent(jLabel1)
                 .addGap(43, 43, 43)
                 .addGroup(LogInPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel2)
+                    .addComponent(logInEmailLabel)
                     .addComponent(logInEmail, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(6, 6, 6)
                 .addComponent(illegalLogInEmailWarning)
                 .addGap(6, 6, 6)
-                .addGroup(LogInPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel3)
-                    .addComponent(logInPassword, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGroup(LogInPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(LogInPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(logInPasswordLabel)
+                        .addComponent(logInPassword, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(eyeBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 22, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(6, 6, 6)
-                .addGroup(LogInPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(forgotPasswordButton)
-                    .addComponent(rememberPasswordCheckBox))
+                .addComponent(rememberPasswordCheckBox)
                 .addGap(114, 114, 114)
                 .addComponent(logInButton, javax.swing.GroupLayout.PREFERRED_SIZE, 43, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(51, 51, 51))
@@ -196,9 +194,9 @@ public class LogInFrame extends javax.swing.JFrame {
         jLabel5.setFont(new java.awt.Font("Segoe UI", 1, 24)); // NOI18N
         jLabel5.setText("Đăng ký tài khoản");
 
-        jLabel6.setText("Email");
+        signInEmailLabel.setText("Email");
 
-        jLabel7.setText("Mật khẩu");
+        signInPasswordLabel.setText("Mật khẩu");
 
         signUpButton.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
         signUpButton.setText("Đăng ký");
@@ -208,7 +206,7 @@ public class LogInFrame extends javax.swing.JFrame {
             }
         });
 
-        jLabel8.setText("Nhập lại mật khẩu");
+        retypeSignInPasswordLabel.setText("Nhập lại mật khẩu");
 
         passwordWarning.setFont(new java.awt.Font("Segoe UI", 2, 12)); // NOI18N
         passwordWarning.setForeground(new java.awt.Color(255, 0, 51));
@@ -234,9 +232,9 @@ public class LogInFrame extends javax.swing.JFrame {
                             .addComponent(passwordWarning)
                             .addGroup(SignUpPanelLayout.createSequentialGroup()
                                 .addGroup(SignUpPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                    .addComponent(jLabel6, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                    .addComponent(jLabel7, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                    .addComponent(jLabel8, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                                    .addComponent(signInEmailLabel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                    .addComponent(signInPasswordLabel, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                    .addComponent(retypeSignInPasswordLabel, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                 .addGroup(SignUpPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                                     .addComponent(retypePassword, javax.swing.GroupLayout.DEFAULT_SIZE, 189, Short.MAX_VALUE)
@@ -259,20 +257,20 @@ public class LogInFrame extends javax.swing.JFrame {
                 .addComponent(jLabel5)
                 .addGap(42, 42, 42)
                 .addGroup(SignUpPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel6)
+                    .addComponent(signInEmailLabel)
                     .addComponent(signUpEmail, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(illegalSignUpEmailWarning)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(SignUpPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(signUpPassword, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel7))
+                    .addComponent(signInPasswordLabel))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(blankSignUpPasswordWarning)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(SignUpPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(retypePassword, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel8))
+                    .addComponent(retypeSignInPasswordLabel))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(passwordWarning)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 69, Short.MAX_VALUE)
@@ -287,16 +285,25 @@ public class LogInFrame extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void forgotPasswordButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_forgotPasswordButtonActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_forgotPasswordButtonActionPerformed
+    private void eyeBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_eyeBtnActionPerformed
+        eyesClickCounter++;
+        if (eyesClickCounter % 2 == 0) {
+            eyeBtn.setIcon(new ImageIcon(getClass()
+                .getResource("/ImageIcon/icons8-eyesClosed-15.png")));
+            logInPassword.setEchoChar(echoChar);
+        } else {
+            eyeBtn.setIcon(new ImageIcon(getClass()
+                .getResource("/ImageIcon/icons8-eyes-15.png")));
+            logInPassword.setEchoChar((char) 0);
+        }
+    }//GEN-LAST:event_eyeBtnActionPerformed
 
     private void signUpButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_signUpButtonActionPerformed
         String emailStr = signUpEmail.getText();
         String passwordStr = signUpPassword.getText();
         String retypePasswordStr = retypePassword.getText();
 
-        if (storeCtr.containEmail(storeList, emailStr) != null) {
+        if (new StoreShortCutListController(storeList).containEmail(emailStr) != null) {
             JOptionPane.showMessageDialog(LogInFrame.this,
                     "Email đã tồn tại!",
                     "Đăng kí thất bại!",
@@ -394,7 +401,7 @@ public class LogInFrame extends javax.swing.JFrame {
         } else {
             StoreShortedCut userStore = checkExistingEmail();
             if (userStore != null) { // dang nhap thanh cong
-                rememberPassWordCheck();
+                rememberCheck();
                 MainFrame mainFrame = new MainFrame();
                 mainFrame.setUserStore(userStore, storeList);
                 mainFrame.setVisible(true);
@@ -405,12 +412,14 @@ public class LogInFrame extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_logInButtonActionPerformed
 
-    private void rememberPassWordCheck() {
+    private void rememberCheck() {
         try ( PrintWriter pw = new PrintWriter(Files.newBufferedWriter(Path.of(REMEBER_PASSWORD_PATH),
                 StandardOpenOption.CREATE,
                 StandardOpenOption.WRITE,
                 StandardOpenOption.TRUNCATE_EXISTING))) {
-            pw.print(rememberPasswordCheckBox.isSelected() + "," + logInPassword.getText());
+            pw.print(rememberPasswordCheckBox.isSelected() + ","
+                    + logInEmail.getText() + ","
+                    + logInPassword.getText());
         } catch (IOException ex) {
             System.out.println("Loi");
         }
@@ -424,7 +433,8 @@ public class LogInFrame extends javax.swing.JFrame {
             rememberCheck = str[0].equals("true");
             if (rememberCheck) {
                 rememberPasswordCheckBox.setSelected(rememberCheck);
-                logInPassword.setText(str[1]);
+                logInEmail.setText(str[1]);
+                logInPassword.setText(str[2]);
             }
         } catch (IOException ex) {
             Logger.getLogger(CommodityManagement.class.getName()).log(Level.SEVERE, null, ex);
@@ -439,6 +449,7 @@ public class LogInFrame extends javax.swing.JFrame {
     }
 
     private void setUp() {
+        echoChar = logInPassword.getEchoChar();
         setLocationRelativeTo(null);
         setIconImage(new ImageIcon(getClass()
                 .getResource("/ImageIcon/icons8-grocery-store-96.png")).getImage());
@@ -458,7 +469,6 @@ public class LogInFrame extends javax.swing.JFrame {
     }
 
     private void initVariable() {
-        storeCtr = new StoreController();
         EMAIL_REGEX = "^[A-Za-z0-9]+[A-Za-z0-9]*@[A-Za-z0-9]+(\\.[A-Za-z0-9]+)$";
         rememberCheck = false;
         setProperties();
@@ -483,13 +493,14 @@ public class LogInFrame extends javax.swing.JFrame {
         });
     }
 
+    private char echoChar;
+    private int eyesClickCounter = 0;
     private boolean rememberCheck;
     private Pattern pattern;
     private Matcher matcher;
     private String EMAIL_REGEX;
     private IDGenerator storeIDGenerator;
     private List<StoreShortedCut> storeList;
-    private StoreController storeCtr;
     private static final JsonDataFile myData = new JsonDataFile();
     private static final String HOME = System.getProperty("user.dir");
     private static final String SEPARATOR = File.separator;
@@ -502,22 +513,22 @@ public class LogInFrame extends javax.swing.JFrame {
     private javax.swing.JPanel LogInPanel;
     private javax.swing.JPanel SignUpPanel;
     private javax.swing.JLabel blankSignUpPasswordWarning;
-    private javax.swing.JButton forgotPasswordButton;
+    private javax.swing.JButton eyeBtn;
     private javax.swing.JLabel illegalLogInEmailWarning;
     private javax.swing.JLabel illegalSignUpEmailWarning;
     private javax.swing.JLabel jLabel1;
-    private javax.swing.JLabel jLabel2;
-    private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel5;
-    private javax.swing.JLabel jLabel6;
-    private javax.swing.JLabel jLabel7;
-    private javax.swing.JLabel jLabel8;
     private javax.swing.JButton logInButton;
     private javax.swing.JTextField logInEmail;
+    private javax.swing.JLabel logInEmailLabel;
     private javax.swing.JPasswordField logInPassword;
+    private javax.swing.JLabel logInPasswordLabel;
     private javax.swing.JLabel passwordWarning;
     private javax.swing.JCheckBox rememberPasswordCheckBox;
     private javax.swing.JPasswordField retypePassword;
+    private javax.swing.JLabel retypeSignInPasswordLabel;
+    private javax.swing.JLabel signInEmailLabel;
+    private javax.swing.JLabel signInPasswordLabel;
     private javax.swing.JButton signUpButton;
     private javax.swing.JTextField signUpEmail;
     private javax.swing.JPasswordField signUpPassword;

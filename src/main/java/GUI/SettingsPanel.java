@@ -302,7 +302,8 @@ public class SettingsPanel extends javax.swing.JPanel {
             return;
         } else {
             for (StoreShortedCut storeShortedCut : storeList) {
-                if (storeShortedCut.getEmail().equals(email)) {
+                if (storeShortedCut.getEmail().equals(email) 
+                        && !storeShortedCut.getEmail().equals(store.getEmail())) {
                     JOptionPane.showMessageDialog(this, "Email đã được sử dụng.");
                     return;
                 }
