@@ -5,6 +5,7 @@
 package GUI;
 
 import Controllers.GoodsController;
+import Controllers.RepositoryController;
 import Controllers.ShipmentController;
 import Models.Goods;
 import Models.Shipment;
@@ -13,8 +14,10 @@ import java.awt.Component;
 import java.math.BigDecimal;
 import java.time.DateTimeException;
 import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.*;
+import java.util.stream.Collectors;
 import javax.swing.JOptionPane;
 import javax.swing.JTextField;
 import javax.swing.table.DefaultTableModel;
@@ -445,10 +448,7 @@ public class ShipmentPanel extends javax.swing.JPanel {
 
         jTable1.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null, null, null, null},
-                {null, null, null, null, null, null},
-                {null, null, null, null, null, null},
-                {null, null, null, null, null, null}
+
             },
             new String [] {
                 "Mã lô hàng", "Giá nhập hàng", "Số lượng", "Ngày sản xuất", "Hạn sử dụng", "Tình trạng"
@@ -463,6 +463,7 @@ public class ShipmentPanel extends javax.swing.JPanel {
             }
         });
         jTable1.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
+        jTable1.setShowGrid(true);
         jTable1.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseReleased(java.awt.event.MouseEvent evt) {
                 jTable1MouseReleased(evt);
@@ -563,7 +564,7 @@ public class ShipmentPanel extends javax.swing.JPanel {
             HSDDayTextField.setText(HSDDay);
             HSDMonthTextField.setText(HSDMonth);
             HSDYearTextField.setText(HSDYear);
-            errorDateLabel.setVisible(isDateError);
+            errorDateLabel.setVisible(false);
         } else {
             NSXDay = NSXDayTextField.getText();
             NSXMonth = NSXMonthTextField.getText();
@@ -578,8 +579,9 @@ public class ShipmentPanel extends javax.swing.JPanel {
     }//GEN-LAST:event_NSXDayTextFieldActionPerformed
 
     private void shipmentIDTextFieldKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_shipmentIDTextFieldKeyReleased
-        // TODO add your handling code here:
-        long dupedID = shipments.stream().filter(x -> x.getID().equalsIgnoreCase(shipmentIDTextField.getText())).count();
+        String shipmentIDText = shipmentIDTextField.getText();
+        boolean checkDupID = repoCtr.dupIDCheck(store.getRepository(), 
+                shipmentIDText, repoCtr.BY_SHIPMENT);
         if (shipmentIDTextField.getText().isEmpty()) {
             errorIDLabel.setVisible(false);
         }
@@ -589,7 +591,7 @@ public class ShipmentPanel extends javax.swing.JPanel {
         } catch (ArrayIndexOutOfBoundsException | NullPointerException aioobe) {
 
         }
-        if (dupedID == 0 || (dupedIDOnTable && jTable1.getSelectedRow() != -1)) {
+        if (!checkDupID || (dupedIDOnTable && jTable1.getSelectedRow() != -1)) {
             shipmentID = shipmentIDTextField.getText();
             addCheck();
             errorIDLabel.setVisible(false);
@@ -609,7 +611,7 @@ public class ShipmentPanel extends javax.swing.JPanel {
         if (!isOn) {
             saveDateData(false);
         }
-        setVisibleDate(isOn, isDateError);
+        setVisibleDate(isOn, false);
         if (isOn) {
             saveDateData(true);
         }
@@ -630,14 +632,14 @@ public class ShipmentPanel extends javax.swing.JPanel {
             shipmentPrice = new BigDecimal(shipmentTableModel.getValueAt(jTable1.getSelectedRow(), 1).toString());
             if (!(shipmentTableModel.getValueAt(jTable1.getSelectedRow(), 3)).toString().isEmpty()) {
                 doesExpiredToggleBtn.setSelected(true);
-                setVisibleDate(true, isDateError);
+                setVisibleDate(true, false);
                 saveDateData(false);
-                NSXDayTextField.setText(NSXDay = shipmentTableModel.getValueAt(jTable1.getSelectedRow(), 3).toString().substring(8, 10));
-                NSXMonthTextField.setText(NSXMonth = shipmentTableModel.getValueAt(jTable1.getSelectedRow(), 3).toString().substring(5, 7));
-                NSXYearTextField.setText(NSXYear = shipmentTableModel.getValueAt(jTable1.getSelectedRow(), 3).toString().substring(0, 4));
-                HSDDayTextField.setText(HSDDay = shipmentTableModel.getValueAt(jTable1.getSelectedRow(), 4).toString().substring(8, 10));
-                HSDMonthTextField.setText(HSDMonth = shipmentTableModel.getValueAt(jTable1.getSelectedRow(), 4).toString().substring(5, 7));
-                HSDYearTextField.setText(HSDYear = shipmentTableModel.getValueAt(jTable1.getSelectedRow(), 4).toString().substring(0, 4));
+                NSXDayTextField.setText(NSXDay = shipmentTableModel.getValueAt(jTable1.getSelectedRow(), 3).toString().substring(0, 2));
+                NSXMonthTextField.setText(NSXMonth = shipmentTableModel.getValueAt(jTable1.getSelectedRow(), 3).toString().substring(3, 5));
+                NSXYearTextField.setText(NSXYear = shipmentTableModel.getValueAt(jTable1.getSelectedRow(), 3).toString().substring(6, 10));
+                HSDDayTextField.setText(HSDDay = shipmentTableModel.getValueAt(jTable1.getSelectedRow(), 4).toString().substring(0, 2));
+                HSDMonthTextField.setText(HSDMonth = shipmentTableModel.getValueAt(jTable1.getSelectedRow(), 4).toString().substring(3, 5));
+                HSDYearTextField.setText(HSDYear = shipmentTableModel.getValueAt(jTable1.getSelectedRow(), 4).toString().substring(6, 10));
             }
         }
         deleteCheck();
@@ -753,10 +755,14 @@ public class ShipmentPanel extends javax.swing.JPanel {
 
     private void addButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_addButtonActionPerformed
         // TODO add your handling code here:
-        if (shipments.stream().filter(x -> x.getID().equals(shipmentID)).count() == 0) {
+        if(!repoCtr.dupIDCheck(store.getRepository(), 
+                shipmentID, repoCtr.BY_SHIPMENT)){
             if (doesExpiredToggleBtn.isSelected()) {
                 try {
-                    if (LocalDate.of(Integer.parseInt(NSXYear), Integer.parseInt(NSXMonth), Integer.parseInt(NSXDay)).isBefore(LocalDate.of(Integer.parseInt(HSDYear), Integer.parseInt(HSDMonth), Integer.parseInt(HSDDay))) || LocalDate.of(Integer.parseInt(NSXYear), Integer.parseInt(NSXMonth), Integer.parseInt(NSXDay)).isAfter(LocalDate.now())) {
+                    if (LocalDate.of(Integer.parseInt(NSXYear), Integer.parseInt(NSXMonth), Integer.parseInt(NSXDay))
+                            .isBefore(LocalDate.of(Integer.parseInt(HSDYear), Integer.parseInt(HSDMonth), Integer.parseInt(HSDDay))) 
+                            || LocalDate.of(Integer.parseInt(NSXYear), Integer.parseInt(NSXMonth), Integer.parseInt(NSXDay))
+                                    .isAfter(LocalDate.now())) {
                         Shipment newShipment = new Shipment(shipmentQuantity,
                                 shipmentPrice,
                                 LocalDate.of(Integer.parseInt(NSXYear),
@@ -784,13 +790,11 @@ public class ShipmentPanel extends javax.swing.JPanel {
             reloadTable(shipments);
             transferData();
         } else {
-            JOptionPane.showMessageDialog(null, "Mặt hàng đã tồn tại!", "Oh no!", JOptionPane.WARNING_MESSAGE);
+            errorIDLabel.setVisible(true);
         }
     }//GEN-LAST:event_addButtonActionPerformed
 
     private void editButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_editButtonActionPerformed
-        // TODO add your handling code here:
-
         if (doesExpiredToggleBtn.isSelected()) {
             if (LocalDate.of(Integer.parseInt(NSXYearTextField.getText()), Integer.parseInt(NSXMonthTextField.getText()), Integer.parseInt(NSXDayTextField.getText())).isAfter(LocalDate.of(Integer.parseInt(HSDYearTextField.getText()), Integer.parseInt(HSDMonthTextField.getText()), Integer.parseInt(HSDDayTextField.getText())))) {
                 JOptionPane.showMessageDialog(null, "Ngày sản xuất không thể trước hạn sử dụng!", "Oh no!", JOptionPane.WARNING_MESSAGE);
@@ -848,7 +852,7 @@ public class ShipmentPanel extends javax.swing.JPanel {
     }//GEN-LAST:event_filterExtraOptionActionPerformed
 
     private void filterBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_filterBtnActionPerformed
-        // TODO add your handling code here:
+        List<Shipment> shipmentFilterList = new ArrayList<>();
         switch (filterCategories.getSelectedIndex()) {
             case 0:
                 switch (filterExtraOption.getSelectedIndex()) {
@@ -873,23 +877,35 @@ public class ShipmentPanel extends javax.swing.JPanel {
             case 2:
                 switch (filterExtraOption.getSelectedIndex()) {
                     case 0:
-                        reloadTable(shipments.stream().sorted((s1, s2) -> s1.getNsx().compareTo(s2.getNsx())).collect(Collectors.toList()));
+                        shipmentFilterList= shipments.stream().filter(x->x.getNsx()!=null).toList();
+                        reloadTable(shipmentFilterList.stream().sorted((s1, s2) ->(-1)*(s1.getNsx().compareTo(s2.getNsx()))).collect(Collectors.toList()));
                         break;
                     case 1:
-                        reloadTable(shipments.stream().sorted((s1, s2) -> s1.getHsd().compareTo(s2.getHsd())).collect(Collectors.toList()));
+                        shipmentFilterList= shipments.stream().filter(x->x.getHsd()!=null).toList();
+                        reloadTable(shipmentFilterList.stream().sorted((s1, s2) ->(-1)*(s1.getHsd().compareTo(s2.getHsd()))).collect(Collectors.toList()));
                         break;
                 }
                 break;
             case 3:
                 switch (filterExtraOption.getSelectedIndex()) {
                     case 0:
-                        reloadTable(shipments.stream().filter(x -> x.getHsd().isAfter(LocalDate.now()) || x.getHsd() == null).collect(Collectors.toList()));
+                        for (Models.Shipment shipment1 : shipments) {
+                            if(shipment1.getHsd()!=null && shipment1.getHsd().isAfter(LocalDate.now())){
+                                shipmentFilterList.add(shipment1);
+                            }
+                        }
+                        reloadTable(shipmentFilterList);
                         break;
                     case 1:
-                        reloadTable(shipments.stream().filter(x -> x.getHsd().isBefore(LocalDate.now()) || x.getHsd() == null).collect(Collectors.toList()));
+                        for (Models.Shipment shipment1 : shipments) {
+                            if(shipment1.getHsd()!=null && shipment1.getHsd().isBefore(LocalDate.now())){
+                                shipmentFilterList.add(shipment1);
+                            }
+                        }
+                        reloadTable(shipmentFilterList);
                         break;
-                    case 3:
-                        reloadTable(shipments.stream().filter(x -> x.getHsd() != null).collect(Collectors.toList()));
+                    case 2:
+                        reloadTable(shipments.stream().filter(x -> x.getHsd() == null).toList());
                         break;
                 }
                 break;
@@ -1021,7 +1037,7 @@ public class ShipmentPanel extends javax.swing.JPanel {
             textField.setText(currentText.substring(0, maxLength));
         }
         try {
-            Integer.parseInt(textField.getText());
+            Integer.valueOf(textField.getText());
             date = textField.getText();
             errorDateLabel.setVisible(false);
         } catch (NumberFormatException nfe) {
@@ -1041,7 +1057,7 @@ public class ShipmentPanel extends javax.swing.JPanel {
         doesExpiredToggleBtn.setSelected(isSelected);
     }
 
-    public void reloadTable(List<Shipment> shipments) {
+    public void reloadTable(java.util.List<Shipment> shipments) {
         int rowToRemove = shipmentTableModel.getRowCount();
         for (int i = 0; i < rowToRemove; i++) {
             shipmentTableModel.removeRow(0);
@@ -1051,18 +1067,18 @@ public class ShipmentPanel extends javax.swing.JPanel {
                 if (shipment.getNsx() == null) {
                     shipmentTableModel.addRow(new Object[]{
                         shipment.getID(),
-                        shipment.getImportPrice(),
-                        shipment.getQuantity(),
+                        String.format("%.1f", shipment.getImportPrice()),
+                        String.format("%.1f", shipment.getQuantity()),
                         "", "",
                         shipment.calculateStatus()
                     });
                 } else {
                     shipmentTableModel.addRow(new Object[]{
                         shipment.getID(),
-                        shipment.getImportPrice(),
-                        shipment.getQuantity(),
-                        shipment.getNsx(),
-                        shipment.getHsd(),
+                        String.format("%.1f", shipment.getImportPrice()),
+                        String.format("%.1f", shipment.getQuantity()),
+                        shipment.getNsx().format(DateTimeFormatter.ofPattern("dd/MM/yyyy")),
+                        shipment.getHsd().format(DateTimeFormatter.ofPattern("dd/MM/yyyy")),
                         shipment.calculateStatus()
                     });
                 }
@@ -1071,7 +1087,7 @@ public class ShipmentPanel extends javax.swing.JPanel {
 
         }
     }
-
+    
     private int findShipmentIndex(String ID) {
         for (Shipment shipment : shipments) {
             if (ID.equals(shipment.getID())) {
@@ -1106,7 +1122,7 @@ public class ShipmentPanel extends javax.swing.JPanel {
     private String HSDDay;
     private String HSDMonth;
     private String HSDYear;
-    private boolean isDateError = false;
+    private final RepositoryController repoCtr = new RepositoryController();
 
     public static ShipmentPanel Instance;
     private DefaultTableModel shipmentTableModel;

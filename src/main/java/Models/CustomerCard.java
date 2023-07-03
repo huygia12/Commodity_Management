@@ -30,7 +30,7 @@ public class CustomerCard {
     private List<String> IDOfBoughtOrders = new ArrayList<>();
     @SerializedName("rank")
     @Expose
-    private CustomerRank rank = CustomerRank.NONE; 
+    private CustomerRank rank = CustomerRank.Đồng; 
     @SerializedName("usedPoint")
     @Expose
     private BigInteger usedPoint = BigInteger.ZERO; 

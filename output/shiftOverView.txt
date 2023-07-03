@@ -1,23 +1,26 @@
-                              BÁO CÁO CA : 000005
+                              BÁO CÁO CA : 000000
                                 Cửa hàng | Chang hi                                
 -----------------------------------------------------------------------------------
-                               Giờ mở ca | 2023-07-01T20:40:24                     
-                             Giờ đóng ca | 2023-07-01T20:49:28                     
-                                Thu ngân | Nguyen Gia Huy                          
-                            Số dư đầu ca | 500000.0                                
-                        Doanh thu(gross) | 450000.0                                
-               Tổng chiết khấu trực tiếp | 18000.0                                 
+                               Giờ mở ca | 2023-07-04T12:53:03                     
+                             Giờ đóng ca | 2023-07-04T01:12:17                     
+                                Thu ngân | Vu Hung Tung                            
+                            Số dư đầu ca | 0.0                                     
+                        Doanh thu(gross) | 404912000.0                             
+               Tổng chiết khấu trực tiếp | 0.0                                     
                     Tổng chiết khấu điểm | 0.0                                     
-                   Tổng tiền thuế(VAT)5% | 4500.0                                  
-                           Phí phát sinh | 150000.0                                
-                     Lợi nhuận ròng(net) | 438500.0                                
-                         Tổng số hóa đơn | 3                                       
-                      Trung bình/hóa đơn | 146166.7                                
+                   Tổng tiền thuế(VAT)0% | 0.0                                     
+                           Phí phát sinh | 0.0                                     
+                     Lợi nhuận ròng(net) | 389958320.0                             
+                         Tổng số hóa đơn | 7                                       
+                      Trung bình/hóa đơn | 55708331.4                              
 <+> CÁC PHƯƠNG THỨC THANH TOÁN:                                       
-                                Tiền mặt | 344000.0                                
-                  Chuyển khoản&Ngân hàng | 94500.0                                 
+                                Tiền mặt | 0.0                                     
+                  Chuyển khoản&Ngân hàng | 389958320.0                             
 <+> MẶT HÀNG TIÊU THỤ:                                                
           Goods Name | Quantity             | Revenue              | Ratio               
-        Custard Cake | 13.0                 | 390000.0             | 0.9%                
-                Flan | 12.0                 | 60000.0              | 0.1%                
-<+> GHI CHÚ CA:                                                       chua lau nha
+        Custard Cake | 13438.0              | 403140000.0          | 1.0%                
+               Ruler | 24.0                 | 72000.0              | 0.0%                
+          Lemon Soda | 133.0                | 1064000.0            | 0.0%                
+          Paddle pop | 12.0                 | 60000.0              | 0.0%                
+         Cooking oil | 12.0                 | 576000.0             | 0.0%                
+<+> GHI CHÚ CA:                                                       

@@ -374,8 +374,6 @@ public class CommodityManagement {
         store.getEmployeeList().getList().add(new Employee(new BigDecimal("25000"), "3957577777", "Nguyen Thao", "Chi", "0505737293", "141-ChienThang-TanTrieu", 20, Gender.FEMALE));
         store.getEmployeeList().getList().add(new Employee(new BigDecimal("20000"), "2727495500", "Tran Luu", "Dung", "0903737293", "Vinhome Riverside", 19, Gender.OTHER));
         store.getCustomerCardList().getList().add(new CustomerCard(idGenerator.generateID(CustomerCard.class.getName(), 6), new Customer("Nguyen Duc", "Anh", "0975268264", "34 Nguyen Du", 20, Gender.MALE)));
-        store.getCustomerCardList().getList().get(0).setPoint(new BigInteger("100"));
-        store.getCustomerCardList().getList().get(0).setRank(CustomerRank.SILVER);
         store.getCustomerCardList().getList().add(new CustomerCard(idGenerator.generateID(CustomerCard.class.getName(), 6), new Customer("Le Van", "Quyet", "0906333164", "26 Do Duc Duc", 20, Gender.OTHER)));
         store.getCustomerCardList().getList().add(new CustomerCard(idGenerator.generateID(CustomerCard.class.getName(), 6), new Customer("Do Quynh", "Anh", "0971345298", "16 Cau Giay", 22, Gender.FEMALE)));
         store.getCustomerCardList().getList().add(new CustomerCard(idGenerator.generateID(CustomerCard.class.getName(), 6), new Customer("Le Duc", "Cuong", "0916254167", "41 Minh Khai", 17, Gender.MALE)));

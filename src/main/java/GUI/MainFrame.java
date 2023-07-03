@@ -359,6 +359,7 @@ public class MainFrame extends javax.swing.JFrame {
     public void switchShipmentPanel(Goods attachGoods) {
         shipmentPanel1.attachGood(attachGoods, store, this);
         shipmentPanel1.reloadTable(attachGoods.getShipments());
+        shipmentPanel1.defaultSettings();
         repoPanelStateCheck = false;
         switchPanel(0);
     }

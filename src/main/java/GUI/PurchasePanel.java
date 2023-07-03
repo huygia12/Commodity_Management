@@ -1632,6 +1632,7 @@ public class PurchasePanel extends javax.swing.JPanel {
         setDefaultValuesToComponentsInMainOrderFunctionPanel();
         insertGoodsListToOrderGoodsListTable(order);
         if (filterGoodsList != null) {
+            filterBtnActionPerformed(null);
             insertGoodsListToGoodsListTable(filterGoodsList);
         } else {
             insertGoodsListToGoodsListTable(draftGoodsList);

@@ -9,9 +9,8 @@ package Models;
  * @author FPTSHOP
  */
 public enum CustomerRank {
-    BRONZE,
-    SILVER,
-    GOLD,
-    DIAMOND,
-    NONE
+    Đồng,
+    Bạc,
+    Vàng,
+    KimCương
 }

@@ -206,15 +206,15 @@ public class OrderController extends GoodsListController {
 
     public void payOrder(Order order,Shift shift, Store store) {
         CustomerCard card = order.getCustomerCard();
-        if (card != null) {
-            cardCtr.gainPoint(card, getTotal(order, store), store);
-            cardCtr.usePoint(card, order.getPointDiscount());
-            cardCtr.updateRank(card, store);
-            card.setUsedPoint(order.getPointDiscount().add(card.getUsedPoint()));
-            card.getIDOfBoughtOrders().add(order.getID());
-        }
         order.setOrderDateTime();
         shift.getOrderHisPerShift().add(order);
         updateQuanAfterPay(store.getRepository(), order);
+        if (card != null) {
+            cardCtr.gainPoint(card, getTotal(order, store), store);
+            cardCtr.usePoint(card, order.getPointDiscount());
+            card.setUsedPoint(order.getPointDiscount().add(card.getUsedPoint()));
+            card.getIDOfBoughtOrders().add(order.getID());
+            cardCtr.updateRank(card, store);
+        }
     }
 }

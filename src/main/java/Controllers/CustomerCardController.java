@@ -5,11 +5,9 @@
 package Controllers;
 
 import Models.CustomerCard;
-import Models.CustomerCardList;
 import Models.CustomerRank;
 import Models.Order;
 import Models.Store;
-import Ultility.IDGenerator;
 import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.util.stream.*;
@@ -67,33 +65,32 @@ public class CustomerCardController {
             Order order = hisCtr.containOrder(orderID,store.getHistory());
             total = total.add(orderCtr.getTotal(order, store));
         }
-        
         if(total.compareTo(store.getBronzeDiscountOffer().getK())>=0){
-            customerCard.setRank(CustomerRank.BRONZE);
+            customerCard.setRank(CustomerRank.Đồng);
         }
         if(total.compareTo(store.getSilverDiscountOffer().getK())>=0){
-            customerCard.setRank(CustomerRank.SILVER);
+            customerCard.setRank(CustomerRank.Bạc);
         }
         if(total.compareTo(store.getGoldDiscountOffer().getK())>=0){
-            customerCard.setRank(CustomerRank.GOLD);
+            customerCard.setRank(CustomerRank.Vàng);
         }
         if(total.compareTo(store.getDiamondDiscountOffer().getK())>=0){
-            customerCard.setRank(CustomerRank.DIAMOND);
+            customerCard.setRank(CustomerRank.KimCương);
         }
     }
     
     public Double getCustomerDiscountOffer(CustomerCard customerCard, Store store){
         Double discountOffer = 0d;
-        if(customerCard.getRank().equals(CustomerRank.BRONZE)){
+        if(customerCard.getRank().equals(CustomerRank.Đồng)){
             discountOffer = store.getBronzeDiscountOffer().getV();
         }
-        if(customerCard.getRank().equals(CustomerRank.SILVER)){
+        if(customerCard.getRank().equals(CustomerRank.Bạc)){
             discountOffer = store.getSilverDiscountOffer().getV();
         }
-        if(customerCard.getRank().equals(CustomerRank.GOLD)){
+        if(customerCard.getRank().equals(CustomerRank.Vàng)){
             discountOffer = store.getGoldDiscountOffer().getV();
         }
-        if(customerCard.getRank().equals(CustomerRank.DIAMOND)){
+        if(customerCard.getRank().equals(CustomerRank.KimCương)){
             discountOffer = store.getDiamondDiscountOffer().getV();
         }
         return discountOffer;

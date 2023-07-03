@@ -524,7 +524,7 @@ public class RepoPanel extends javax.swing.JPanel {
             listPriceTextField.setText(goodTableModel.getValueAt(jTable1.getSelectedRow(), 4).toString());
             totalQuantityTextField.setText(goodTableModel.getValueAt(jTable1.getSelectedRow(), 5).toString());
             goodID = (String) goodTableModel.getValueAt(jTable1.getSelectedRow(), 0);
-            goodListedPrice = (BigDecimal) goodTableModel.getValueAt(jTable1.getSelectedRow(), 4);
+            goodListedPrice = new BigDecimal(goodTableModel.getValueAt(jTable1.getSelectedRow(), 4).toString());
             goodManufacturer = (String) goodTableModel.getValueAt(jTable1.getSelectedRow(), 3);
             goodTotalQuantity = new BigDecimal(goodTableModel.getValueAt(jTable1.getSelectedRow(), 5).toString());
             goodUnit = (String) goodTableModel.getValueAt(jTable1.getSelectedRow(), 2);
@@ -674,8 +674,8 @@ public class RepoPanel extends javax.swing.JPanel {
                 good.getGoodsName(),
                 good.getUnit(),
                 good.getManufacture(),
-                good.getListPrice(),
-                good.getTotalQuantity()
+                String.format("%.1f", good.getListPrice()),
+                String.format("%.1f", good.getTotalQuantity())
             });
         }
     }
