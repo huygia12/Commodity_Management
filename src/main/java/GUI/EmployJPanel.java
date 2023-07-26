@@ -76,13 +76,19 @@ public class EmployJPanel extends javax.swing.JPanel {
         inputFirstNameLabel.setText("Họ:");
         inputFirstNameLabel.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
 
+        inputFirstNameTextField.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                inputFirstNameTextFieldMouseClicked(evt);
+            }
+        });
+
         inputLastNameLabel.setFont(new java.awt.Font("Dialog", 1, 11)); // NOI18N
         inputLastNameLabel.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
         inputLastNameLabel.setText("Tên:");
 
-        inputLastNameTextField1.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                inputLastNameTextField1ActionPerformed(evt);
+        inputLastNameTextField1.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                inputLastNameTextField1MouseClicked(evt);
             }
         });
 
@@ -114,6 +120,12 @@ public class EmployJPanel extends javax.swing.JPanel {
         inputPhoneLabel.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
         inputPhoneLabel.setText("SĐT:");
 
+        inputPhoneTextField.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                inputPhoneTextFieldMouseClicked(evt);
+            }
+        });
+
         inputAdressLabel.setFont(new java.awt.Font("Dialog", 1, 11)); // NOI18N
         inputAdressLabel.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
         inputAdressLabel.setText("Địa chỉ:");
@@ -121,6 +133,12 @@ public class EmployJPanel extends javax.swing.JPanel {
         inputCCCDLabel.setFont(new java.awt.Font("Dialog", 1, 11)); // NOI18N
         inputCCCDLabel.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
         inputCCCDLabel.setText("CCCD:");
+
+        inputCCCDTextField.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                inputCCCDTextFieldMouseClicked(evt);
+            }
+        });
 
         inputSalaryLabel.setFont(new java.awt.Font("Dialog", 1, 11)); // NOI18N
         inputSalaryLabel.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
@@ -435,7 +453,7 @@ public class EmployJPanel extends javax.swing.JPanel {
         textField.setFont(new java.awt.Font("Segoe UI", java.awt.Font.ITALIC, size));
         textField.setForeground(new java.awt.Color(255, 0, 0));
         textField.setText(warningText);
-        textField.setEditable(true);
+        textField.setEditable(false);
 
     }
 
@@ -477,10 +495,6 @@ public class EmployJPanel extends javax.swing.JPanel {
         return isAllRequiredFieldsFilled;
     }
 
-    private void inputLastNameTextField1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_inputLastNameTextField1ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_inputLastNameTextField1ActionPerformed
-
     private void femaleRadioButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_femaleRadioButtonActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_femaleRadioButtonActionPerformed
@@ -494,16 +508,16 @@ public class EmployJPanel extends javax.swing.JPanel {
             JOptionPane.showMessageDialog(this, "Bạn chưa thêm gì !", "Cảnh báo", JOptionPane.WARNING_MESSAGE);
             return;
         }
+        // Kiểm tra các trường bắt buộc
+        if (!validateRequiredFields()) {
+            JOptionPane.showMessageDialog(this, "Hãy nhập đầy đủ thông tin cơ bản trước khi thêm nhân viên mới!", "Cảnh báo", JOptionPane.WARNING_MESSAGE);
+            return;
+        }
         if (inputFirstNameTextField.getText().isEmpty() || inputFirstNameTextField.getText().equals("Bắt buộc phải nhập!")
                 || inputLastNameTextField1.getText().isEmpty() || inputLastNameTextField1.getText().equals("Bắt buộc phải nhập!")
                 || inputCCCDTextField.getText().isEmpty() || inputCCCDTextField.getText().equals("Bắt buộc phải nhập!")
                 || inputPhoneTextField.getText().isEmpty() || inputPhoneTextField.getText().equals("Bắt buộc phải nhập!")) {
             JOptionPane.showMessageDialog(this, "Bạn phải nhập đầy đủ các thông tin bắt buộc(CCCD,SĐT,Họ,Tên)!", "Cảnh báo", JOptionPane.WARNING_MESSAGE);
-            return;
-        }
-        // Kiểm tra các trường bắt buộc
-        if (!validateRequiredFields()) {
-            JOptionPane.showMessageDialog(this, "Hãy nhập đầy đủ thông tin bắt buộc trước khi thêm nhân viên mới!", "Cảnh báo", JOptionPane.WARNING_MESSAGE);
             return;
         }
 
@@ -548,7 +562,7 @@ public class EmployJPanel extends javax.swing.JPanel {
 
         // Kiểm tra thông tin nhân viên trùng lặp
         for (Employee employee : employeelist.getList()) {
-            if (employee.getCCCD().equals(cccd) || employee.getPhoneNumber().equals(phone) || employee.getLastName().equals(lastName)) {
+            if (employee.getCCCD().equals(cccd) || employee.getPhoneNumber().equals(phone)) {
                 JOptionPane.showMessageDialog(this, "Thông tin nhân viên đã trùng! Mong bạn kiểm tra và nhập lại.\n(Không được trùng Tên, CCCD,SĐT)", "Cảnh báo", JOptionPane.WARNING_MESSAGE);
                 return;
             }
@@ -597,6 +611,10 @@ public class EmployJPanel extends javax.swing.JPanel {
             String newAddress = inputAdressTextPane.getText();
             String newPhone = inputPhoneTextField.getText();
             String reg = "^(0|\\+84)\\d{9}$";
+            if (!validateRequiredFields()) {
+                JOptionPane.showMessageDialog(this, "Hãy sửa đầy đủ thông tin cơ bản !", "Cảnh báo", JOptionPane.WARNING_MESSAGE);
+                return;
+            }
             if (!newPhone.matches(reg)) {
                 JOptionPane.showMessageDialog(this, "Số điện thoại không đúng định dạng! Vui lòng nhập lại .", "Cảnh báo", JOptionPane.WARNING_MESSAGE);
                 return;
@@ -627,11 +645,24 @@ public class EmployJPanel extends javax.swing.JPanel {
 
                 if (hasChanged) {
                     // Kiểm tra trùng lặp thông tin
-                    for (Employee employee : employeelist.getList()) {
-                        if (employee != employeelist.getList().get(rowIndex) && (employee.getPhoneNumber().equals(newPhone) || employee.getCCCD().equals(newCCCD))) {
-                            // Hiển thị cảnh báo trùng lặp thông tin
-                            JOptionPane.showMessageDialog(this, "CCCD hoặc SĐT này đã trùng lặp với một nhân viên khác!", "Cảnh báo", JOptionPane.WARNING_MESSAGE);
-                            return;
+                    for (int i = 0; i < employeelist.getList().size(); i++) {
+                        Employee employee = employeelist.getList().get(i);
+
+                        if ((employee.getPhoneNumber().equals(newPhone) || employee.getCCCD().equals(newCCCD))) {
+                            // Kiểm tra xem nhân viên có thông tin trùng lặp với nhân viên tại searchResult không
+                            boolean isDuplicate = false;
+                            for (Employee searchEmployee : searchResult) {
+                                if (searchEmployee.getCCCD().equals(newCCCD) || searchEmployee.getPhoneNumber().equals(newPhone)) {
+                                    isDuplicate = true;
+                                    break;
+                                }
+                            }
+
+                            if (!isDuplicate) {
+                                // Hiển thị cảnh báo trùng lặp thông tin
+                                JOptionPane.showMessageDialog(this, "CCCD hoặc SĐT này đã trùng lặp với một nhân viên khác!", "Cảnh báo", JOptionPane.WARNING_MESSAGE);
+                                return;
+                            }
                         }
                     }
                     // Hiển thị thông báo cho người dùng để xác nhận việc chỉnh sửa thông tin
@@ -645,26 +676,33 @@ public class EmployJPanel extends javax.swing.JPanel {
                             "No");
 
                     if (option == JOptionPane.YES_OPTION) {
-                        // Cập nhật các giá trị của hàng được chọn trong bảng với các giá trị mới
-                        model.setValueAt(newFirstName, rowIndex, 0);
-                        model.setValueAt(newLastName, rowIndex, 1);
-                        model.setValueAt(newAge, rowIndex, 2);
-                        model.setValueAt(newGender, rowIndex, 3);
-                        model.setValueAt(newAddress, rowIndex, 4);
-                        model.setValueAt(newPhone, rowIndex, 5);
-                        model.setValueAt(newCCCD, rowIndex, 6);
-                        model.setValueAt(newSalary, rowIndex, 7);
-
                         // Cập nhật thông tin nhân viên trong employeeList
-                        Employee selectedEmployee = employeelist.getList().get(rowIndex);
-                        selectedEmployee.setFirstName(newFirstName);
-                        selectedEmployee.setLastName(newLastName);
-                        selectedEmployee.setAge(newAge);
-                        selectedEmployee.setGender(Gender.valueOf(newGender.toUpperCase()));
-                        selectedEmployee.setAddress(newAddress);
-                        selectedEmployee.setPhoneNumber(newPhone);
-                        selectedEmployee.setCCCD(newCCCD);
-                        selectedEmployee.setSalaryPerDay(newSalary);
+                        for (int i = 0; i < employeelist.getList().size(); i++) {
+
+                            Employee selectedEmployee = employeelist.getList().get(i);
+                            if (selectedEmployee.getFirstName().equals(firstName)
+                                    && selectedEmployee.getLastName().equals(lastName)
+                                    && selectedEmployee.getCCCD().equals(cccd)) {
+                                selectedEmployee.setFirstName(newFirstName);
+                                selectedEmployee.setLastName(newLastName);
+                                selectedEmployee.setAge(newAge);
+                                selectedEmployee.setGender(Gender.valueOf(newGender.toUpperCase()));
+                                selectedEmployee.setAddress(newAddress);
+                                selectedEmployee.setPhoneNumber(newPhone);
+                                selectedEmployee.setCCCD(newCCCD);
+                                selectedEmployee.setSalaryPerDay(newSalary);
+                            }
+                        }
+
+                        // Cập nhật các giá trị của hàng được chọn trong bảng với các giá trị mới
+                        displayTable.setValueAt(newFirstName, rowIndex, 0);
+                        displayTable.setValueAt(newLastName, rowIndex, 1);
+                        displayTable.setValueAt(newAge, rowIndex, 2);
+                        displayTable.setValueAt(newGender, rowIndex, 3);
+                        displayTable.setValueAt(newAddress, rowIndex, 4);
+                        displayTable.setValueAt(newPhone, rowIndex, 5);
+                        displayTable.setValueAt(newCCCD, rowIndex, 6);
+                        displayTable.setValueAt(newSalary, rowIndex, 7);
 
                         // Hiển thị thông báo cho người dùng để thông báo rằng thông tin nhân viên đã được cập nhật thành công
                         JOptionPane.showMessageDialog(this, "Thông tin nhân viên đã được cập nhật thành công!", "Thông báo", JOptionPane.INFORMATION_MESSAGE);
@@ -689,33 +727,44 @@ public class EmployJPanel extends javax.swing.JPanel {
     private void removeButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_removeButtonActionPerformed
         // TODO add your handling code here:
 
-        DefaultTableModel model = (DefaultTableModel) displayTable.getModel();
+        // Lấy chỉ số của hàng được chọn trong bảng
         int selectedRowIndex = displayTable.getSelectedRow();
+
         // Kiểm tra xem người dùng đã chọn hàng nào hay chưa
         if (selectedRowIndex < 0) {
             JOptionPane.showMessageDialog(this, "Vui lòng chọn một hàng cần xóa!", "Thông báo", JOptionPane.WARNING_MESSAGE);
             return;
         }
+
         // Hiển thị thông báo xác nhận việc xóa
         int reply = JOptionPane.showConfirmDialog(this, "Bạn có chắc muốn xóa thông tin không?", "Xác nhận xóa", JOptionPane.YES_NO_OPTION);
         if (reply == JOptionPane.YES_OPTION) {
-            // Lấy đối tượng Employee từ dữ liệu bảng
-            Employee employeeToRemove = employeelist.getList().get(selectedRowIndex);
+            // Lấy thông tin của nhân viên từ hàng được chọn trong bảng
+            String firstName = displayTable.getValueAt(selectedRowIndex, 0).toString();
+            String lastName = displayTable.getValueAt(selectedRowIndex, 1).toString();
+            String cccd = displayTable.getValueAt(selectedRowIndex, 6).toString();
+
             // Xóa đối tượng Employee khỏi danh sách
-            employeelist.getList().remove(employeeToRemove);
+            for (int i = 0; i < employeelist.getList().size(); i++) {
+                Employee employee = employeelist.getList().get(i);
+                if (employee.getFirstName().equals(firstName) && employee.getLastName().equals(lastName) && employee.getCCCD().equals(cccd)) {
+                    employeelist.getList().remove(i);
+                    break;
+                }
+            }
+
             // Xóa dòng được chọn trong bảng
+            DefaultTableModel model = (DefaultTableModel) displayTable.getModel();
             model.removeRow(selectedRowIndex);
-            // Cập nhật bảng
-            model.fireTableDataChanged();
+
             // Hiển thị thông báo cho người dùng
             JOptionPane.showMessageDialog(this, "Thông tin nhân viên đã được xóa thành công!", "Thông báo", JOptionPane.INFORMATION_MESSAGE);
-            // Cập nhật số lượng nhân viên
-            clearInputFields();
 
+            // Cập nhật số lượng nhân viên
             updateEmployeeCount();
         }
     }//GEN-LAST:event_removeButtonActionPerformed
-
+    List<Employee> searchResult = searchResult = new ArrayList<>();
     private void searchButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_searchButtonActionPerformed
         // TODO add your handling code here:
         String searchValue = searchIDTextField.getText();
@@ -726,8 +775,9 @@ public class EmployJPanel extends javax.swing.JPanel {
         }
 
         // Tìm kiếm vị trí của tất cả các nhân viên có firstName,lastName,CCCD tương ứng trong danh sách nhân viên
-        List<Employee> searchResult = new ArrayList<>();
-        for (Employee employee : employeelist.getList()) {
+        for (int i = 0; i < employeelist.getList().size(); i++) {
+
+            Employee employee = employeelist.getList().get(i);
             if (employee.getFirstName().toLowerCase().contains(searchValue.toLowerCase())
                     || employee.getLastName().toLowerCase().contains(searchValue.toLowerCase())
                     || employee.getCCCD().contains(searchValue)) {
@@ -810,6 +860,8 @@ public class EmployJPanel extends javax.swing.JPanel {
     private void showAllButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_showAllButtonActionPerformed
         // TODO add your handling code here:
         // Hiển thị danh sách nhân viên trên bảng
+        searchResult.clear();
+
         showTable(employeelist.getList());
         updateEmployeeCount();
     }//GEN-LAST:event_showAllButtonActionPerformed
@@ -818,6 +870,35 @@ public class EmployJPanel extends javax.swing.JPanel {
         // TODO add your handling code here:
         clearInputFields();
     }//GEN-LAST:event_cancelButtonActionPerformed
+
+    private void inputFirstNameTextFieldMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_inputFirstNameTextFieldMouseClicked
+        // TODO add your handling code here:
+        if (!inputFirstNameTextField.isEditable()) {
+
+            textFieldMouseClick(inputFirstNameTextField, 11);
+        }
+    }//GEN-LAST:event_inputFirstNameTextFieldMouseClicked
+
+    private void inputLastNameTextField1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_inputLastNameTextField1MouseClicked
+        // TODO add your handling code here:
+        if (!inputLastNameTextField1.isEditable()) {
+            textFieldMouseClick(inputLastNameTextField1, 11);
+        }
+    }//GEN-LAST:event_inputLastNameTextField1MouseClicked
+
+    private void inputPhoneTextFieldMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_inputPhoneTextFieldMouseClicked
+        // TODO add your handling code here:
+        if (!inputPhoneTextField.isEditable()) {
+            textFieldMouseClick(inputPhoneTextField, 11);
+        }
+    }//GEN-LAST:event_inputPhoneTextFieldMouseClicked
+
+    private void inputCCCDTextFieldMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_inputCCCDTextFieldMouseClicked
+        // TODO add your handling code here:
+        if (!inputCCCDTextField.isEditable()) {
+            textFieldMouseClick(inputCCCDTextField, 11);
+        }
+    }//GEN-LAST:event_inputCCCDTextFieldMouseClicked
 
     public void passData(EmployeeList employeelist, Shift shift) {
         this.employeelist = employeelist;

@@ -144,7 +144,7 @@
       },
       {
         "salaryPerDay": 25000,
-        "CCCD": "3957577777",
+        "CCCD": "3957577778",
         "IDOfOrdersInCharge": [],
         "stt": 0,
         "firstName": "Nguyen Thao",
@@ -153,18 +153,6 @@
         "address": "141-ChienThang-TanTrieu",
         "age": 20,
         "gender": "FEMALE"
-      },
-      {
-        "salaryPerDay": 20000,
-        "CCCD": "2727495500",
-        "IDOfOrdersInCharge": [],
-        "stt": 0,
-        "firstName": "Tran Luu",
-        "lastName": "Dung",
-        "phoneNumber": "0903737293",
-        "address": "Vinhome Riverside",
-        "age": 19,
-        "gender": "OTHER"
       }
     ]
   },
@@ -1623,7 +1611,7 @@
         "id": "000000",
         "goodsName": "Custard Cake",
         "manufacture": "TuyenIndustry",
-        "totalQuantity": 16634,
+        "totalQuantity": 16622,
         "shipments": [
           {
             "quantity": 8,
@@ -2031,7 +2019,7 @@
         "id": "000012",
         "goodsName": "Cooking oil",
         "manufacture": "CookWithTung",
-        "totalQuantity": 96,
+        "totalQuantity": 84,
         "shipments": [
           {
             "quantity": 20,

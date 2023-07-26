@@ -6,12 +6,24 @@ package GUI;
 
 import Models.Store;
 import Models.StoreShortedCut;
+import java.awt.Graphics;
+import java.awt.Graphics2D;
+import java.awt.RenderingHints;
+import java.awt.geom.Ellipse2D;
+import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.IOException;
 import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+import javax.imageio.ImageIO;
+import javax.swing.JFileChooser;
+import javax.swing.JLabel;
 import javax.swing.JOptionPane;
+import javax.swing.filechooser.FileNameExtensionFilter;
+import net.coobird.thumbnailator.Thumbnails;
 
 /**
  *
@@ -59,6 +71,7 @@ public class SettingsPanel extends javax.swing.JPanel {
         pointsForOneVNDTextField = new javax.swing.JTextField();
         amountForOnePointTextField = new javax.swing.JTextField();
         inputchangeScoreButton = new javax.swing.JButton();
+        fileButton = new javax.swing.JButton();
         settingIntroductionPanel = new javax.swing.JPanel();
 
         setMinimumSize(new java.awt.Dimension(1015, 670));
@@ -218,24 +231,36 @@ public class SettingsPanel extends javax.swing.JPanel {
             }
         });
 
+        fileButton.setText("Thay đổi avatar đại diện");
+        fileButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                fileButtonActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout inputchangeScorePanelLayout = new javax.swing.GroupLayout(inputchangeScorePanel);
         inputchangeScorePanel.setLayout(inputchangeScorePanelLayout);
         inputchangeScorePanelLayout.setHorizontalGroup(
             inputchangeScorePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(inputchangeScorePanelLayout.createSequentialGroup()
-                .addGap(27, 27, 27)
-                .addGroup(inputchangeScorePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(pointsForOneVNDLabel)
-                    .addComponent(amountForOnePointLabel))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(inputchangeScorePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(amountForOnePointTextField, javax.swing.GroupLayout.PREFERRED_SIZE, 109, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(pointsForOneVNDTextField, javax.swing.GroupLayout.PREFERRED_SIZE, 109, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(210, Short.MAX_VALUE))
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, inputchangeScorePanelLayout.createSequentialGroup()
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(inputchangeScoreButton)
-                .addGap(40, 40, 40))
+                .addGap(39, 39, 39))
+            .addGroup(inputchangeScorePanelLayout.createSequentialGroup()
+                .addGroup(inputchangeScorePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(inputchangeScorePanelLayout.createSequentialGroup()
+                        .addGap(27, 27, 27)
+                        .addGroup(inputchangeScorePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(pointsForOneVNDLabel)
+                            .addComponent(amountForOnePointLabel))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGroup(inputchangeScorePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(amountForOnePointTextField, javax.swing.GroupLayout.PREFERRED_SIZE, 109, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(pointsForOneVNDTextField, javax.swing.GroupLayout.PREFERRED_SIZE, 109, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                    .addGroup(inputchangeScorePanelLayout.createSequentialGroup()
+                        .addGap(93, 93, 93)
+                        .addComponent(fileButton, javax.swing.GroupLayout.PREFERRED_SIZE, 263, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addContainerGap(94, Short.MAX_VALUE))
         );
         inputchangeScorePanelLayout.setVerticalGroup(
             inputchangeScorePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -248,9 +273,11 @@ public class SettingsPanel extends javax.swing.JPanel {
                 .addGroup(inputchangeScorePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(pointsForOneVNDLabel)
                     .addComponent(pointsForOneVNDTextField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 212, Short.MAX_VALUE)
+                .addGap(32, 32, 32)
                 .addComponent(inputchangeScoreButton)
-                .addGap(48, 48, 48))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 117, Short.MAX_VALUE)
+                .addComponent(fileButton, javax.swing.GroupLayout.PREFERRED_SIZE, 68, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(43, 43, 43))
         );
 
         inputchangeInfoPanel.add(inputchangeScorePanel, java.awt.BorderLayout.CENTER);
@@ -302,7 +329,7 @@ public class SettingsPanel extends javax.swing.JPanel {
             return;
         } else {
             for (StoreShortedCut storeShortedCut : storeList) {
-                if (storeShortedCut.getEmail().equals(email) 
+                if (storeShortedCut.getEmail().equals(email)
                         && !storeShortedCut.getEmail().equals(store.getEmail())) {
                     JOptionPane.showMessageDialog(this, "Email đã được sử dụng.");
                     return;
@@ -322,7 +349,7 @@ public class SettingsPanel extends javax.swing.JPanel {
                 storeShortedCut.setEmail(email);
             }
         }
-        
+
         // Cập nhật Header với tên cửa hàng mới
         header.setTitle();
 
@@ -387,13 +414,17 @@ public class SettingsPanel extends javax.swing.JPanel {
                 return;
             }
         }
-        
+
         for (StoreShortedCut storeShortedCut : storeList) {
             if (storeShortedCut.getId().compareTo(store.getID()) == 0) {
                 storeShortedCut.setPassword(store.getPassWord());
             }
         }
     }//GEN-LAST:event_changePassBtnActionPerformed
+
+    private void fileButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_fileButtonActionPerformed
+        chooseImage();
+    }//GEN-LAST:event_fileButtonActionPerformed
 
     public void passData(Store store, Header header, List<StoreShortedCut> storeList) {
         this.store = store;
@@ -410,6 +441,73 @@ public class SettingsPanel extends javax.swing.JPanel {
         pointsForOneVNDTextField.setText(pointsForOneVND.toString());
     }
 
+    private BufferedImage loadImage(String imagePath) {
+        try {
+            BufferedImage originalImage = ImageIO.read(new File(imagePath));
+
+            // Làm nét ảnh với kích thước 1000x1000 và chất lượng 1 (100%) với thumbails
+            BufferedImage scaledImage = Thumbnails.of(originalImage)
+                    .size(1000, 1000)
+                    .outputQuality(1)
+                    .asBufferedImage();
+
+            return scaledImage;
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+    private BufferedImage scaledImage;
+
+    private void chooseImage() {
+        JFileChooser fileChooser = new JFileChooser();
+
+        FileNameExtensionFilter imageFilter = new FileNameExtensionFilter("Hình ảnh", "jpg", "png");
+        fileChooser.setFileFilter(imageFilter);
+
+        fileChooser.setMultiSelectionEnabled(false);
+
+        int x = fileChooser.showDialog(this, "Chọn file");
+
+        if (x == JFileChooser.APPROVE_OPTION) {
+            File f = fileChooser.getSelectedFile();
+            BufferedImage originalImage = loadImage(f.getAbsolutePath());
+
+            // Hiển thị hình ảnh trong changeLabel của Header
+            header.setChangeLabelImage(originalImage);
+
+        }
+    }
+
+    class RoundImageLabel extends JLabel {
+
+        private BufferedImage originalImage;
+
+        public RoundImageLabel(BufferedImage originalImage) {
+            this.originalImage = originalImage;
+        }
+
+        @Override
+        protected void paintComponent(Graphics g) {
+            super.paintComponent(g);
+
+            int width = getWidth();
+            int height = getHeight();
+
+            // Tạo hình tròn để hiển thị hình ảnh
+            Graphics2D g2d = (Graphics2D) g.create();
+            g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+            Ellipse2D.Double circle = new Ellipse2D.Double(0, 0, width, height);
+
+            g2d.clip(circle);
+
+            // Vẽ hình ảnh lên hình tròn
+            g2d.drawImage(originalImage, 0, 0, width, height, null);
+
+            g2d.dispose();
+        }
+    }
+    private BufferedImage selectedImage;
     private List<StoreShortedCut> storeList;
     private Header header;
     private Store store;
@@ -418,6 +516,7 @@ public class SettingsPanel extends javax.swing.JPanel {
     private javax.swing.JTextField amountForOnePointTextField;
     private javax.swing.JButton changeInfoButton;
     private javax.swing.JButton changePassBtn;
+    private javax.swing.JButton fileButton;
     private javax.swing.JLabel inputAndressLabel;
     private javax.swing.JTextPane inputAndressTextPane;
     private javax.swing.JLabel inputEmailLabel;

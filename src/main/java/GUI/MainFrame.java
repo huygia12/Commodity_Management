@@ -11,7 +11,9 @@ import com.formdev.flatlaf.FlatLightLaf;
 import java.awt.CardLayout;
 import java.awt.Color;
 import java.awt.event.WindowEvent;
+import java.awt.image.BufferedImage;
 import java.io.File;
+import java.io.IOException;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
@@ -21,6 +23,7 @@ import java.util.logging.Logger;
 import javaswingdev.drawer.Drawer;
 import javaswingdev.drawer.DrawerController;
 import javaswingdev.drawer.DrawerItem;
+import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JOptionPane;
@@ -413,6 +416,17 @@ public class MainFrame extends javax.swing.JFrame {
                 store.getiDGenerator().getBucket().put(Order.class.getName(), (value == 0) ? 0 : --value);
             }
             saveData();
+
+            // Nếu ấn YES_OPTION, hãy lưu hình ảnh hiện tại của changeLabel vào avatar.png
+            BufferedImage currentImage = header.scaledImage;
+            if (currentImage != null) {
+                try {
+                    File outputfile = new File("data/avatar.png");
+                    ImageIO.write(currentImage, "png", outputfile);
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
         }
         return choice != JOptionPane.CLOSED_OPTION;
     }
