@@ -457,7 +457,7 @@ public class SettingsPanel extends javax.swing.JPanel {
         }
         return null;
     }
-    private BufferedImage scaledImage;
+    
 
     private void chooseImage() {
         JFileChooser fileChooser = new JFileChooser();
@@ -479,35 +479,6 @@ public class SettingsPanel extends javax.swing.JPanel {
         }
     }
 
-    class RoundImageLabel extends JLabel {
-
-        private BufferedImage originalImage;
-
-        public RoundImageLabel(BufferedImage originalImage) {
-            this.originalImage = originalImage;
-        }
-
-        @Override
-        protected void paintComponent(Graphics g) {
-            super.paintComponent(g);
-
-            int width = getWidth();
-            int height = getHeight();
-
-            // Tạo hình tròn để hiển thị hình ảnh
-            Graphics2D g2d = (Graphics2D) g.create();
-            g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
-            Ellipse2D.Double circle = new Ellipse2D.Double(0, 0, width, height);
-
-            g2d.clip(circle);
-
-            // Vẽ hình ảnh lên hình tròn
-            g2d.drawImage(originalImage, 0, 0, width, height, null);
-
-            g2d.dispose();
-        }
-    }
-    private BufferedImage selectedImage;
     private List<StoreShortedCut> storeList;
     private Header header;
     private Store store;

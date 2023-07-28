@@ -39,7 +39,6 @@ public final class Header extends javax.swing.JPanel {
                 e.printStackTrace();
             }
         }
-
     }
 
     public void setStoreInfor() {
@@ -68,28 +67,14 @@ public final class Header extends javax.swing.JPanel {
             this.scaledImage = image;
             // Vẽ lại panel khi hình ảnh thay đổi
             repaint();
-
-            // Lưu hình ảnh vào tệp (ví dụ: avatar.png trong thư mục gốc của dự án)
-            try {
-                File outputfile = new File("data/avatar.png");
-                ImageIO.write(image, "png", outputfile);
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
         }
     }
-
-    public BufferedImage scaledImage;
 
     @Override
     protected void paintComponent(Graphics g) {
         super.paintComponent(g);
 
         if (scaledImage != null) {
-            int width = getWidth();
-            int height = getHeight();
-            int imageSize = Math.min(width, height);
-
             Graphics2D g2d = (Graphics2D) g.create();
             g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
 
@@ -169,6 +154,7 @@ public final class Header extends javax.swing.JPanel {
         );
     }// </editor-fold>//GEN-END:initComponents
 
+    public BufferedImage scaledImage;
     private Store store;
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel changeLabel;
