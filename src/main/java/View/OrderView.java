@@ -18,10 +18,6 @@ import java.time.format.DateTimeFormatter;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-/**
- *
- * @author FPTSHOP
- */
 public class OrderView {
     private final String HOME = System.getProperty("user.dir");
     private final String SEPARATOR = File.separator;
@@ -36,9 +32,6 @@ public class OrderView {
                 StandardOpenOption.WRITE,
                 StandardOpenOption.TRUNCATE_EXISTING))) {
             String customerID = "";
-            if (order.getCustomerCard() != null) {
-                customerID = order.getCustomerCard().getID();
-            }
             pw.println("");
             pw.println("-------------- YOUR BILL ---------------");
             pw.println("----------------------------------------");
@@ -62,7 +55,6 @@ public class OrderView {
             pw.printf("Tax(VAT=%s): %.1f\n", order.getTax() + "%", orderCtr.getTaxAmount(order));
             pw.println("Payment Option: " + order.getPaymentOptions());
             pw.println("Member Card ID: " + customerID);
-            pw.printf("Point Discount: \n", orderCtr.getPointDiscountAmount(order, store));
             pw.printf("Total: %.1f\n", orderCtr.getTotal(order, store));
             if (order.getPaymentOptions().equals(PaymentOptions.CASH_PAYMENT)) {
                 pw.printf("Customer payment: %.1f\n", order.getCusMoney());

@@ -4,12 +4,9 @@
  */
 package Models;
 
-import Ultility.CustomPair;
 import Ultility.IDGenerator;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
-import java.math.BigDecimal;
-import java.math.BigInteger;
 
 /**
  *
@@ -34,30 +31,9 @@ public class Store {
     @SerializedName("phoneNumber")
     @Expose
     private String phoneNumber = "";
-    @SerializedName("amountForOnePoint")
-    @Expose
-    private BigDecimal amountForOnePoint = BigDecimal.ONE;
-    @SerializedName("pointsForOneVND")
-    @Expose
-    private BigInteger pointsForOneVND = BigInteger.ONE;
-    @SerializedName("bronzeDiscountOffer")
-    @Expose
-    private CustomPair<BigDecimal, Double> bronzeDiscountOffer = new CustomPair(BigDecimal.ZERO, 0f);
-    @SerializedName("silverDiscountOffer")
-    @Expose
-    private CustomPair<BigDecimal, Double> silverDiscountOffer = new CustomPair(BigDecimal.ZERO, 0f);
-    @SerializedName("goldDiscountOffer")
-    @Expose
-    private CustomPair<BigDecimal, Double> goldDiscountOffer = new CustomPair(BigDecimal.ZERO, 0f);
-    @SerializedName("diamondDiscountOffer")
-    @Expose
-    private CustomPair<BigDecimal, Double> diamondDiscountOffer = new CustomPair(BigDecimal.ZERO, 0f);
     @SerializedName("shift")
     @Expose
     private Shift shift = new Shift();
-    @SerializedName("customerCardList")
-    @Expose
-    private CustomerCardList customerCardList = new CustomerCardList();
     @SerializedName("employeeList")
     @Expose
     private EmployeeList employeeList = new EmployeeList();
@@ -126,54 +102,6 @@ public class Store {
     public void setPhoneNumber(String phoneNumber) {
         this.phoneNumber = phoneNumber.trim();
     }
-    
-    public BigDecimal getAmountForOnePoint() {
-        return amountForOnePoint;
-    }
-
-    public void setAmountForOnePoint(BigDecimal amountForOnePoint) {
-        this.amountForOnePoint = amountForOnePoint;
-    }
-
-    public BigInteger getPointsForOneVND() {
-        return pointsForOneVND;
-    }
-
-    public void setPointsForOneVND(BigInteger pointsForOneVND) {
-        this.pointsForOneVND = pointsForOneVND;
-    }
-
-    public CustomPair<BigDecimal, Double> getBronzeDiscountOffer() {
-        return bronzeDiscountOffer;
-    }
-
-    public void setBronzeDiscountOffer(CustomPair<BigDecimal, Double> bronzeDiscountOffer) {
-        this.bronzeDiscountOffer = bronzeDiscountOffer;
-    }
-
-    public CustomPair<BigDecimal, Double> getSilverDiscountOffer() {
-        return silverDiscountOffer;
-    }
-
-    public void setSilverDiscountOffer(CustomPair<BigDecimal, Double> silverDiscountOffer) {
-        this.silverDiscountOffer = silverDiscountOffer;
-    }
-
-    public CustomPair<BigDecimal, Double> getGoldDiscountOffer() {
-        return goldDiscountOffer;
-    }
-
-    public void setGoldDiscountOffer(CustomPair<BigDecimal, Double> goldDiscountOffer) {
-        this.goldDiscountOffer = goldDiscountOffer;
-    }
-
-    public CustomPair<BigDecimal, Double> getDiamondDiscountOffer() {
-        return diamondDiscountOffer;
-    }
-
-    public void setDiamondDiscountOffer(CustomPair<BigDecimal, Double> diamondDiscountOffer) {
-        this.diamondDiscountOffer = diamondDiscountOffer;
-    }
 
     public Shift getShift() {
         return shift;
@@ -191,15 +119,6 @@ public class Store {
         this.passWord = passWord;
     }
 
-    
-    
-    public CustomerCardList getCustomerCardList() {
-        return customerCardList;
-    }
-
-    public void setCustomerCardList(CustomerCardList customerCardList) {
-        this.customerCardList = customerCardList;
-    }
 
     public EmployeeList getEmployeeList() {
         return employeeList;

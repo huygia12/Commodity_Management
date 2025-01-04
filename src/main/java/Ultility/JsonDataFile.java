@@ -19,10 +19,6 @@ import java.time.LocalDateTime;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-/**
- *
- * @author FPTSHOP
- */
 public class JsonDataFile {
     public GsonBuilder gsonBuilder = new GsonBuilder()
             .registerTypeAdapter(LocalDate.class, new LocalDateSerializer())

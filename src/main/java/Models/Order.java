@@ -29,38 +29,27 @@ public class Order extends GoodsList<Goods> {
     @SerializedName("paymentOptions")
     @Expose
     private PaymentOptions paymentOptions;
-    @SerializedName("customerCard")
-    @Expose
-    private CustomerCard customerCard;
-    @SerializedName("pointDiscount")
-    @Expose
-    private BigInteger pointDiscount = BigInteger.ZERO;
     @SerializedName("cashier")
     @Expose 
     private Employee cashier;
-    @SerializedName("shippingFee")
-    @Expose 
-    private BigDecimal shippingFee = BigDecimal.ZERO;
     
     public Order(String ID) {
         super(new ArrayList<>());
         this.ID = ID.trim();
     }
 
-    public Order(LocalDateTime orderDateTime, String ID, PaymentOptions paymentOptions, CustomerCard customerCard, Employee cashier) {
+    public Order(LocalDateTime orderDateTime, String ID, PaymentOptions paymentOptions, Employee cashier) {
         this.orderDateTime = orderDateTime;
         this.ID = ID;
         this.paymentOptions = paymentOptions;
-        this.customerCard = customerCard;
         this.cashier = cashier;
     }
 
-    public Order(LocalDateTime orderDateTime, String ID, PaymentOptions paymentOptions, CustomerCard customerCard, Employee cashier, List<Goods> goodsList) {
+    public Order(LocalDateTime orderDateTime, String ID, PaymentOptions paymentOptions, Employee cashier, List<Goods> goodsList) {
         super(goodsList);
         this.orderDateTime = orderDateTime;
         this.ID = ID;
         this.paymentOptions = paymentOptions;
-        this.customerCard = customerCard;
         this.cashier = cashier;
     }
 
@@ -107,14 +96,6 @@ public class Order extends GoodsList<Goods> {
         return this.paymentOptions;
     }
 
-    public BigInteger getPointDiscount() {
-        return this.pointDiscount;
-    }
-
-    public void setPointDiscount(BigInteger pointDiscount) {
-        this.pointDiscount = pointDiscount;
-    }
-
     public void setPaymentOptions(PaymentOptions typeOfPayment) {
         this.paymentOptions = typeOfPayment;
     }
@@ -127,14 +108,6 @@ public class Order extends GoodsList<Goods> {
         this.cusMoney = customerMoney;
     }
 
-    public CustomerCard getCustomerCard() {
-        return customerCard;
-    }
-
-    public void setCustomerCard(CustomerCard customerCard) {
-        this.customerCard = customerCard;
-    }
-
     public Employee getCashier() {
         return cashier;
     }
@@ -142,14 +115,4 @@ public class Order extends GoodsList<Goods> {
     public void setCashier(Employee cashier) {
         this.cashier = cashier;
     }
-
-    public BigDecimal getShippingFee() {
-        return shippingFee;
-    }
-
-    public void setShippingFee(BigDecimal shippingFee) {
-        this.shippingFee = shippingFee;
-    }
-    
-    
 }

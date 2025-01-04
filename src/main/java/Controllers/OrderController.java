@@ -22,7 +22,6 @@ public class OrderController extends GoodsListController {
     final LocalDate CURRENT_DATE = LocalDate.now();
     private final GoodsList<Goods> draftGoodsList = new GoodsList(new ArrayList<>());
     private final ShipmentController shipmentCtr = new ShipmentController();
-    private final CustomerCardController cardCtr = new CustomerCardController();
 
     public OrderController() {
     }
@@ -50,14 +49,7 @@ public class OrderController extends GoodsListController {
         // Khoan tien can thanh toan khi da tru di discount va cong them VAT
         BigDecimal total = (getSubTotal(order)
                 .add(getTaxAmount(order)))
-                .multiply(new BigDecimal(1.0 - order.getDiscount() * 1.0 / 100))
-                .add(order.getShippingFee());
-        if(order.getCustomerCard()!=null){
-            Double customerDisOffer = (100f - cardCtr
-                    .getCustomerDiscountOffer(order.getCustomerCard(), store))/100;
-            total = total.subtract(getPointDiscountAmount(order, store));
-            total = total.multiply(new BigDecimal(customerDisOffer));
-        }
+                .multiply(new BigDecimal(1.0 - order.getDiscount() * 1.0 / 100));
         return total;
     }
 
@@ -69,12 +61,6 @@ public class OrderController extends GoodsListController {
 
     public BigDecimal getChange(Order order, Store store) {
         return order.getCusMoney().subtract(getTotal(order, store));
-    }
-
-    public BigDecimal getPointDiscountAmount(Order order, Store store) {
-        return (order.getCustomerCard() == null) ? BigDecimal.ZERO : cardCtr
-                .convertPointToMoney(order.getCustomerCard(), 
-                        order.getPointDiscount(), store);
     }
 
     public GoodsList<Goods> makeDraftGoodsList(GoodsList<Goods> repoGoodsList) {
@@ -205,16 +191,8 @@ public class OrderController extends GoodsListController {
     }
 
     public void payOrder(Order order,Shift shift, Store store) {
-        CustomerCard card = order.getCustomerCard();
         order.setOrderDateTime();
         shift.getOrderHisPerShift().add(order);
         updateQuanAfterPay(store.getRepository(), order);
-        if (card != null) {
-            cardCtr.gainPoint(card, getTotal(order, store), store);
-            cardCtr.usePoint(card, order.getPointDiscount());
-            card.setUsedPoint(order.getPointDiscount().add(card.getUsedPoint()));
-            card.getIDOfBoughtOrders().add(order.getID());
-            cardCtr.updateRank(card, store);
-        }
     }
 }

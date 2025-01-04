@@ -1,7 +1,3 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package Ultility;
 
 import com.google.gson.annotations.Expose;
@@ -9,10 +5,6 @@ import com.google.gson.annotations.SerializedName;
 import java.util.HashMap;
 import java.util.Map;
 
-/**
- *
- * @author FPTSHOP
- */
 public class IDGenerator {
     @SerializedName("bucket")
     @Expose

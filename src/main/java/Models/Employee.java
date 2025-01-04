@@ -14,7 +14,7 @@ import java.util.List;
  *
  * @author s1rja
  */
-public class Employee extends AbstractHuman {
+public class Employee {
 
     @SerializedName("salaryPerDay")
     @Expose
@@ -54,26 +54,13 @@ public class Employee extends AbstractHuman {
     }
 
     public Employee(String firstName, String lastName, int age, String address, String cccd, String phone, double salary, String gender) {
-
-        this.firstName = firstName;
-        this.lastName = lastName;
-        this.age = age;
-        this.address = address;
         this.CCCD = cccd;
-        this.phoneNumber = phone;
         this.salaryPerDay = BigDecimal.valueOf(salary);
-        this.gender = Gender.valueOf(gender.toUpperCase());
     }
-      public Employee(String firstName, String lastName, int age, String address, String cccd, String phone, BigDecimal  salary, String gender) {
-
-        this.firstName = firstName;
-        this.lastName = lastName;
-        this.age = age;
-        this.address = address;
+    
+    public Employee(String firstName, String lastName, int age, String address, String cccd, String phone, BigDecimal  salary, String gender) {
         this.CCCD = cccd;
-        this.phoneNumber = phone;
         this.salaryPerDay =salary;
-        this.gender = Gender.valueOf(gender.toUpperCase());
     }
 
 
@@ -110,9 +97,5 @@ public class Employee extends AbstractHuman {
         this.IDOfOrdersInCharge = IDOfOrdersInCharge;
     }
 
-    @Override
-    public String toString() {
-        return this.lastName + "-" + this.phoneNumber;
-    }
 
 }

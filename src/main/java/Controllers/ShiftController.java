@@ -78,14 +78,6 @@ public class ShiftController {
         return result;
     }
 
-    public BigDecimal getTotalPointDiscount(Shift shift, Store store) {
-        BigDecimal result = BigDecimal.ZERO;
-        for (Order order : shift.getOrderHisPerShift()) {
-            result = result.add(orderCtr.getPointDiscountAmount(order, store));
-        }
-        return result;
-    }
-
     public long getNumberOfOrder(Shift shift) {
         return shift.getOrderHisPerShift().size();
     }

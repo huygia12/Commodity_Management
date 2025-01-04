@@ -1,4 +1,46 @@
-/sourceCode/target/
-/java-swing-drawer-main/build/
-/java-swing-drawer-main/dist/
-/java-swing-drawer-main/nbproject/private/
+# Ignore Maven/Gradle directories and files
+target/
+build/
+out/
+output/
+
+# IntelliJ IDEA specific files
+.idea/
+*.iml
+*.iws
+
+# Logs and temporary files
+*.log
+*.tmp
+*.swp
+*.swo
+.DS_Store
+
+# OS specific files
+Thumbs.db
+ehthumbs.db
+desktop.ini
+
+# IntelliJ workspace settings
+*.ipr
+*.iws
+
+# Class files and compiled files
+*.class
+
+# User-specific files
+.vscode/
+*.prefs
+
+# Ignore JAR and other library files
+*.jar
+*.war
+*.ear
+
+# Exclude all binary files
+*.bin
+
+# Eclipse project files (if you switch IDEs)
+.project
+.classpath
+.settings/

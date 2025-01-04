@@ -1,7 +1,3 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package View;
 
 import Controllers.GoodsController;
@@ -17,10 +13,6 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- *
- * @author FPTSHOP
- */
 public class CommodityManagement {
 
     private static final String HOME = System.getProperty("user.dir");
@@ -37,7 +29,8 @@ public class CommodityManagement {
     final static List<StoreShortedCut> storeList = new ArrayList<>();
 
     public static void main(String[] args) {
-        insertDataDirectly();
+//        insertDataDirectly();
+        loadData();
         saveData();
     }
 
@@ -373,25 +366,15 @@ public class CommodityManagement {
         store.getEmployeeList().getList().add(new Employee(new BigDecimal("22000"), "7337593977", "Dao Van", "Tuyen", "0805737293", "220-TrieuKhuc-TanTrieu-ThanhTri", 20, Gender.MALE));
         store.getEmployeeList().getList().add(new Employee(new BigDecimal("25000"), "3957577777", "Nguyen Thao", "Chi", "0505737293", "141-ChienThang-TanTrieu", 20, Gender.FEMALE));
         store.getEmployeeList().getList().add(new Employee(new BigDecimal("20000"), "2727495500", "Tran Luu", "Dung", "0903737293", "Vinhome Riverside", 19, Gender.OTHER));
-        store.getCustomerCardList().getList().add(new CustomerCard(idGenerator.generateID(CustomerCard.class.getName(), 6), new Customer("Nguyen Duc", "Anh", "0975268264", "34 Nguyen Du", 20, Gender.MALE)));
-        store.getCustomerCardList().getList().add(new CustomerCard(idGenerator.generateID(CustomerCard.class.getName(), 6), new Customer("Le Van", "Quyet", "0906333164", "26 Do Duc Duc", 20, Gender.OTHER)));
-        store.getCustomerCardList().getList().add(new CustomerCard(idGenerator.generateID(CustomerCard.class.getName(), 6), new Customer("Do Quynh", "Anh", "0971345298", "16 Cau Giay", 22, Gender.FEMALE)));
-        store.getCustomerCardList().getList().add(new CustomerCard(idGenerator.generateID(CustomerCard.class.getName(), 6), new Customer("Le Duc", "Cuong", "0916254167", "41 Minh Khai", 17, Gender.MALE)));
         store.setName("Chang hi");
         store.setAddress("112-Nguyen Van Loc");
         store.setEmail("wangwang123@gmail.com");
         store.setPassWord("12345678");
         store.setPhoneNumber("0705737292");
-        store.setPointsForOneVND(new BigInteger("10"));
-        store.setAmountForOnePoint(new BigDecimal("10000"));
         store.getSettings().getPriceAmountList().add("< 100000");
         store.getSettings().getPriceAmountList().add("100000 - 300000");
         store.getSettings().getPriceAmountList().add("300000 - 500000");
         store.getSettings().getPriceAmountList().add("< 500000");
-        store.setBronzeDiscountOffer(new CustomPair<>(new BigDecimal("0"), 0d));
-        store.setSilverDiscountOffer(new CustomPair<>(new BigDecimal("8000000"), 2d));
-        store.setGoldDiscountOffer(new CustomPair<>(new BigDecimal("12000000"), 3d));
-        store.setDiamondDiscountOffer(new CustomPair<>(new BigDecimal("30000000"), 4d));
         
         storeList.add(new StoreShortedCut(store.getID(), store.getEmail(), store.getPassWord()));
 //        GoodsList<Goods> orderGoodsList1 = new GoodsList();

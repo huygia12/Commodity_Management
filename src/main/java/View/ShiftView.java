@@ -1,7 +1,3 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change shift license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit shift template
- */
 package View;
 
 import Controllers.HistoryController;
@@ -16,10 +12,6 @@ import java.nio.file.StandardOpenOption;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-/**
- *
- * @author FPTSHOP
- */
 public class ShiftView {
 
     private final String HOME = System.getProperty("user.dir");
@@ -41,7 +33,6 @@ public class ShiftView {
             pw.println(String.format("%40s" + " | " + "%-40.1f", "Số dư đầu ca", shift.getOpeningBalance()));
             pw.println(String.format("%40s" + " | " + "%-40.1f", "Doanh thu(gross)", shiftCtr.getGrossRevenue(shift)));
             pw.println(String.format("%40s" + " | " + "%-40.1f", "Tổng chiết khấu trực tiếp", shiftCtr.getTotalDiscountMoney(shift)));
-            pw.println(String.format("%40s" + " | " + "%-40.1f", "Tổng chiết khấu điểm", shiftCtr.getTotalPointDiscount(shift, store)));
             pw.println(String.format("%40s" + " | " + "%-40.1f", "Tổng tiền thuế(VAT)" + shift.getTax() + "%", shiftCtr.getTotalVAT(shift)));
             pw.println(String.format("%40s" + " | " + "%-40.1f", "Phí phát sinh", shift.getSurcharge()));
             pw.println(String.format("%40s" + " | " + "%-40.1f", "Lợi nhuận ròng(net)", shiftCtr.getNetRevenue(shift, store)));
