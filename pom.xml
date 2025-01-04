@@ -61,19 +61,25 @@
             <version>RELEASE150</version>
         </dependency>
         <dependency>
-            <groupId>anyvalue</groupId>
+            <groupId>com.drawer</groupId>
             <artifactId>java-swing-drawer</artifactId>
             <version>1.0</version>
+            <scope>system</scope>
+            <systemPath>${project.basedir}/lib/java-swing-drawer.jar</systemPath>
         </dependency>
         <dependency>
-            <groupId>anyvalue</groupId>
+            <groupId>com.miglayout</groupId>
             <artifactId>miglayout</artifactId>
             <version>4.0</version>
+            <scope>system</scope>
+            <systemPath>${project.basedir}/lib/miglayout-4.0.jar</systemPath>
         </dependency>
         <dependency>
-            <groupId>anyvalue</groupId>
+            <groupId>com.timingframework</groupId>
             <artifactId>TimingFramework</artifactId>
             <version>0.55</version>
+            <scope>system</scope>
+            <systemPath>${project.basedir}/lib/TimingFramework-0.55.jar</systemPath>
         </dependency>
         <dependency>
             <groupId>com.formdev</groupId>
