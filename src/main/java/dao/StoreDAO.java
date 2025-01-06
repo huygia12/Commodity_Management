@@ -1,23 +1,23 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package dao;
 
+import java.util.UUID;
 import javax.persistence.EntityManager;
 import model.entities.Store;
 
-/**
- *
- * @author huy
- */
+
 public interface StoreDAO {
     
     public Store login(String email, String password, EntityManager em);
     
     public boolean signup(Store store, EntityManager em);
     
-    public void updateStore(Store store, EntityManager em);
+    public boolean updateStore(Store store, EntityManager em);
     
-    public void deleteStore(Store store, EntityManager em);
+    public boolean updateStorePassword(UUID storeId, String newPassword, EntityManager em);
+    
+    public Store getStore(UUID storeId, EntityManager em);
+    
+    public Store getStoreWithEmail(String email, EntityManager em);
+    
+    public boolean updateStoreAvatar(UUID storeId, String avatarPath, EntityManager em);
 }

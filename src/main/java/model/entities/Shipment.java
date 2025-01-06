@@ -1,5 +1,6 @@
 package model.entities;
 
+import java.time.LocalDate;
 import lombok.*;
 import javax.persistence.*;
 import java.time.LocalDateTime;
@@ -26,12 +27,13 @@ public class Shipment {
 
     @Column(nullable = false)
     private Integer quantity;
-
+    
     @Column(nullable = false)
-    private LocalDateTime manufacturingDate;
+    private Integer quantityInStock;
 
-    @Column(nullable = false)
-    private LocalDateTime expiryDate;
+    private LocalDate manufacturingDate;
+
+    private LocalDate expiryDate;
 
     @ManyToOne(optional = false)
     @JoinColumn(name = "productId", referencedColumnName = "productId")

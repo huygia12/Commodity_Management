@@ -4,6 +4,7 @@
  */
 package Controllers;
 
+import gui.ShiftView;
 import Models.*;
 import View.ShiftView;
 import java.math.BigDecimal;
@@ -26,21 +27,6 @@ public class ShiftController {
         return this.shiftView;
     }
 
-    public BigDecimal getGrossRevenue(Shift shift) {
-        BigDecimal result = BigDecimal.ZERO;
-        for (Order order : shift.getOrderHisPerShift()) {
-            result = result.add(orderCtr.getSubTotal(order));
-        }
-        return result;
-    }
-
-    public BigDecimal getNetRevenue(Shift shift, Store store) {
-        BigDecimal result = BigDecimal.ZERO;
-        for (Order order : shift.getOrderHisPerShift()) {
-            result = result.add(orderCtr.getTotal(order, store));
-        }
-        return result;
-    }
 
     public BigDecimal getTotalDiscountMoney(Shift shift) {
         BigDecimal result = BigDecimal.ZERO;

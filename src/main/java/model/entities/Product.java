@@ -24,9 +24,6 @@ public class Product {
     @Column(nullable = false)
     private String productCode;
 
-    @Builder.Default
-    private String thump = "/product-placeholder.jpg";
-
     @Column(nullable = false)
     private String productName;
 

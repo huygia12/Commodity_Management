@@ -25,6 +25,9 @@ public class InvoiceProduct {
     
     @Column(nullable = false)
     private String productCode;
+    
+    @Column(nullable = false)
+    private UUID productId;
 
     @Column(nullable = false)
     private String unit;

@@ -69,13 +69,15 @@ public class LogInFrame extends javax.swing.JFrame {
         setTitle("Quản lí bán hàng");
         setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
         setLocation(new java.awt.Point(500, 150));
+        setMinimumSize(new java.awt.Dimension(600, 600));
+        setPreferredSize(new java.awt.Dimension(600, 600));
         setResizable(false);
 
         LogInPanel.setBackground(new java.awt.Color(255, 255, 255));
         LogInPanel.setBorder(javax.swing.BorderFactory.createEmptyBorder(1, 1, 1, 1));
-        LogInPanel.setMaximumSize(new java.awt.Dimension(400, 450));
-        LogInPanel.setMinimumSize(new java.awt.Dimension(400, 400));
-        LogInPanel.setPreferredSize(new java.awt.Dimension(400, 400));
+        LogInPanel.setMaximumSize(new java.awt.Dimension(600, 570));
+        LogInPanel.setMinimumSize(new java.awt.Dimension(600, 570));
+        LogInPanel.setPreferredSize(new java.awt.Dimension(600, 570));
 
         jLabel1.setFont(new java.awt.Font("Segoe UI", 1, 24)); // NOI18N
         jLabel1.setText("Đăng nhập tài khoản");
@@ -116,73 +118,70 @@ public class LogInFrame extends javax.swing.JFrame {
         LogInPanelLayout.setHorizontalGroup(
             LogInPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, LogInPanelLayout.createSequentialGroup()
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addGroup(LogInPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addGroup(LogInPanelLayout.createSequentialGroup()
-                        .addGap(50, 50, 50)
-                        .addGroup(LogInPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(LogInPanelLayout.createSequentialGroup()
+                    .addComponent(logInButton)
+                    .addGroup(LogInPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addComponent(jLabel1)
+                        .addGroup(LogInPanelLayout.createSequentialGroup()
+                            .addGroup(LogInPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                 .addComponent(logInEmailLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 90, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(logInEmail, javax.swing.GroupLayout.PREFERRED_SIZE, 189, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addComponent(rememberPasswordCheckBox)
-                            .addGroup(LogInPanelLayout.createSequentialGroup()
-                                .addComponent(logInPasswordLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 90, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(logInPassword, javax.swing.GroupLayout.PREFERRED_SIZE, 189, javax.swing.GroupLayout.PREFERRED_SIZE))))
-                    .addGroup(LogInPanelLayout.createSequentialGroup()
-                        .addGap(0, 237, Short.MAX_VALUE)
-                        .addComponent(illegalLogInEmailWarning)))
+                                .addComponent(logInPasswordLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 90, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGap(32, 32, 32)
+                            .addGroup(LogInPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                                .addGroup(LogInPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                    .addComponent(rememberPasswordCheckBox)
+                                    .addComponent(logInEmail)
+                                    .addComponent(logInPassword, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 285, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addComponent(illegalLogInEmailWarning)))))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(eyeBtn)
-                .addGap(33, 33, 33))
-            .addGroup(LogInPanelLayout.createSequentialGroup()
-                .addGroup(LogInPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(LogInPanelLayout.createSequentialGroup()
-                        .addGap(81, 81, 81)
-                        .addComponent(jLabel1))
-                    .addGroup(LogInPanelLayout.createSequentialGroup()
-                        .addGap(127, 127, 127)
-                        .addComponent(logInButton)))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addComponent(eyeBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(60, 60, 60))
         );
         LogInPanelLayout.setVerticalGroup(
             LogInPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(LogInPanelLayout.createSequentialGroup()
                 .addGap(17, 17, 17)
-                .addComponent(jLabel1)
-                .addGap(43, 43, 43)
-                .addGroup(LogInPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(logInEmailLabel)
-                    .addComponent(logInEmail, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(6, 6, 6)
+                .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 53, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(44, 44, 44)
+                .addGroup(LogInPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(logInEmail, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(logInEmailLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(12, 12, 12)
                 .addComponent(illegalLogInEmailWarning)
-                .addGap(6, 6, 6)
-                .addGroup(LogInPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(LogInPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addGroup(LogInPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                        .addComponent(logInPasswordLabel)
-                        .addComponent(logInPassword, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addComponent(eyeBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 22, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addComponent(logInPassword, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(logInPasswordLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 39, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(eyeBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(6, 6, 6)
                 .addComponent(rememberPasswordCheckBox)
-                .addGap(114, 114, 114)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 178, Short.MAX_VALUE)
                 .addComponent(logInButton, javax.swing.GroupLayout.PREFERRED_SIZE, 43, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(62, Short.MAX_VALUE))
+                .addGap(93, 93, 93))
         );
 
         tabPane.addTab("Đăng nhập", LogInPanel);
 
         SignUpPanel.setBackground(new java.awt.Color(255, 255, 255));
         SignUpPanel.setBorder(javax.swing.BorderFactory.createEmptyBorder(1, 1, 1, 1));
-        SignUpPanel.setMaximumSize(new java.awt.Dimension(400, 450));
-        SignUpPanel.setMinimumSize(new java.awt.Dimension(400, 400));
-        SignUpPanel.setPreferredSize(new java.awt.Dimension(400, 400));
+        SignUpPanel.setMaximumSize(new java.awt.Dimension(600, 570));
+        SignUpPanel.setMinimumSize(new java.awt.Dimension(600, 570));
+        SignUpPanel.setPreferredSize(new java.awt.Dimension(600, 570));
+        SignUpPanel.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
+        SignUpPanel.add(signupEmailInput, new org.netbeans.lib.awtextra.AbsoluteConstraints(240, 90, 280, 37));
 
         jLabel5.setFont(new java.awt.Font("Segoe UI", 1, 24)); // NOI18N
         jLabel5.setText("Đăng ký tài khoản");
+        SignUpPanel.add(jLabel5, new org.netbeans.lib.awtextra.AbsoluteConstraints(94, 25, -1, 38));
+        SignUpPanel.add(signupPasswordInput, new org.netbeans.lib.awtextra.AbsoluteConstraints(240, 230, 280, 37));
 
         signInEmailLabel.setText("Email");
+        SignUpPanel.add(signInEmailLabel, new org.netbeans.lib.awtextra.AbsoluteConstraints(90, 90, 116, 37));
 
         signInPasswordLabel.setText("Mật khẩu");
+        SignUpPanel.add(signInPasswordLabel, new org.netbeans.lib.awtextra.AbsoluteConstraints(90, 230, 143, 28));
 
         signUpButton.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
         signUpButton.setText("Đăng ký");
@@ -191,98 +190,35 @@ public class LogInFrame extends javax.swing.JFrame {
                 signUpButtonActionPerformed(evt);
             }
         });
+        SignUpPanel.add(signUpButton, new org.netbeans.lib.awtextra.AbsoluteConstraints(378, 458, 126, 43));
 
         retypeSignInPasswordLabel.setText("Nhập lại mật khẩu");
+        SignUpPanel.add(retypeSignInPasswordLabel, new org.netbeans.lib.awtextra.AbsoluteConstraints(90, 300, -1, 30));
+        SignUpPanel.add(retypePasswordInput, new org.netbeans.lib.awtextra.AbsoluteConstraints(240, 300, 280, 36));
 
         passwordWarning.setFont(new java.awt.Font("Segoe UI", 2, 12)); // NOI18N
         passwordWarning.setForeground(new java.awt.Color(255, 0, 51));
         passwordWarning.setText("Mật khẩu không khớp! ");
+        SignUpPanel.add(passwordWarning, new org.netbeans.lib.awtextra.AbsoluteConstraints(370, 340, -1, -1));
 
         illegalSignUpEmailWarning.setFont(new java.awt.Font("Segoe UI", 2, 12)); // NOI18N
         illegalSignUpEmailWarning.setForeground(new java.awt.Color(255, 0, 51));
         illegalSignUpEmailWarning.setText("Email không hợp lệ! ");
+        SignUpPanel.add(illegalSignUpEmailWarning, new org.netbeans.lib.awtextra.AbsoluteConstraints(390, 130, -1, -1));
 
         blankSignUpPasswordWarning.setFont(new java.awt.Font("Segoe UI", 2, 12)); // NOI18N
         blankSignUpPasswordWarning.setForeground(new java.awt.Color(255, 0, 51));
         blankSignUpPasswordWarning.setText("Mật khẩu phải chứa ít nhất 6 kí tự! ");
+        SignUpPanel.add(blankSignUpPasswordWarning, new org.netbeans.lib.awtextra.AbsoluteConstraints(290, 270, -1, -1));
+        SignUpPanel.add(storeNameInput, new org.netbeans.lib.awtextra.AbsoluteConstraints(240, 160, 280, 40));
 
         signInEmailLabel1.setText("Tên cửa hàng");
+        SignUpPanel.add(signInEmailLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(90, 160, 116, 30));
 
         illegalStoreNameWarning.setFont(new java.awt.Font("Segoe UI", 2, 12)); // NOI18N
         illegalStoreNameWarning.setForeground(new java.awt.Color(255, 0, 51));
         illegalStoreNameWarning.setText("Không được để trống!");
-
-        javax.swing.GroupLayout SignUpPanelLayout = new javax.swing.GroupLayout(SignUpPanel);
-        SignUpPanel.setLayout(SignUpPanelLayout);
-        SignUpPanelLayout.setHorizontalGroup(
-            SignUpPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(SignUpPanelLayout.createSequentialGroup()
-                .addGroup(SignUpPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(SignUpPanelLayout.createSequentialGroup()
-                        .addGap(96, 96, 96)
-                        .addComponent(jLabel5))
-                    .addGroup(SignUpPanelLayout.createSequentialGroup()
-                        .addGap(50, 50, 50)
-                        .addGroup(SignUpPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addComponent(passwordWarning)
-                            .addGroup(SignUpPanelLayout.createSequentialGroup()
-                                .addGroup(SignUpPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                    .addComponent(signInPasswordLabel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                    .addComponent(retypeSignInPasswordLabel, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addGroup(SignUpPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                    .addComponent(retypePasswordInput)
-                                    .addComponent(signupPasswordInput)
-                                    .addComponent(blankSignUpPasswordWarning, javax.swing.GroupLayout.Alignment.TRAILING)))
-                            .addGroup(SignUpPanelLayout.createSequentialGroup()
-                                .addComponent(signInEmailLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 116, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addGroup(SignUpPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(signupEmailInput, javax.swing.GroupLayout.PREFERRED_SIZE, 221, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(illegalSignUpEmailWarning, javax.swing.GroupLayout.Alignment.TRAILING)))
-                            .addGroup(SignUpPanelLayout.createSequentialGroup()
-                                .addComponent(signInEmailLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 116, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(storeNameInput, javax.swing.GroupLayout.PREFERRED_SIZE, 221, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addComponent(illegalStoreNameWarning)))
-                    .addGroup(SignUpPanelLayout.createSequentialGroup()
-                        .addGap(126, 126, 126)
-                        .addComponent(signUpButton, javax.swing.GroupLayout.PREFERRED_SIZE, 126, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap(31, Short.MAX_VALUE))
-        );
-        SignUpPanelLayout.setVerticalGroup(
-            SignUpPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(SignUpPanelLayout.createSequentialGroup()
-                .addGap(17, 17, 17)
-                .addComponent(jLabel5)
-                .addGap(42, 42, 42)
-                .addGroup(SignUpPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(signInEmailLabel)
-                    .addComponent(signupEmailInput, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(illegalSignUpEmailWarning)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(SignUpPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(signInEmailLabel1)
-                    .addComponent(storeNameInput, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(4, 4, 4)
-                .addComponent(illegalStoreNameWarning)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(SignUpPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(signupPasswordInput, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(signInPasswordLabel))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(blankSignUpPasswordWarning)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(SignUpPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(retypePasswordInput, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(retypeSignInPasswordLabel))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(passwordWarning)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 42, Short.MAX_VALUE)
-                .addComponent(signUpButton, javax.swing.GroupLayout.PREFERRED_SIZE, 43, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(29, 29, 29))
-        );
+        SignUpPanel.add(illegalStoreNameWarning, new org.netbeans.lib.awtextra.AbsoluteConstraints(380, 200, -1, -1));
 
         tabPane.addTab("Đăng kí", SignUpPanel);
 

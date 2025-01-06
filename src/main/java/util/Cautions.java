@@ -2,7 +2,7 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
-package Ultility;
+package util;
 
 import java.math.BigDecimal;
 import java.math.BigInteger;
@@ -15,7 +15,7 @@ import java.util.List;
  *
  * @author FPTSHOP
  */
-public class Cautions {
+class Cautions {
 
     final String INPUT_DATE_PATTERN = "d/M/y";
 

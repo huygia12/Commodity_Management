@@ -4,6 +4,7 @@
  */
 package Ultility;
 
+import gui.CommodityManagement;
 import View.CommodityManagement;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;

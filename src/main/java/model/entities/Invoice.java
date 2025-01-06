@@ -34,7 +34,7 @@ public class Invoice {
 
     @Column(nullable = false)
     @Builder.Default
-    private Float discount = 0.0f;
+    private int discount = 0;
 
     @Column(nullable = false, updatable = false)
     private LocalDateTime createdAt;
@@ -43,7 +43,7 @@ public class Invoice {
     @JoinColumn(name = "shiftId", referencedColumnName = "shiftId")
     private Shift shift;
     
-    @OneToMany(mappedBy = "invoice", cascade = CascadeType.REMOVE, orphanRemoval = true)
+    @OneToMany(mappedBy = "invoice", cascade = CascadeType.PERSIST, orphanRemoval = true)
     private List<InvoiceProduct> invoiceProducts;
     
     @PrePersist

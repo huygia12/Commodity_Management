@@ -7,7 +7,7 @@ package Controllers;
 import Models.Goods;
 import Models.GoodsList;
 import Models.Shipment;
-import Ultility.Cautions;
+import util.Cautions;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;

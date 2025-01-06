@@ -1,21 +1,21 @@
 package dao.impl;
 
-import dao.ProductDAO;
+import dao.ShipmentDAO;
 import javax.persistence.EntityManager;
-import model.entities.Product;
 import java.util.UUID;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.persistence.EntityTransaction;
+import model.entities.Shipment;
 
-public class ProductDAOImpl implements ProductDAO {
+public class ShipmentDAOImpl implements ShipmentDAO {
 
     @Override
-    public boolean addProduct(Product product, EntityManager em) {
+    public boolean addShipment(Shipment shipment, EntityManager em) {
         EntityTransaction transaction = em.getTransaction();
         try {
             transaction.begin();
-            em.persist(product);
+            em.persist(shipment);
             transaction.commit();
             return true;
         } catch (RuntimeException e) {
@@ -32,19 +32,18 @@ public class ProductDAOImpl implements ProductDAO {
     }
 
     @Override
-    public boolean updateProduct(Product product, EntityManager em) {
+    public boolean updateShipment(Shipment shipment, EntityManager em) {
         EntityTransaction transaction = em.getTransaction();
         try {
-            Product p = getProduct(product.getProductId(), em);
+            Shipment s = getShipment(shipment.getShipmentId(), em);
             transaction.begin();
 
-            p.setProductCode(product.getProductCode());
-            p.setProductName(product.getProductName());
-            p.setUnit(product.getUnit());
-            p.setPrice(product.getPrice());
-            p.setProvider(product.getProvider());
-
-            em.merge(p);
+            s.setImportPrice(shipment.getImportPrice());
+            s.setQuantity(shipment.getQuantity());
+            s.setManufacturingDate(shipment.getManufacturingDate());
+            s.setExpiryDate(shipment.getExpiryDate());
+            
+            em.merge(s);
             transaction.commit();
             return true;
         } catch (RuntimeException e) {
@@ -61,16 +60,16 @@ public class ProductDAOImpl implements ProductDAO {
     }
 
     @Override
-    public boolean deleteProduct(UUID productId, EntityManager em) {
+    public boolean deleteShipment(UUID shipmentId, EntityManager em) {
         EntityTransaction transaction = em.getTransaction();
         try {
-            Product p = getProduct(productId, em);
+            Shipment p = getShipment(shipmentId, em);
             transaction.begin();
 
             if (p != null) {
                 em.remove(p);
             } else {
-                Logger.getLogger(this.getClass().getName()).log(Level.INFO, null, "Product not found");
+                Logger.getLogger(this.getClass().getName()).log(Level.INFO, null, "Shipment not found");
             }
             transaction.commit();
             return true;
@@ -86,8 +85,8 @@ public class ProductDAOImpl implements ProductDAO {
     }
 
     @Override
-    public Product getProduct(UUID productId, EntityManager em) {
-        Product p = em.find(Product.class, productId);
-        return p;
+    public Shipment getShipment(UUID shipmentId, EntityManager em) {
+        Shipment s = em.find(Shipment.class, shipmentId);
+        return s;
     }
 }

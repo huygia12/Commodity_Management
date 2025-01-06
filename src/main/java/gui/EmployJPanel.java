@@ -36,13 +36,13 @@ public class EmployJPanel extends javax.swing.JPanel {
         maleButton = new javax.swing.JRadioButton();
         femaleRadioButton = new javax.swing.JRadioButton();
         otherRadioButton = new javax.swing.JRadioButton();
-        jSeparator1 = new javax.swing.JSeparator();
         functionPanel = new javax.swing.JPanel();
         searchButton = new javax.swing.JButton();
         searchIDTextField = new javax.swing.JTextField();
         quantityEmployLabel = new javax.swing.JLabel();
         quantityEmploytextField = new javax.swing.JTextField();
         refreshBtn = new javax.swing.JButton();
+        jSeparator1 = new javax.swing.JSeparator();
         addButton = new javax.swing.JButton();
         changeButton = new javax.swing.JButton();
         removeButton = new javax.swing.JButton();
@@ -52,9 +52,10 @@ public class EmployJPanel extends javax.swing.JPanel {
         displayTable = new javax.swing.JTable();
 
         setBorder(javax.swing.BorderFactory.createTitledBorder(null, "THÔNG TIN NHÂN VIÊN", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Dialog", 0, 18))); // NOI18N
-        setPreferredSize(new java.awt.Dimension(970, 560));
+        setMinimumSize(new java.awt.Dimension(1400, 800));
+        setPreferredSize(new java.awt.Dimension(1400, 800));
 
-        inputLastNameLabel.setFont(new java.awt.Font("Dialog", 1, 11)); // NOI18N
+        inputLastNameLabel.setFont(new java.awt.Font("Liberation Sans", 0, 15)); // NOI18N
         inputLastNameLabel.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
         inputLastNameLabel.setText("Họ và tên:");
 
@@ -64,7 +65,7 @@ public class EmployJPanel extends javax.swing.JPanel {
             }
         });
 
-        inputGenderLabel.setFont(new java.awt.Font("Dialog", 1, 11)); // NOI18N
+        inputGenderLabel.setFont(new java.awt.Font("Liberation Sans", 0, 15)); // NOI18N
         inputGenderLabel.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
         inputGenderLabel.setText("Giới tính:");
 
@@ -78,8 +79,6 @@ public class EmployJPanel extends javax.swing.JPanel {
 
         genderbuttonGroup.add(otherRadioButton);
         otherRadioButton.setText("OTHER");
-
-        jSeparator1.setOrientation(javax.swing.SwingConstants.VERTICAL);
 
         searchButton.setFont(new java.awt.Font("Dialog", 0, 12)); // NOI18N
         searchButton.setText("TÌM KIẾM");
@@ -103,40 +102,48 @@ public class EmployJPanel extends javax.swing.JPanel {
             }
         });
 
+        jSeparator1.setOrientation(javax.swing.SwingConstants.VERTICAL);
+
         javax.swing.GroupLayout functionPanelLayout = new javax.swing.GroupLayout(functionPanel);
         functionPanel.setLayout(functionPanelLayout);
         functionPanelLayout.setHorizontalGroup(
             functionPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(functionPanelLayout.createSequentialGroup()
-                .addGap(53, 53, 53)
+                .addGap(93, 93, 93)
+                .addComponent(jSeparator1, javax.swing.GroupLayout.PREFERRED_SIZE, 23, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(functionPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(functionPanelLayout.createSequentialGroup()
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, functionPanelLayout.createSequentialGroup()
                         .addComponent(quantityEmployLabel)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(quantityEmploytextField, javax.swing.GroupLayout.PREFERRED_SIZE, 75, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(quantityEmploytextField, javax.swing.GroupLayout.PREFERRED_SIZE, 79, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(refreshBtn))
                     .addGroup(functionPanelLayout.createSequentialGroup()
-                        .addComponent(searchIDTextField, javax.swing.GroupLayout.PREFERRED_SIZE, 227, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(28, 28, 28)
-                        .addComponent(searchButton)))
-                .addContainerGap(107, Short.MAX_VALUE))
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, functionPanelLayout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(refreshBtn)
+                        .addComponent(searchIDTextField, javax.swing.GroupLayout.PREFERRED_SIZE, 254, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(18, 18, 18)
+                        .addComponent(searchButton)
+                        .addGap(0, 278, Short.MAX_VALUE)))
                 .addContainerGap())
         );
         functionPanelLayout.setVerticalGroup(
             functionPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(functionPanelLayout.createSequentialGroup()
+                .addGap(222, 222, 222)
+                .addComponent(refreshBtn, javax.swing.GroupLayout.DEFAULT_SIZE, 40, Short.MAX_VALUE))
+            .addGroup(functionPanelLayout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jSeparator1))
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, functionPanelLayout.createSequentialGroup()
-                .addGap(28, 28, 28)
+                .addGap(29, 29, 29)
                 .addGroup(functionPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(quantityEmployLabel)
-                    .addComponent(quantityEmploytextField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(41, 41, 41)
+                    .addComponent(searchIDTextField, javax.swing.GroupLayout.PREFERRED_SIZE, 42, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(searchButton, javax.swing.GroupLayout.PREFERRED_SIZE, 42, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addGroup(functionPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(searchButton, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(searchIDTextField, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(108, 108, 108)
-                .addComponent(refreshBtn, javax.swing.GroupLayout.DEFAULT_SIZE, 27, Short.MAX_VALUE))
+                    .addComponent(quantityEmployLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 47, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(quantityEmploytextField, javax.swing.GroupLayout.PREFERRED_SIZE, 47, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap())
         );
 
         addButton.setFont(new java.awt.Font("Dialog", 0, 14)); // NOI18N
@@ -176,38 +183,29 @@ public class EmployJPanel extends javax.swing.JPanel {
         inputInfoPanelLayout.setHorizontalGroup(
             inputInfoPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(inputInfoPanelLayout.createSequentialGroup()
+                .addGap(67, 67, 67)
                 .addGroup(inputInfoPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(inputInfoPanelLayout.createSequentialGroup()
-                        .addGap(59, 59, 59)
                         .addComponent(inputLastNameLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 68, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(18, 18, 18)
-                        .addComponent(fullnameInput, javax.swing.GroupLayout.PREFERRED_SIZE, 160, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(fullnameInput, javax.swing.GroupLayout.PREFERRED_SIZE, 367, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(inputInfoPanelLayout.createSequentialGroup()
+                        .addComponent(inputGenderLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 59, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(113, 113, 113)
                         .addGroup(inputInfoPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, inputInfoPanelLayout.createSequentialGroup()
-                                .addGap(67, 67, 67)
-                                .addComponent(inputGenderLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 59, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(18, 18, 18))
+                            .addComponent(otherRadioButton, javax.swing.GroupLayout.PREFERRED_SIZE, 91, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(femaleRadioButton, javax.swing.GroupLayout.PREFERRED_SIZE, 91, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(maleButton, javax.swing.GroupLayout.PREFERRED_SIZE, 91, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addGroup(inputInfoPanelLayout.createSequentialGroup()
-                                .addGap(31, 31, 31)
                                 .addComponent(addButton)
-                                .addGap(30, 30, 30)))
-                        .addGroup(inputInfoPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                            .addGroup(javax.swing.GroupLayout.Alignment.LEADING, inputInfoPanelLayout.createSequentialGroup()
-                                .addGroup(inputInfoPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(otherRadioButton, javax.swing.GroupLayout.PREFERRED_SIZE, 91, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(femaleRadioButton, javax.swing.GroupLayout.PREFERRED_SIZE, 91, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(maleButton, javax.swing.GroupLayout.PREFERRED_SIZE, 91, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                .addGap(142, 142, 142))
-                            .addGroup(inputInfoPanelLayout.createSequentialGroup()
+                                .addGap(18, 18, 18)
                                 .addComponent(changeButton, javax.swing.GroupLayout.PREFERRED_SIZE, 72, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                                 .addComponent(removeButton, javax.swing.GroupLayout.PREFERRED_SIZE, 71, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(41, 41, 41)))
-                        .addComponent(cancelButton, javax.swing.GroupLayout.PREFERRED_SIZE, 71, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 83, Short.MAX_VALUE)
-                .addComponent(jSeparator1, javax.swing.GroupLayout.PREFERRED_SIZE, 23, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, 18)
+                                .addGap(18, 18, 18)
+                                .addComponent(cancelButton, javax.swing.GroupLayout.PREFERRED_SIZE, 71, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addGap(0, 33, Short.MAX_VALUE)))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(functionPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap())
         );
@@ -216,24 +214,23 @@ public class EmployJPanel extends javax.swing.JPanel {
             .addGroup(inputInfoPanelLayout.createSequentialGroup()
                 .addGap(35, 35, 35)
                 .addGroup(inputInfoPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(inputLastNameLabel)
-                    .addComponent(fullnameInput, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(40, 40, 40)
+                    .addComponent(inputLastNameLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 43, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(fullnameInput, javax.swing.GroupLayout.PREFERRED_SIZE, 43, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addGroup(inputInfoPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(inputGenderLabel)
-                    .addComponent(maleButton))
+                    .addComponent(maleButton)
+                    .addComponent(inputGenderLabel))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(femaleRadioButton)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(otherRadioButton)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addGap(28, 28, 28)
                 .addGroup(inputInfoPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(addButton, javax.swing.GroupLayout.PREFERRED_SIZE, 29, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(changeButton, javax.swing.GroupLayout.PREFERRED_SIZE, 29, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(removeButton, javax.swing.GroupLayout.PREFERRED_SIZE, 29, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(cancelButton, javax.swing.GroupLayout.PREFERRED_SIZE, 29, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(14, 14, 14))
-            .addComponent(jSeparator1)
+                    .addComponent(addButton, javax.swing.GroupLayout.PREFERRED_SIZE, 44, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(changeButton, javax.swing.GroupLayout.PREFERRED_SIZE, 44, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(removeButton, javax.swing.GroupLayout.PREFERRED_SIZE, 44, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(cancelButton, javax.swing.GroupLayout.PREFERRED_SIZE, 44, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap())
             .addComponent(functionPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
 
@@ -264,21 +261,20 @@ public class EmployJPanel extends javax.swing.JPanel {
         displayPanel.setLayout(displayPanelLayout);
         displayPanelLayout.setHorizontalGroup(
             displayPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 0, Short.MAX_VALUE)
+            .addGap(0, 1378, Short.MAX_VALUE)
             .addGroup(displayPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, displayPanelLayout.createSequentialGroup()
+                .addGroup(displayPanelLayout.createSequentialGroup()
                     .addContainerGap()
                     .addComponent(displayScrollPane, javax.swing.GroupLayout.DEFAULT_SIZE, 912, Short.MAX_VALUE)
                     .addContainerGap()))
         );
         displayPanelLayout.setVerticalGroup(
             displayPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 449, Short.MAX_VALUE)
+            .addGap(0, 497, Short.MAX_VALUE)
             .addGroup(displayPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                 .addGroup(displayPanelLayout.createSequentialGroup()
                     .addContainerGap()
-                    .addComponent(displayScrollPane, javax.swing.GroupLayout.PREFERRED_SIZE, 437, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                    .addComponent(displayScrollPane, javax.swing.GroupLayout.DEFAULT_SIZE, 493, Short.MAX_VALUE)))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
@@ -289,7 +285,7 @@ public class EmployJPanel extends javax.swing.JPanel {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(inputInfoPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(0, 3, Short.MAX_VALUE))
+                        .addGap(0, 0, Short.MAX_VALUE))
                     .addGroup(layout.createSequentialGroup()
                         .addContainerGap()
                         .addComponent(displayPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
@@ -334,7 +330,7 @@ public class EmployJPanel extends javax.swing.JPanel {
         int selectedRowIndex = displayTable.getSelectedRow();
 
         if (selectedRowIndex < 0) {
-            JOptionPane.showMessageDialog(this, "Vui lòng chọn một hàng để cập nhật thông tin!", "Thông báo", JOptionPane.WARNING_MESSAGE);
+            JOptionPane.showMessageDialog(this, "Vui lòng chọn một nhân viên để cập nhật thông tin!", "Thông báo", JOptionPane.WARNING_MESSAGE);
             return;
         }
 
@@ -342,11 +338,11 @@ public class EmployJPanel extends javax.swing.JPanel {
         Gender gender = maleButton.isSelected() ? Gender.MALE : femaleRadioButton.isSelected() ? Gender.FEMALE : Gender.OTHER;
 
         if (!validateRequiredFields()) {
-            JOptionPane.showMessageDialog(this, "Hãy sửa đầy đủ thông tin cơ bản !", "Cảnh báo", JOptionPane.WARNING_MESSAGE);
+            JOptionPane.showMessageDialog(this, "Hãy sửa đầy đủ thông tin cơ bản!", "Cảnh báo", JOptionPane.WARNING_MESSAGE);
             return;
         }
 
-        int reply = JOptionPane.showConfirmDialog(this, "Bạn có chắc muốn chỉnh sửa thông tin nhân viên ?", "Xác nhận chỉnh sửa", JOptionPane.YES_NO_OPTION);
+        int reply = JOptionPane.showConfirmDialog(this, "Bạn có chắc muốn chỉnh sửa thông tin nhân viên?", "Xác nhận chỉnh sửa", JOptionPane.YES_NO_OPTION);
         if (reply == JOptionPane.YES_OPTION) {
             DefaultTableModel model = (DefaultTableModel) displayTable.getModel();
             UUID employeeId = UUID.fromString((String) model.getValueAt(selectedRowIndex, 3));
@@ -469,14 +465,6 @@ public class EmployJPanel extends javax.swing.JPanel {
         displayEmployees(this.store.getEmployees());
     }//GEN-LAST:event_refreshBtnActionPerformed
 
-    public void setup(HibernateConfig hibernateConfig, Store store) {
-        this.store = store;
-        this.hibernateConfig = hibernateConfig;
-        this.employeeDAO = new EmployeeDAOImpl();
-
-        displayEmployees(this.store.getEmployees());
-        updateEmployeeCounter(this.store.getEmployees().size());
-    }
 
     private void displayEmployees(List<Employee> employees) {
         DefaultTableModel model = (DefaultTableModel) displayTable.getModel();
@@ -487,7 +475,7 @@ public class EmployJPanel extends javax.swing.JPanel {
         }
         for (Employee employee : employees) {
             Object[] rowData = {employee.getFullname(),
-                employee.getGender(),
+                employee.getGender() == Gender.MALE ? "Nam" : employee.getGender() == Gender.FEMALE ?"Nữ" : "Khác",
                 FormatOutput.convertLocalDateTimeToString(employee.getCreatedAt()),
                 employee.getEmployeeId()};
             model.addRow(rowData);
@@ -534,6 +522,15 @@ public class EmployJPanel extends javax.swing.JPanel {
         textField.setFont(new java.awt.Font("Segoe UI", 0, DEFAULT_TEXT_SIZE));
         textField.setForeground(new java.awt.Color(0, 0, 0));
         textField.setEditable(true);
+    }
+    
+    public void setup(HibernateConfig hibernateConfig, Store store) {
+        this.store = store;
+        this.hibernateConfig = hibernateConfig;
+        this.employeeDAO = new EmployeeDAOImpl();
+
+        displayEmployees(this.store.getEmployees());
+        updateEmployeeCounter(this.store.getEmployees().size());
     }
 
     private EmployeeDAO employeeDAO;
