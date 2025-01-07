@@ -4,7 +4,6 @@ import java.time.LocalDateTime;
 import java.util.List;
 import lombok.*;
 import javax.persistence.*;
-import java.util.UUID;
 import model.enums.ShiftState;
 
 @Entity
@@ -16,8 +15,8 @@ import model.enums.ShiftState;
 public class Shift {
 
     @Id
-    @GeneratedValue
-    private UUID shiftId;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long shiftId;
 
     private LocalDateTime openAt;
 
@@ -33,7 +32,7 @@ public class Shift {
 
     private String cashierName;
     
-    private UUID cashierId;
+    private Long cashierId;
 
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)

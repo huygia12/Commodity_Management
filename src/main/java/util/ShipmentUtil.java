@@ -2,7 +2,6 @@ package util;
 
 import java.time.LocalDate;
 import java.util.List;
-import java.util.UUID;
 import model.entities.Product;
 import model.entities.Shipment;
 
@@ -18,7 +17,7 @@ public class ShipmentUtil {
         }
     }
     
-    public static Shipment getShipmentFrom(UUID shipmentId, Product product) {
+    public static Shipment getShipmentFrom(Long shipmentId, Product product) {
         List<Shipment> shipments = product.getShipments();
         if (shipments.isEmpty()) {
             return null;

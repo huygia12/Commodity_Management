@@ -3,7 +3,6 @@ package dao.impl;
 import dao.ProductDAO;
 import javax.persistence.EntityManager;
 import model.entities.Product;
-import java.util.UUID;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.persistence.EntityTransaction;
@@ -24,10 +23,6 @@ public class ProductDAOImpl implements ProductDAO {
             }
             Logger.getLogger(this.getClass().getName()).log(Level.SEVERE, null, e);
             return false;
-        } finally {
-            if (em.isOpen()) {
-                em.close();
-            }
         }
     }
 
@@ -53,15 +48,11 @@ public class ProductDAOImpl implements ProductDAO {
             }
             Logger.getLogger(this.getClass().getName()).log(Level.SEVERE, null, e);
             return false;
-        } finally {
-            if (em.isOpen()) {
-                em.close();
-            }
         }
     }
 
     @Override
-    public boolean deleteProduct(UUID productId, EntityManager em) {
+    public boolean deleteProduct(Long productId, EntityManager em) {
         EntityTransaction transaction = em.getTransaction();
         try {
             Product p = getProduct(productId, em);
@@ -80,13 +71,11 @@ public class ProductDAOImpl implements ProductDAO {
             }
             Logger.getLogger(this.getClass().getName()).log(Level.SEVERE, null, e);
             return false;
-        } finally {
-            em.close();
         }
     }
 
     @Override
-    public Product getProduct(UUID productId, EntityManager em) {
+    public Product getProduct(Long productId, EntityManager em) {
         Product p = em.find(Product.class, productId);
         return p;
     }

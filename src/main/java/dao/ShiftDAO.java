@@ -1,7 +1,6 @@
 package dao;
 
 import java.util.List;
-import java.util.UUID;
 import javax.persistence.EntityManager;
 import model.entities.Employee;
 import model.entities.Shift;
@@ -16,7 +15,7 @@ public interface ShiftDAO {
     
     public boolean updateShift (Shift shipment, List<Employee> employees, EntityManager em);
     
-    public Shift getShift (UUID shipmentId, EntityManager em);
+    public Shift getShift (Long shipmentId, EntityManager em);
     
     public Shift getLatestShift(EntityManager em);
 }

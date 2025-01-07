@@ -1,14 +1,11 @@
-package gui;
+package view;
 
 import config.HibernateConfig;
 import dao.InvoiceDAO;
 import dao.impl.InvoiceDAOImpl;
 import java.awt.event.KeyEvent;
 import java.math.BigDecimal;
-import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
 import java.util.List;
-import java.util.UUID;
 import javax.swing.ImageIcon;
 import javax.swing.JOptionPane;
 import javax.swing.ScrollPaneConstants;
@@ -712,7 +709,7 @@ public class PurchasePanel extends javax.swing.JPanel {
         }
 
         String shipmentId = (String) productTableModel.getValueAt(selectedRow, 5);
-        UUID productId = UUID.fromString((String) productTable.getValueAt(selectedRow, 9));
+        Long productId = Long.valueOf((String) productTable.getValueAt(selectedRow, 9));
         this.selectedProduct = ProductUtil.getProductFrom(productId, this.productList);
 
         if (this.selectedProduct == null) {
@@ -732,7 +729,7 @@ public class PurchasePanel extends javax.swing.JPanel {
         }
 
         String shipmentID = (String) invoiceTableModel.getValueAt(selectedRow, 4);
-        this.selectedInvoiceProduct = InvoiceUtil.getInvoiceProductFrom(UUID.fromString(shipmentID), this.invoice);
+        this.selectedInvoiceProduct = InvoiceUtil.getInvoiceProductFrom(Long.valueOf(shipmentID), this.invoice);
 
         if (this.selectedInvoiceProduct == null) {
             JOptionPane.showMessageDialog(this, "Sản phẩm không tồn tại trong giỏ hàng!", "Thông báo", JOptionPane.WARNING_MESSAGE);
@@ -894,17 +891,17 @@ public class PurchasePanel extends javax.swing.JPanel {
             return;
         }
 
-        InvoiceProduct invoiceProduct = InvoiceUtil.getInvoiceProductFrom(UUID.fromString(shipmentId), this.invoice);
+        InvoiceProduct invoiceProduct = InvoiceUtil.getInvoiceProductFrom(Long.valueOf((String)shipmentId), this.invoice);
         int quantityAsInteger = Integer.parseInt(quantityAsStr);
         Product product = ProductUtil.getProductFrom(invoiceProduct.getProductId(), this.productList);
-        Shipment shipment = ShipmentUtil.getShipmentFrom(UUID.fromString(shipmentId), product);
+        Shipment shipment = ShipmentUtil.getShipmentFrom(Long.valueOf(shipmentId), product);
 
         if (ShipmentUtil.isInStock(shipment, invoiceProduct.getQuantity() + quantityAsInteger)) {
             insertWarningToTextField(quantityTextField, NOT_ENOUGH_QUANTITY, 14);
             return;
         }
         // thực hiện chức năng
-        InvoiceUtil.updateInvoiceProductQuantity(this.invoice, quantityAsInteger, UUID.fromString(shipmentId));
+        InvoiceUtil.updateInvoiceProductQuantity(this.invoice, quantityAsInteger, Long.valueOf(shipmentId));
 
         setDefaultValuesToComponentsInMainOrderFunctionPanel();
         displayInvoice(this.invoice.getInvoiceProducts());
@@ -931,7 +928,7 @@ public class PurchasePanel extends javax.swing.JPanel {
             return;
         }
         // thực hiện chức năng
-        InvoiceUtil.removeInvoiceProduct(this.invoice, UUID.fromString(shipmentId));
+        InvoiceUtil.removeInvoiceProduct(this.invoice, Long.valueOf(shipmentId));
 
         setDefaultValuesToComponentsInMainOrderFunctionPanel();
         displayInvoice(this.invoice.getInvoiceProducts());
@@ -959,7 +956,7 @@ public class PurchasePanel extends javax.swing.JPanel {
         }
 
         int quantityInInteger = Integer.parseInt(quantity);
-        Shipment addedShipment = ShipmentUtil.getShipmentFrom(UUID.fromString(shipmentId), this.selectedProduct);
+        Shipment addedShipment = ShipmentUtil.getShipmentFrom(Long.valueOf(shipmentId), this.selectedProduct);
         if (!ShipmentUtil.isInStock(addedShipment, quantityInInteger)) {
             insertWarningToTextField(quantityTextField, NOT_ENOUGH_QUANTITY, 14);
             return;

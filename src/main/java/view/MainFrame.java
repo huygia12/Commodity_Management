@@ -1,6 +1,9 @@
-package gui;
+package view;
 
 import com.formdev.flatlaf.FlatLightLaf;
+import config.HibernateConfig;
+import dao.ShiftDAO;
+import dao.impl.ShiftDAOImpl;
 import java.awt.CardLayout;
 import java.awt.Color;
 import java.awt.event.WindowEvent;
@@ -16,6 +19,7 @@ import javax.swing.JButton;
 import javax.swing.JOptionPane;
 import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
+import model.entities.Product;
 import model.entities.Shift;
 import model.entities.Store;
 import model.enums.ShiftState;
@@ -28,10 +32,18 @@ public class MainFrame extends javax.swing.JFrame {
         } catch (UnsupportedLookAndFeelException ex) {
             Logger.getLogger(this.getName()).log(Level.SEVERE, null, ex);
         }
-        initComponents();
-        initVariables();
+        this.hibernateConfig = new HibernateConfig();
+        this.shiftDAO = new ShiftDAOImpl();
+        this.store = store;
+        this.shift = shiftDAO.getLatestShift(this.hibernateConfig.getEntityManager());
+        if (this.shift == null) {
+            this.shift = shiftDAO.addShift(store, this.hibernateConfig.getEntityManager());
+        }
         
+        initComponents();
+        cardLayout = (CardLayout) displayPanel.getLayout();
         initSideBar();
+
         this.addWindowListener(new java.awt.event.WindowAdapter() {
             @Override
             public void windowClosing(WindowEvent e) {
@@ -43,9 +55,9 @@ public class MainFrame extends javax.swing.JFrame {
         setIconImage(new ImageIcon(getClass()
                 .getResource("/ImageIcon/icons8-grocery-store-96.png")).getImage());
         this.setLocationRelativeTo(null);
-        realTimeClock();
         
-        this.store = store;
+        realTimeClock();
+        setupPanels();
         switchRepoPanel();
     }
 
@@ -62,19 +74,20 @@ public class MainFrame extends javax.swing.JFrame {
         timeTextField = new javax.swing.JFormattedTextField();
         openSideBarLabel = new javax.swing.JLabel();
         displayPanel = new javax.swing.JPanel();
-        purchasePanel1 = new View.PurchasePanel();
-        repoPanel1 = new View.RepoPanel();
-        employJPanel1 = new View.EmployJPanel();
-        settingsPanel1 = new View.SettingsPanel();
-        historyPanel1 = new View.HistoryPanel();
-        shiftPanel1 = new View.ShiftPanel();
-        shipmentPanel1 = new View.ShipmentPanel();
+        settingsPanel1 = new view.SettingsPanel();
+        shiftPanel1 = new view.ShiftPanel();
+        purchasePanel1 = new view.PurchasePanel();
+        historyPanel1 = new view.HistoryPanel();
+        employJPanel1 = new view.EmployJPanel();
+        repoPanel1 = new view.RepoPanel();
+        shipmentPanel1 = new view.ShipmentPanel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DO_NOTHING_ON_CLOSE);
         setTitle("Phần mềm quản lý bán hàng");
         setAutoRequestFocus(false);
         setFocusable(false);
-        setMinimumSize(new java.awt.Dimension(1015, 670));
+        setMinimumSize(new java.awt.Dimension(1400, 850));
+        setPreferredSize(new java.awt.Dimension(1400, 850));
         setResizable(false);
 
         toolBarPanel.setBackground(new java.awt.Color(255, 255, 255));
@@ -128,17 +141,17 @@ public class MainFrame extends javax.swing.JFrame {
                 .addComponent(openSideBarLabel)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(shiftIDLabel)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 538, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 885, Short.MAX_VALUE)
                 .addComponent(dateLabel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(dateTextField, javax.swing.GroupLayout.PREFERRED_SIZE, 104, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(dateTextField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(dateTimeSeparator, javax.swing.GroupLayout.PREFERRED_SIZE, 11, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(timeLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 70, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(timeTextField, javax.swing.GroupLayout.PREFERRED_SIZE, 114, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap())
+                .addComponent(timeLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 82, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(timeTextField, javax.swing.GroupLayout.PREFERRED_SIZE, 136, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(15, 15, 15))
         );
         toolBarPanelLayout.setVerticalGroup(
             toolBarPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -167,15 +180,13 @@ public class MainFrame extends javax.swing.JFrame {
         displayPanel.setOpaque(false);
         displayPanel.setPreferredSize(new java.awt.Dimension(1000, 580));
         displayPanel.setLayout(new java.awt.CardLayout());
-
-        purchasePanel1.setBorder(null);
+        displayPanel.add(settingsPanel1, "card2");
+        displayPanel.add(shiftPanel1, "card3");
         displayPanel.add(purchasePanel1, "card4");
+        displayPanel.add(historyPanel1, "card5");
+        displayPanel.add(employJPanel1, "card6");
         displayPanel.add(repoPanel1, "card7");
-        displayPanel.add(employJPanel1, "card5");
-        displayPanel.add(settingsPanel1, "card7");
-        displayPanel.add(historyPanel1, "card8");
-        displayPanel.add(shiftPanel1, "card8");
-        displayPanel.add(shipmentPanel1, "card9");
+        displayPanel.add(shipmentPanel1, "card8");
 
         getContentPane().add(displayPanel, java.awt.BorderLayout.CENTER);
 
@@ -190,20 +201,14 @@ public class MainFrame extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_openSideBarLabelMouseClicked
 
-    private void passDataToComponents() {
-        // pass data vào purchasePanel
-        purchasePanel1.passData(store, shift);
-        // pass data vào employPanel
-        employJPanel1.passData(store.getEmployeeList(), shift);
-        // pass data vào repoPanel
-        repoPanel1.passData(store, this);
-        // pass data vào shiftJPanel
-        shiftPanel1.passData(store, shift, this);
-        //pass dât vào settingsPanel
-        settingsPanel1.passData(store, header, storeList);
-        //pass data vào historyPanel
-        historyPanel1.passData(store);
-        //pass data vao header
+    private void setupPanels() {
+        purchasePanel1.setup(hibernateConfig, store, shift);
+        employJPanel1.setup(hibernateConfig, store);
+        repoPanel1.setup(hibernateConfig, store, this);
+        shipmentPanel1.setup(hibernateConfig, store, this);
+        shiftPanel1.setup(hibernateConfig, store, shift, this);
+        settingsPanel1.setup(hibernateConfig, store, header);
+        historyPanel1.setup(hibernateConfig, store);
         header.setStoreInfor();
     }
 
@@ -213,6 +218,20 @@ public class MainFrame extends javax.swing.JFrame {
         if (choice == JOptionPane.OK_OPTION) {
             switchPanel(2);
         }
+    }
+
+    public void switchShipmentPanel(Product product) {
+//        shipmentPanel1.attachGood(attachGoods, store, this);
+//        shipmentPanel1.reloadTable(attachGoods.getShipments());
+        shipmentPanel1.setProduct(product);
+        shipmentPanel1.defaultSettings();
+        repoPanelStateCheck = false;
+        switchPanel(0);
+    }
+
+    public void switchRepoPanel() {
+        repoPanelStateCheck = true;
+        switchPanel(0);
     }
 
     private void initSideBar() {
@@ -254,7 +273,7 @@ public class MainFrame extends javax.swing.JFrame {
                 .addChild(productDrawerItem)
                 .addChild(purchaseDrawerItem)
                 .addChild(shiftDrawerItem)
-                .addChild(employeeDrawerItem)                
+                .addChild(employeeDrawerItem)
                 .addChild(historyDrawerItem)
                 .addChild(settingsDrawerItem)
                 .addFooter(logoutDrawerItem)
@@ -265,76 +284,60 @@ public class MainFrame extends javax.swing.JFrame {
     }
 
     private void switchPanel(int i) {
-        if (!shift.getState().equals(ShiftState.OPENED)) {
-            shift = new Shift();
-        }
         switch (i) {
-            case 0:
+            case 0 -> {
                 if (repoPanelStateCheck) {
                     displayPanel.add(repoPanel1, "repo");
                     cardLayout.show(displayPanel, "repo");
-                    repoPanel1.externalRefresh();
+//                    repoPanel1.externalRefresh();
                 } else {
                     displayPanel.add(shipmentPanel1, "shipment");
                     cardLayout.show(displayPanel, "shipment");
                 }
                 drawerCtr.hide();
-                break;
-            case 1:
+            }
+            case 1 -> {
                 purchasePanel1.setEnableToAllPanel(shift.getState().equals(ShiftState.OPENED));
                 displayPanel.add(purchasePanel1, "purchase");
                 cardLayout.show(displayPanel, "purchase");
                 drawerCtr.hide();
-                if (!shift.getState().equals(ShiftState.OPENED)) {
-                    notOpenShiftWarning();
+                if (shift.getState().equals(ShiftState.OPENED)) {
+                    purchasePanel1.refreshView();
                 } else {
-                    initNewOrdercheck = true;
-                    purchasePanel1.refresh(shift);
+                    notOpenShiftWarning();
                 }
-                break;
-            case 2:
+            }
+            case 2 -> {
                 displayPanel.add(shiftPanel1, "shift");
                 cardLayout.show(displayPanel, "shift");
                 drawerCtr.hide();
-                shiftPanel1.reload(shift);
-                break;
-            case 3:
+                shiftPanel1.refreshCurrentShiftView();
+            }
+            case 3 -> {
                 displayPanel.add(employJPanel1, "employee");
                 cardLayout.show(displayPanel, "employee");
                 drawerCtr.hide();
-                employJPanel1.refreshEmployees();
-                break;
-            case 4:
+//                employJPanel1.refreshEmployees();
+            }
+            case 4 -> {
                 displayPanel.add(historyPanel1, "history");
                 cardLayout.show(displayPanel, "history");
                 drawerCtr.hide();
                 historyPanel1.refresh();
-                break;
-            case 5:
+            }
+            case 5 -> {
                 displayPanel.add(settingsPanel1, "settings");
                 cardLayout.show(displayPanel, "settings");
                 drawerCtr.hide();
-                break;
-            case 6:
+            }
+            case 6 -> {
                 if (showCloseMessage()) {
                     LogInFrame lgf = new LogInFrame();
                     lgf.setVisible(true);
                     this.dispose();
                 }
+            }
         }
-    }
-
-    public void switchShipmentPanel(Goods attachGoods) {
-        shipmentPanel1.attachGood(attachGoods, store, this);
-        shipmentPanel1.reloadTable(attachGoods.getShipments());
-        shipmentPanel1.defaultSettings();
-        repoPanelStateCheck = false;
-        switchPanel(0);
-    }
-
-    public void switchRepoPanel() {
-        repoPanelStateCheck = true;
-        switchPanel(0);
     }
 
     private void realTimeClock() {
@@ -365,32 +368,28 @@ public class MainFrame extends javax.swing.JFrame {
         return choice != JOptionPane.CLOSED_OPTION;
     }
 
-    private void initVariables() {
-        cardLayout = (CardLayout) displayPanel.getLayout();
-        
-    }
-
+    private final ShiftDAO shiftDAO;
+    private final HibernateConfig hibernateConfig;
     private Shift shift;
-    private Store store;
+    private final Store store;
     private boolean repoPanelStateCheck = true;
-    private boolean initNewOrdercheck = false;
     private Header header;
-    private CardLayout cardLayout;
+    private final CardLayout cardLayout;
     private DrawerController drawerCtr;
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel dateLabel;
     private javax.swing.JFormattedTextField dateTextField;
     private javax.swing.JSeparator dateTimeSeparator;
     private javax.swing.JPanel displayPanel;
-    private View.EmployJPanel employJPanel1;
-    private View.HistoryPanel historyPanel1;
+    private view.EmployJPanel employJPanel1;
+    private view.HistoryPanel historyPanel1;
     private javax.swing.JLabel openSideBarLabel;
-    private View.PurchasePanel purchasePanel1;
-    private View.RepoPanel repoPanel1;
-    private View.SettingsPanel settingsPanel1;
+    private view.PurchasePanel purchasePanel1;
+    private view.RepoPanel repoPanel1;
+    private view.SettingsPanel settingsPanel1;
     private javax.swing.JLabel shiftIDLabel;
-    private View.ShiftPanel shiftPanel1;
-    private View.ShipmentPanel shipmentPanel1;
+    private view.ShiftPanel shiftPanel1;
+    private view.ShipmentPanel shipmentPanel1;
     private javax.swing.JLabel timeLabel;
     private javax.swing.JFormattedTextField timeTextField;
     private javax.swing.JPanel toolBarPanel;

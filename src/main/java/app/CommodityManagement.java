@@ -1,6 +1,6 @@
 package app;
 
-import gui.LogInFrame;
+import view.LogInFrame;
 
 public class CommodityManagement {
     public static void main(String[] args) {

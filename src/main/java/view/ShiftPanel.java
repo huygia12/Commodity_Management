@@ -1,4 +1,4 @@
-package gui;
+package view;
 
 import config.HibernateConfig;
 import dao.InvoiceDAO;
@@ -676,7 +676,7 @@ public class ShiftPanel extends javax.swing.JPanel {
     private void orderTableMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_orderTableMouseClicked
         int selectedRow = orderTable.getSelectedRow();
         if (selectedRow != -1) {
-            UUID invoiceId = UUID.fromString(orderTable.getValueAt(selectedRow, 0).toString());
+            Long invoiceId = Long.valueOf(orderTable.getValueAt(selectedRow, 0).toString());
             Invoice invoice = invoiceDAO.getInvoice(invoiceId, this.hibernateConfig.getEntityManager());
 
             displayOrderDetail(invoice);

@@ -14,7 +14,7 @@ public class StoreDAOImpl implements StoreDAO {
 
     @Override
     public Store login(String email, String password, EntityManager em) {
-        Store store = null;
+        Store store;
 
         try {
             TypedQuery<Store> query = em.createQuery(
@@ -23,13 +23,10 @@ public class StoreDAOImpl implements StoreDAO {
 
             store = query.getSingleResult();
         } catch (Exception e) {
+            Logger.getLogger(this.getClass().getName()).log(Level.SEVERE, null, e);
             return null;
-        } finally {
-            if (em.isOpen()) {
-                em.close();
-            }
-        }
-
+        } 
+        
         return BcryptUtil.checkPassword(password, store.getPassword()) ? store : null;
     }
 
@@ -48,12 +45,9 @@ public class StoreDAOImpl implements StoreDAO {
             if (transaction.isActive()) {
                 transaction.rollback();
             }
+            Logger.getLogger(this.getClass().getName()).log(Level.SEVERE, null, e);
             return false;
-        } finally {
-            if (em.isOpen()) {
-                em.close();
-            }
-        }
+        } 
     }
 
     @Override
@@ -75,15 +69,11 @@ public class StoreDAOImpl implements StoreDAO {
             }
             Logger.getLogger(this.getClass().getName()).log(Level.SEVERE, null, e);
             return false;
-        } finally {
-            if (em.isOpen()) {
-                em.close();
-            }
-        }
+        } 
     }
     
     @Override
-    public boolean updateStoreAvatar(UUID storeId, String avatarPath, EntityManager em) {
+    public boolean updateStoreAvatar(Long storeId, String avatarPath, EntityManager em) {
         EntityTransaction transaction = em.getTransaction();
         try {
             Store s = getStore(storeId, em);
@@ -98,21 +88,17 @@ public class StoreDAOImpl implements StoreDAO {
             }
             Logger.getLogger(this.getClass().getName()).log(Level.SEVERE, null, e);
             return false;
-        } finally {
-            if (em.isOpen()) {
-                em.close();
-            }
-        }
+        } 
     }
 
     @Override
-    public Store getStore(UUID storeId, EntityManager em) {
+    public Store getStore(Long storeId, EntityManager em) {
         Store s = em.find(Store.class, storeId);
         return s;
     }
 
     @Override
-    public boolean updateStorePassword(UUID storeId, String newPlainPasswordx, EntityManager em) {
+    public boolean updateStorePassword(Long storeId, String newPlainPasswordx, EntityManager em) {
         EntityTransaction transaction = em.getTransaction();
         try {
             Store s = getStore(storeId, em);
@@ -127,10 +113,6 @@ public class StoreDAOImpl implements StoreDAO {
             }
             Logger.getLogger(this.getClass().getName()).log(Level.SEVERE, null, e);
             return false;
-        } finally {
-            if (em.isOpen()) {
-                em.close();
-            }
         }
     }
 
@@ -144,11 +126,8 @@ public class StoreDAOImpl implements StoreDAO {
             Store store = query.getSingleResult();
             return store;
         } catch (Exception e) {
+            Logger.getLogger(this.getClass().getName()).log(Level.SEVERE, null, e);
             return null;
-        } finally {
-            if (em.isOpen()) {
-                em.close();
-            }
         }
     }
 }

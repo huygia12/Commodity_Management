@@ -3,7 +3,6 @@ package model.entities;
 import java.util.List;
 import lombok.*;
 import javax.persistence.*;
-import java.util.UUID;
 
 /**
  *
@@ -18,8 +17,8 @@ import java.util.UUID;
 public class Product {
 
     @Id
-    @GeneratedValue
-    private UUID productId;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long productId;
 
     @Column(nullable = false)
     private String productCode;

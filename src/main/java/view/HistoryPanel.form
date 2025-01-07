@@ -188,9 +188,7 @@
                           <EmptySpace max="-2" attributes="0"/>
                           <Group type="103" groupAlignment="0" attributes="0">
                               <Group type="102" attributes="0">
-                                  <EmptySpace min="9" pref="9" max="-2" attributes="0"/>
-                                  <Component id="orderIDToSearchLabel" min="-2" pref="48" max="-2" attributes="0"/>
-                                  <EmptySpace type="unrelated" max="-2" attributes="0"/>
+                                  <EmptySpace min="-2" pref="69" max="-2" attributes="0"/>
                                   <Component id="cashierPhoneNumLable1" min="-2" pref="40" max="-2" attributes="0"/>
                               </Group>
                               <Group type="102" attributes="0">
@@ -199,6 +197,7 @@
                                       <Group type="103" groupAlignment="3" attributes="0">
                                           <Component id="separatorLabel7" alignment="3" min="-2" max="-2" attributes="0"/>
                                           <Component id="searchOrderIDTextField" alignment="3" min="-2" pref="42" max="-2" attributes="0"/>
+                                          <Component id="orderIDToSearchLabel" alignment="3" min="-2" pref="48" max="-2" attributes="0"/>
                                       </Group>
                                       <Component id="fromYearTextField" alignment="1" max="32767" attributes="0"/>
                                       <Component id="fromMonthTextField" alignment="1" max="32767" attributes="0"/>
@@ -420,7 +419,7 @@
                           <EmptySpace max="-2" attributes="0"/>
                           <Component id="amountOfOrderLabel" min="-2" pref="71" max="-2" attributes="0"/>
                           <EmptySpace min="-2" pref="18" max="-2" attributes="0"/>
-                          <Component id="totalOrderQuantityLabel" min="-2" pref="130" max="-2" attributes="0"/>
+                          <Component id="totalInvoiceQuantityLabel" min="-2" pref="130" max="-2" attributes="0"/>
                           <EmptySpace type="unrelated" max="-2" attributes="0"/>
                           <Component id="totalProceedsLabel" min="-2" max="-2" attributes="0"/>
                           <EmptySpace max="-2" attributes="0"/>
@@ -442,7 +441,7 @@
                           <EmptySpace max="32767" attributes="0"/>
                           <Group type="103" groupAlignment="3" attributes="0">
                               <Component id="totalProceedsLabel" alignment="3" min="-2" pref="31" max="-2" attributes="0"/>
-                              <Component id="totalOrderQuantityLabel" alignment="3" min="-2" pref="31" max="-2" attributes="0"/>
+                              <Component id="totalInvoiceQuantityLabel" alignment="3" min="-2" pref="31" max="-2" attributes="0"/>
                               <Component id="amountOfOrderLabel" alignment="3" min="-2" pref="31" max="-2" attributes="0"/>
                               <Component id="totalNetRevenueLabel" alignment="3" min="-2" pref="31" max="-2" attributes="0"/>
                           </Group>
@@ -475,7 +474,7 @@
                     <Property name="text" type="java.lang.String" value="L&#x1ee3;i nhu&#x1ead;n r&#xf2;ng:"/>
                   </Properties>
                 </Component>
-                <Component class="javax.swing.JLabel" name="totalOrderQuantityLabel">
+                <Component class="javax.swing.JLabel" name="totalInvoiceQuantityLabel">
                   <Properties>
                     <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
                       <Font name="Segoe UI" size="12" style="2"/>
@@ -510,7 +509,7 @@
 
                   <Layout class="org.netbeans.modules.form.compat2.layouts.support.JScrollPaneSupportLayout"/>
                   <SubComponents>
-                    <Component class="javax.swing.JTable" name="overViewTable">
+                    <Component class="javax.swing.JTable" name="invoiceHistoryTable">
                       <Properties>
                         <Property name="model" type="javax.swing.table.TableModel" editor="org.netbeans.modules.form.editors2.TableModelEditor">
                           <Table columnCount="3" rowCount="0">
@@ -523,7 +522,7 @@
                         <Property name="showGrid" type="boolean" value="true"/>
                       </Properties>
                       <Events>
-                        <EventHandler event="mouseClicked" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="overViewTableMouseClicked"/>
+                        <EventHandler event="mouseClicked" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="invoiceHistoryTableMouseClicked"/>
                       </Events>
                     </Component>
                   </SubComponents>
@@ -590,15 +589,14 @@
 
                   <Layout class="org.netbeans.modules.form.compat2.layouts.support.JScrollPaneSupportLayout"/>
                   <SubComponents>
-                    <Component class="javax.swing.JTable" name="orderDetailTable">
+                    <Component class="javax.swing.JTable" name="invoiceDetailTable">
                       <Properties>
                         <Property name="model" type="javax.swing.table.TableModel" editor="org.netbeans.modules.form.editors2.TableModelEditor">
-                          <Table columnCount="8" rowCount="0">
+                          <Table columnCount="7" rowCount="0">
                             <Column editable="false" title="M&#xe3; SP" type="java.lang.Object"/>
                             <Column editable="false" title="T&#xea;n SP" type="java.lang.Object"/>
                             <Column editable="false" title="&#x110;VT" type="java.lang.Object"/>
                             <Column editable="false" title="&#x110;&#x1a1;n gi&#xe1;" type="java.lang.Object"/>
-                            <Column editable="false" title="T&#x1ed5;ng SL" type="java.lang.Object"/>
                             <Column editable="false" title="M&#xe3; l&#xf4;" type="java.lang.Object"/>
                             <Column editable="false" title="SL h&#xe0;ng" type="java.lang.Object"/>
                             <Column editable="false" title="Ti&#x1ec1;n h&#xe0;ng" type="java.lang.Object"/>
@@ -754,7 +752,7 @@
 
                   <Layout class="org.netbeans.modules.form.compat2.layouts.support.JScrollPaneSupportLayout"/>
                   <SubComponents>
-                    <Component class="javax.swing.JTable" name="goodsReportTable">
+                    <Component class="javax.swing.JTable" name="productReportTable">
                       <Properties>
                         <Property name="model" type="javax.swing.table.TableModel" editor="org.netbeans.modules.form.editors2.TableModelEditor">
                           <Table columnCount="6" rowCount="0">
@@ -908,17 +906,12 @@
               <Layout>
                 <DimensionLayout dim="0">
                   <Group type="103" groupAlignment="0" attributes="0">
-                      <Group type="102" attributes="0">
-                          <EmptySpace min="-2" pref="30" max="-2" attributes="0"/>
+                      <Group type="102" alignment="0" attributes="0">
+                          <EmptySpace min="-2" pref="39" max="-2" attributes="0"/>
                           <Group type="103" groupAlignment="1" max="-2" attributes="0">
                               <Group type="102" attributes="0">
-                                  <Component id="manufactureLabel" min="-2" max="-2" attributes="0"/>
-                                  <EmptySpace min="-2" pref="36" max="-2" attributes="0"/>
-                                  <Component id="manufactureComboBox" min="-2" pref="221" max="-2" attributes="0"/>
-                              </Group>
-                              <Group type="102" attributes="0">
                                   <Component id="orderDateLabel" min="-2" max="-2" attributes="0"/>
-                                  <EmptySpace max="32767" attributes="0"/>
+                                  <EmptySpace min="-2" pref="38" max="-2" attributes="0"/>
                                   <Component id="fromLabel" min="-2" pref="23" max="-2" attributes="0"/>
                                   <EmptySpace max="-2" attributes="0"/>
                                   <Component id="fromImportDayTextField" min="-2" pref="47" max="-2" attributes="0"/>
@@ -931,33 +924,28 @@
                                   <EmptySpace max="-2" attributes="0"/>
                                   <Component id="fromImportYearTextField" min="-2" pref="73" max="-2" attributes="0"/>
                               </Group>
+                              <Group type="102" alignment="0" attributes="0">
+                                  <Component id="goodsNameLabel" min="-2" max="-2" attributes="0"/>
+                                  <EmptySpace type="separate" max="-2" attributes="0"/>
+                                  <Component id="goodsNameTextField" max="32767" attributes="0"/>
+                              </Group>
                           </Group>
                           <EmptySpace min="-2" pref="65" max="-2" attributes="0"/>
-                          <Group type="103" groupAlignment="0" attributes="0">
-                              <Group type="102" attributes="0">
-                                  <Component id="toLabel" min="-2" max="-2" attributes="0"/>
-                                  <EmptySpace type="unrelated" max="-2" attributes="0"/>
-                                  <Component id="toImportDayTextField" min="-2" pref="43" max="-2" attributes="0"/>
-                                  <EmptySpace max="-2" attributes="0"/>
-                                  <Component id="separatorLabel14" min="-2" pref="8" max="-2" attributes="0"/>
-                                  <EmptySpace max="-2" attributes="0"/>
-                                  <Component id="toImportMonthTextField" min="-2" pref="41" max="-2" attributes="0"/>
-                                  <EmptySpace max="-2" attributes="0"/>
-                                  <Component id="separatorLabel11" min="-2" pref="8" max="-2" attributes="0"/>
-                                  <EmptySpace max="-2" attributes="0"/>
-                                  <Component id="toImportYearTextField" min="-2" pref="77" max="-2" attributes="0"/>
-                                  <EmptySpace pref="111" max="32767" attributes="0"/>
-                                  <Component id="searchImportHistoryBtn" min="-2" pref="112" max="-2" attributes="0"/>
-                                  <EmptySpace type="separate" max="-2" attributes="0"/>
-                                  <Component id="refreshImportTableLabel" min="-2" max="-2" attributes="0"/>
-                              </Group>
-                              <Group type="102" attributes="0">
-                                  <Component id="goodsNameLabel" min="-2" pref="123" max="-2" attributes="0"/>
-                                  <EmptySpace max="-2" attributes="0"/>
-                                  <Component id="goodsNameTextField" min="-2" pref="207" max="-2" attributes="0"/>
-                                  <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
-                              </Group>
-                          </Group>
+                          <Component id="toLabel" min="-2" max="-2" attributes="0"/>
+                          <EmptySpace type="unrelated" max="-2" attributes="0"/>
+                          <Component id="toImportDayTextField" min="-2" pref="43" max="-2" attributes="0"/>
+                          <EmptySpace max="-2" attributes="0"/>
+                          <Component id="separatorLabel14" min="-2" pref="8" max="-2" attributes="0"/>
+                          <EmptySpace max="-2" attributes="0"/>
+                          <Component id="toImportMonthTextField" min="-2" pref="41" max="-2" attributes="0"/>
+                          <EmptySpace max="-2" attributes="0"/>
+                          <Component id="separatorLabel11" min="-2" pref="8" max="-2" attributes="0"/>
+                          <EmptySpace max="-2" attributes="0"/>
+                          <Component id="toImportYearTextField" min="-2" pref="77" max="-2" attributes="0"/>
+                          <EmptySpace pref="102" max="32767" attributes="0"/>
+                          <Component id="searchImportHistoryBtn" min="-2" pref="112" max="-2" attributes="0"/>
+                          <EmptySpace type="separate" max="-2" attributes="0"/>
+                          <Component id="refreshImportTableLabel" min="-2" max="-2" attributes="0"/>
                           <EmptySpace max="-2" attributes="0"/>
                       </Group>
                   </Group>
@@ -965,19 +953,13 @@
                 <DimensionLayout dim="1">
                   <Group type="103" groupAlignment="0" attributes="0">
                       <Group type="102" alignment="0" attributes="0">
-                          <EmptySpace max="-2" attributes="0"/>
-                          <Group type="103" groupAlignment="1" attributes="0">
-                              <Component id="refreshImportTableLabel" min="-2" max="-2" attributes="0"/>
+                          <Group type="103" groupAlignment="0" attributes="0">
                               <Group type="102" attributes="0">
-                                  <Group type="103" groupAlignment="0" max="-2" attributes="0">
-                                      <Component id="manufactureLabel" alignment="0" min="-2" pref="35" max="-2" attributes="0"/>
-                                      <Component id="goodsNameTextField" alignment="0" min="-2" pref="43" max="-2" attributes="0"/>
-                                      <Group type="103" groupAlignment="3" attributes="0">
-                                          <Component id="goodsNameLabel" alignment="3" min="-2" pref="38" max="-2" attributes="0"/>
-                                          <Component id="manufactureComboBox" alignment="3" min="-2" pref="43" max="-2" attributes="0"/>
-                                      </Group>
+                                  <Group type="103" groupAlignment="3" attributes="0">
+                                      <Component id="goodsNameTextField" alignment="3" min="-2" pref="43" max="-2" attributes="0"/>
+                                      <Component id="goodsNameLabel" alignment="3" min="-2" pref="38" max="-2" attributes="0"/>
                                   </Group>
-                                  <EmptySpace type="unrelated" max="-2" attributes="0"/>
+                                  <EmptySpace min="-2" pref="18" max="-2" attributes="0"/>
                                   <Group type="103" groupAlignment="0" attributes="0">
                                       <Group type="102" alignment="0" attributes="0">
                                           <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
@@ -1003,6 +985,10 @@
                                           <Component id="toLabel" alignment="3" min="-2" max="-2" attributes="0"/>
                                       </Group>
                                   </Group>
+                              </Group>
+                              <Group type="102" alignment="1" attributes="0">
+                                  <EmptySpace max="-2" attributes="0"/>
+                                  <Component id="refreshImportTableLabel" min="-2" max="-2" attributes="0"/>
                               </Group>
                           </Group>
                           <EmptySpace min="-2" max="-2" attributes="0"/>
@@ -1063,7 +1049,7 @@
                 <Component class="javax.swing.JTextField" name="fromImportYearTextField">
                   <Properties>
                     <Property name="horizontalAlignment" type="int" value="0"/>
-                    <Property name="text" type="java.lang.String" value="2023"/>
+                    <Property name="text" type="java.lang.String" value="2025"/>
                   </Properties>
                   <Events>
                     <EventHandler event="mouseExited" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="fromImportYearTextFieldMouseExited"/>
@@ -1073,7 +1059,7 @@
                 <Component class="javax.swing.JTextField" name="toImportYearTextField">
                   <Properties>
                     <Property name="horizontalAlignment" type="int" value="0"/>
-                    <Property name="text" type="java.lang.String" value="2023"/>
+                    <Property name="text" type="java.lang.String" value="2025"/>
                   </Properties>
                   <Events>
                     <EventHandler event="mouseExited" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="toImportYearTextFieldMouseExited"/>
@@ -1123,26 +1109,6 @@
                     </Property>
                     <Property name="text" type="java.lang.String" value="/"/>
                   </Properties>
-                </Component>
-                <Component class="javax.swing.JLabel" name="manufactureLabel">
-                  <Properties>
-                    <Property name="text" type="java.lang.String" value="Nh&#xe0; s&#x1ea3;n xu&#x1ea5;t:"/>
-                  </Properties>
-                </Component>
-                <Component class="javax.swing.JComboBox" name="manufactureComboBox">
-                  <Properties>
-                    <Property name="model" type="javax.swing.ComboBoxModel" editor="org.netbeans.modules.form.editors2.ComboBoxModelEditor">
-                      <StringArray count="1">
-                        <StringItem index="0" value="T&#x1ea5;t c&#x1ea3;"/>
-                      </StringArray>
-                    </Property>
-                  </Properties>
-                  <Events>
-                    <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="manufactureComboBoxActionPerformed"/>
-                  </Events>
-                  <AuxValues>
-                    <AuxValue name="JavaCodeGenerator_TypeParameters" type="java.lang.String" value="&lt;String&gt;"/>
-                  </AuxValues>
                 </Component>
                 <Component class="javax.swing.JLabel" name="goodsNameLabel">
                   <Properties>

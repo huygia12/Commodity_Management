@@ -2,12 +2,7 @@ package model.entities;
 
 import lombok.*;
 import javax.persistence.*;
-import java.util.UUID;
 
-/**
- *
- * @author huy
- */
 @Entity
 @Table(name = "InvoiceProduct")
 @Data
@@ -17,8 +12,8 @@ import java.util.UUID;
 public class InvoiceProduct {
 
     @Id
-    @GeneratedValue
-    private UUID invoiceProductId;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long invoiceProductId;
 
     @Column(nullable = false)
     private String productName;
@@ -27,13 +22,16 @@ public class InvoiceProduct {
     private String productCode;
     
     @Column(nullable = false)
-    private UUID productId;
+    private Long productId;
 
     @Column(nullable = false)
     private String unit;
     
     @Column(nullable = false)
     private Integer price;
+    
+    @Column(nullable = false)
+    private Integer importPrice;
 
     @Column(nullable = false)
     private String provider;
@@ -42,7 +40,7 @@ public class InvoiceProduct {
     private Integer quantity;
 
     @Column(nullable = false)
-    private UUID shipmentId;
+    private Long shipmentId;
 
     @ManyToOne(optional = false)
     @JoinColumn(name = "InvoiceId", referencedColumnName = "InvoiceId")

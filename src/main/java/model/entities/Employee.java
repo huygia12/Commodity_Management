@@ -3,7 +3,6 @@ package model.entities;
 import lombok.*;
 import javax.persistence.*;
 import java.time.LocalDateTime;
-import java.util.UUID;
 import model.enums.Gender;
 
 /**
@@ -19,8 +18,8 @@ import model.enums.Gender;
 public class Employee {
 
     @Id
-    @GeneratedValue
-    private UUID employeeId;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long employeeId;
 
     @Column(nullable = false)
     private String fullname;

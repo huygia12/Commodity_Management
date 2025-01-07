@@ -4,7 +4,6 @@ import java.time.LocalDateTime;
 import java.util.List;
 import lombok.*;
 import javax.persistence.*;
-import java.util.UUID;
 
 /**
  *
@@ -17,9 +16,10 @@ import java.util.UUID;
 @AllArgsConstructor
 @Builder
 public class Store {
+
     @Id
-    @GeneratedValue
-    private UUID storeId;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long storeId;
 
     @Column(nullable = false)
     private String storeName;
@@ -42,7 +42,12 @@ public class Store {
 
     @OneToMany(mappedBy = "store", cascade = CascadeType.REMOVE, orphanRemoval = true)
     private List<Shift> shifts;
-    
+
     @OneToMany(mappedBy = "store", cascade = CascadeType.REMOVE, orphanRemoval = true)
     private List<Employee> employees;
+
+    @PrePersist
+    protected void onCreate() {
+        this.createdAt = LocalDateTime.now();
+    }
 }

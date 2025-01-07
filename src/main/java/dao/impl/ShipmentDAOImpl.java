@@ -24,10 +24,6 @@ public class ShipmentDAOImpl implements ShipmentDAO {
             }
             Logger.getLogger(this.getClass().getName()).log(Level.SEVERE, null, e);
             return false;
-        } finally {
-            if (em.isOpen()) {
-                em.close();
-            }
         }
     }
 
@@ -40,6 +36,7 @@ public class ShipmentDAOImpl implements ShipmentDAO {
 
             s.setImportPrice(shipment.getImportPrice());
             s.setQuantity(shipment.getQuantity());
+            s.setQuantityInStock(shipment.getQuantity() - s.getQuantity() + s.getQuantityInStock());
             s.setManufacturingDate(shipment.getManufacturingDate());
             s.setExpiryDate(shipment.getExpiryDate());
             
@@ -52,15 +49,11 @@ public class ShipmentDAOImpl implements ShipmentDAO {
             }
             Logger.getLogger(this.getClass().getName()).log(Level.SEVERE, null, e);
             return false;
-        } finally {
-            if (em.isOpen()) {
-                em.close();
-            }
         }
     }
 
     @Override
-    public boolean deleteShipment(UUID shipmentId, EntityManager em) {
+    public boolean deleteShipment(Long shipmentId, EntityManager em) {
         EntityTransaction transaction = em.getTransaction();
         try {
             Shipment p = getShipment(shipmentId, em);
@@ -79,13 +72,11 @@ public class ShipmentDAOImpl implements ShipmentDAO {
             }
             Logger.getLogger(this.getClass().getName()).log(Level.SEVERE, null, e);
             return false;
-        } finally {
-            em.close();
         }
     }
 
     @Override
-    public Shipment getShipment(UUID shipmentId, EntityManager em) {
+    public Shipment getShipment(Long shipmentId, EntityManager em) {
         Shipment s = em.find(Shipment.class, shipmentId);
         return s;
     }

@@ -1,6 +1,5 @@
 package dao;
 
-import java.util.UUID;
 import javax.persistence.EntityManager;
 import model.entities.Employee;
 
@@ -13,7 +12,7 @@ public interface EmployeeDAO {
 
     public boolean updateEmployee(Employee employee, EntityManager em);
     
-    public boolean deleteEmployee(UUID employeeID, EntityManager em);
+    public boolean deleteEmployee(Long employeeID, EntityManager em);
     
-    public Employee getEmployee(UUID employeeId, EntityManager em);
+    public Employee getEmployee(Long employeeId, EntityManager em);
 }

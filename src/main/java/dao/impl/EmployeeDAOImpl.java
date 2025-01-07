@@ -1,7 +1,6 @@
 package dao.impl;
 
 import dao.EmployeeDAO;
-import java.util.UUID;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.persistence.EntityManager;
@@ -28,10 +27,6 @@ public class EmployeeDAOImpl implements EmployeeDAO {
             }
             Logger.getLogger(this.getClass().getName()).log(Level.SEVERE, null, e);
             return false;
-        } finally {
-            if (em.isOpen()) {
-                em.close();
-            }
         }
     }
 
@@ -53,15 +48,11 @@ public class EmployeeDAOImpl implements EmployeeDAO {
             }
             Logger.getLogger(this.getClass().getName()).log(Level.SEVERE, null, e);
             return false;
-        } finally {
-            if (em.isOpen()) {
-                em.close();
-            }
         }
     }
 
     @Override
-    public boolean deleteEmployee(UUID employeeId, EntityManager em) {
+    public boolean deleteEmployee(Long employeeId, EntityManager em) {
         EntityTransaction transaction = em.getTransaction();
         try {
             Employee e = getEmployee(employeeId, em);
@@ -80,13 +71,11 @@ public class EmployeeDAOImpl implements EmployeeDAO {
             }
             Logger.getLogger(this.getClass().getName()).log(Level.SEVERE, null, e);
             return false;
-        } finally {
-            em.close();
         }
     }
 
     @Override
-    public Employee getEmployee(UUID employeeId, EntityManager em) {
+    public Employee getEmployee(Long employeeId, EntityManager em) {
         Employee e = em.find(Employee.class, employeeId);
         return e;
     }

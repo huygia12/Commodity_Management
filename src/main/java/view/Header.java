@@ -1,4 +1,4 @@
-package gui;
+package view;
 
 import model.entities.Store;
 import java.awt.Graphics;

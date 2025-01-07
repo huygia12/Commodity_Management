@@ -44,3 +44,6 @@ desktop.ini
 .project
 .classpath
 .settings/
+
+output/
+data/

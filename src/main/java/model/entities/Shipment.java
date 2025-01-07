@@ -4,7 +4,6 @@ import java.time.LocalDate;
 import lombok.*;
 import javax.persistence.*;
 import java.time.LocalDateTime;
-import java.util.UUID;
 
 /**
  *
@@ -19,8 +18,8 @@ import java.util.UUID;
 public class Shipment {
 
     @Id
-    @GeneratedValue
-    private UUID shipmentId;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long shipmentId;
 
     @Column(nullable = false)
     private Integer importPrice;
@@ -43,7 +42,7 @@ public class Shipment {
     private LocalDateTime createdAt;
     
     @Column(nullable = false)
-    private UUID storeId;
+    private Long storeId;
     
     @PrePersist
     protected void onCreate() {

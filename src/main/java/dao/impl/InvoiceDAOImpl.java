@@ -1,12 +1,16 @@
 package dao.impl;
 
 import dao.InvoiceDAO;
+import java.util.List;
 import javax.persistence.EntityManager;
 import java.util.UUID;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.persistence.EntityTransaction;
+import javax.persistence.TypedQuery;
 import model.entities.Invoice;
+import model.entities.InvoiceProduct;
+import model.entities.Shipment;
 
 public class InvoiceDAOImpl implements InvoiceDAO {
 
@@ -15,6 +19,20 @@ public class InvoiceDAOImpl implements InvoiceDAO {
         EntityTransaction transaction = em.getTransaction();
         try {
             transaction.begin();
+
+            for (InvoiceProduct p : invoice.getInvoiceProducts()) {
+                Shipment s = em.find(Shipment.class, p.getShipmentId());
+                if (s == null) {
+                    throw new RuntimeException("Shipment not found for ID: " + p.getShipmentId());
+                }
+                if (s.getQuantityInStock() < p.getQuantity()) {
+                    throw new RuntimeException("Not enough stock for Shipment ID: " + p.getShipmentId());
+                }
+
+                s.setQuantity(s.getQuantityInStock() - p.getQuantity());
+                em.merge(s);
+            }
+
             em.persist(invoice);
             transaction.commit();
             return true;
@@ -24,16 +42,18 @@ public class InvoiceDAOImpl implements InvoiceDAO {
             }
             Logger.getLogger(this.getClass().getName()).log(Level.SEVERE, null, e);
             return false;
-        } finally {
-            if (em.isOpen()) {
-                em.close();
-            }
         }
     }
-    
+
     @Override
-    public Invoice getInvoice(UUID invoiceId, EntityManager em) {
+    public Invoice getInvoice(Long invoiceId, EntityManager em) {
         Invoice i = em.find(Invoice.class, invoiceId);
         return i;
+    }
+
+    @Override
+    public List<Invoice> getInvoices(EntityManager em) {
+        TypedQuery<Invoice> query = em.createQuery("SELECT i FROM Invoice i", Invoice.class);
+        return query.getResultList();
     }
 }

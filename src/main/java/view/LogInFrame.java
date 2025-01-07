@@ -1,17 +1,16 @@
-package gui;
-
+package view;
 
 import com.formdev.flatlaf.FlatLightLaf;
 import config.HibernateConfig;
 import dao.StoreDAO;
 import dao.impl.StoreDAOImpl;
-import java.io.BufferedReader;
 import java.io.File;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.StandardOpenOption;
+import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.ImageIcon;
@@ -30,8 +29,8 @@ public class LogInFrame extends javax.swing.JFrame {
         setIconImage(new ImageIcon(getClass()
                 .getResource("/ImageIcon/icons8-grocery-store-96.png")).getImage());
         initVariableValue();
-        setDefaultValueToRememberCheckbox();
         clearInputAndWarning();
+        loadRememberedCredentials();
     }
 
     @SuppressWarnings("unchecked")
@@ -70,7 +69,6 @@ public class LogInFrame extends javax.swing.JFrame {
         setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
         setLocation(new java.awt.Point(500, 150));
         setMinimumSize(new java.awt.Dimension(600, 600));
-        setPreferredSize(new java.awt.Dimension(600, 600));
         setResizable(false);
 
         LogInPanel.setBackground(new java.awt.Color(255, 255, 255));
@@ -79,11 +77,18 @@ public class LogInFrame extends javax.swing.JFrame {
         LogInPanel.setMinimumSize(new java.awt.Dimension(600, 570));
         LogInPanel.setPreferredSize(new java.awt.Dimension(600, 570));
 
+        logInEmail.setFont(new java.awt.Font("Liberation Sans", 0, 18)); // NOI18N
+
         jLabel1.setFont(new java.awt.Font("Segoe UI", 1, 24)); // NOI18N
         jLabel1.setText("Đăng nhập tài khoản");
 
         rememberPasswordCheckBox.setForeground(new java.awt.Color(102, 102, 102));
         rememberPasswordCheckBox.setText("Nhớ mật khẩu");
+        rememberPasswordCheckBox.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                rememberPasswordCheckBoxMouseClicked(evt);
+            }
+        });
 
         eyeBtn.setFont(new java.awt.Font("Segoe UI", 2, 12)); // NOI18N
         eyeBtn.setForeground(new java.awt.Color(0, 102, 255));
@@ -96,6 +101,8 @@ public class LogInFrame extends javax.swing.JFrame {
                 eyeBtnActionPerformed(evt);
             }
         });
+
+        logInPassword.setFont(new java.awt.Font("Liberation Sans", 0, 18)); // NOI18N
 
         logInEmailLabel.setText("Email");
 
@@ -170,11 +177,15 @@ public class LogInFrame extends javax.swing.JFrame {
         SignUpPanel.setMinimumSize(new java.awt.Dimension(600, 570));
         SignUpPanel.setPreferredSize(new java.awt.Dimension(600, 570));
         SignUpPanel.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
+
+        signupEmailInput.setFont(new java.awt.Font("Liberation Sans", 0, 18)); // NOI18N
         SignUpPanel.add(signupEmailInput, new org.netbeans.lib.awtextra.AbsoluteConstraints(240, 90, 280, 37));
 
         jLabel5.setFont(new java.awt.Font("Segoe UI", 1, 24)); // NOI18N
         jLabel5.setText("Đăng ký tài khoản");
         SignUpPanel.add(jLabel5, new org.netbeans.lib.awtextra.AbsoluteConstraints(94, 25, -1, 38));
+
+        signupPasswordInput.setFont(new java.awt.Font("Liberation Sans", 0, 18)); // NOI18N
         SignUpPanel.add(signupPasswordInput, new org.netbeans.lib.awtextra.AbsoluteConstraints(240, 230, 280, 37));
 
         signInEmailLabel.setText("Email");
@@ -194,6 +205,8 @@ public class LogInFrame extends javax.swing.JFrame {
 
         retypeSignInPasswordLabel.setText("Nhập lại mật khẩu");
         SignUpPanel.add(retypeSignInPasswordLabel, new org.netbeans.lib.awtextra.AbsoluteConstraints(90, 300, -1, 30));
+
+        retypePasswordInput.setFont(new java.awt.Font("Liberation Sans", 0, 18)); // NOI18N
         SignUpPanel.add(retypePasswordInput, new org.netbeans.lib.awtextra.AbsoluteConstraints(240, 300, 280, 36));
 
         passwordWarning.setFont(new java.awt.Font("Segoe UI", 2, 12)); // NOI18N
@@ -210,6 +223,8 @@ public class LogInFrame extends javax.swing.JFrame {
         blankSignUpPasswordWarning.setForeground(new java.awt.Color(255, 0, 51));
         blankSignUpPasswordWarning.setText("Mật khẩu phải chứa ít nhất 6 kí tự! ");
         SignUpPanel.add(blankSignUpPasswordWarning, new org.netbeans.lib.awtextra.AbsoluteConstraints(290, 270, -1, -1));
+
+        storeNameInput.setFont(new java.awt.Font("Liberation Sans", 0, 18)); // NOI18N
         SignUpPanel.add(storeNameInput, new org.netbeans.lib.awtextra.AbsoluteConstraints(240, 160, 280, 40));
 
         signInEmailLabel1.setText("Tên cửa hàng");
@@ -220,7 +235,7 @@ public class LogInFrame extends javax.swing.JFrame {
         illegalStoreNameWarning.setText("Không được để trống!");
         SignUpPanel.add(illegalStoreNameWarning, new org.netbeans.lib.awtextra.AbsoluteConstraints(380, 200, -1, -1));
 
-        tabPane.addTab("Đăng kí", SignUpPanel);
+        tabPane.addTab("Đăng ký", SignUpPanel);
 
         getContentPane().add(tabPane, java.awt.BorderLayout.PAGE_START);
 
@@ -255,16 +270,24 @@ public class LogInFrame extends javax.swing.JFrame {
 
         validStoreName = !storeNameStr.isBlank();
         illegalStoreNameWarning.setVisible(!validStoreName);
-        
+
         matchPassword = passwordStr.equals(retypePasswordStr);
         passwordWarning.setVisible(!matchPassword);
 
         if (validEmail && matchPassword && rightpassword && validStoreName) {
-            Store newStore = Store.builder().email(emailStr).password(BcryptUtil.hashPassword(passwordStr)).build();
-            storeDAO.signup(newStore, hibernateConfig.getEntityManager());
+            Store newStore = Store.builder().email(emailStr).password(BcryptUtil.hashPassword(passwordStr)).storeName(storeNameStr).build();
+
+            boolean result = storeDAO.signup(newStore, hibernateConfig.getEntityManager());
+
+            if (!result) {
+                JOptionPane.showMessageDialog(LogInFrame.this,
+                        "Đăng ký thât bại!");
+                return;
+            }
+
             JOptionPane.showMessageDialog(LogInFrame.this,
                     "Vui lòng trở lại màn hình đăng nhập",
-                    "Đăng kí thành công!",
+                    "Đăng ký thành công!",
                     JOptionPane.DEFAULT_OPTION);
             clearInputAndWarning();
         }
@@ -285,13 +308,19 @@ public class LogInFrame extends javax.swing.JFrame {
             return;
         }
 
-        rememberCheck();
+        if (rememberCheck) {
+            rememberCredentials();
+        }
+
         MainFrame mainFrame = new MainFrame(store);
         mainFrame.setVisible(true);
         this.dispose();
-//                mainFrame.setVisible(true);
         hibernateConfig.closeConnection();
     }//GEN-LAST:event_logInButtonActionPerformed
+
+    private void rememberPasswordCheckBoxMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_rememberPasswordCheckBoxMouseClicked
+        rememberCheck = true;
+    }//GEN-LAST:event_rememberPasswordCheckBoxMouseClicked
 
     private void showLogInFailMessage() {
         JOptionPane.showMessageDialog(LogInFrame.this,
@@ -300,14 +329,7 @@ public class LogInFrame extends javax.swing.JFrame {
                 JOptionPane.WARNING_MESSAGE);
     }
 
-    private void showSignupFailMessage() {
-        JOptionPane.showMessageDialog(LogInFrame.this,
-                "Thông tin đăng ký không hợp lệ!",
-                "Đăng ký thất bại!",
-                JOptionPane.WARNING_MESSAGE);
-    }
-
-    private void rememberCheck() {
+    private void rememberCredentials() {
         try (PrintWriter pw = new PrintWriter(Files.newBufferedWriter(Path.of(REMEBER_PASSWORD_PATH),
                 StandardOpenOption.CREATE,
                 StandardOpenOption.WRITE,
@@ -320,21 +342,23 @@ public class LogInFrame extends javax.swing.JFrame {
         }
     }
 
-    private boolean setDefaultValueToRememberCheckbox() {
-        boolean check = false;
-        try (BufferedReader br = new BufferedReader(
-                Files.newBufferedReader(Path.of(REMEBER_PASSWORD_PATH)))) {
-            String[] str = br.readLine().split(",");
-            rememberCheck = str[0].equals("true");
-            if (rememberCheck) {
-                rememberPasswordCheckBox.setSelected(rememberCheck);
-                logInEmail.setText(str[1]);
-                logInPassword.setText(str[2]);
+    private void loadRememberedCredentials() {
+        try {
+            Path path = Path.of(REMEBER_PASSWORD_PATH);
+            if (Files.exists(path)) {
+                List<String> lines = Files.readAllLines(path);
+                if (!lines.isEmpty()) {
+                    String[] data = lines.get(0).split(",");
+                    if (data.length == 3) {
+                        rememberPasswordCheckBox.setSelected(Boolean.parseBoolean(data[0]));
+                        logInEmail.setText(data[1]);
+                        logInPassword.setText(data[2]);
+                    }
+                }
             }
         } catch (IOException ex) {
             Logger.getLogger(this.getName()).log(Level.SEVERE, null, ex);
         }
-        return check;
     }
 
     private void clearInputAndWarning() {
@@ -356,7 +380,6 @@ public class LogInFrame extends javax.swing.JFrame {
         echoChar = logInPassword.getEchoChar();
         storeDAO = new StoreDAOImpl();
         hibernateConfig = new HibernateConfig();
-
     }
 
     public static void main(String args[]) throws UnsupportedLookAndFeelException {

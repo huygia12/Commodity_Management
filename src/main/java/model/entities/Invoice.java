@@ -4,7 +4,6 @@ import java.time.LocalDateTime;
 import java.util.List;
 import lombok.*;
 import javax.persistence.*;
-import java.util.UUID;
 import model.enums.PaymentOption;
 
 /**
@@ -20,8 +19,8 @@ import model.enums.PaymentOption;
 public class Invoice {
 
     @Id
-    @GeneratedValue
-    private UUID invoiceId;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long invoiceId;
 
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)

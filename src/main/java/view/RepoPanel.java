@@ -1,4 +1,4 @@
-package gui;
+package view;
 
 import config.HibernateConfig;
 import dao.ProductDAO;
@@ -245,7 +245,7 @@ public class RepoPanel extends javax.swing.JPanel {
 
         int reply = JOptionPane.showConfirmDialog(this, "Bạn có chắc muốn xóa sản phẩm này không?", "Xác nhận xóa", JOptionPane.YES_NO_OPTION);
         if (reply == JOptionPane.YES_OPTION) {
-            UUID productId = UUID.fromString((String) productTableModel.getValueAt(selectedRowIndex, 6));
+            Long productId = Long.valueOf((String) productTableModel.getValueAt(selectedRowIndex, 6));
 
             boolean result = productDAO.deleteProduct(productId, this.hibernateConfig.getEntityManager());
             if (!result) {
@@ -281,7 +281,7 @@ public class RepoPanel extends javax.swing.JPanel {
 
         int reply = JOptionPane.showConfirmDialog(this, "Bạn có chắc muốn chỉnh sửa thông tin sản phẩm này?", "Xác nhận chỉnh sửa", JOptionPane.YES_NO_OPTION);
         if (reply == JOptionPane.YES_OPTION) {
-            UUID productId = UUID.fromString((String) productTableModel.getValueAt(selectedRowIndex, 6));
+            Long productId = Long.valueOf((String)productTableModel.getValueAt(selectedRowIndex, 6));
             Product newProduct = Product.builder().productId(productId)
                     .productCode(productCode)
                     .productName(productName)
@@ -317,7 +317,7 @@ public class RepoPanel extends javax.swing.JPanel {
             manufacturerTextField.setText(productTableModel.getValueAt(productTable.getSelectedRow(), 3).toString());
             priceTextField.setText(productTableModel.getValueAt(productTable.getSelectedRow(), 4).toString());
             totalQuantityTextField.setText(productTableModel.getValueAt(productTable.getSelectedRow(), 5).toString());
-            selectedProductId =  UUID.fromString((String)productTableModel.getValueAt(productTable.getSelectedRow(), 6));
+            selectedProductId =  Long.valueOf((String)productTableModel.getValueAt(productTable.getSelectedRow(), 6));
         }
     }//GEN-LAST:event_productTableMouseReleased
 
@@ -415,7 +415,7 @@ public class RepoPanel extends javax.swing.JPanel {
         defaultSettings();
     }
 
-    private UUID selectedProductId;
+    private Long selectedProductId;
     private ProductDAO productDAO;
     private HibernateConfig hibernateConfig;
     private MainFrame mf;

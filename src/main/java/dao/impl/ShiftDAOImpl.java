@@ -5,7 +5,6 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import javax.persistence.EntityManager;
-import java.util.UUID;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.persistence.EntityTransaction;
@@ -23,6 +22,7 @@ public class ShiftDAOImpl implements ShiftDAO {
     public Shift addShift(Store store, EntityManager em) {
         EntityTransaction transaction = em.getTransaction();
         try {
+            transaction.begin();
             Shift newShift = Shift.builder().store(store).state(ShiftState.STAGED).build();
             em.persist(newShift);
             transaction.commit();
@@ -33,10 +33,6 @@ public class ShiftDAOImpl implements ShiftDAO {
             }
             Logger.getLogger(this.getClass().getName()).log(Level.SEVERE, null, e);
             return null;
-        } finally {
-            if (em.isOpen()) {
-                em.close();
-            }
         }
     }
 
@@ -68,10 +64,6 @@ public class ShiftDAOImpl implements ShiftDAO {
             }
             Logger.getLogger(this.getClass().getName()).log(Level.SEVERE, null, e);
             return false;
-        } finally {
-            if (em.isOpen()) {
-                em.close();
-            }
         }
     }
 
@@ -92,11 +84,7 @@ public class ShiftDAOImpl implements ShiftDAO {
             }
             Logger.getLogger(this.getClass().getName()).log(Level.SEVERE, null, e);
             return false;
-        } finally {
-            if (em.isOpen()) {
-                em.close();
-            }
-        }
+        } 
     }
 
     @Override
@@ -125,15 +113,11 @@ public class ShiftDAOImpl implements ShiftDAO {
             }
             Logger.getLogger(this.getClass().getName()).log(Level.SEVERE, null, e);
             return false;
-        } finally {
-            if (em.isOpen()) {
-                em.close();
-            }
         }
     }
 
     @Override
-    public Shift getShift(UUID shiftId, EntityManager em) {
+    public Shift getShift(Long shiftId, EntityManager em) {
         Shift s = em.find(Shift.class, shiftId);
         return s;
     }
@@ -147,6 +131,7 @@ public class ShiftDAOImpl implements ShiftDAO {
             query.setMaxResults(1);
             return query.getSingleResult();
         } catch (NoResultException e) {
+            Logger.getLogger(this.getClass().getName()).log(Level.SEVERE, null, e);
             return null;
         }
 

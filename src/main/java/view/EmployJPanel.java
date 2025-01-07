@@ -1,14 +1,17 @@
-package gui;
+package view;
 
 import config.HibernateConfig;
 import dao.EmployeeDAO;
 import dao.impl.EmployeeDAOImpl;
+import java.awt.Font;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.UUID;
 import java.util.stream.Collectors;
 import javax.swing.JOptionPane;
+import javax.swing.SwingConstants;
+import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
+import javax.swing.table.JTableHeader;
 import model.entities.Employee;
 import model.entities.Store;
 import model.enums.Gender;
@@ -22,6 +25,20 @@ public class EmployJPanel extends javax.swing.JPanel {
 
     public EmployJPanel() {
         initComponents();
+        customUI();
+    }
+    
+    private void customUI () {
+        DefaultTableCellRenderer centerRenderer = new DefaultTableCellRenderer();
+        centerRenderer.setVerticalTextPosition(SwingConstants.CENTER);
+        centerRenderer.setHorizontalTextPosition(SwingConstants.CENTER);
+        centerRenderer.setHorizontalAlignment(SwingConstants.CENTER);
+        centerRenderer.setVerticalAlignment(SwingConstants.CENTER);
+        for (int i = 0; i < displayTable.getColumnCount(); i++) {
+            displayTable.getColumnModel().getColumn(i).setCellRenderer(centerRenderer);
+        }
+        JTableHeader header = displayTable.getTableHeader();
+        header.setFont(new Font("Arial", Font.BOLD, 14));
     }
 
     @SuppressWarnings("unchecked")
@@ -59,6 +76,7 @@ public class EmployJPanel extends javax.swing.JPanel {
         inputLastNameLabel.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
         inputLastNameLabel.setText("Họ và tên:");
 
+        fullnameInput.setFont(new java.awt.Font("Liberation Sans", 0, 18)); // NOI18N
         fullnameInput.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 fullnameInputMouseClicked(evt);
@@ -87,6 +105,8 @@ public class EmployJPanel extends javax.swing.JPanel {
                 searchButtonActionPerformed(evt);
             }
         });
+
+        searchIDTextField.setFont(new java.awt.Font("Liberation Sans", 0, 18)); // NOI18N
 
         quantityEmployLabel.setText("Số lượng nhân viên hiện tại: ");
 
@@ -135,7 +155,7 @@ public class EmployJPanel extends javax.swing.JPanel {
                 .addContainerGap()
                 .addComponent(jSeparator1))
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, functionPanelLayout.createSequentialGroup()
-                .addGap(29, 29, 29)
+                .addGap(34, 34, 34)
                 .addGroup(functionPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(searchIDTextField, javax.swing.GroupLayout.PREFERRED_SIZE, 42, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(searchButton, javax.swing.GroupLayout.PREFERRED_SIZE, 42, javax.swing.GroupLayout.PREFERRED_SIZE))
@@ -187,7 +207,7 @@ public class EmployJPanel extends javax.swing.JPanel {
                 .addGroup(inputInfoPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(inputInfoPanelLayout.createSequentialGroup()
                         .addComponent(inputLastNameLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 68, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 104, Short.MAX_VALUE)
                         .addComponent(fullnameInput, javax.swing.GroupLayout.PREFERRED_SIZE, 367, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(inputInfoPanelLayout.createSequentialGroup()
                         .addComponent(inputGenderLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 59, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -203,8 +223,7 @@ public class EmployJPanel extends javax.swing.JPanel {
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                                 .addComponent(removeButton, javax.swing.GroupLayout.PREFERRED_SIZE, 71, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addGap(18, 18, 18)
-                                .addComponent(cancelButton, javax.swing.GroupLayout.PREFERRED_SIZE, 71, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                        .addGap(0, 33, Short.MAX_VALUE)))
+                                .addComponent(cancelButton, javax.swing.GroupLayout.PREFERRED_SIZE, 71, javax.swing.GroupLayout.PREFERRED_SIZE)))))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(functionPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap())
@@ -239,17 +258,22 @@ public class EmployJPanel extends javax.swing.JPanel {
 
             },
             new String [] {
-                "Tên", "Giới tính", "Thời gian tạo"
+                "TÊN", "GIỚI TÍNH", "THỜI GIAN TẠO", "EmployeeID"
             }
         ) {
             boolean[] canEdit = new boolean [] {
-                false, false, false
+                false, false, false, false
             };
 
             public boolean isCellEditable(int rowIndex, int columnIndex) {
                 return canEdit [columnIndex];
             }
         });
+        displayTable.setAutoResizeMode(javax.swing.JTable.AUTO_RESIZE_ALL_COLUMNS);
+        displayTable.setGridColor(new java.awt.Color(204, 204, 204));
+        displayTable.setShowGrid(true);
+        displayTable.setUpdateSelectionOnSort(false);
+        displayTable.setVerifyInputWhenFocusTarget(false);
         displayTable.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 displayTableMouseClicked(evt);
@@ -310,7 +334,7 @@ public class EmployJPanel extends javax.swing.JPanel {
         String fullname = fullnameInput.getText().trim();
         Gender gender = maleButton.isSelected() ? Gender.MALE : femaleRadioButton.isSelected() ? Gender.FEMALE : Gender.OTHER;
 
-        Employee newEmployee = Employee.builder().fullname(fullname).gender(gender).build();
+        Employee newEmployee = Employee.builder().fullname(fullname).gender(gender).store(store).build();
         boolean result = employeeDAO.addEmployee(newEmployee, this.hibernateConfig.getEntityManager());
 
         if (!result) {
@@ -345,17 +369,17 @@ public class EmployJPanel extends javax.swing.JPanel {
         int reply = JOptionPane.showConfirmDialog(this, "Bạn có chắc muốn chỉnh sửa thông tin nhân viên?", "Xác nhận chỉnh sửa", JOptionPane.YES_NO_OPTION);
         if (reply == JOptionPane.YES_OPTION) {
             DefaultTableModel model = (DefaultTableModel) displayTable.getModel();
-            UUID employeeId = UUID.fromString((String) model.getValueAt(selectedRowIndex, 3));
+            Long employeeId = (Long)model.getValueAt(selectedRowIndex, 3);
             Employee newEmployee = Employee.builder().employeeId(employeeId).fullname(fullname).gender(gender).build();
-            boolean result = employeeDAO.addEmployee(newEmployee, this.hibernateConfig.getEntityManager());
+            boolean result = employeeDAO.updateEmployee(newEmployee, this.hibernateConfig.getEntityManager());
 
             if (!result) {
                 JOptionPane.showMessageDialog(this, "Chỉnh sửa thất bại!", "Thông báo", JOptionPane.INFORMATION_MESSAGE);
                 return;
             }
 
-            this.store.setEmployees(this.store.getEmployees().stream().map(employee -> 
-                (employee.getEmployeeId().equals(employeeId)) ? newEmployee : employee).collect(Collectors.toList()));
+            this.store.setEmployees(this.store.getEmployees().stream().map(employee
+                    -> (employee.getEmployeeId().equals(employeeId)) ? newEmployee : employee).collect(Collectors.toList()));
 
             displayEmployees(this.store.getEmployees());
             JOptionPane.showMessageDialog(this, "Thông tin nhân viên đã được cập nhật thành công!", "Thông báo", JOptionPane.INFORMATION_MESSAGE);
@@ -375,7 +399,7 @@ public class EmployJPanel extends javax.swing.JPanel {
         int reply = JOptionPane.showConfirmDialog(this, "Bạn có chắc muốn xóa nhân viên này không?", "Xác nhận xóa", JOptionPane.YES_NO_OPTION);
         if (reply == JOptionPane.YES_OPTION) {
             DefaultTableModel model = (DefaultTableModel) displayTable.getModel();
-            UUID employeeId = UUID.fromString((String) model.getValueAt(selectedRowIndex, 3));
+            Long employeeId = (Long)model.getValueAt(selectedRowIndex, 3);
 
             boolean result = employeeDAO.deleteEmployee(employeeId, this.hibernateConfig.getEntityManager());
             if (!result) {
@@ -398,18 +422,18 @@ public class EmployJPanel extends javax.swing.JPanel {
             JOptionPane.showMessageDialog(this, "Bạn cần nhập tên nhân viên tại thanh tìm kiếm");
             return;
         }
-        
+
         List<Employee> searchResult = new ArrayList();
         this.store.getEmployees().forEach(employee -> {
-            if(employee.getFullname().toLowerCase().contains(searchValue)){
+            if (employee.getFullname().toLowerCase().contains(searchValue)) {
                 searchResult.add(employee);
             }
         });
 
-        if (!searchResult.isEmpty()) {
-            displayEmployees(searchResult);
-        } else {
+        if (searchResult.isEmpty()) {
             JOptionPane.showMessageDialog(null, "Không tìm thấy nhân viên có thông tin tương ứng");
+        } else {
+            displayEmployees(searchResult);
         }
 
     }//GEN-LAST:event_searchButtonActionPerformed
@@ -444,15 +468,20 @@ public class EmployJPanel extends javax.swing.JPanel {
             fullnameInput.setText(fullname);
 
             switch (gender) {
-                case "MALE" -> maleButton.setSelected(true);
-                case "FEMALE" -> femaleRadioButton.setSelected(true);
-                default -> otherRadioButton.setSelected(true);
+                case "Nam" ->
+                    maleButton.setSelected(true);
+                case "Nữ" ->
+                    femaleRadioButton.setSelected(true);
+                default ->
+                    otherRadioButton.setSelected(true);
             }
         }
     }//GEN-LAST:event_displayTableMouseClicked
 
     private void cancelButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cancelButtonActionPerformed
         clearInputFields();
+        maleButton.setSelected(true);
+        displayTable.clearSelection();
     }//GEN-LAST:event_cancelButtonActionPerformed
 
     private void fullnameInputMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_fullnameInputMouseClicked
@@ -465,17 +494,14 @@ public class EmployJPanel extends javax.swing.JPanel {
         displayEmployees(this.store.getEmployees());
     }//GEN-LAST:event_refreshBtnActionPerformed
 
-
     private void displayEmployees(List<Employee> employees) {
         DefaultTableModel model = (DefaultTableModel) displayTable.getModel();
         model.setRowCount(0);
 
-        if (model.getColumnCount() == 3) {
-            model.addColumn("EmployeeId");
-        }
         for (Employee employee : employees) {
-            Object[] rowData = {employee.getFullname(),
-                employee.getGender() == Gender.MALE ? "Nam" : employee.getGender() == Gender.FEMALE ?"Nữ" : "Khác",
+            Object[] rowData = {
+                employee.getFullname(),
+                employee.getGender() == Gender.MALE ? "Nam" : employee.getGender() == Gender.FEMALE ? "Nữ" : "Khác",
                 FormatOutput.convertLocalDateTimeToString(employee.getCreatedAt()),
                 employee.getEmployeeId()};
             model.addRow(rowData);
@@ -487,7 +513,6 @@ public class EmployJPanel extends javax.swing.JPanel {
     }
 
     private void clearInputFields() {
-        setTextFieldProperties(fullnameInput);
         fullnameInput.setText("");
     }
 
@@ -504,26 +529,9 @@ public class EmployJPanel extends javax.swing.JPanel {
     }
 
     private boolean validateRequiredFields() {
-        if (fullnameInput.getText().isBlank()) {
-            insertWarningToTextField(fullnameInput, REQUIRED_INPUT);
-        }
-
         return !fullnameInput.getText().isBlank();
     }
 
-    private void insertWarningToTextField(javax.swing.JTextField textField, String warningText) {
-        textField.setFont(new java.awt.Font("Segoe UI", java.awt.Font.ITALIC, DEFAULT_TEXT_SIZE));
-        textField.setForeground(new java.awt.Color(255, 0, 0));
-        textField.setText(warningText);
-        textField.setEditable(false);
-    }
-
-    private void setTextFieldProperties(javax.swing.JTextField textField) {
-        textField.setFont(new java.awt.Font("Segoe UI", 0, DEFAULT_TEXT_SIZE));
-        textField.setForeground(new java.awt.Color(0, 0, 0));
-        textField.setEditable(true);
-    }
-    
     public void setup(HibernateConfig hibernateConfig, Store store) {
         this.store = store;
         this.hibernateConfig = hibernateConfig;
@@ -536,7 +544,6 @@ public class EmployJPanel extends javax.swing.JPanel {
     private EmployeeDAO employeeDAO;
     private HibernateConfig hibernateConfig;
     private Store store;
-    private final String REQUIRED_INPUT = "Không được để trống!";
     private final int DEFAULT_TEXT_SIZE = 11;
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton addButton;

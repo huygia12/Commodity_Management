@@ -1,4 +1,4 @@
-package gui;
+package view;
 
 import config.HibernateConfig;
 import dao.ShipmentDAO;
@@ -6,7 +6,6 @@ import java.awt.Component;
 import java.time.DateTimeException;
 import java.time.LocalDate;
 import java.util.List;
-import java.util.UUID;
 import javax.swing.JOptionPane;
 import javax.swing.JTextField;
 import javax.swing.table.DefaultTableModel;
@@ -594,7 +593,7 @@ public class ShipmentPanel extends javax.swing.JPanel {
 
         int reply = JOptionPane.showConfirmDialog(this, "Bạn có chắc muốn xóa lô hàng này không?", "Xác nhận xóa", JOptionPane.YES_NO_OPTION);
         if (reply == JOptionPane.YES_OPTION) {
-            UUID shipmentId = UUID.fromString((String) shipmentTableModel.getValueAt(selectedRowIndex, 6));
+            Long shipmentId = Long.valueOf((String)shipmentTableModel.getValueAt(selectedRowIndex, 6));
 
             boolean result = shipmentDAO.deleteShipment(shipmentId, this.hibernateConfig.getEntityManager());
             if (!result) {
@@ -903,12 +902,15 @@ public class ShipmentPanel extends javax.swing.JPanel {
         shipmentTable.getColumn(6).setPreferredWidth(0);
     }
 
-    public void setup(HibernateConfig hibernateConfig, Product product, Store store, MainFrame mf) {
+    public void setup(HibernateConfig hibernateConfig, Store store, MainFrame mf) {
         this.store = store;
         this.mf = mf;
-        this.product = product;
         this.hibernateConfig = hibernateConfig;
         this.shipmentTableModel = (DefaultTableModel) shipmentTable.getModel();
+    }
+    
+    public void setProduct(Product product){
+        this.product = product;
     }
 
     private ShipmentDAO shipmentDAO;
