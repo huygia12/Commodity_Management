@@ -10,6 +10,7 @@ import java.io.PrintWriter;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.StandardOpenOption;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -275,7 +276,14 @@ public class LogInFrame extends javax.swing.JFrame {
         passwordWarning.setVisible(!matchPassword);
 
         if (validEmail && matchPassword && rightpassword && validStoreName) {
-            Store newStore = Store.builder().email(emailStr).password(BcryptUtil.hashPassword(passwordStr)).storeName(storeNameStr).build();
+            Store newStore = Store.builder()
+                    .email(emailStr)
+                    .password(BcryptUtil.hashPassword(passwordStr))
+                    .storeName(storeNameStr)
+                    .products(new ArrayList<>())
+                    .employees(new ArrayList<>())
+                    .shifts(new ArrayList<>())
+                    .build();
 
             boolean result = storeDAO.signup(newStore, hibernateConfig.getEntityManager());
 
@@ -311,7 +319,6 @@ public class LogInFrame extends javax.swing.JFrame {
         if (rememberCheck) {
             rememberCredentials();
         }
-
         MainFrame mainFrame = new MainFrame(store);
         mainFrame.setVisible(true);
         this.dispose();

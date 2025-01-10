@@ -34,7 +34,8 @@ public class Product {
 
     @Column(nullable = false)
     private String provider;
-        
+    
+    @ToString.Exclude
     @ManyToOne(optional = false)
     @JoinColumn(name = "storeId", referencedColumnName = "storeId")
     private Store store;

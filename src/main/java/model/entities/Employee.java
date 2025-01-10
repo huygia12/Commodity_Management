@@ -31,6 +31,7 @@ public class Employee {
     @Column(nullable = false, updatable = false)
     private LocalDateTime createdAt;
     
+    @ToString.Exclude
     @ManyToOne(optional = false)
     @JoinColumn(name = "storeId", referencedColumnName = "storeId")
     private Store store;

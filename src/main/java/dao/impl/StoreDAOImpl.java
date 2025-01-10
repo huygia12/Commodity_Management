@@ -1,7 +1,6 @@
 package dao.impl;
 
 import dao.StoreDAO;
-import java.util.UUID;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.persistence.EntityManager;
@@ -126,7 +125,6 @@ public class StoreDAOImpl implements StoreDAO {
             Store store = query.getSingleResult();
             return store;
         } catch (Exception e) {
-            Logger.getLogger(this.getClass().getName()).log(Level.SEVERE, null, e);
             return null;
         }
     }

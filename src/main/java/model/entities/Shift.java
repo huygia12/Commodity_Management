@@ -47,6 +47,7 @@ public class Shift {
         this.createdAt = LocalDateTime.now();
     }
 
+    @ToString.Exclude
     @ManyToOne(optional = false)
     @JoinColumn(name = "storeId", referencedColumnName = "storeId")
     private Store store;

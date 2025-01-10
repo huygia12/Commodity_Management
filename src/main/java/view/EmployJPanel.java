@@ -111,6 +111,7 @@ public class EmployJPanel extends javax.swing.JPanel {
         quantityEmployLabel.setText("Số lượng nhân viên hiện tại: ");
 
         quantityEmploytextField.setEditable(false);
+        quantityEmploytextField.setHorizontalAlignment(javax.swing.JTextField.CENTER);
 
         refreshBtn.setIcon(new javax.swing.ImageIcon(getClass().getResource("/ImageIcon/reload (3).png"))); // NOI18N
         refreshBtn.setBorder(null);
@@ -425,7 +426,7 @@ public class EmployJPanel extends javax.swing.JPanel {
 
         List<Employee> searchResult = new ArrayList();
         this.store.getEmployees().forEach(employee -> {
-            if (employee.getFullname().toLowerCase().contains(searchValue)) {
+            if (employee.getFullname().toLowerCase().contains(searchValue.toLowerCase())) {
                 searchResult.add(employee);
             }
         });

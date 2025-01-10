@@ -2,11 +2,16 @@ package view;
 
 import config.HibernateConfig;
 import dao.ProductDAO;
+import dao.impl.ProductDAOImpl;
+import java.awt.Font;
+import java.util.ArrayList;
 import java.util.List;
-import java.util.UUID;
 import java.util.stream.*;
 import javax.swing.JOptionPane;
+import javax.swing.SwingConstants;
+import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
+import javax.swing.table.JTableHeader;
 import model.entities.Product;
 import model.entities.Store;
 import util.ProductUtil;
@@ -15,11 +20,28 @@ public class RepoPanel extends javax.swing.JPanel {
 
     public RepoPanel() {
         initComponents();
+        customUI();
     }
 
-    public void defaultSettings() {
+     private void customUI () {
         invalidPriceLabel.setVisible(false);
         shipmentsButton.setEnabled(false);
+         
+        DefaultTableCellRenderer centerRenderer = new DefaultTableCellRenderer();
+        centerRenderer.setVerticalTextPosition(SwingConstants.CENTER);
+        centerRenderer.setHorizontalTextPosition(SwingConstants.CENTER);
+        centerRenderer.setHorizontalAlignment(SwingConstants.CENTER);
+        centerRenderer.setVerticalAlignment(SwingConstants.CENTER);
+        for (int i = 0; i < productTable.getColumnCount(); i++) {
+            productTable.getColumnModel().getColumn(i).setCellRenderer(centerRenderer);
+        }
+        JTableHeader header = productTable.getTableHeader();
+        header.setFont(new Font("Arial", Font.BOLD, 14));
+    }
+
+    
+    public void defaultSettings() {
+        
     }
 
     @SuppressWarnings("unchecked")
@@ -62,35 +84,38 @@ public class RepoPanel extends javax.swing.JPanel {
         repoManagementPanel.setBorder(javax.swing.BorderFactory.createTitledBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 255), 2), "REPOSITORY", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Segoe UI", 3, 24), new java.awt.Color(255, 255, 255))); // NOI18N
         repoManagementPanel.setMinimumSize(new java.awt.Dimension(1400, 800));
         repoManagementPanel.setPreferredSize(new java.awt.Dimension(1400, 800));
-        repoManagementPanel.setLayout(new java.awt.BorderLayout());
+        repoManagementPanel.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
         tablePanel.setBackground(new java.awt.Color(0, 204, 255));
-        tablePanel.setMinimumSize(new java.awt.Dimension(1350, 620));
-        tablePanel.setPreferredSize(new java.awt.Dimension(1350, 620));
+        tablePanel.setMinimumSize(new java.awt.Dimension(1400, 750));
+        tablePanel.setPreferredSize(new java.awt.Dimension(1400, 750));
         tablePanel.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
         searchLabel.setText("Tìm kiếm:");
         tablePanel.add(searchLabel, new org.netbeans.lib.awtextra.AbsoluteConstraints(910, 20, 90, 30));
+
+        jScrollPane1.setPreferredSize(new java.awt.Dimension(452, 602));
 
         productTable.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
 
             },
             new String [] {
-                "Mã SP", "Tên SP", "Đơn vị", "Nhà sản xuất", "Giá sản phẩm", "Tổng số lượng"
+                "Mã SP", "Tên SP", "Đơn vị", "Nhà sản xuất", "Giá sản phẩm", "Tổng số lượng", "ProductId"
             }
         ) {
             boolean[] canEdit = new boolean [] {
-                false, false, false, false, false, false
+                false, false, false, false, false, false, false
             };
 
             public boolean isCellEditable(int rowIndex, int columnIndex) {
                 return canEdit [columnIndex];
             }
         });
-        productTable.setMinimumSize(new java.awt.Dimension(90, 500));
+        productTable.setMaximumSize(new java.awt.Dimension(2147483647, 200));
+        productTable.setMinimumSize(new java.awt.Dimension(90, 200));
         productTable.setName(""); // NOI18N
-        productTable.setPreferredSize(new java.awt.Dimension(1000, 500));
+        productTable.setPreferredSize(new java.awt.Dimension(1000, 200));
         productTable.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
         productTable.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
         productTable.setShowGrid(true);
@@ -112,7 +137,13 @@ public class RepoPanel extends javax.swing.JPanel {
             productTable.getColumnModel().getColumn(5).setHeaderValue("Tổng số lượng");
         }
 
-        tablePanel.add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 190, 1360, 550));
+        tablePanel.add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 190, 1360, 610));
+
+        searchTextField.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                searchTextFieldActionPerformed(evt);
+            }
+        });
         tablePanel.add(searchTextField, new org.netbeans.lib.awtextra.AbsoluteConstraints(990, 20, 270, 30));
         tablePanel.add(IDTextField, new org.netbeans.lib.awtextra.AbsoluteConstraints(140, 20, 170, 30));
 
@@ -198,7 +229,7 @@ public class RepoPanel extends javax.swing.JPanel {
         });
         tablePanel.add(refreshBtn, new org.netbeans.lib.awtextra.AbsoluteConstraints(1350, 130, -1, -1));
 
-        repoManagementPanel.add(tablePanel, java.awt.BorderLayout.PAGE_START);
+        repoManagementPanel.add(tablePanel, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 1388, -1));
 
         add(repoManagementPanel, java.awt.BorderLayout.CENTER);
     }// </editor-fold>//GEN-END:initComponents
@@ -220,6 +251,8 @@ public class RepoPanel extends javax.swing.JPanel {
                 .unit(productUnit)
                 .provider(manufacturer)
                 .price(price)
+                .store(this.store)
+                .shipments(new ArrayList())
                 .build();
 
         boolean result = productDAO.addProduct(newProduct, this.hibernateConfig.getEntityManager());
@@ -341,12 +374,13 @@ public class RepoPanel extends javax.swing.JPanel {
         clearInputFields();
     }//GEN-LAST:event_refreshBtnActionPerformed
 
+    private void searchTextFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_searchTextFieldActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_searchTextFieldActionPerformed
+
     private void displayProducts(List<Product> products) {
         productTableModel.setRowCount(0);
 
-        if (productTableModel.getColumnCount() == 6) {
-            productTableModel.addColumn("ProductId");
-        }
         for (Product product : products) {
             Object[] rowData = {
                 product.getProductCode(),
@@ -359,9 +393,6 @@ public class RepoPanel extends javax.swing.JPanel {
             productTableModel.addRow(rowData);
         }
 
-        productTable.getColumnModel().getColumn(6).setMaxWidth(0);
-        productTable.getColumnModel().getColumn(6).setMinWidth(0);
-        productTable.getColumnModel().getColumn(6).setPreferredWidth(0);
     }
 
     private void addProductToTable(Product product) {
@@ -374,9 +405,6 @@ public class RepoPanel extends javax.swing.JPanel {
             ProductUtil.getTotalQuantity(product),
             product.getProductId()
         });
-        productTable.getColumnModel().getColumn(6).setMaxWidth(0);
-        productTable.getColumnModel().getColumn(6).setMinWidth(0);
-        productTable.getColumnModel().getColumn(6).setPreferredWidth(0);
     }
 
     private boolean validateRequiredFields() {
@@ -410,9 +438,9 @@ public class RepoPanel extends javax.swing.JPanel {
         this.store = store;
         this.mf = mf;
         this.hibernateConfig = hibernateConfig;
+        this.productDAO = new ProductDAOImpl();
         
         productTableModel = (DefaultTableModel) productTable.getModel();
-        defaultSettings();
     }
 
     private Long selectedProductId;

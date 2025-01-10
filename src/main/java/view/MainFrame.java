@@ -365,7 +365,7 @@ public class MainFrame extends javax.swing.JFrame {
                 JOptionPane.YES_NO_OPTION,
                 JOptionPane.QUESTION_MESSAGE);
 
-        return choice != JOptionPane.CLOSED_OPTION;
+        return choice == JOptionPane.YES_OPTION;
     }
 
     private final ShiftDAO shiftDAO;
