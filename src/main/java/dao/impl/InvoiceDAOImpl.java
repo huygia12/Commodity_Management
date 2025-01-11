@@ -3,7 +3,6 @@ package dao.impl;
 import dao.InvoiceDAO;
 import java.util.List;
 import javax.persistence.EntityManager;
-import java.util.UUID;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.persistence.EntityTransaction;
@@ -29,7 +28,7 @@ public class InvoiceDAOImpl implements InvoiceDAO {
                     throw new RuntimeException("Not enough stock for Shipment ID: " + p.getShipmentId());
                 }
 
-                s.setQuantity(s.getQuantityInStock() - p.getQuantity());
+                s.setQuantityInStock(s.getQuantityInStock() - p.getQuantity());
                 em.merge(s);
             }
 

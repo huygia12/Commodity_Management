@@ -23,6 +23,7 @@ import model.entities.Product;
 import model.entities.Shift;
 import model.entities.Store;
 import model.enums.ShiftState;
+import util.AppImage;
 
 public class MainFrame extends javax.swing.JFrame {
 
@@ -35,14 +36,10 @@ public class MainFrame extends javax.swing.JFrame {
         this.hibernateConfig = new HibernateConfig();
         this.shiftDAO = new ShiftDAOImpl();
         this.store = store;
-        this.shift = shiftDAO.getLatestShift(this.hibernateConfig.getEntityManager());
-        if (this.shift == null) {
-            this.shift = shiftDAO.addShift(store, this.hibernateConfig.getEntityManager());
-        }
-        
+        fetchLatestShift();
         initComponents();
-        cardLayout = (CardLayout) displayPanel.getLayout();
         initSideBar();
+        this.cardLayout = (CardLayout) displayPanel.getLayout();
 
         this.addWindowListener(new java.awt.event.WindowAdapter() {
             @Override
@@ -53,9 +50,9 @@ public class MainFrame extends javax.swing.JFrame {
             }
         });
         setIconImage(new ImageIcon(getClass()
-                .getResource("/ImageIcon/icons8-grocery-store-96.png")).getImage());
+                .getResource(AppImage.APP_ICON)).getImage());
         this.setLocationRelativeTo(null);
-        
+
         realTimeClock();
         setupPanels();
         switchRepoPanel();
@@ -201,6 +198,13 @@ public class MainFrame extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_openSideBarLabelMouseClicked
 
+    private void fetchLatestShift() {
+        this.shift = shiftDAO.getLatestShift(this.hibernateConfig.getEntityManager());
+        if (this.shift == null) {
+            this.shift = shiftDAO.addShift(store, this.hibernateConfig.getEntityManager());
+        }
+    }
+
     private void setupPanels() {
         purchasePanel1.setup(hibernateConfig, store, shift);
         employJPanel1.setup(hibernateConfig, store);
@@ -210,28 +214,6 @@ public class MainFrame extends javax.swing.JFrame {
         settingsPanel1.setup(hibernateConfig, store, header);
         historyPanel1.setup(hibernateConfig, store);
         header.setStoreInfor();
-    }
-
-    public void notOpenShiftWarning() {
-        int choice = JOptionPane.showConfirmDialog(displayPanel, "Thực hiện mở ca ngay?",
-                "Không có ca hiện tại!", JOptionPane.WARNING_MESSAGE);
-        if (choice == JOptionPane.OK_OPTION) {
-            switchPanel(2);
-        }
-    }
-
-    public void switchShipmentPanel(Product product) {
-//        shipmentPanel1.attachGood(attachGoods, store, this);
-//        shipmentPanel1.reloadTable(attachGoods.getShipments());
-        shipmentPanel1.setProduct(product);
-        shipmentPanel1.defaultSettings();
-        repoPanelStateCheck = false;
-        switchPanel(0);
-    }
-
-    public void switchRepoPanel() {
-        repoPanelStateCheck = true;
-        switchPanel(0);
     }
 
     private void initSideBar() {
@@ -289,7 +271,6 @@ public class MainFrame extends javax.swing.JFrame {
                 if (repoPanelStateCheck) {
                     displayPanel.add(repoPanel1, "repo");
                     cardLayout.show(displayPanel, "repo");
-//                    repoPanel1.externalRefresh();
                 } else {
                     displayPanel.add(shipmentPanel1, "shipment");
                     cardLayout.show(displayPanel, "shipment");
@@ -304,7 +285,7 @@ public class MainFrame extends javax.swing.JFrame {
                 if (shift.getState().equals(ShiftState.OPENED)) {
                     purchasePanel1.refreshView();
                 } else {
-                    notOpenShiftWarning();
+                    showShiftNotOpenWarning();
                 }
             }
             case 2 -> {
@@ -366,6 +347,26 @@ public class MainFrame extends javax.swing.JFrame {
                 JOptionPane.QUESTION_MESSAGE);
 
         return choice == JOptionPane.YES_OPTION;
+    }
+
+    public void showShiftNotOpenWarning() {
+        int choice = JOptionPane.showConfirmDialog(displayPanel, "Thực hiện mở ca ngay?",
+                "Không có ca hiện tại!", JOptionPane.WARNING_MESSAGE);
+        if (choice == JOptionPane.OK_OPTION) {
+            switchPanel(2);
+        }
+    }
+
+    public void switchShipmentPanel(Product product) {
+        shipmentPanel1.setProduct(product);
+        shipmentPanel1.defaultInputNButtonSetting();
+        repoPanelStateCheck = false;
+        switchPanel(0);
+    }
+
+    public void switchRepoPanel() {
+        repoPanelStateCheck = true;
+        switchPanel(0);
     }
 
     private final ShiftDAO shiftDAO;

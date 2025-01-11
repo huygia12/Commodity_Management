@@ -2,7 +2,6 @@ package dao.impl;
 
 import dao.ShiftDAO;
 import java.time.LocalDateTime;
-import java.util.ArrayList;
 import java.util.List;
 import javax.persistence.EntityManager;
 import java.util.logging.Level;
@@ -40,17 +39,16 @@ public class ShiftDAOImpl implements ShiftDAO {
     public boolean openShift(Shift shift, List<Employee> employees, EntityManager em) {
         EntityTransaction transaction = em.getTransaction();
         try {
-            List<ShiftEmployee> shiftEmployees = new ArrayList<>();
-
             employees.forEach(e -> {
-                shiftEmployees.add(ShiftEmployee
+                ShiftEmployee shiftEmployee = ShiftEmployee
                         .builder()
                         .employeeName(e.getFullname())
                         .employee(e)
-                        .build());
+                        .shift(shift)
+                        .build();
+                shift.getEmployees().add(shiftEmployee);
             });
 
-            shift.setEmployees(shiftEmployees);
             shift.setOpenAt(LocalDateTime.now());
             shift.setState(ShiftState.OPENED);
 
@@ -84,25 +82,27 @@ public class ShiftDAOImpl implements ShiftDAO {
             }
             Logger.getLogger(this.getClass().getName()).log(Level.SEVERE, null, e);
             return false;
-        } 
+        }
     }
 
     @Override
     public boolean updateShift(Shift shift, List<Employee> employees, EntityManager em) {
         EntityTransaction transaction = em.getTransaction();
         try {
-            List<ShiftEmployee> shiftEmployees = new ArrayList<>();
-
+            shift.getEmployees().forEach(shiftEmployee -> {
+                em.remove(shiftEmployee);
+            });
+            shift.getEmployees().clear();
             employees.forEach(e -> {
-                shiftEmployees.add(ShiftEmployee
+                ShiftEmployee shiftEmployee = ShiftEmployee
                         .builder()
                         .employeeName(e.getFullname())
                         .employee(e)
-                        .build());
+                        .shift(shift)
+                        .build();
+                shift.getEmployees().add(shiftEmployee);
             });
 
-            shift.setEmployees(shiftEmployees);
-            
             transaction.begin();
             em.merge(shift);
             transaction.commit();

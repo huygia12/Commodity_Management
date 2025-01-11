@@ -3,22 +3,16 @@ package util;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.util.List;
-import java.util.Set;
-import java.util.UUID;
 import java.util.stream.Collectors;
 import model.entities.Employee;
 import model.entities.Invoice;
 import model.entities.Shift;
-import model.entities.Store;
 import model.enums.PaymentOption;
 
 
 public class ShiftUtil {
-    public static List<Employee> getEmployees (Shift shift, Store store){
-        Set<Long> idsToCheck = shift.getEmployees().stream().map(e -> e.getId()).collect(Collectors.toSet());
-        return store.getEmployees().stream()
-                        .filter(employee -> idsToCheck.contains(employee.getEmployeeId()))
-                        .collect(Collectors.toList());
+    public static List<Employee> getEmployees (Shift shift){
+        return shift.getEmployees().stream().map(e -> e.getEmployee()).collect(Collectors.toList());
     }
    
     public static String getGrossRevenue(Shift shift) {

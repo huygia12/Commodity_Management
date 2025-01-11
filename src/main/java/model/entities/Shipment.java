@@ -34,6 +34,7 @@ public class Shipment {
 
     private LocalDate expiryDate;
 
+    @ToString.Exclude
     @ManyToOne(optional = false)
     @JoinColumn(name = "productId", referencedColumnName = "productId")
     private Product product;

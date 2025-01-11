@@ -263,7 +263,7 @@ public class LogInFrame extends javax.swing.JFrame {
         String retypePasswordStr = retypePasswordInput.getText().trim();
 
         boolean validEmail, matchPassword, rightpassword, validStoreName;
-        validEmail = ValidateInput.checkEmailFormat(emailStr);
+        validEmail = ValidateInput.isValidEmail(emailStr);
         illegalSignUpEmailWarning.setVisible(!validEmail);
 
         rightpassword = passwordStr.length() >= 6;
@@ -305,7 +305,7 @@ public class LogInFrame extends javax.swing.JFrame {
     private void logInButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_logInButtonActionPerformed
         String email = logInEmail.getText().trim();
         String password = logInPassword.getText().trim();
-        if (!ValidateInput.checkEmailFormat(email)) {
+        if (!ValidateInput.isValidEmail(email)) {
             illegalLogInEmailWarning.setVisible(true);
             return;
         }

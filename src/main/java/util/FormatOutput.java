@@ -5,23 +5,17 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
 
-/**
- *
- * @author huy
- */
 public class FormatOutput {
 
     public static String convertLocalDateToString(LocalDate date) {
-        LocalDate now = LocalDate.now();
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
-        String formattedDateTime = now.format(formatter);
+        String formattedDateTime = date.format(formatter);
         return formattedDateTime;
     }
 
     public static String convertLocalDateTimeToString(LocalDateTime date) {
-        LocalDateTime now = LocalDateTime.now();
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("hh:mm dd/MM/yyyy");
-        String formattedDateTime = now.format(formatter);
+        String formattedDateTime = date.format(formatter);
         return formattedDateTime;
     }
 

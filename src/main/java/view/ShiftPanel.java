@@ -546,8 +546,8 @@ public class ShiftPanel extends javax.swing.JPanel {
     }//GEN-LAST:event_searchBtnActionPerformed
 
     private void editShiftBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_editShiftBtnActionPerformed
-        openShiftFrame = new OpenShiftFrame();
         popupOpenShiftFrame();
+        openShiftFrame.setToUpdateMode();
     }//GEN-LAST:event_editShiftBtnActionPerformed
 
     private void surchargeTextFieldKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_surchargeTextFieldKeyPressed
@@ -558,7 +558,7 @@ public class ShiftPanel extends javax.swing.JPanel {
                 shift.setSurcharge(0);
                 return;
             }
-            if (!ValidateInput.checkIfAValidNumberForGUI(surchargeStr)) {
+            if (!ValidateInput.isAPositiveNumber(surchargeStr)) {
                 insertWarningToTextField(surchargeTextField, INVALID_WARNING, 14);
                 checkSurcharge = false;
                 return;
@@ -578,7 +578,7 @@ public class ShiftPanel extends javax.swing.JPanel {
             shift.setSurcharge(0);
             return;
         }
-        if (!ValidateInput.checkIfAValidNumberForGUI(surchargeStr)) {
+        if (!ValidateInput.isAPositiveNumber(surchargeStr)) {
             insertWarningToTextField(surchargeTextField, INVALID_WARNING, 14);
             checkSurcharge = false;
             return;
@@ -598,7 +598,7 @@ public class ShiftPanel extends javax.swing.JPanel {
             return;
         }
         String text = fromHourTextField.getText();
-        if (!ValidateInput.checkIfValidHours(text)) {
+        if (!ValidateInput.isValidHour(text)) {
             fromHourTextField.setText("00");
         }
     }//GEN-LAST:event_fromHourTextFieldMouseExited
@@ -608,7 +608,7 @@ public class ShiftPanel extends javax.swing.JPanel {
             return;
         }
         String text = fromMinuteTextField.getText();
-        if (!ValidateInput.checkIfValidMinute(text)) {
+        if (!ValidateInput.isValidMinute(text)) {
             fromMinuteTextField.setText("00");
         }
     }//GEN-LAST:event_fromMinuteTextFieldMouseExited
@@ -618,7 +618,7 @@ public class ShiftPanel extends javax.swing.JPanel {
             return;
         }
         String text = toHourTextField.getText();
-        if (!ValidateInput.checkIfValidHours(text)) {
+        if (!ValidateInput.isValidHour(text)) {
             toHourTextField.setText("00");
         }
     }//GEN-LAST:event_toHourTextFieldMouseExited
@@ -628,7 +628,7 @@ public class ShiftPanel extends javax.swing.JPanel {
             return;
         }
         String text = toMinuteTextField.getText();
-        if (!ValidateInput.checkIfValidMinute(text)) {
+        if (!ValidateInput.isValidMinute(text)) {
             toMinuteTextField.setText("00");
         }
     }//GEN-LAST:event_toMinuteTextFieldMouseExited
@@ -636,7 +636,7 @@ public class ShiftPanel extends javax.swing.JPanel {
     private void fromHourTextFieldKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_fromHourTextFieldKeyPressed
         if (evt.getKeyCode() == KeyEvent.VK_ENTER) {
             String text = fromHourTextField.getText();
-            if (!ValidateInput.checkIfValidHours(text)) {
+            if (!ValidateInput.isValidHour(text)) {
                 fromHourTextField.setText("00");
             } else {
                 fromMinuteTextField.requestFocus();
@@ -647,7 +647,7 @@ public class ShiftPanel extends javax.swing.JPanel {
     private void fromMinuteTextFieldKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_fromMinuteTextFieldKeyPressed
         if (evt.getKeyCode() == KeyEvent.VK_ENTER) {
             String text = fromMinuteTextField.getText();
-            if (!ValidateInput.checkIfValidMinute(text)) {
+            if (!ValidateInput.isValidMinute(text)) {
                 fromMinuteTextField.setText("00");
             }
         }
@@ -656,7 +656,7 @@ public class ShiftPanel extends javax.swing.JPanel {
     private void toHourTextFieldKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_toHourTextFieldKeyPressed
         if (evt.getKeyCode() == KeyEvent.VK_ENTER) {
             String text = toHourTextField.getText();
-            if (!ValidateInput.checkIfValidHours(text)) {
+            if (!ValidateInput.isValidHour(text)) {
                 toHourTextField.setText("00");
             } else {
                 toMinuteTextField.requestFocus();
@@ -667,7 +667,7 @@ public class ShiftPanel extends javax.swing.JPanel {
     private void toMinuteTextFieldKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_toMinuteTextFieldKeyPressed
         if (evt.getKeyCode() == KeyEvent.VK_ENTER) {
             String text = toMinuteTextField.getText();
-            if (!ValidateInput.checkIfValidMinute(text)) {
+            if (!ValidateInput.isValidMinute(text)) {
                 toMinuteTextField.setText("00");
             }
         }
@@ -847,6 +847,7 @@ public class ShiftPanel extends javax.swing.JPanel {
             refreshOrderTable();
         } else {
             popupOpenShiftFrame();
+            openShiftFrame.setToAddMode();
         }
     }
 

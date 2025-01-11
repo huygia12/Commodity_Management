@@ -22,7 +22,8 @@ public class ShiftEmployee {
     @Column(nullable = false)
     private String employeeName;
 
-    @ManyToOne(optional = false)
+    @ToString.Exclude
+    @ManyToOne(optional = true)
     @JoinColumn(name = "shiftId", referencedColumnName = "shiftId")
     private Shift shift;
 

@@ -13,11 +13,11 @@ import model.entities.Shipment;
 
 public class ProductUtil {
 
-    public static int getTotalQuantity(Product product) {
+    public static int getTotalQuantityInStock(Product product) {
         if (product.getShipments() == null || product.getShipments().isEmpty()) {
             return 0;
         }
-        return product.getShipments().stream().mapToInt(shipment -> shipment.getQuantity()).sum();
+        return product.getShipments().stream().mapToInt(shipment -> shipment.getQuantityInStock()).sum();
     }
 
     public static Product getProductFrom(Long productId, List<Product> products) {

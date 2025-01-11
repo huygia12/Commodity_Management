@@ -1,11 +1,13 @@
 package dao.impl;
 
 import dao.ProductDAO;
+import java.util.List;
 import javax.persistence.EntityManager;
 import model.entities.Product;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.persistence.EntityTransaction;
+import javax.persistence.TypedQuery;
 
 public class ProductDAOImpl implements ProductDAO {
 
@@ -78,5 +80,30 @@ public class ProductDAOImpl implements ProductDAO {
     public Product getProduct(Long productId, EntityManager em) {
         Product p = em.find(Product.class, productId);
         return p;
+    }
+
+    @Override
+    public List<Product> findProductsByNameKeyword(String keyword, EntityManager em) {
+        try {
+            String jpql = """
+            SELECT p FROM Product p 
+            WHERE LOWER(p.productName) LIKE LOWER(:keyword)
+                OR LOWER(p.productCode) LIKE LOWER(:keyword)
+            """;
+            TypedQuery<Product> query = em.createQuery(jpql, Product.class);
+            query.setParameter("keyword", "%" + keyword + "%");
+            return query.getResultList();
+        } catch (Exception e) {
+            Logger.getLogger(this.getClass().getName()).log(Level.SEVERE, null, e);
+            return null;
+        }
+    }
+
+    @Override
+    public List<Product> getProductsInStore(Long storeId, EntityManager em) {
+        String jpql = "SELECT p FROM Product p WHERE storeId = :storeId";
+        TypedQuery<Product> query = em.createQuery(jpql, Product.class);
+        query.setParameter("storeId", storeId);
+        return query.getResultList();
     }
 }

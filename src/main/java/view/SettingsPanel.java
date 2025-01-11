@@ -223,7 +223,7 @@ public class SettingsPanel extends javax.swing.JPanel {
             JOptionPane.showMessageDialog(this, "Hãy nhập đầy đủ thông tin cho tài khoản cửa hàng của bạn!", "Cảnh báo", JOptionPane.WARNING_MESSAGE);
             return;
         }
-        if (!ValidateInput.checkEmailFormat(email)) {
+        if (!ValidateInput.isValidEmail(email)) {
             JOptionPane.showMessageDialog(this, "Email không hợp lệ!", "Cảnh báo", JOptionPane.WARNING_MESSAGE);
             return;
         }

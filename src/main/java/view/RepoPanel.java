@@ -4,6 +4,7 @@ import config.HibernateConfig;
 import dao.ProductDAO;
 import dao.impl.ProductDAOImpl;
 import java.awt.Font;
+import java.awt.event.KeyEvent;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.*;
@@ -15,6 +16,7 @@ import javax.swing.table.JTableHeader;
 import model.entities.Product;
 import model.entities.Store;
 import util.ProductUtil;
+import util.ValidateInput;
 
 public class RepoPanel extends javax.swing.JPanel {
 
@@ -23,10 +25,10 @@ public class RepoPanel extends javax.swing.JPanel {
         customUI();
     }
 
-     private void customUI () {
+    private void customUI() {
         invalidPriceLabel.setVisible(false);
         shipmentsButton.setEnabled(false);
-         
+
         DefaultTableCellRenderer centerRenderer = new DefaultTableCellRenderer();
         centerRenderer.setVerticalTextPosition(SwingConstants.CENTER);
         centerRenderer.setHorizontalTextPosition(SwingConstants.CENTER);
@@ -39,9 +41,8 @@ public class RepoPanel extends javax.swing.JPanel {
         header.setFont(new Font("Arial", Font.BOLD, 14));
     }
 
-    
     public void defaultSettings() {
-        
+
     }
 
     @SuppressWarnings("unchecked")
@@ -92,7 +93,7 @@ public class RepoPanel extends javax.swing.JPanel {
         tablePanel.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
         searchLabel.setText("Tìm kiếm:");
-        tablePanel.add(searchLabel, new org.netbeans.lib.awtextra.AbsoluteConstraints(910, 20, 90, 30));
+        tablePanel.add(searchLabel, new org.netbeans.lib.awtextra.AbsoluteConstraints(840, 20, 90, 30));
 
         jScrollPane1.setPreferredSize(new java.awt.Dimension(452, 602));
 
@@ -139,12 +140,12 @@ public class RepoPanel extends javax.swing.JPanel {
 
         tablePanel.add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 190, 1360, 610));
 
-        searchTextField.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                searchTextFieldActionPerformed(evt);
+        searchTextField.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                searchTextFieldKeyPressed(evt);
             }
         });
-        tablePanel.add(searchTextField, new org.netbeans.lib.awtextra.AbsoluteConstraints(990, 20, 270, 30));
+        tablePanel.add(searchTextField, new org.netbeans.lib.awtextra.AbsoluteConstraints(920, 20, 270, 30));
         tablePanel.add(IDTextField, new org.netbeans.lib.awtextra.AbsoluteConstraints(140, 20, 170, 30));
 
         IDLabel.setText("Mã sản phẩm:");
@@ -278,7 +279,7 @@ public class RepoPanel extends javax.swing.JPanel {
 
         int reply = JOptionPane.showConfirmDialog(this, "Bạn có chắc muốn xóa sản phẩm này không?", "Xác nhận xóa", JOptionPane.YES_NO_OPTION);
         if (reply == JOptionPane.YES_OPTION) {
-            Long productId = Long.valueOf((String) productTableModel.getValueAt(selectedRowIndex, 6));
+            Long productId = (Long) productTableModel.getValueAt(selectedRowIndex, 6);
 
             boolean result = productDAO.deleteProduct(productId, this.hibernateConfig.getEntityManager());
             if (!result) {
@@ -314,7 +315,7 @@ public class RepoPanel extends javax.swing.JPanel {
 
         int reply = JOptionPane.showConfirmDialog(this, "Bạn có chắc muốn chỉnh sửa thông tin sản phẩm này?", "Xác nhận chỉnh sửa", JOptionPane.YES_NO_OPTION);
         if (reply == JOptionPane.YES_OPTION) {
-            Long productId = Long.valueOf((String)productTableModel.getValueAt(selectedRowIndex, 6));
+            Long productId = (Long) productTableModel.getValueAt(selectedRowIndex, 6);
             Product newProduct = Product.builder().productId(productId)
                     .productCode(productCode)
                     .productName(productName)
@@ -322,7 +323,7 @@ public class RepoPanel extends javax.swing.JPanel {
                     .provider(manufacturer)
                     .price(price)
                     .build();
-            boolean result = productDAO.addProduct(newProduct, this.hibernateConfig.getEntityManager());
+            boolean result = productDAO.updateProduct(newProduct, this.hibernateConfig.getEntityManager());
 
             if (!result) {
                 JOptionPane.showMessageDialog(this, "Chỉnh sửa thất bại!", "Thông báo", JOptionPane.INFORMATION_MESSAGE);
@@ -343,40 +344,46 @@ public class RepoPanel extends javax.swing.JPanel {
         int selectedRowIndex = productTable.getSelectedRow();
         if (selectedRowIndex >= 0) {
             shipmentsButton.setEnabled(true);
-            
+
             IDTextField.setText(productTableModel.getValueAt(productTable.getSelectedRow(), 0).toString());
             nameTextField.setText(productTableModel.getValueAt(productTable.getSelectedRow(), 1).toString());
             unitTextField.setText(productTableModel.getValueAt(productTable.getSelectedRow(), 2).toString());
             manufacturerTextField.setText(productTableModel.getValueAt(productTable.getSelectedRow(), 3).toString());
             priceTextField.setText(productTableModel.getValueAt(productTable.getSelectedRow(), 4).toString());
             totalQuantityTextField.setText(productTableModel.getValueAt(productTable.getSelectedRow(), 5).toString());
-            selectedProductId =  Long.valueOf((String)productTableModel.getValueAt(productTable.getSelectedRow(), 6));
+            selectedProductId = (Long) productTableModel.getValueAt(productTable.getSelectedRow(), 6);
         }
     }//GEN-LAST:event_productTableMouseReleased
 
     private void shipmentsButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_shipmentsButtonActionPerformed
-        if(selectedProductId == null){
+        if (selectedProductId == null) {
             JOptionPane.showMessageDialog(this, "Vui lòng chọn một sản phẩm trong bảng!", "Thông báo", JOptionPane.WARNING_MESSAGE);
             return;
         };
-        
+
         Product product = productDAO.getProduct(selectedProductId, this.hibernateConfig.getEntityManager());
-        if(product == null){
+        if (product == null) {
             JOptionPane.showMessageDialog(this, "Sản phẩm không tồn tại!", "Thông báo", JOptionPane.WARNING_MESSAGE);
             return;
         }
-        
+
         mf.switchShipmentPanel(product);
     }//GEN-LAST:event_shipmentsButtonActionPerformed
 
     private void refreshBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_refreshBtnActionPerformed
+        this.store.setProducts(productDAO.getProductsInStore(this.store.getStoreId(), this.hibernateConfig.getEntityManager()));
         displayProducts(this.store.getProducts());
         clearInputFields();
     }//GEN-LAST:event_refreshBtnActionPerformed
 
-    private void searchTextFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_searchTextFieldActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_searchTextFieldActionPerformed
+    private void searchTextFieldKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_searchTextFieldKeyPressed
+        if(evt.getKeyCode() == KeyEvent.VK_ENTER){
+            List<Product> products = productDAO.findProductsByNameKeyword(searchTextField.getText().trim(), 
+                    this.hibernateConfig.getEntityManager());
+            
+            displayProducts(products);
+        }
+    }//GEN-LAST:event_searchTextFieldKeyPressed
 
     private void displayProducts(List<Product> products) {
         productTableModel.setRowCount(0);
@@ -388,11 +395,14 @@ public class RepoPanel extends javax.swing.JPanel {
                 product.getUnit(),
                 product.getProvider(),
                 product.getPrice(),
-                ProductUtil.getTotalQuantity(product),
+                ProductUtil.getTotalQuantityInStock(product),
                 product.getProductId(),};
             productTableModel.addRow(rowData);
         }
 
+        productTable.getColumnModel().getColumn(6).setMaxWidth(0);
+        productTable.getColumnModel().getColumn(6).setMinWidth(0);
+        productTable.getColumnModel().getColumn(6).setPreferredWidth(0);
     }
 
     private void addProductToTable(Product product) {
@@ -402,7 +412,7 @@ public class RepoPanel extends javax.swing.JPanel {
             product.getUnit(),
             product.getProvider(),
             product.getPrice(),
-            ProductUtil.getTotalQuantity(product),
+            ProductUtil.getTotalQuantityInStock(product),
             product.getProductId()
         });
     }
@@ -412,10 +422,9 @@ public class RepoPanel extends javax.swing.JPanel {
         String productName = nameTextField.getText().trim();
         String productUnit = unitTextField.getText().trim();
         String manufacturer = manufacturerTextField.getText().trim();
-
-        try {
-            Integer.valueOf(priceTextField.getText().trim());
-        } catch (NumberFormatException e) {
+        String price = priceTextField.getText().trim();
+        
+        if (!ValidateInput.isAPositiveInteger(price)) {
             invalidPriceLabel.setVisible(true);
             return false;
         }
@@ -423,7 +432,7 @@ public class RepoPanel extends javax.swing.JPanel {
         return !productCode.isBlank() && !productName.isBlank() && !productUnit.isBlank() && !manufacturer.isBlank();
     }
 
-    public void clearInputFields() {
+    private void clearInputFields() {
         IDTextField.setText("");
         nameTextField.setText("");
         unitTextField.setText("");
@@ -439,8 +448,9 @@ public class RepoPanel extends javax.swing.JPanel {
         this.mf = mf;
         this.hibernateConfig = hibernateConfig;
         this.productDAO = new ProductDAOImpl();
-        
+
         productTableModel = (DefaultTableModel) productTable.getModel();
+        displayProducts(this.store.getProducts());
     }
 
     private Long selectedProductId;

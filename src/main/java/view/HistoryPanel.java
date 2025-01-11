@@ -971,7 +971,7 @@ public class HistoryPanel extends javax.swing.JPanel {
     private void fromYearTextFieldKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_fromYearTextFieldKeyPressed
         if (evt.getKeyCode() == KeyEvent.VK_ENTER) {
             String text = fromYearTextField.getText();
-            if (!ValidateInput.checkIfANumberSequenceForGUI(text)) {
+            if (!ValidateInput.isAPositiveInteger(text)) {
                 fromYearTextField.setText(LocalDate.now().getYear() + "");
             } else {
                 toDayTextField.requestFocus();
@@ -981,7 +981,7 @@ public class HistoryPanel extends javax.swing.JPanel {
 
     private void fromYearTextFieldMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_fromYearTextFieldMouseExited
         String text = fromYearTextField.getText();
-        if (!ValidateInput.checkIfANumberSequenceForGUI(text)) {
+        if (!ValidateInput.isAPositiveInteger(text)) {
             fromYearTextField.setText(LocalDate.now().getYear() + "");
         }
     }//GEN-LAST:event_fromYearTextFieldMouseExited
@@ -989,7 +989,7 @@ public class HistoryPanel extends javax.swing.JPanel {
     private void toMonthTextFieldKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_toMonthTextFieldKeyPressed
         if (evt.getKeyCode() == KeyEvent.VK_ENTER) {
             String text = toMonthTextField.getText();
-            if (!ValidateInput.checkIfANumberSequenceForGUI(text)) {
+            if (!ValidateInput.isAPositiveInteger(text)) {
                 toMonthTextField.setText("00");
             } else {
                 toYearTextField.requestFocus();
@@ -999,7 +999,7 @@ public class HistoryPanel extends javax.swing.JPanel {
 
     private void toMonthTextFieldMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_toMonthTextFieldMouseExited
         String text = toMonthTextField.getText();
-        if (!ValidateInput.checkIfANumberSequenceForGUI(text)) {
+        if (!ValidateInput.isAPositiveInteger(text)) {
             toMonthTextField.setText("00");
         }
     }//GEN-LAST:event_toMonthTextFieldMouseExited
@@ -1007,7 +1007,7 @@ public class HistoryPanel extends javax.swing.JPanel {
     private void toDayTextFieldKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_toDayTextFieldKeyPressed
         if (evt.getKeyCode() == KeyEvent.VK_ENTER) {
             String text = toDayTextField.getText();
-            if (!ValidateInput.checkIfANumberSequenceForGUI(text)) {
+            if (!ValidateInput.isAPositiveInteger(text)) {
                 toDayTextField.setText("00");
             } else {
                 toMonthTextField.requestFocus();
@@ -1017,7 +1017,7 @@ public class HistoryPanel extends javax.swing.JPanel {
 
     private void toDayTextFieldMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_toDayTextFieldMouseExited
         String text = toDayTextField.getText();
-        if (!ValidateInput.checkIfANumberSequenceForGUI(text)) {
+        if (!ValidateInput.isAPositiveInteger(text)) {
             toDayTextField.setText("00");
         }
     }//GEN-LAST:event_toDayTextFieldMouseExited
@@ -1025,7 +1025,7 @@ public class HistoryPanel extends javax.swing.JPanel {
     private void fromMonthTextFieldKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_fromMonthTextFieldKeyPressed
         if (evt.getKeyCode() == KeyEvent.VK_ENTER) {
             String text = fromMonthTextField.getText();
-            if (!ValidateInput.checkIfANumberSequenceForGUI(text)) {
+            if (!ValidateInput.isAPositiveInteger(text)) {
                 fromMonthTextField.setText("00");
             } else {
                 fromYearTextField.requestFocus();
@@ -1035,7 +1035,7 @@ public class HistoryPanel extends javax.swing.JPanel {
 
     private void fromMonthTextFieldMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_fromMonthTextFieldMouseExited
         String text = fromMonthTextField.getText();
-        if (!ValidateInput.checkIfANumberSequenceForGUI(text)) {
+        if (!ValidateInput.isAPositiveInteger(text)) {
             fromMonthTextField.setText("00");
         }
     }//GEN-LAST:event_fromMonthTextFieldMouseExited
@@ -1043,7 +1043,7 @@ public class HistoryPanel extends javax.swing.JPanel {
     private void fromDayTextFieldKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_fromDayTextFieldKeyPressed
         if (evt.getKeyCode() == KeyEvent.VK_ENTER) {
             String text = fromDayTextField.getText();
-            if (!ValidateInput.checkIfANumberSequenceForGUI(text)) {
+            if (!ValidateInput.isAPositiveInteger(text)) {
                 fromDayTextField.setText("00");
             } else {
                 fromMonthTextField.requestFocus();
@@ -1053,7 +1053,7 @@ public class HistoryPanel extends javax.swing.JPanel {
 
     private void fromDayTextFieldMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_fromDayTextFieldMouseExited
         String text = fromDayTextField.getText();
-        if (!ValidateInput.checkIfANumberSequenceForGUI(text)) {
+        if (!ValidateInput.isAPositiveInteger(text)) {
             fromDayTextField.setText("00");
         }
     }//GEN-LAST:event_fromDayTextFieldMouseExited
@@ -1074,7 +1074,7 @@ public class HistoryPanel extends javax.swing.JPanel {
 
     private void fromImportDayTextFieldMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_fromImportDayTextFieldMouseExited
         String text = fromImportDayTextField.getText();
-        if (!ValidateInput.checkIfANumberSequenceForGUI(text)) {
+        if (!ValidateInput.isAPositiveInteger(text)) {
             fromImportDayTextField.setText("00");
         }
     }//GEN-LAST:event_fromImportDayTextFieldMouseExited
@@ -1082,7 +1082,7 @@ public class HistoryPanel extends javax.swing.JPanel {
     private void fromImportDayTextFieldKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_fromImportDayTextFieldKeyPressed
         if (evt.getKeyCode() == KeyEvent.VK_ENTER) {
             String text = fromImportDayTextField.getText();
-            if (!ValidateInput.checkIfANumberSequenceForGUI(text)) {
+            if (!ValidateInput.isAPositiveInteger(text)) {
                 fromImportDayTextField.setText("00");
             } else {
                 fromImportMonthTextField.requestFocus();
@@ -1092,7 +1092,7 @@ public class HistoryPanel extends javax.swing.JPanel {
 
     private void toImportMonthTextFieldMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_toImportMonthTextFieldMouseExited
         String text = toImportMonthTextField.getText();
-        if (!ValidateInput.checkIfANumberSequenceForGUI(text)) {
+        if (!ValidateInput.isAPositiveInteger(text)) {
             toImportMonthTextField.setText("00");
         }
     }//GEN-LAST:event_toImportMonthTextFieldMouseExited
@@ -1100,7 +1100,7 @@ public class HistoryPanel extends javax.swing.JPanel {
     private void toImportMonthTextFieldKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_toImportMonthTextFieldKeyPressed
         if (evt.getKeyCode() == KeyEvent.VK_ENTER) {
             String text = toImportMonthTextField.getText();
-            if (!ValidateInput.checkIfANumberSequenceForGUI(text)) {
+            if (!ValidateInput.isAPositiveInteger(text)) {
                 toImportMonthTextField.setText("00");
             } else {
                 toImportYearTextField.requestFocus();
@@ -1110,7 +1110,7 @@ public class HistoryPanel extends javax.swing.JPanel {
 
     private void fromImportMonthTextFieldMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_fromImportMonthTextFieldMouseExited
         String text = fromImportMonthTextField.getText();
-        if (!ValidateInput.checkIfANumberSequenceForGUI(text)) {
+        if (!ValidateInput.isAPositiveInteger(text)) {
             fromImportMonthTextField.setText("00");
         }
     }//GEN-LAST:event_fromImportMonthTextFieldMouseExited
@@ -1118,7 +1118,7 @@ public class HistoryPanel extends javax.swing.JPanel {
     private void fromImportMonthTextFieldKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_fromImportMonthTextFieldKeyPressed
         if (evt.getKeyCode() == KeyEvent.VK_ENTER) {
             String text = fromImportMonthTextField.getText();
-            if (!ValidateInput.checkIfANumberSequenceForGUI(text)) {
+            if (!ValidateInput.isAPositiveInteger(text)) {
                 fromImportMonthTextField.setText("00");
             } else {
                 fromImportYearTextField.requestFocus();
@@ -1128,7 +1128,7 @@ public class HistoryPanel extends javax.swing.JPanel {
 
     private void fromImportYearTextFieldMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_fromImportYearTextFieldMouseExited
         String text = fromImportYearTextField.getText();
-        if (!ValidateInput.checkIfANumberSequenceForGUI(text)) {
+        if (!ValidateInput.isAPositiveInteger(text)) {
             fromImportYearTextField.setText(LocalDate.now().getYear() + "");
         }
     }//GEN-LAST:event_fromImportYearTextFieldMouseExited
@@ -1136,7 +1136,7 @@ public class HistoryPanel extends javax.swing.JPanel {
     private void fromImportYearTextFieldKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_fromImportYearTextFieldKeyPressed
         if (evt.getKeyCode() == KeyEvent.VK_ENTER) {
             String text = fromImportYearTextField.getText();
-            if (!ValidateInput.checkIfANumberSequenceForGUI(text)) {
+            if (!ValidateInput.isAPositiveInteger(text)) {
                 fromImportYearTextField.setText(LocalDate.now().getYear() + "");
             } else {
                 toImportDayTextField.requestFocus();
@@ -1146,7 +1146,7 @@ public class HistoryPanel extends javax.swing.JPanel {
 
     private void toImportYearTextFieldMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_toImportYearTextFieldMouseExited
         String text = toImportYearTextField.getText();
-        if (!ValidateInput.checkIfANumberSequenceForGUI(text)) {
+        if (!ValidateInput.isAPositiveInteger(text)) {
             toImportYearTextField.setText(LocalDate.now().getYear() + "");
         }
     }//GEN-LAST:event_toImportYearTextFieldMouseExited
@@ -1154,7 +1154,7 @@ public class HistoryPanel extends javax.swing.JPanel {
     private void toImportYearTextFieldKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_toImportYearTextFieldKeyPressed
         if (evt.getKeyCode() == KeyEvent.VK_ENTER) {
             String text = toImportYearTextField.getText();
-            if (!ValidateInput.checkIfANumberSequenceForGUI(text)) {
+            if (!ValidateInput.isAPositiveInteger(text)) {
                 toImportYearTextField.setText(LocalDate.now().getYear() + "");
             }
         }
@@ -1162,7 +1162,7 @@ public class HistoryPanel extends javax.swing.JPanel {
 
     private void toImportDayTextFieldMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_toImportDayTextFieldMouseExited
         String text = toImportDayTextField.getText();
-        if (!ValidateInput.checkIfANumberSequenceForGUI(text)) {
+        if (!ValidateInput.isAPositiveInteger(text)) {
             toImportDayTextField.setText("00");
         }
     }//GEN-LAST:event_toImportDayTextFieldMouseExited
@@ -1170,7 +1170,7 @@ public class HistoryPanel extends javax.swing.JPanel {
     private void toImportDayTextFieldKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_toImportDayTextFieldKeyPressed
         if (evt.getKeyCode() == KeyEvent.VK_ENTER) {
             String text = toImportDayTextField.getText();
-            if (!ValidateInput.checkIfANumberSequenceForGUI(text)) {
+            if (!ValidateInput.isAPositiveInteger(text)) {
                 toImportDayTextField.setText("00");
             } else {
                 toImportMonthTextField.requestFocus();
@@ -1180,7 +1180,7 @@ public class HistoryPanel extends javax.swing.JPanel {
 
     private void toYearTextFieldMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_toYearTextFieldMouseExited
         String text = toYearTextField.getText();
-        if (!ValidateInput.checkIfANumberSequenceForGUI(text)) {
+        if (!ValidateInput.isAPositiveInteger(text)) {
             toYearTextField.setText(LocalDate.now().getYear() + "");
         }
     }//GEN-LAST:event_toYearTextFieldMouseExited
@@ -1188,7 +1188,7 @@ public class HistoryPanel extends javax.swing.JPanel {
     private void toYearTextFieldKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_toYearTextFieldKeyPressed
         if (evt.getKeyCode() == KeyEvent.VK_ENTER) {
             String text = toYearTextField.getText();
-            if (!ValidateInput.checkIfANumberSequenceForGUI(text)) {
+            if (!ValidateInput.isAPositiveInteger(text)) {
                 toYearTextField.setText(LocalDate.now().getYear() + "");
             }
         }

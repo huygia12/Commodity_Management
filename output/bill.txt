@@ -1,20 +1,15 @@
 
 -------------- YOUR BILL ---------------
 ----------------------------------------
-Store Name: Chang hi
-Email: wangwang123@gmail.com
-Address: 112-Nguyen Van Loc
-Phone Number: 0705737292
-Date: 28/06/2023 06:03:04
+Store: 123
+Email: 12@gmail.com
+Date: 07:27 11/01/2025
 
 Name                      Quantity   Price           Total          
 ------------------------- ---------- --------------- ---------------
-Ruler                     1.0        3000.0          3000.0         
-SubTotal: 3000.0
-Discount Amount(Discount=0%): 0.0
-Tax(VAT=0%): 0.0
-Payment Option: OTHER_PAYMENT
-Member Card ID: 
-Point Discount: 
-Total: 3000.0
+Kẹo                       12         12000           144000         
+SubTotal: 144000
+Discount Amount(Discount=0%): 0
+Payment Option: OTHER
+Total: 144000
 ----------------------------------------

@@ -1,8 +1,11 @@
 package view;
 
 import config.HibernateConfig;
+import dao.EmployeeDAO;
 import dao.ShiftDAO;
+import dao.impl.EmployeeDAOImpl;
 import dao.impl.ShiftDAOImpl;
+import java.awt.Font;
 import java.awt.event.KeyEvent;
 import java.util.ArrayList;
 import java.util.List;
@@ -13,12 +16,15 @@ import javax.swing.ImageIcon;
 import javax.swing.JOptionPane;
 import javax.swing.JTextField;
 import javax.swing.ScrollPaneConstants;
+import javax.swing.SwingConstants;
+import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
+import javax.swing.table.JTableHeader;
 import model.ComboBoxItem;
 import model.entities.Employee;
 import model.entities.Shift;
 import model.entities.Store;
-import model.enums.Gender;
+import util.AppImage;
 import util.ShiftUtil;
 import util.ValidateInput;
 
@@ -26,9 +32,24 @@ public class OpenShiftFrame extends javax.swing.JFrame {
 
     public OpenShiftFrame() {
         initComponents();
-        setIconImage(new ImageIcon(getClass().getResource("/ImageIcon/icons8-grocery-store-96.png")).getImage());
+        customUI();
+    }
+
+    private void customUI() {
+        setIconImage(new ImageIcon(getClass().getResource(AppImage.APP_ICON)).getImage());
         this.setLocationRelativeTo(null);
         this.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
+
+        DefaultTableCellRenderer centerRenderer = new DefaultTableCellRenderer();
+        centerRenderer.setVerticalTextPosition(SwingConstants.CENTER);
+        centerRenderer.setHorizontalTextPosition(SwingConstants.CENTER);
+        centerRenderer.setHorizontalAlignment(SwingConstants.CENTER);
+        centerRenderer.setVerticalAlignment(SwingConstants.CENTER);
+        for (int i = 0; i < employeeTable.getColumnCount(); i++) {
+            employeeTable.getColumnModel().getColumn(i).setCellRenderer(centerRenderer);
+        }
+        JTableHeader header = employeeTable.getTableHeader();
+        header.setFont(new Font("Arial", Font.BOLD, 14));
     }
 
     @SuppressWarnings("unchecked")
@@ -52,7 +73,7 @@ public class OpenShiftFrame extends javax.swing.JFrame {
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setTitle("Mở Ca Làm Việc");
-        setMinimumSize(new java.awt.Dimension(530, 400));
+        setMinimumSize(new java.awt.Dimension(478, 472));
         setResizable(false);
 
         openBalanceLabel.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
@@ -69,17 +90,9 @@ public class OpenShiftFrame extends javax.swing.JFrame {
         openBalanceTextField.setMaximumSize(new java.awt.Dimension(130, 25));
         openBalanceTextField.setMinimumSize(new java.awt.Dimension(130, 25));
         openBalanceTextField.setPreferredSize(new java.awt.Dimension(130, 25));
-        openBalanceTextField.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
-                openBalanceTextFieldMouseClicked(evt);
-            }
-            public void mouseExited(java.awt.event.MouseEvent evt) {
-                openBalanceTextFieldMouseExited(evt);
-            }
-        });
         openBalanceTextField.addKeyListener(new java.awt.event.KeyAdapter() {
-            public void keyPressed(java.awt.event.KeyEvent evt) {
-                openBalanceTextFieldKeyPressed(evt);
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                openBalanceTextFieldKeyReleased(evt);
             }
         });
 
@@ -95,14 +108,14 @@ public class OpenShiftFrame extends javax.swing.JFrame {
         });
 
         cashierComboBox.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
-        cashierComboBox.setModel(new DefaultComboBoxModel<>(new ComboBoxItem[] { new ComboBoxItem("1", "Cashier 1") }));
+        cashierComboBox.setModel(new DefaultComboBoxModel<>(new ComboBoxItem[] { new ComboBoxItem("Chọn thu ngân", "0") }));
         cashierComboBox.setMaximumSize(new java.awt.Dimension(130, 25));
         cashierComboBox.setMinimumSize(new java.awt.Dimension(130, 25));
         cashierComboBox.setName(""); // NOI18N
         cashierComboBox.setPreferredSize(new java.awt.Dimension(130, 25));
-        cashierComboBox.addItemListener(new java.awt.event.ItemListener() {
-            public void itemStateChanged(java.awt.event.ItemEvent evt) {
-                cashierComboBoxItemStateChanged(evt);
+        cashierComboBox.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                cashierComboBoxActionPerformed(evt);
             }
         });
 
@@ -130,25 +143,24 @@ public class OpenShiftFrame extends javax.swing.JFrame {
         inputPanel.setLayout(inputPanelLayout);
         inputPanelLayout.setHorizontalGroup(
             inputPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, inputPanelLayout.createSequentialGroup()
+            .addGroup(inputPanelLayout.createSequentialGroup()
+                .addGap(20, 20, 20)
                 .addGroup(inputPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addGroup(inputPanelLayout.createSequentialGroup()
-                        .addGap(20, 20, 20)
+                        .addComponent(addToEmployeeListComboBox, javax.swing.GroupLayout.PREFERRED_SIZE, 75, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(removeFromEmployeeListComboBox, javax.swing.GroupLayout.PREFERRED_SIZE, 72, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(inputPanelLayout.createSequentialGroup()
                         .addGroup(inputPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(cashierLabel)
                             .addComponent(employeeListLabel)
                             .addComponent(openBalanceLabel))
                         .addGap(48, 48, 48)
-                        .addGroup(inputPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(cashierComboBox, 0, 344, Short.MAX_VALUE)
-                            .addComponent(openBalanceTextField, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(shiftEmployeeListComboBox, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
-                    .addGroup(inputPanelLayout.createSequentialGroup()
-                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(addToEmployeeListComboBox, javax.swing.GroupLayout.PREFERRED_SIZE, 75, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(removeFromEmployeeListComboBox, javax.swing.GroupLayout.PREFERRED_SIZE, 72, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addGap(20, 20, 20))
+                        .addGroup(inputPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                            .addComponent(openBalanceTextField, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 260, Short.MAX_VALUE)
+                            .addComponent(cashierComboBox, javax.swing.GroupLayout.Alignment.LEADING, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(shiftEmployeeListComboBox, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
+                .addContainerGap(18, Short.MAX_VALUE))
         );
         inputPanelLayout.setVerticalGroup(
             inputPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -182,7 +194,7 @@ public class OpenShiftFrame extends javax.swing.JFrame {
 
             },
             new String [] {
-                "Họ và tên", "Giới tính"
+                "Mã nhân viên", "Họ và tên"
             }
         ) {
             boolean[] canEdit = new boolean [] {
@@ -198,6 +210,11 @@ public class OpenShiftFrame extends javax.swing.JFrame {
         employeeTable.setMinimumSize(new java.awt.Dimension(530, 360));
         employeeTable.setPreferredSize(new java.awt.Dimension(530, 360));
         employeeTable.setShowGrid(true);
+        employeeTable.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                employeeTableMouseClicked(evt);
+            }
+        });
         employeeListScrollPane.setViewportView(employeeTable);
 
         acceptBtn.setBackground(new java.awt.Color(0, 255, 0));
@@ -230,15 +247,13 @@ public class OpenShiftFrame extends javax.swing.JFrame {
         tableAndBtnPanelLayout.setHorizontalGroup(
             tableAndBtnPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(tableAndBtnPanelLayout.createSequentialGroup()
-                .addContainerGap()
-                .addGroup(tableAndBtnPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, tableAndBtnPanelLayout.createSequentialGroup()
-                        .addGap(0, 0, Short.MAX_VALUE)
+                .addGroup(tableAndBtnPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addGroup(tableAndBtnPanelLayout.createSequentialGroup()
                         .addComponent(denyBtn, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addComponent(acceptBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 95, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addComponent(employeeListScrollPane, javax.swing.GroupLayout.DEFAULT_SIZE, 542, Short.MAX_VALUE))
-                .addContainerGap())
+                    .addComponent(employeeListScrollPane, javax.swing.GroupLayout.PREFERRED_SIZE, 464, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(0, 4, Short.MAX_VALUE))
         );
         tableAndBtnPanelLayout.setVerticalGroup(
             tableAndBtnPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -256,81 +271,12 @@ public class OpenShiftFrame extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void cashierComboBoxItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_cashierComboBoxItemStateChanged
-        if (cashierComboBox.getSelectedIndex() != 0) {
-            return;
-        }
-
-        int selectedRow = employeeTable.getSelectedRow();
-        if (selectedRow == -1) { // Kiểm tra xem chọn ở bảng chưa
-            refreshCashierComboBoxSelectedItem();
-            JOptionPane.showMessageDialog(this, NOTHING_CHOOSEN_FROM_TABLE_WARNING,
-                    "Lỗi", JOptionPane.WARNING_MESSAGE);
-            return;
-        }
-
-        UUID employeeId = UUID.fromString((String) employeeTable.getValueAt(selectedRow, 2));
-
-        Optional<Employee> matchedEmployee = this.store.getEmployees()
-                .stream()
-                .filter(employee -> employee.getEmployeeId().equals(employeeId))
-                .findFirst();
-
-        matchedEmployee.ifPresent(employee -> {
-            cashier = employee;
-            refreshCashierComboBoxSelectedItem();
-            refreshEmployeeTable();
-        });
-    }//GEN-LAST:event_cashierComboBoxItemStateChanged
-
     private void shiftEmployeeListComboBoxItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_shiftEmployeeListComboBoxItemStateChanged
         if (shiftEmployeeListComboBox.getSelectedIndex() == -1
                 && shiftEmployeeListComboBox.getItemCount() >= 1) {
             shiftEmployeeListComboBox.setSelectedIndex(0);
         }
     }//GEN-LAST:event_shiftEmployeeListComboBoxItemStateChanged
-
-    private void openBalanceTextFieldKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_openBalanceTextFieldKeyPressed
-        if (evt.getKeyCode() == KeyEvent.VK_ENTER) {
-            String openBalanceStr = openBalanceTextField.getText();
-            if (openBalanceStr.isBlank()) {
-                openBalanceTextField.setText("0");
-                shiftOpenBalance = 0;
-                return;
-            }
-            if (!ValidateInput.checkIfAValidNumberForGUI(openBalanceStr)) {
-                insertWarningToTextField(openBalanceTextField, INVALID_WARNING, 14);
-                checkOpenBalance = false;
-                return;
-            }
-            checkOpenBalance = true;
-            shiftOpenBalance = Integer.parseInt(openBalanceStr);
-            openBalanceTextField.setText(String.format("%d", shiftOpenBalance));
-        }
-    }//GEN-LAST:event_openBalanceTextFieldKeyPressed
-
-    private void openBalanceTextFieldMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_openBalanceTextFieldMouseExited
-        String openBalanceStr = openBalanceTextField.getText();
-        if (openBalanceStr.isBlank()) {
-            openBalanceTextField.setText("0");
-            shiftOpenBalance = 0;
-            return;
-        }
-        if (!ValidateInput.checkIfAValidNumberForGUI(openBalanceStr)) {
-            insertWarningToTextField(openBalanceTextField, INVALID_WARNING, 14);
-            checkOpenBalance = false;
-            return;
-        }
-        checkOpenBalance = true;
-        shiftOpenBalance = Integer.parseInt(openBalanceStr);
-        openBalanceTextField.setText(String.format("%d", shiftOpenBalance));
-    }//GEN-LAST:event_openBalanceTextFieldMouseExited
-
-    private void openBalanceTextFieldMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_openBalanceTextFieldMouseClicked
-        if (!checkOpenBalance) {
-            setDefaultOptionToTextField(openBalanceTextField, 14);
-        }
-    }//GEN-LAST:event_openBalanceTextFieldMouseClicked
 
     private void denyBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_denyBtnActionPerformed
         int choice = JOptionPane.showConfirmDialog(this,
@@ -349,86 +295,93 @@ public class OpenShiftFrame extends javax.swing.JFrame {
             return;
         }
 
-        shiftEmployees.removeIf(e -> !e.getEmployeeId().equals(selectedItem.getId()));
+        shiftEmployees.removeIf(e -> e.getEmployeeId().equals(selectedItem.getId()));
         shiftEmployeeListComboBox.removeItemAt(selectedIndex);
 
         refreshEmployeeComboBox();
         refreshEmployeeTable();
+        considerMakeAcceptButtonClickable();
     }//GEN-LAST:event_removeFromEmployeeListComboBoxActionPerformed
 
     private void addToEmployeeListComboBoxActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_addToEmployeeListComboBoxActionPerformed
         int selectedRow = employeeTable.getSelectedRow();
-        if (selectedRow != -1) {
+        if (selectedRow == -1 || this.seletedEmployee == null) {
             JOptionPane.showMessageDialog(this, NOTHING_CHOOSEN_FROM_TABLE_WARNING,
                     "Lỗi", JOptionPane.WARNING_MESSAGE);
             return;
         }
-        UUID employeeId = UUID.fromString((String) employeeTable.getValueAt(selectedRow, 2));
 
-        Optional<Employee> matchedEmployee = this.store.getEmployees()
-                .stream()
-                .filter(employee -> employee.getEmployeeId().equals(employeeId))
-                .findFirst();
-
-        matchedEmployee.ifPresent(employee -> {
-            this.shiftEmployees.add(employee);
-            refreshEmployeeComboBox();
-            refreshEmployeeTable();
-        });
-
+        this.shiftEmployees.add(this.seletedEmployee);
+        this.seletedEmployee = null;
+        refreshEmployeeComboBox();
+        refreshEmployeeTable();
+        considerMakeAcceptButtonClickable();
     }//GEN-LAST:event_addToEmployeeListComboBoxActionPerformed
 
     private void acceptBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_acceptBtnActionPerformed
-        if (this.shiftEmployees.isEmpty()) {
-            JOptionPane.showMessageDialog(this, SHIFT_EMPLOYEE_NOT_SELECTED_WARNING,
-                    "Cảnh báo", JOptionPane.WARNING_MESSAGE);
-            return;
-        } else if (this.cashier == null) {
-            JOptionPane.showMessageDialog(this, CASHIER_NOT_SELECTED_WARNING,
-                    "Cảnh báo", JOptionPane.WARNING_MESSAGE);
-            return;
+        this.shift.setOpeningBalance(shiftOpenBalance);
+        this.shift.setCashierName(cashier.getFullname());
+        this.shift.setCashierId(this.cashier.getEmployeeId());
+        if (this.creation) {
+            boolean result = shiftDAO.openShift(this.shift, this.shiftEmployees, this.hibernateConfig.getEntityManager());
+            if (!result) {
+                JOptionPane.showMessageDialog(this, "Mở ca thất bại!", "Thông báo", JOptionPane.INFORMATION_MESSAGE);
+                return;
+            }
+            System.out.println("current shift : " + this.shift);
         } else {
-            this.shift.setOpeningBalance(shiftOpenBalance);
-            this.shift.setCashierName(cashier.getFullname());
-            this.shift.setCashierId(this.cashier.getEmployeeId());
-
-            if (this.creation) {
-                boolean result = shiftDAO.openShift(this.shift, this.shiftEmployees, this.hibernateConfig.getEntityManager());
-                if (!result) {
-                    JOptionPane.showMessageDialog(this, "Mở ca thất bại!", "Thông báo", JOptionPane.INFORMATION_MESSAGE);
-                    return;
-                }
-            } else {
-                boolean result = shiftDAO.updateShift(this.shift, this.shiftEmployees, this.hibernateConfig.getEntityManager());
-                if (!result) {
-                    JOptionPane.showMessageDialog(this, "Cập nhật ca thất bại!", "Thông báo", JOptionPane.INFORMATION_MESSAGE);
-                    return;
-                }
+            boolean result = shiftDAO.updateShift(this.shift, this.shiftEmployees, this.hibernateConfig.getEntityManager());
+            if (!result) {
+                JOptionPane.showMessageDialog(this, "Cập nhật ca thất bại!", "Thông báo", JOptionPane.INFORMATION_MESSAGE);
+                return;
             }
         }
         shiftPanel.refreshCurrentShiftView();
         this.dispose();
     }//GEN-LAST:event_acceptBtnActionPerformed
 
-    public static void main(String args[]) {
-        try {
-            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
-                if ("Nimbus".equals(info.getName())) {
-                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
-                    break;
-                }
-            }
-        } catch (ClassNotFoundException | InstantiationException | IllegalAccessException | javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(OpenShiftFrame.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+    private void employeeTableMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_employeeTableMouseClicked
+        int rowIndex = employeeTable.getSelectedRow();
+        if (rowIndex >= 0) {
+            Long employeeId = (Long) employeeTable.getValueAt(rowIndex, 0);
+            this.seletedEmployee = employeeDAO.getEmployee(employeeId, this.hibernateConfig.getEntityManager());
+        }
+    }//GEN-LAST:event_employeeTableMouseClicked
+
+    private void openBalanceTextFieldKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_openBalanceTextFieldKeyReleased
+        String openBalanceStr = openBalanceTextField.getText();
+        if (openBalanceStr.isBlank()) {
+            openBalanceTextField.setText("0");
+            shiftOpenBalance = 0;
+            return;
+        }
+        if (!ValidateInput.isAPositiveInteger(openBalanceStr)) {
+            shiftOpenBalance = -1;
+            return;
+        }
+        shiftOpenBalance = Integer.parseInt(openBalanceStr);
+        openBalanceTextField.setText(String.format("%d", shiftOpenBalance));
+        considerMakeAcceptButtonClickable();
+    }//GEN-LAST:event_openBalanceTextFieldKeyReleased
+
+    private void cashierComboBoxActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cashierComboBoxActionPerformed
+        if (cashierComboBox.getSelectedIndex() != 0) {
+            return;
         }
 
-        java.awt.EventQueue.invokeLater(new Runnable() {
-            @Override
-            public void run() {
-                new OpenShiftFrame().setVisible(true);
-            }
-        });
-    }
+        int selectedRow = employeeTable.getSelectedRow();
+        if (selectedRow == -1 || this.seletedEmployee == null) { // Kiểm tra xem chọn ở bảng chưa
+            JOptionPane.showMessageDialog(this, NOTHING_CHOOSEN_FROM_TABLE_WARNING,
+                    "Cảnh báo", JOptionPane.WARNING_MESSAGE);
+            return;
+        }
+
+        cashier = this.seletedEmployee;
+        this.seletedEmployee = null;
+        refreshCashierComboBox();
+        refreshEmployeeTable();
+        considerMakeAcceptButtonClickable();
+    }//GEN-LAST:event_cashierComboBoxActionPerformed
 
     private void refreshEmployeeComboBox() {
         shiftEmployeeListComboBox.removeAllItems();
@@ -441,45 +394,25 @@ public class OpenShiftFrame extends javax.swing.JFrame {
         if (cashierComboBox.getItemCount() == 2) { // nếu đã chọn cashier rồi
             cashierComboBox.setSelectedIndex(-1);
             cashierComboBox.removeItemAt(1);
-        }
-        if (this.cashier != null) {
-            cashierComboBox.insertItemAt(new ComboBoxItem(this.cashier.getFullname(), this.cashier.getEmployeeId()), 1);
-            cashierComboBox.setSelectedIndex(1);
-        }
-    }
-
-    private void refreshCashierComboBoxSelectedItem() {
-        if (cashierComboBox.getItemCount() == 1) {
-            cashierComboBox.setSelectedIndex(-1);
         } else {
+            cashierComboBox.setSelectedIndex(-1);
+        }
+        if (this.cashier != null) {// nếu đã chọn cashier rồi
+            ComboBoxItem newItem = new ComboBoxItem(this.cashier.getFullname(), this.cashier.getEmployeeId());
+            cashierComboBox.insertItemAt(newItem, 1);
             cashierComboBox.setSelectedIndex(1);
         }
     }
 
-    private void setDefaultOptionToTextField(JTextField textField, int size) {
-        textField.setEditable(true);
-        textField.setFont(new java.awt.Font("Segoe UI", 0, size));
-        textField.setForeground(new java.awt.Color(0, 0, 0));
-        textField.setHorizontalAlignment(javax.swing.JTextField.CENTER);
-        textField.setText("");
-    }
-
-    private void insertWarningToTextField(JTextField textField, String warningText, int size) {
-        textField.setFont(new java.awt.Font("Segoe UI", 2, size));
-        textField.setForeground(new java.awt.Color(255, 0, 0));
-        textField.setText(warningText);
-        textField.setEditable(false);
+    private void considerMakeAcceptButtonClickable() {
+        acceptBtn.setEnabled(shiftOpenBalance > -1 && !this.shiftEmployees.isEmpty() && this.cashier != null);
     }
 
     private void refreshEmployeeTable() {
         employeeTableModel.setRowCount(0);
 
-        if (employeeTableModel.getColumnCount() == 2) {
-            employeeTableModel.addColumn("EmployeeId");
-        }
-
         this.store.getEmployees().stream().forEach(e -> {
-            if (this.cashier != null && this.cashier.getEmployeeId() == e.getEmployeeId()) {
+            if (this.cashier != null && this.cashier.getEmployeeId().equals(e.getEmployeeId())) {
                 return;
             }
             if (this.shiftEmployees.stream()
@@ -488,15 +421,10 @@ public class OpenShiftFrame extends javax.swing.JFrame {
             }
 
             employeeTableModel.addRow(new Object[]{
-                e.getFullname(),
-                e.getGender() == Gender.MALE ? "Nam" : e.getGender() == Gender.FEMALE ? "Nữ" : "Khác",
-                e.getEmployeeId()
+                e.getEmployeeId(),
+                e.getFullname()
             });
         });
-
-        employeeTable.getColumnModel().getColumn(2).setMaxWidth(0);
-        employeeTable.getColumnModel().getColumn(2).setMinWidth(0);
-        employeeTable.getColumnModel().getColumn(2).setPreferredWidth(0);
     }
 
     private void setDefaultToAllShiftAttributes() {
@@ -506,12 +434,14 @@ public class OpenShiftFrame extends javax.swing.JFrame {
         shiftEmployees.clear();
         //set các giá trị component hiển thị thành default
         openBalanceTextField.setText("0");
+        considerMakeAcceptButtonClickable();
         refreshCashierComboBox();
         refreshEmployeeComboBox();
         refreshEmployeeTable();
     }
 
     public void setToCurrentShiftValue() {
+        System.out.println("shift" + shift);
         // thành các giá trị của shift hiện tại
         shiftOpenBalance = this.shift.getOpeningBalance();
         Optional<Employee> matchedEmployee = this.store.getEmployees()
@@ -522,15 +452,21 @@ public class OpenShiftFrame extends javax.swing.JFrame {
         matchedEmployee.ifPresent(employee -> {
             this.cashier = employee;
         });
-        this.shiftEmployees = ShiftUtil.getEmployees(shift, store);
-        checkOpenBalance = true;
+        this.shiftEmployees = ShiftUtil.getEmployees(shift);
 
         //set các giá trị component hiển thị thành default
         openBalanceTextField.setText(String.format("%d", shiftOpenBalance));
         refreshCashierComboBox();
         refreshEmployeeComboBox();
         refreshEmployeeTable();
+    }
+
+    public void setToUpdateMode() {
         this.creation = false;
+    }
+
+    public void setToAddMode() {
+        this.creation = true;
     }
 
     public void setup(HibernateConfig hibernateConfig, Store store, Shift shift, ShiftPanel shiftPanel) {
@@ -539,6 +475,7 @@ public class OpenShiftFrame extends javax.swing.JFrame {
         this.shift = shift;
         this.hibernateConfig = hibernateConfig;
         this.shiftDAO = new ShiftDAOImpl();
+        this.employeeDAO = new EmployeeDAOImpl();
         this.creation = true;
 
         // Table
@@ -548,22 +485,20 @@ public class OpenShiftFrame extends javax.swing.JFrame {
         setDefaultToAllShiftAttributes();
     }
 
-    private boolean checkOpenBalance = false;
+    private Employee seletedEmployee;
     private int shiftOpenBalance;
     private List<Employee> shiftEmployees = new ArrayList();
     private Employee cashier;
     private boolean creation; //true la tao moi, false la sua
 
+    private EmployeeDAO employeeDAO;
     private ShiftDAO shiftDAO;
     private HibernateConfig hibernateConfig;
     private Store store;
     private Shift shift;
     private ShiftPanel shiftPanel;
     private DefaultTableModel employeeTableModel;
-    private final String CASHIER_NOT_SELECTED_WARNING = "Thực hiện chọn thu ngân ca!";
-    private final String SHIFT_EMPLOYEE_NOT_SELECTED_WARNING = "Thực hiện thêm nhân viên ca!";
     private final String SET_DEFAULT_WARNING = "Đặt lại giá trị ban đầu cho toàn bộ thay đổi?";
-    private final String INVALID_WARNING = "Không hợp lệ!";
     private final String NOTHING_CHOOSEN_FROM_TABLE_WARNING = "Thực hiện chọn ở bảng trước!";
     private final String NOTHING_CHOOSEN_FROM_COMBOBOX_WARNING = "Thực hiện chọn ở hộp chọn trước!";
     // Variables declaration - do not modify//GEN-BEGIN:variables

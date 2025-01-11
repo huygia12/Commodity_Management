@@ -38,6 +38,7 @@ public class Invoice {
     @Column(nullable = false, updatable = false)
     private LocalDateTime createdAt;
     
+    @ToString.Exclude
     @ManyToOne(optional = false)
     @JoinColumn(name = "shiftId", referencedColumnName = "shiftId")
     private Shift shift;

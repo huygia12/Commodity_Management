@@ -2,14 +2,21 @@ package view;
 
 import config.HibernateConfig;
 import dao.InvoiceDAO;
+import dao.ProductDAO;
 import dao.impl.InvoiceDAOImpl;
+import dao.impl.ProductDAOImpl;
+import java.awt.Font;
 import java.awt.event.KeyEvent;
 import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.List;
 import javax.swing.ImageIcon;
 import javax.swing.JOptionPane;
 import javax.swing.ScrollPaneConstants;
+import javax.swing.SwingConstants;
+import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
+import javax.swing.table.JTableHeader;
 import model.entities.Invoice;
 import model.entities.InvoiceProduct;
 import model.entities.Product;
@@ -39,7 +46,23 @@ public class PurchasePanel extends javax.swing.JPanel {
         fromDateTextField.setEditable(false);
         toDateTextField.setEditable(false);
         filterBtn.setEnabled(false);
-        setDefaultOptionToTextField(warningTextField, 12);
+
+        DefaultTableCellRenderer centerRenderer = new DefaultTableCellRenderer();
+        centerRenderer.setVerticalTextPosition(SwingConstants.CENTER);
+        centerRenderer.setHorizontalTextPosition(SwingConstants.CENTER);
+        centerRenderer.setHorizontalAlignment(SwingConstants.CENTER);
+        centerRenderer.setVerticalAlignment(SwingConstants.CENTER);
+        for (int i = 0; i < productTable.getColumnCount(); i++) {
+            productTable.getColumnModel().getColumn(i).setCellRenderer(centerRenderer);
+        }
+        JTableHeader header = productTable.getTableHeader();
+        header.setFont(new Font("Arial", Font.BOLD, 14));
+
+        for (int i = 0; i < invoiceTable.getColumnCount(); i++) {
+            invoiceTable.getColumnModel().getColumn(i).setCellRenderer(centerRenderer);
+        }
+        header = invoiceTable.getTableHeader();
+        header.setFont(new Font("Arial", Font.BOLD, 14));
     }
 
     @SuppressWarnings("unchecked")
@@ -71,21 +94,16 @@ public class PurchasePanel extends javax.swing.JPanel {
         changeAmountTextField = new javax.swing.JTextField();
         payAnfPrintBtn = new javax.swing.JButton();
         payBtn = new javax.swing.JButton();
-        warningTextField = new javax.swing.JTextField();
         orderDisplayPanel = new javax.swing.JPanel();
         mainOrderFunctionPanel = new javax.swing.JPanel();
         quantityTextField = new javax.swing.JTextField();
         quantityLabel = new javax.swing.JLabel();
-        goodsIDTextField = new javax.swing.JTextField();
         addBtn = new javax.swing.JButton();
         removeBtn = new javax.swing.JButton();
         resetBtn = new javax.swing.JButton();
         editBtn = new javax.swing.JButton();
-        shipmentIDLabel = new javax.swing.JLabel();
         fromLabel = new javax.swing.JLabel();
         toLabel = new javax.swing.JLabel();
-        goodsIDLabel = new javax.swing.JLabel();
-        shipmentIDTextField = new javax.swing.JTextField();
         priceRangeComboBox = new javax.swing.JComboBox<>();
         priceRangeLabel = new javax.swing.JLabel();
         keyWordLabel = new javax.swing.JLabel();
@@ -123,11 +141,11 @@ public class PurchasePanel extends javax.swing.JPanel {
 
             },
             new String [] {
-                "Mã SP", "Tên SP", "Nhà SX", "ĐV", "Giá Bán/ĐV", "Mã lô", "Ngày SX", "Hạn SD", "SL"
+                "Mã SP", "Tên SP", "Nhà SX", "ĐV", "Giá Bán/ĐV", "Mã lô", "Ngày SX", "Hạn SD", "SL", "ProductId"
             }
         ) {
             boolean[] canEdit = new boolean [] {
-                false, false, false, false, false, false, false, false, false
+                false, false, false, false, false, false, false, false, false, false
             };
 
             public boolean isCellEditable(int rowIndex, int columnIndex) {
@@ -137,7 +155,9 @@ public class PurchasePanel extends javax.swing.JPanel {
         productTable.setAutoResizeMode(javax.swing.JTable.AUTO_RESIZE_ALL_COLUMNS);
         productTable.setMaximumSize(new java.awt.Dimension(700, 0));
         productTable.setMinimumSize(new java.awt.Dimension(675, 0));
-        productTable.setShowGrid(true);
+        productTable.setShowGrid(false);
+        productTable.setShowHorizontalLines(true);
+        productTable.setShowVerticalLines(true);
         productTable.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 productTableMouseClicked(evt);
@@ -231,9 +251,9 @@ public class PurchasePanel extends javax.swing.JPanel {
         paymentOptionCombobox.setMaximumSize(new java.awt.Dimension(32767, 20));
         paymentOptionCombobox.setMinimumSize(new java.awt.Dimension(72, 20));
         paymentOptionCombobox.setPreferredSize(new java.awt.Dimension(72, 20));
-        paymentOptionCombobox.addItemListener(new java.awt.event.ItemListener() {
-            public void itemStateChanged(java.awt.event.ItemEvent evt) {
-                paymentOptionComboboxItemStateChanged(evt);
+        paymentOptionCombobox.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                paymentOptionComboboxActionPerformed(evt);
             }
         });
 
@@ -377,40 +397,30 @@ public class PurchasePanel extends javax.swing.JPanel {
             }
         });
 
-        warningTextField.setEditable(false);
-        warningTextField.setText(" ");
-        warningTextField.setAutoscrolls(false);
-        warningTextField.setBorder(null);
-
         javax.swing.GroupLayout mainFeePanelLayout = new javax.swing.GroupLayout(mainFeePanel);
         mainFeePanel.setLayout(mainFeePanelLayout);
         mainFeePanelLayout.setHorizontalGroup(
             mainFeePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(mainFeePanelLayout.createSequentialGroup()
+                .addContainerGap()
                 .addGroup(mainFeePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(mainFeePanelLayout.createSequentialGroup()
-                        .addContainerGap()
-                        .addGroup(mainFeePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(mainFeePanelLayout.createSequentialGroup()
-                                .addComponent(payAnfPrintBtn)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(payBtn, javax.swing.GroupLayout.DEFAULT_SIZE, 174, Short.MAX_VALUE))
-                            .addGroup(mainFeePanelLayout.createSequentialGroup()
-                                .addGap(4, 4, 4)
-                                .addGroup(mainFeePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(totalLabel)
-                                    .addComponent(discountAmountLabel)
-                                    .addComponent(changeAmountLabel)
-                                    .addComponent(subTotalLabel))
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addGroup(mainFeePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(subTotalTextField, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                    .addComponent(discountAmountTextField, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                    .addComponent(totalTextField, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                    .addComponent(changeAmountTextField, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))))
+                        .addComponent(payAnfPrintBtn)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(payBtn, javax.swing.GroupLayout.DEFAULT_SIZE, 174, Short.MAX_VALUE))
                     .addGroup(mainFeePanelLayout.createSequentialGroup()
-                        .addGap(36, 36, 36)
-                        .addComponent(warningTextField)))
+                        .addGap(4, 4, 4)
+                        .addGroup(mainFeePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(totalLabel)
+                            .addComponent(discountAmountLabel)
+                            .addComponent(changeAmountLabel)
+                            .addComponent(subTotalLabel))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGroup(mainFeePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(subTotalTextField, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(discountAmountTextField, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(totalTextField, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(changeAmountTextField, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
                 .addContainerGap())
         );
         mainFeePanelLayout.setVerticalGroup(
@@ -432,9 +442,7 @@ public class PurchasePanel extends javax.swing.JPanel {
                 .addGroup(mainFeePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(changeAmountLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(changeAmountTextField, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(18, 18, 18)
-                .addComponent(warningTextField, javax.swing.GroupLayout.DEFAULT_SIZE, 47, Short.MAX_VALUE)
-                .addGap(18, 18, 18)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 83, Short.MAX_VALUE)
                 .addGroup(mainFeePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addComponent(payAnfPrintBtn, javax.swing.GroupLayout.DEFAULT_SIZE, 49, Short.MAX_VALUE)
                     .addComponent(payBtn, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
@@ -469,17 +477,11 @@ public class PurchasePanel extends javax.swing.JPanel {
                 quantityTextFieldKeyPressed(evt);
             }
         });
-        mainOrderFunctionPanel.add(quantityTextField, new org.netbeans.lib.awtextra.AbsoluteConstraints(590, 120, 140, 40));
+        mainOrderFunctionPanel.add(quantityTextField, new org.netbeans.lib.awtextra.AbsoluteConstraints(530, 120, 200, 40));
 
         quantityLabel.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
         quantityLabel.setText("Nhập Số Lượng:");
-        mainOrderFunctionPanel.add(quantityLabel, new org.netbeans.lib.awtextra.AbsoluteConstraints(450, 130, -1, 29));
-
-        goodsIDTextField.setEditable(false);
-        goodsIDTextField.setBackground(new java.awt.Color(255, 255, 255));
-        goodsIDTextField.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
-        goodsIDTextField.setHorizontalAlignment(javax.swing.JTextField.CENTER);
-        mainOrderFunctionPanel.add(goodsIDTextField, new org.netbeans.lib.awtextra.AbsoluteConstraints(808, 10, 180, 33));
+        mainOrderFunctionPanel.add(quantityLabel, new org.netbeans.lib.awtextra.AbsoluteConstraints(380, 120, -1, 40));
 
         addBtn.setBackground(new java.awt.Color(0, 255, 0));
         addBtn.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
@@ -491,7 +493,7 @@ public class PurchasePanel extends javax.swing.JPanel {
                 addBtnActionPerformed(evt);
             }
         });
-        mainOrderFunctionPanel.add(addBtn, new org.netbeans.lib.awtextra.AbsoluteConstraints(790, 97, 85, 30));
+        mainOrderFunctionPanel.add(addBtn, new org.netbeans.lib.awtextra.AbsoluteConstraints(800, 90, 85, 30));
 
         removeBtn.setBackground(new java.awt.Color(255, 0, 0));
         removeBtn.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
@@ -503,7 +505,7 @@ public class PurchasePanel extends javax.swing.JPanel {
                 removeBtnActionPerformed(evt);
             }
         });
-        mainOrderFunctionPanel.add(removeBtn, new org.netbeans.lib.awtextra.AbsoluteConstraints(880, 97, 100, 30));
+        mainOrderFunctionPanel.add(removeBtn, new org.netbeans.lib.awtextra.AbsoluteConstraints(890, 90, 100, 30));
 
         resetBtn.setBackground(new java.awt.Color(51, 51, 51));
         resetBtn.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
@@ -516,7 +518,7 @@ public class PurchasePanel extends javax.swing.JPanel {
                 resetBtnActionPerformed(evt);
             }
         });
-        mainOrderFunctionPanel.add(resetBtn, new org.netbeans.lib.awtextra.AbsoluteConstraints(880, 130, 100, 30));
+        mainOrderFunctionPanel.add(resetBtn, new org.netbeans.lib.awtextra.AbsoluteConstraints(890, 130, 100, 30));
 
         editBtn.setBackground(new java.awt.Color(0, 255, 0));
         editBtn.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
@@ -527,11 +529,7 @@ public class PurchasePanel extends javax.swing.JPanel {
                 editBtnActionPerformed(evt);
             }
         });
-        mainOrderFunctionPanel.add(editBtn, new org.netbeans.lib.awtextra.AbsoluteConstraints(790, 130, 85, 30));
-
-        shipmentIDLabel.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
-        shipmentIDLabel.setText("Mã Lô:");
-        mainOrderFunctionPanel.add(shipmentIDLabel, new org.netbeans.lib.awtextra.AbsoluteConstraints(750, 50, -1, 30));
+        mainOrderFunctionPanel.add(editBtn, new org.netbeans.lib.awtextra.AbsoluteConstraints(800, 130, 85, 30));
 
         fromLabel.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         fromLabel.setText("Từ:");
@@ -541,16 +539,6 @@ public class PurchasePanel extends javax.swing.JPanel {
         toLabel.setText("Đến:");
         mainOrderFunctionPanel.add(toLabel, new org.netbeans.lib.awtextra.AbsoluteConstraints(111, 111, -1, -1));
 
-        goodsIDLabel.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
-        goodsIDLabel.setText("Mã SP:");
-        mainOrderFunctionPanel.add(goodsIDLabel, new org.netbeans.lib.awtextra.AbsoluteConstraints(750, 10, -1, 30));
-
-        shipmentIDTextField.setEditable(false);
-        shipmentIDTextField.setBackground(new java.awt.Color(255, 255, 255));
-        shipmentIDTextField.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
-        shipmentIDTextField.setHorizontalAlignment(javax.swing.JTextField.CENTER);
-        mainOrderFunctionPanel.add(shipmentIDTextField, new org.netbeans.lib.awtextra.AbsoluteConstraints(808, 50, 180, 32));
-
         priceRangeComboBox.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         priceRangeComboBox.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Trống", "< 100.000", "100.000 - 300.000", "300.000 - 500.000", "> 500.000" }));
         priceRangeComboBox.addItemListener(new java.awt.event.ItemListener() {
@@ -558,20 +546,20 @@ public class PurchasePanel extends javax.swing.JPanel {
                 priceRangeComboBoxItemStateChanged(evt);
             }
         });
-        mainOrderFunctionPanel.add(priceRangeComboBox, new org.netbeans.lib.awtextra.AbsoluteConstraints(110, 8, 300, 43));
+        mainOrderFunctionPanel.add(priceRangeComboBox, new org.netbeans.lib.awtextra.AbsoluteConstraints(110, 8, 240, 43));
 
         priceRangeLabel.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         priceRangeLabel.setText("Khoảng Giá:");
         mainOrderFunctionPanel.add(priceRangeLabel, new org.netbeans.lib.awtextra.AbsoluteConstraints(8, 8, -1, 43));
 
         keyWordLabel.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
-        keyWordLabel.setText("Nhập từ khóa tìm kiếm : ");
+        keyWordLabel.setText("Từ khóa tìm kiếm : ");
         keyWordLabel.setAutoscrolls(true);
         keyWordLabel.setVerifyInputWhenFocusTarget(false);
-        mainOrderFunctionPanel.add(keyWordLabel, new org.netbeans.lib.awtextra.AbsoluteConstraints(450, 10, -1, 14));
+        mainOrderFunctionPanel.add(keyWordLabel, new org.netbeans.lib.awtextra.AbsoluteConstraints(380, 10, -1, 40));
 
         jSeparator2.setOrientation(javax.swing.SwingConstants.VERTICAL);
-        mainOrderFunctionPanel.add(jSeparator2, new org.netbeans.lib.awtextra.AbsoluteConstraints(427, 0, 10, 170));
+        mainOrderFunctionPanel.add(jSeparator2, new org.netbeans.lib.awtextra.AbsoluteConstraints(370, 0, 10, 170));
 
         proAndExpirDateBtnGroup.add(productionDateRadioBtn);
         productionDateRadioBtn.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
@@ -586,7 +574,7 @@ public class PurchasePanel extends javax.swing.JPanel {
         keyWordTextField.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         keyWordTextField.setHorizontalAlignment(javax.swing.JTextField.CENTER);
         keyWordTextField.setOpaque(true);
-        mainOrderFunctionPanel.add(keyWordTextField, new org.netbeans.lib.awtextra.AbsoluteConstraints(450, 30, 280, 38));
+        mainOrderFunctionPanel.add(keyWordTextField, new org.netbeans.lib.awtextra.AbsoluteConstraints(530, 10, 200, 40));
 
         searchBtn.setBackground(new java.awt.Color(0, 255, 0));
         searchBtn.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
@@ -600,7 +588,7 @@ public class PurchasePanel extends javax.swing.JPanel {
                 searchBtnActionPerformed(evt);
             }
         });
-        mainOrderFunctionPanel.add(searchBtn, new org.netbeans.lib.awtextra.AbsoluteConstraints(590, 70, 141, 31));
+        mainOrderFunctionPanel.add(searchBtn, new org.netbeans.lib.awtextra.AbsoluteConstraints(531, 60, 200, 31));
 
         proAndExpirDateBtnGroup.add(expirDateRadioBtn);
         expirDateRadioBtn.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
@@ -627,7 +615,7 @@ public class PurchasePanel extends javax.swing.JPanel {
                 fromDateTextFieldKeyPressed(evt);
             }
         });
-        mainOrderFunctionPanel.add(fromDateTextField, new org.netbeans.lib.awtextra.AbsoluteConstraints(157, 61, 250, 35));
+        mainOrderFunctionPanel.add(fromDateTextField, new org.netbeans.lib.awtextra.AbsoluteConstraints(157, 61, 190, 35));
 
         toDateTextField.setHorizontalAlignment(javax.swing.JTextField.CENTER);
         toDateTextField.setPreferredSize(new java.awt.Dimension(64, 26));
@@ -641,7 +629,7 @@ public class PurchasePanel extends javax.swing.JPanel {
                 toDateTextFieldKeyPressed(evt);
             }
         });
-        mainOrderFunctionPanel.add(toDateTextField, new org.netbeans.lib.awtextra.AbsoluteConstraints(157, 101, 250, 36));
+        mainOrderFunctionPanel.add(toDateTextField, new org.netbeans.lib.awtextra.AbsoluteConstraints(157, 101, 190, 36));
 
         filterBtn.setBackground(new java.awt.Color(0, 255, 0));
         filterBtn.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
@@ -652,7 +640,7 @@ public class PurchasePanel extends javax.swing.JPanel {
                 filterBtnActionPerformed(evt);
             }
         });
-        mainOrderFunctionPanel.add(filterBtn, new org.netbeans.lib.awtextra.AbsoluteConstraints(260, 140, 150, -1));
+        mainOrderFunctionPanel.add(filterBtn, new org.netbeans.lib.awtextra.AbsoluteConstraints(160, 140, 180, -1));
 
         filterSwitchRadioBtn.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
         filterSwitchRadioBtn.setText("Bật Bộ Lọc");
@@ -702,24 +690,20 @@ public class PurchasePanel extends javax.swing.JPanel {
     }// </editor-fold>//GEN-END:initComponents
 
     private void productTableMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_productTableMouseClicked
-        setDefaultOptionToTextField(warningTextField, 12);
         int selectedRow = productTable.getSelectedRow();
         if (selectedRow == -1) {
             return;
         }
 
-        String shipmentId = (String) productTableModel.getValueAt(selectedRow, 5);
-        Long productId = Long.valueOf((String) productTable.getValueAt(selectedRow, 9));
-        this.selectedProduct = ProductUtil.getProductFrom(productId, this.productList);
+        Long productId = (Long) productTable.getValueAt(selectedRow, 9);
+        this.selectedProduct = ProductUtil.getProductFrom(productId, this.store.getProducts());
 
         if (this.selectedProduct == null) {
             JOptionPane.showMessageDialog(this, "Sản phẩm không tồn tại!", "Thông báo", JOptionPane.WARNING_MESSAGE);
             return;
         }
 
-        shipmentIDTextField.setText(shipmentId);
         keyWordTextField.setText(this.selectedProduct.getProductName());
-        goodsIDTextField.setText(this.selectedProduct.getProductCode());
     }//GEN-LAST:event_productTableMouseClicked
 
     private void invoiceTableMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_invoiceTableMouseClicked
@@ -728,23 +712,21 @@ public class PurchasePanel extends javax.swing.JPanel {
             return;
         }
 
-        String shipmentID = (String) invoiceTableModel.getValueAt(selectedRow, 4);
-        this.selectedInvoiceProduct = InvoiceUtil.getInvoiceProductFrom(Long.valueOf(shipmentID), this.invoice);
+        Long shipmentID = (Long) invoiceTableModel.getValueAt(selectedRow, 4);
+        this.selectedInvoiceProduct = InvoiceUtil.getInvoiceProductFrom(shipmentID, this.invoice);
 
         if (this.selectedInvoiceProduct == null) {
             JOptionPane.showMessageDialog(this, "Sản phẩm không tồn tại trong giỏ hàng!", "Thông báo", JOptionPane.WARNING_MESSAGE);
             return;
         }
 
-        shipmentIDTextField.setText(shipmentID);
         keyWordTextField.setText(this.selectedInvoiceProduct.getProductName());
-        goodsIDTextField.setText(this.selectedInvoiceProduct.getProductId().toString());
         quantityTextField.setText(String.format("%d", this.selectedInvoiceProduct.getQuantity()));
     }//GEN-LAST:event_invoiceTableMouseClicked
 
     private void customerMoneyTextMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_customerMoneyTextMouseClicked
         if (!customerMoneyWarningCheck) {
-            textFieldMouseClick(customerMoneyText, 12);
+            textFieldMouseClick(customerMoneyText);
             return;
         }
         if (customerMoneyText.getText().length() > (customerMoneyText.getSize().getWidth() / 11)) {
@@ -754,7 +736,7 @@ public class PurchasePanel extends javax.swing.JPanel {
 
     private void discountTextMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_discountTextMouseClicked
         if (!discountWarningCheck) {
-            textFieldMouseClick(discountText, 12);
+            textFieldMouseClick(discountText);
         }
     }//GEN-LAST:event_discountTextMouseClicked
 
@@ -763,11 +745,11 @@ public class PurchasePanel extends javax.swing.JPanel {
                 && invoice.getPaymentMethod().equals(PaymentOption.CASH)) {
             String customerMoneyStr = customerMoneyText.getText();
             if (customerMoneyStr.isBlank()) { // kiểm tra xem textField có trống không
-                insertWarningToTextField(customerMoneyText, EMPTY_TEXT_FIELD_WARNING, 12);
+                insertWarningToTextField(customerMoneyText, EMPTY_TEXT_FIELD_WARNING);
                 customerMoneyWarningCheck = false;
                 return;
-            } else if (!ValidateInput.checkIfAValidNumberForGUI(customerMoneyStr)) {// kiểm tra xem có phải số hợp lệ hay không
-                insertWarningToTextField(customerMoneyText, INVALID_WARNING, 12);
+            } else if (!ValidateInput.isAPositiveNumber(customerMoneyStr)) {// kiểm tra xem có phải số hợp lệ hay không
+                insertWarningToTextField(customerMoneyText, INVALID_WARNING);
                 customerMoneyWarningCheck = false;
                 return;
             }
@@ -783,9 +765,9 @@ public class PurchasePanel extends javax.swing.JPanel {
     private void discountTextKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_discountTextKeyPressed
         if (evt.getKeyCode() == KeyEvent.VK_ENTER) {
             String discountStr = discountText.getText();
-            if (!ValidateInput.checkIfAValidNumberForGUI(discountStr) && !discountStr.isBlank()) {// kiểm tra xem có phải số hợp lệ hay không
+            if (!ValidateInput.isAPositiveNumber(discountStr) && !discountStr.isBlank()) {// kiểm tra xem có phải số hợp lệ hay không
                 discountWarningCheck = false;
-                insertWarningToTextField(discountText, INVALID_WARNING, 12);
+                insertWarningToTextField(discountText, INVALID_WARNING);
                 return;
             }
             if (discountStr.isBlank()) {
@@ -800,21 +782,6 @@ public class PurchasePanel extends javax.swing.JPanel {
         }
     }//GEN-LAST:event_discountTextKeyPressed
 
-    private void paymentOptionComboboxItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_paymentOptionComboboxItemStateChanged
-        boolean editable = true;
-        // nếu order là chuyển khoản hoặc thẻ thì không cho nhập customerMoney nữa
-        if (paymentOptionCombobox.getSelectedIndex() != 0) {
-            invoice.setPaymentMethod(PaymentOption.OTHER);
-            editable = false;
-        } else {
-            invoice.setPaymentMethod(PaymentOption.CASH);
-        }
-        setDefaultOptionToTextField(customerMoneyText, 12);
-        customerMoneyText.setText((invoice.getPaymentMethod() == PaymentOption.CASH) ? "0" : "");
-        customerMoneyText.setEditable(editable);
-        refreshMainFee();
-    }//GEN-LAST:event_paymentOptionComboboxItemStateChanged
-
     private void customerMoneyTextMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_customerMoneyTextMouseExited
         if (!customerMoneyText.isEnabled()) {
             return;
@@ -825,9 +792,9 @@ public class PurchasePanel extends javax.swing.JPanel {
                 customerMoneyText.setText("0");
                 customerMoneyWarningCheck = false;
                 return;
-            } else if (!ValidateInput.checkIfAValidNumberForGUI(customerMoneyStr)) {// kiểm tra xem có phải số hợp lệ hay không
+            } else if (!ValidateInput.isAPositiveNumber(customerMoneyStr)) {// kiểm tra xem có phải số hợp lệ hay không
                 customerMoneyWarningCheck = false;
-                insertWarningToTextField(customerMoneyText, INVALID_WARNING, 12);
+                insertWarningToTextField(customerMoneyText, INVALID_WARNING);
                 return;
             }
             customerMoneyWarningCheck = true;
@@ -843,9 +810,9 @@ public class PurchasePanel extends javax.swing.JPanel {
             return;
         }
         String discountStr = discountText.getText();
-        if (!ValidateInput.checkIfAValidNumberForGUI(discountStr) && !discountStr.isBlank()) {// kiểm tra xem có phải số hợp lệ hay không
+        if (!ValidateInput.isAPositiveNumber(discountStr) && !discountStr.isBlank()) {// kiểm tra xem có phải số hợp lệ hay không
             discountWarningCheck = false;
-            insertWarningToTextField(discountText, INVALID_WARNING, 12);
+            insertWarningToTextField(discountText, INVALID_WARNING);
             return;
         }
         if (discountStr.isBlank()) {
@@ -861,11 +828,10 @@ public class PurchasePanel extends javax.swing.JPanel {
     }//GEN-LAST:event_discountTextMouseExited
 
     private void searchBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_searchBtnActionPerformed
-        setDefaultOptionToTextField(warningTextField, 12);
         String keyString = keyWordTextField.getText().trim();
         // Kiểm tra điều kiện
-        if (this.productList.isEmpty()) {
-            insertWarningToTextField(warningTextField, EMPTY_LIST_WARNING, 12);
+        if (this.store.getProducts().isEmpty()) {
+            JOptionPane.showMessageDialog(this, EMPTY_LIST_WARNING, "Cảnh báo", JOptionPane.WARNING_MESSAGE);
             return;
         }
         this.searchString = keyString;
@@ -873,38 +839,38 @@ public class PurchasePanel extends javax.swing.JPanel {
     }//GEN-LAST:event_searchBtnActionPerformed
 
     private void editBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_editBtnActionPerformed
-        setDefaultOptionToTextField(warningTextField, 12);
-        String shipmentId = shipmentIDTextField.getText().trim();
         String quantityAsStr = quantityTextField.getText().trim();
-        // kiểm tra điều kiện
+        int rowIndex = productTable.getSelectedRow();
+        if(rowIndex == -1 || selectedInvoiceProduct == null){
+            JOptionPane.showMessageDialog(this, CHOOSE_IN_GOODSLIST_TABLE, "Cảnh báo", JOptionPane.WARNING_MESSAGE);
+            return;
+        }
         if (shipmentId.isBlank()) { // kiểm tra xem shipment text field có trống không
-            insertWarningToTextField(warningTextField, NOTHING_CHOOSEN_WARNING, 12);
+            JOptionPane.showMessageDialog(this, NOTHING_CHOOSEN_WARNING, "Cảnh báo", JOptionPane.WARNING_MESSAGE);
             return;
-        } else if (selectedInvoiceProduct == null) {// kiểm tra xem có chọn đúng bảng không
-            insertWarningToTextField(warningTextField, CHOOSE_IN_GOODSLIST_TABLE, 12);
+        }
+        if (quantityAsStr.isBlank()) { // kiểm tra xem ô số lượng có trống không
+            insertWarningToTextField(quantityTextField, EMPTY_TEXT_FIELD_WARNING);
             return;
-        } else if (quantityAsStr.isBlank()) { // kiểm tra xem ô số lượng có trống không
-            insertWarningToTextField(quantityTextField, EMPTY_TEXT_FIELD_WARNING, 14);
-            return;
-        } else if (!ValidateInput.checkIfANumberSequenceForGUI(quantityAsStr)) { // kiểm tra xem có phải là số hợp lệ không
-            insertWarningToTextField(quantityTextField, INVALID_WARNING, 14);
+        } else if (!ValidateInput.isAPositiveInteger(quantityAsStr)) { // kiểm tra xem có phải là số hợp lệ không
+            insertWarningToTextField(quantityTextField, INVALID_WARNING);
             return;
         }
 
-        InvoiceProduct invoiceProduct = InvoiceUtil.getInvoiceProductFrom(Long.valueOf((String)shipmentId), this.invoice);
+        InvoiceProduct invoiceProduct = InvoiceUtil.getInvoiceProductFrom(Long.valueOf((String) shipmentId), this.invoice);
         int quantityAsInteger = Integer.parseInt(quantityAsStr);
-        Product product = ProductUtil.getProductFrom(invoiceProduct.getProductId(), this.productList);
+        Product product = ProductUtil.getProductFrom(invoiceProduct.getProductId(), this.store.getProducts());
         Shipment shipment = ShipmentUtil.getShipmentFrom(Long.valueOf(shipmentId), product);
 
         if (ShipmentUtil.isInStock(shipment, invoiceProduct.getQuantity() + quantityAsInteger)) {
-            insertWarningToTextField(quantityTextField, NOT_ENOUGH_QUANTITY, 14);
+            insertWarningToTextField(quantityTextField, NOT_ENOUGH_QUANTITY);
             return;
         }
         // thực hiện chức năng
         InvoiceUtil.updateInvoiceProductQuantity(this.invoice, quantityAsInteger, Long.valueOf(shipmentId));
 
         setDefaultValuesToComponentsInMainOrderFunctionPanel();
-        displayInvoice(this.invoice.getInvoiceProducts());
+        refreshInvoiceTable();
         refreshMainFee();
     }//GEN-LAST:event_editBtnActionPerformed
 
@@ -917,48 +883,41 @@ public class PurchasePanel extends javax.swing.JPanel {
     }//GEN-LAST:event_resetBtnActionPerformed
 
     private void removeBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_removeBtnActionPerformed
-        setDefaultOptionToTextField(warningTextField, 12);
-        String shipmentId = shipmentIDTextField.getText().trim();
-        // Kiểm tra điều kiện
         if (shipmentId.isBlank()) {// Kiểm tra xem đã chọn hay chưa
-            insertWarningToTextField(warningTextField, NOTHING_CHOOSEN_WARNING, 12);
+            insertWarningToTextField(warningTextField, NOTHING_CHOOSEN_WARNING);
             return;
         } else if (this.selectedInvoiceProduct == null) { // kiểm tra xem có chọn đúng bảng hay không
-            insertWarningToTextField(warningTextField, CHOOSE_IN_GOODSLIST_TABLE, 12);
+            insertWarningToTextField(warningTextField, CHOOSE_IN_GOODSLIST_TABLE);
             return;
         }
         // thực hiện chức năng
         InvoiceUtil.removeInvoiceProduct(this.invoice, Long.valueOf(shipmentId));
 
         setDefaultValuesToComponentsInMainOrderFunctionPanel();
-        displayInvoice(this.invoice.getInvoiceProducts());
-        refreshProductTable();
+        refreshInvoiceTable();
         refreshMainFee();
     }//GEN-LAST:event_removeBtnActionPerformed
 
     private void addBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_addBtnActionPerformed
-        setDefaultOptionToTextField(warningTextField, 12);
-        String shipmentId = shipmentIDTextField.getText().trim();
         String quantity = quantityTextField.getText().trim();
-        // kiểm tra điều kiện
         if (shipmentId.isBlank() || this.selectedProduct == null) { // kiểm tra xem shipmentID textField có trống không
-            insertWarningToTextField(warningTextField, NOTHING_CHOOSEN_WARNING, 12);
+            insertWarningToTextField(warningTextField, NOTHING_CHOOSEN_WARNING);
             return;
         } else if (quantity.isBlank()) {// kiểm tra xem quantity có trống không
-            insertWarningToTextField(quantityTextField, EMPTY_TEXT_FIELD_WARNING, 14);
+            insertWarningToTextField(quantityTextField, EMPTY_TEXT_FIELD_WARNING);
             return;
-        } else if (!ValidateInput.checkIfANumberSequenceForGUI(quantity)) {// kiểm tra xem có phải số hợp lệ hay không
-            insertWarningToTextField(quantityTextField, INVALID_WARNING, 14);
+        } else if (!ValidateInput.isAPositiveInteger(quantity)) {// kiểm tra xem có phải số hợp lệ hay không
+            insertWarningToTextField(quantityTextField, INVALID_WARNING);
             return;
-        } else if (ValidateInput.checkIfNumberEqualZero(new BigDecimal(quantity))) {
-            insertWarningToTextField(quantityTextField, INVALID_WARNING, 14);
+        } else if (ValidateInput.isEqualZero(new BigDecimal(quantity))) {
+            insertWarningToTextField(quantityTextField, INVALID_WARNING);
             return;
         }
 
         int quantityInInteger = Integer.parseInt(quantity);
         Shipment addedShipment = ShipmentUtil.getShipmentFrom(Long.valueOf(shipmentId), this.selectedProduct);
         if (!ShipmentUtil.isInStock(addedShipment, quantityInInteger)) {
-            insertWarningToTextField(quantityTextField, NOT_ENOUGH_QUANTITY, 14);
+            insertWarningToTextField(quantityTextField, NOT_ENOUGH_QUANTITY);
             return;
         }
 
@@ -966,7 +925,7 @@ public class PurchasePanel extends javax.swing.JPanel {
         InvoiceUtil.addInvoiceProduct(this.invoice, this.selectedProduct, quantityInInteger, addedShipment);
 
         setDefaultValuesToComponentsInMainOrderFunctionPanel();
-        displayInvoice(this.invoice.getInvoiceProducts());
+        refreshInvoiceTable();
         refreshMainFee();
     }//GEN-LAST:event_addBtnActionPerformed
 
@@ -977,7 +936,7 @@ public class PurchasePanel extends javax.swing.JPanel {
     }//GEN-LAST:event_quantityTextFieldKeyPressed
 
     private void quantityTextFieldMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_quantityTextFieldMouseClicked
-        textFieldMouseClick(quantityTextField, 14);
+        textFieldMouseClick(quantityTextField);
     }//GEN-LAST:event_quantityTextFieldMouseClicked
 
     private void priceRangeComboBoxItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_priceRangeComboBoxItemStateChanged
@@ -989,8 +948,8 @@ public class PurchasePanel extends javax.swing.JPanel {
         fromDateTextField.setEditable(true);
         toDateTextField.setEditable(true);
         if (productionDateRadioBtn.isSelected()) {
-            setDefaultOptionToTextField(fromDateTextField, 14);
-            setDefaultOptionToTextField(toDateTextField, 14);
+            setDefaultOptionToTextField(fromDateTextField);
+            setDefaultOptionToTextField(toDateTextField);
             fromDateTextField.setText(productionDateFrom);
             toDateTextField.setText(productionDateTo);
         }
@@ -1000,8 +959,8 @@ public class PurchasePanel extends javax.swing.JPanel {
         if (evt.getKeyCode() == KeyEvent.VK_ENTER) {
             String fromDateStr = fromDateTextField.getText();
             if (productionDateRadioBtn.isSelected()) {
-                if (!fromDateStr.isBlank() && !ValidateInput.checkIfValidDate(fromDateStr)) {// kiểm tra dateString có hợp lệ không
-                    insertWarningToTextField(fromDateTextField, INVALID_WARNING, 12);
+                if (!fromDateStr.isBlank() && !ValidateInput.isValidDate(fromDateStr)) {// kiểm tra dateString có hợp lệ không
+                    insertWarningToTextField(fromDateTextField, INVALID_WARNING);
                     productionDateFromValid = false;
                     productionDateFrom = "";
                     return;
@@ -1009,8 +968,8 @@ public class PurchasePanel extends javax.swing.JPanel {
                 productionDateFrom = fromDateStr;
                 productionDateFromValid = true;
             } else if (expirDateRadioBtn.isSelected()) {
-                if (!fromDateStr.isBlank() && !ValidateInput.checkIfValidDate(fromDateStr)) {// kiểm tra dateString có hợp lệ không
-                    insertWarningToTextField(fromDateTextField, INVALID_WARNING, 12);
+                if (!fromDateStr.isBlank() && !ValidateInput.isValidDate(fromDateStr)) {// kiểm tra dateString có hợp lệ không
+                    insertWarningToTextField(fromDateTextField, INVALID_WARNING);
                     expirationDateFromValid = false;
                     expirDateFrom = "";
                     return;
@@ -1025,8 +984,8 @@ public class PurchasePanel extends javax.swing.JPanel {
         if (evt.getKeyCode() == KeyEvent.VK_ENTER) {
             String toDateStr = toDateTextField.getText();
             if (productionDateRadioBtn.isSelected()) {
-                if (!toDateStr.isBlank() && !ValidateInput.checkIfValidDate(toDateStr)) {// kiểm tra dateString có hợp lệ không
-                    insertWarningToTextField(toDateTextField, INVALID_WARNING, 12);
+                if (!toDateStr.isBlank() && !ValidateInput.isValidDate(toDateStr)) {// kiểm tra dateString có hợp lệ không
+                    insertWarningToTextField(toDateTextField, INVALID_WARNING);
                     productionDateToValid = false;
                     productionDateTo = "";
                     return;
@@ -1034,8 +993,8 @@ public class PurchasePanel extends javax.swing.JPanel {
                 productionDateTo = toDateStr;
                 productionDateToValid = true;
             } else if (expirDateRadioBtn.isSelected()) {
-                if (!toDateStr.isBlank() && !ValidateInput.checkIfValidDate(toDateStr)) {// kiểm tra dateString có hợp lệ không
-                    insertWarningToTextField(toDateTextField, INVALID_WARNING, 12);
+                if (!toDateStr.isBlank() && !ValidateInput.isValidDate(toDateStr)) {// kiểm tra dateString có hợp lệ không
+                    insertWarningToTextField(toDateTextField, INVALID_WARNING);
                     expirationDateToValid = false;
                     expirDateTo = "";
                     return;
@@ -1050,8 +1009,8 @@ public class PurchasePanel extends javax.swing.JPanel {
         fromDateTextField.setEditable(true);
         toDateTextField.setEditable(true);
         if (expirDateRadioBtn.isSelected()) {
-            setDefaultOptionToTextField(fromDateTextField, 14);
-            setDefaultOptionToTextField(toDateTextField, 14);
+            setDefaultOptionToTextField(fromDateTextField);
+            setDefaultOptionToTextField(toDateTextField);
             fromDateTextField.setText(expirDateFrom);
             toDateTextField.setText(expirDateTo);
         }
@@ -1060,11 +1019,11 @@ public class PurchasePanel extends javax.swing.JPanel {
     private void fromDateTextFieldMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_fromDateTextFieldMouseClicked
         if (productionDateRadioBtn.isSelected()) {
             if (!productionDateFromValid) {
-                textFieldMouseClick(fromDateTextField, 14);
+                textFieldMouseClick(fromDateTextField);
             }
         } else if (expirDateRadioBtn.isSelected()) {
             if (!expirationDateFromValid) {
-                textFieldMouseClick(fromDateTextField, 14);
+                textFieldMouseClick(fromDateTextField);
             }
         }
     }//GEN-LAST:event_fromDateTextFieldMouseClicked
@@ -1072,11 +1031,11 @@ public class PurchasePanel extends javax.swing.JPanel {
     private void toDateTextFieldMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_toDateTextFieldMouseClicked
         if (productionDateRadioBtn.isSelected()) {
             if (!productionDateToValid) {
-                textFieldMouseClick(toDateTextField, 14);
+                textFieldMouseClick(toDateTextField);
             }
         } else if (expirDateRadioBtn.isSelected()) {
             if (!expirationDateToValid) {
-                textFieldMouseClick(toDateTextField, 14);
+                textFieldMouseClick(toDateTextField);
             }
         }
     }//GEN-LAST:event_toDateTextFieldMouseClicked
@@ -1163,40 +1122,55 @@ public class PurchasePanel extends javax.swing.JPanel {
     }//GEN-LAST:event_filterSwitchRadioBtnActionPerformed
 
     private void payBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_payBtnActionPerformed
-        setDefaultOptionToTextField(warningTextField, 12);
-        // xét các điều kiện
         if (this.invoice.getInvoiceProducts().isEmpty()) { // Kiểm tra xem đã chọn sản phẩm nào chưa
-            insertWarningToTextField(warningTextField, NOTHING_CHOOSEN_WARNING, 12);
+            insertWarningToTextField(warningTextField, NOTHING_CHOOSEN_WARNING);
             return;
-        } else if (InvoiceUtil.isInsufficient(this.invoice)) {
-            insertWarningToTextField(customerMoneyText, INSUFFICIENT_MONEY, 12);
+        } else if (this.invoice.getPaymentMethod().equals(PaymentOption.CASH)
+            && InvoiceUtil.isInsufficient(this.invoice)) {
+            insertWarningToTextField(customerMoneyText, INSUFFICIENT_MONEY);
             customerMoneyWarningCheck = false;
             return;
         }
         // thực hiện chức năng
         this.invoice.setShift(this.shift);
-        invoiceDAO.addInvoice(this.invoice, this.hibernateConfig.getEntityManager());
         
+        boolean result = invoiceDAO.addInvoice(this.invoice, this.hibernateConfig.getEntityManager());
+        if (!result) {
+            JOptionPane.showMessageDialog(this, "Thanh toán thất bại!", "Thông báo", JOptionPane.INFORMATION_MESSAGE);
+            return;
+        }
+        
+        this.store.setProducts(productDAO.getProductsInStore(this.store.getStoreId(), this.hibernateConfig.getEntityManager()));
         initNewOrder();
+        refreshProductTable();
+        refreshInvoiceTable();
+        JOptionPane.showMessageDialog(this, "Thanh toán thành công!");
     }//GEN-LAST:event_payBtnActionPerformed
 
     private void payAnfPrintBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_payAnfPrintBtnActionPerformed
-        setDefaultOptionToTextField(warningTextField, 12);
-        // xét các điều kiện
         if (this.invoice.getInvoiceProducts().isEmpty()) { // Kiểm tra xem đã chọn sản phẩm nào chưa
-            insertWarningToTextField(warningTextField, NOTHING_CHOOSEN_WARNING, 12);
+            insertWarningToTextField(warningTextField, NOTHING_CHOOSEN_WARNING);
             return;
-        } else if (InvoiceUtil.isInsufficient(this.invoice)) { //Kiểm tra xem có thiếu tiền kh
-            insertWarningToTextField(customerMoneyText, INSUFFICIENT_MONEY, 12);
+        } else if (this.invoice.getPaymentMethod().equals(PaymentOption.CASH)
+            && InvoiceUtil.isInsufficient(this.invoice)) { //Kiểm tra xem có thiếu tiền kh
+            insertWarningToTextField(customerMoneyText, INSUFFICIENT_MONEY);
             customerMoneyWarningCheck = false;
             return;
         }
         // thực hiện chức năng
         this.invoice.setShift(this.shift);
-        invoiceDAO.addInvoice(this.invoice, this.hibernateConfig.getEntityManager());
-
+        boolean result = invoiceDAO.addInvoice(this.invoice, this.hibernateConfig.getEntityManager());
+        if (!result) {
+            JOptionPane.showMessageDialog(this, "Thanh toán thất bại!", "Thông báo", JOptionPane.INFORMATION_MESSAGE);
+            return;
+        }
+        
+        this.store.setProducts(productDAO.getProductsInStore(this.store.getStoreId(), this.hibernateConfig.getEntityManager()));
         PrinterUtil.exportBillToTxtFile(this.invoice, this.store);
         initNewOrder();
+        refreshProductTable();
+        refreshInvoiceTable();
+        JOptionPane.showMessageDialog(this, "Thanh toán thành công!");
     }//GEN-LAST:event_payAnfPrintBtnActionPerformed
 
     private void changeAmountTextFieldMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_changeAmountTextFieldMouseClicked
@@ -1231,20 +1205,34 @@ public class PurchasePanel extends javax.swing.JPanel {
         }
     }//GEN-LAST:event_subTotalTextFieldMouseClicked
 
-    private void textFieldMouseClick(javax.swing.JTextField textField, int size) {
-        setDefaultOptionToTextField(textField, size);
+    private void paymentOptionComboboxActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_paymentOptionComboboxActionPerformed
+        boolean editable = true;
+        // nếu order là chuyển khoản hoặc thẻ thì không cho nhập customerMoney nữa
+        if (paymentOptionCombobox.getSelectedIndex() != 0) {
+            invoice.setCustomerMoney(0);
+            invoice.setPaymentMethod(PaymentOption.OTHER);
+            editable = false;
+        } else {
+            invoice.setPaymentMethod(PaymentOption.CASH);
+        }
+        setDefaultOptionToTextField(customerMoneyText);
+        customerMoneyText.setText((invoice.getPaymentMethod() == PaymentOption.CASH) ? "0" : "");
+        customerMoneyText.setEditable(editable);
+        refreshMainFee();
+    }//GEN-LAST:event_paymentOptionComboboxActionPerformed
+
+    private void textFieldMouseClick(javax.swing.JTextField textField) {
+        setDefaultOptionToTextField(textField);
         textField.setEditable(true);
     }
 
-    private void setDefaultOptionToTextField(javax.swing.JTextField textField, int size) {
-        textField.setFont(new java.awt.Font("Segoe UI", 0, size)); // NOI18N
+    private void setDefaultOptionToTextField(javax.swing.JTextField textField) {
         textField.setForeground(new java.awt.Color(0, 0, 0));
         textField.setHorizontalAlignment(javax.swing.JTextField.CENTER);
         textField.setText("");
     }
 
-    private void insertWarningToTextField(javax.swing.JTextField textField, String warningText, int size) {
-        textField.setFont(new java.awt.Font("Segoe UI", 2, size));
+    private void insertWarningToTextField(javax.swing.JTextField textField, String warningText) {
         textField.setForeground(new java.awt.Color(255, 0, 0));
         textField.setText(warningText);
         textField.setEditable(false);
@@ -1253,18 +1241,17 @@ public class PurchasePanel extends javax.swing.JPanel {
     private void refreshProductTable() {
         productTableModel.setRowCount(0);
 
-        if (productTableModel.getColumnCount() == 9) {
-            productTableModel.addColumn("ProductId");
-        }
-        productList.stream().forEach(product -> {
+        this.store.getProducts().stream().forEach(product -> {
             List<Shipment> productShipments = product.getShipments();
             if (productShipments.isEmpty()) {
                 return;
             }
-            
-            if(!product.getProductName()
+
+            if (!product.getProductName()
                     .toLowerCase()
-                    .contains(this.searchString.toLowerCase())) return;
+                    .contains(this.searchString.toLowerCase())) {
+                return;
+            }
 
             Object[] rowData = {
                 product.getProductCode(),
@@ -1275,10 +1262,10 @@ public class PurchasePanel extends javax.swing.JPanel {
                 productShipments.get(0).getShipmentId(),
                 productShipments.get(0).getManufacturingDate() != null
                 ? FormatOutput.convertLocalDateToString(productShipments.get(0).getManufacturingDate())
-                : "_",
+                : "-",
                 productShipments.get(0).getExpiryDate() != null
                 ? FormatOutput.convertLocalDateToString(productShipments.get(0).getExpiryDate())
-                : "_",
+                : "-",
                 productShipments.get(0).getQuantityInStock(),
                 product.getProductId()
             };
@@ -1291,12 +1278,13 @@ public class PurchasePanel extends javax.swing.JPanel {
                     "",
                     "",
                     "",
+                    shipment.getShipmentId(),
                     shipment.getManufacturingDate() != null
-                    ? FormatOutput.convertLocalDateToString(productShipments.get(0).getManufacturingDate())
-                    : "_",
+                    ? FormatOutput.convertLocalDateToString(shipment.getManufacturingDate())
+                    : "-",
                     shipment.getExpiryDate() != null
-                    ? FormatOutput.convertLocalDateToString(productShipments.get(0).getExpiryDate())
-                    : "_",
+                    ? FormatOutput.convertLocalDateToString(shipment.getExpiryDate())
+                    : "-",
                     shipment.getQuantityInStock(),
                     product.getProductId()
                 };
@@ -1304,15 +1292,15 @@ public class PurchasePanel extends javax.swing.JPanel {
             });
         });
 
-        productTable.getColumn(9).setMaxWidth(0);
-        productTable.getColumn(9).setMinWidth(0);
-        productTable.getColumn(9).setPreferredWidth(0);
+        productTable.getColumnModel().getColumn(9).setMaxWidth(0);
+        productTable.getColumnModel().getColumn(9).setMinWidth(0);
+        productTable.getColumnModel().getColumn(9).setPreferredWidth(0);
     }
 
-    private void displayInvoice(List<InvoiceProduct> orderProducts) {
+    private void refreshInvoiceTable() {
         invoiceTableModel.setRowCount(0);
 
-        orderProducts.stream().forEach(product -> {
+        this.invoice.getInvoiceProducts().stream().forEach(product -> {
             Object[] rowData = {
                 product.getProductCode(),
                 product.getProductName(),
@@ -1328,8 +1316,6 @@ public class PurchasePanel extends javax.swing.JPanel {
         fromDateTextField.setText("");
         toDateTextField.setText("");
         keyWordTextField.setText("");
-        goodsIDTextField.setText("");
-        shipmentIDTextField.setText("");
         quantityTextField.setText("");
     }
 
@@ -1374,15 +1360,10 @@ public class PurchasePanel extends javax.swing.JPanel {
         searchBtn.setEnabled(enable);
         quantityLabel.setEnabled(enable);
         quantityTextField.setEnabled(enable);
-        goodsIDLabel.setEnabled(enable);
-        goodsIDTextField.setEnabled(enable);
-        shipmentIDLabel.setEnabled(enable);
-        shipmentIDTextField.setEnabled(enable);
         addBtn.setEnabled(enable);
         removeBtn.setEnabled(enable);
         editBtn.setEnabled(enable);
         resetBtn.setEnabled(enable);
-        warningTextField.setEnabled(enable);
     }
 
     private void setEnableToSubFeePanel(boolean enable) {
@@ -1423,7 +1404,12 @@ public class PurchasePanel extends javax.swing.JPanel {
     }
 
     private void initNewOrder() {
-        invoice = new Invoice();
+        invoice = Invoice.builder()
+                .shift(this.shift)
+                .invoiceProducts(new ArrayList<>())
+                .paymentMethod(PaymentOption.CASH)
+                .customerMoney(0)
+                .build();
         // reset lại toàn bộ components theo order mới
         setDefaultValuesToAllComponents();
     }
@@ -1433,7 +1419,7 @@ public class PurchasePanel extends javax.swing.JPanel {
         this.shift = shift;
         this.hibernateConfig = hibernateConfig;
         this.invoiceDAO = new InvoiceDAOImpl();
-        this.productList = this.store.getProducts();
+        this.productDAO = new ProductDAOImpl();
 
         productScrollPane.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_ALWAYS);
         productScrollPane.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
@@ -1447,8 +1433,8 @@ public class PurchasePanel extends javax.swing.JPanel {
         if (this.shift.getState().equals(ShiftState.OPENED) && this.invoice == null) {
             initNewOrder();
         }
-        productList = this.store.getProducts();
-        displayInvoice(this.invoice.getInvoiceProducts());
+        this.store.setProducts(productDAO.getProductsInStore(this.store.getStoreId(), this.hibernateConfig.getEntityManager()));
+        refreshInvoiceTable();
         refreshProductTable();
         refreshMainFee();
     }
@@ -1459,13 +1445,13 @@ public class PurchasePanel extends javax.swing.JPanel {
     private DefaultTableModel invoiceTableModel;
     private DefaultTableModel productTableModel;
     private InvoiceDAO invoiceDAO;
+    private ProductDAO productDAO;
 
-    private List<Product> productList;
     private Invoice invoice;
     private Product selectedProduct;
     private InvoiceProduct selectedInvoiceProduct;
-    
-    private String searchString;
+
+    private String searchString = "";
     private String productionDateFrom;
     private String productionDateTo;
     private String expirDateFrom;
@@ -1506,8 +1492,6 @@ public class PurchasePanel extends javax.swing.JPanel {
     private javax.swing.JRadioButton filterSwitchRadioBtn;
     private javax.swing.JTextField fromDateTextField;
     private javax.swing.JLabel fromLabel;
-    private javax.swing.JLabel goodsIDLabel;
-    private javax.swing.JTextField goodsIDTextField;
     private javax.swing.JPanel goodsPanel;
     private javax.swing.JTable invoiceTable;
     private javax.swing.JSeparator jSeparator2;
@@ -1533,8 +1517,6 @@ public class PurchasePanel extends javax.swing.JPanel {
     private javax.swing.JButton removeBtn;
     private javax.swing.JButton resetBtn;
     private javax.swing.JButton searchBtn;
-    private javax.swing.JLabel shipmentIDLabel;
-    private javax.swing.JTextField shipmentIDTextField;
     private javax.swing.JPanel subFeePanel;
     private javax.swing.JLabel subTotalLabel;
     private javax.swing.JTextField subTotalTextField;
@@ -1542,6 +1524,5 @@ public class PurchasePanel extends javax.swing.JPanel {
     private javax.swing.JLabel toLabel;
     private javax.swing.JLabel totalLabel;
     private javax.swing.JTextField totalTextField;
-    private javax.swing.JTextField warningTextField;
     // End of variables declaration//GEN-END:variables
 }

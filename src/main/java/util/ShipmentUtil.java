@@ -9,7 +9,7 @@ import model.entities.Shipment;
 public class ShipmentUtil {
     public static String calculateStatus(Shipment shipment) {
         if (shipment.getExpiryDate() == null || shipment.getManufacturingDate() == null) {
-            return "Không có hạn sử dụng";
+            return "-";
         } else if (!shipment.getExpiryDate().isAfter(LocalDate.now())) {
             return "Hết hạn";
         } else {
@@ -31,6 +31,6 @@ public class ShipmentUtil {
     }
     
     public static boolean isInStock (Shipment shipment, int quantity){
-        return shipment.getQuantityInStock() - quantity > 0;
+        return shipment.getQuantityInStock() - quantity >= 0;
     }
 }

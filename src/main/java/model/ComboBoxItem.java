@@ -16,6 +16,6 @@ public class ComboBoxItem <T> {
 
     @Override
     public String toString() {
-        return displayName;
+        return this.displayName;
     }
 }

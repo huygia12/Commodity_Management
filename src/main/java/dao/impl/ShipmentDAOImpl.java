@@ -2,7 +2,6 @@ package dao.impl;
 
 import dao.ShipmentDAO;
 import javax.persistence.EntityManager;
-import java.util.UUID;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.persistence.EntityTransaction;
@@ -28,7 +27,7 @@ public class ShipmentDAOImpl implements ShipmentDAO {
     }
 
     @Override
-    public boolean updateShipment(Shipment shipment, EntityManager em) {
+    public Shipment updateShipment(Shipment shipment, EntityManager em) {
         EntityTransaction transaction = em.getTransaction();
         try {
             Shipment s = getShipment(shipment.getShipmentId(), em);
@@ -42,13 +41,13 @@ public class ShipmentDAOImpl implements ShipmentDAO {
             
             em.merge(s);
             transaction.commit();
-            return true;
+            return s;
         } catch (RuntimeException e) {
             if (transaction.isActive()) {
                 transaction.rollback();
             }
             Logger.getLogger(this.getClass().getName()).log(Level.SEVERE, null, e);
-            return false;
+            return null;
         }
     }
 

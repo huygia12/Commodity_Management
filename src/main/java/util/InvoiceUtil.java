@@ -11,13 +11,16 @@ import model.entities.Invoice;
 import model.entities.InvoiceProduct;
 import model.entities.Product;
 import model.entities.Shipment;
+import model.enums.PaymentOption;
 
 public class InvoiceUtil {
 
     public static boolean isInsufficient(Invoice invoice) {
         BigInteger customerMoney = BigInteger.valueOf(invoice.getCustomerMoney());
         BigInteger totalBill = new BigInteger(getTotal(invoice));
-        return totalBill.compareTo(customerMoney) < 0;
+        System.out.println("customerMoney " + customerMoney);
+        System.out.println("totalBill " + totalBill);
+        return totalBill.compareTo(customerMoney) > 0;
     }
 
     public static String getTotal(Invoice invoice) {
@@ -90,6 +93,7 @@ public class InvoiceUtil {
     }
 
     public static String getChange(Invoice invoice) {
+        if(invoice.getPaymentMethod().equals(PaymentOption.OTHER)) return "0";
         return String.valueOf(invoice.getCustomerMoney() - Integer.valueOf(getTotal(invoice)));
     }
 
@@ -123,6 +127,7 @@ public class InvoiceUtil {
                     .provider(product.getProvider())
                     .quantity(quantity)
                     .shipmentId(shipment.getShipmentId())
+                    .invoice(invoice)
                     .build());
         } else {
             invoiceProduct.setQuantity(invoiceProduct.getQuantity() + quantity);
