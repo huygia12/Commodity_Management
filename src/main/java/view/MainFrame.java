@@ -199,7 +199,7 @@ public class MainFrame extends javax.swing.JFrame {
     }//GEN-LAST:event_openSideBarLabelMouseClicked
 
     private void fetchLatestShift() {
-        this.shift = shiftDAO.getLatestShift(this.hibernateConfig.getEntityManager());
+        this.shift = shiftDAO.getLatestShift(this.store.getStoreId() ,this.hibernateConfig.getEntityManager());
         if (this.shift == null) {
             this.shift = shiftDAO.addShift(store, this.hibernateConfig.getEntityManager());
         }
@@ -213,7 +213,6 @@ public class MainFrame extends javax.swing.JFrame {
         shiftPanel1.setup(hibernateConfig, store, this);
         settingsPanel1.setup(hibernateConfig, store, header);
         historyPanel1.setup(hibernateConfig, store);
-        header.setStoreInfor();
     }
 
     private void initSideBar() {
@@ -306,7 +305,7 @@ public class MainFrame extends javax.swing.JFrame {
                 displayPanel.add(historyPanel1, "history");
                 cardLayout.show(displayPanel, "history");
                 drawerCtr.hide();
-                historyPanel1.refresh();
+                historyPanel1.refreshView();
             }
             case 5 -> {
                 displayPanel.add(settingsPanel1, "settings");

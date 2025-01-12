@@ -17,5 +17,5 @@ public interface ShiftDAO {
     
     public Shift getShift (Long shipmentId, EntityManager em);
     
-    public Shift getLatestShift(EntityManager em);
+    public Shift getLatestShift(Long storeId, EntityManager em);
 }

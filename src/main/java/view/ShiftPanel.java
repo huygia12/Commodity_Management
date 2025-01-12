@@ -7,9 +7,7 @@ import dao.impl.InvoiceDAOImpl;
 import dao.impl.ShiftDAOImpl;
 import java.awt.Component;
 import java.awt.Font;
-import java.awt.event.KeyEvent;
 import java.time.LocalDateTime;
-import java.util.UUID;
 import javax.swing.JOptionPane;
 import javax.swing.JTextField;
 import javax.swing.ScrollPaneConstants;
@@ -533,10 +531,6 @@ public class ShiftPanel extends javax.swing.JPanel {
 
     private void searchBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_searchBtnActionPerformed
         String orderDate = orderDateTextField.getText().trim();
-        String hourFrom = fromHourTextField.getText().trim();
-        String minuteFrom = fromMinuteTextField.getText().trim();
-        String hourTo = toHourTextField.getText().trim();
-        String minuteTo = toMinuteTextField.getText().trim();
 
         if (!orderDate.isBlank()) {
             filterDate = FormatOutput.convertStringToLocalDateTime(orderDate);
@@ -605,19 +599,19 @@ public class ShiftPanel extends javax.swing.JPanel {
     }//GEN-LAST:event_refreshBtnActionPerformed
 
     private void fromHourTextFieldKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_fromHourTextFieldKeyReleased
-        fromHour = timeCheck(fromHourTextField, fromMinuteTextField, fromHour, 2);
+        hourFrom = timeCheck(fromHourTextField, fromMinuteTextField, hourFrom, 2);
     }//GEN-LAST:event_fromHourTextFieldKeyReleased
 
     private void fromMinuteTextFieldKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_fromMinuteTextFieldKeyReleased
-        fromMinute = timeCheck(fromMinuteTextField, toHourTextField, fromMinute, 2);
+        minuteFrom = timeCheck(fromMinuteTextField, toHourTextField, minuteFrom, 2);
     }//GEN-LAST:event_fromMinuteTextFieldKeyReleased
 
     private void toHourTextFieldKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_toHourTextFieldKeyReleased
-        toHour = timeCheck(toHourTextField, toMinuteTextField, toHour, 2);
+        hourTo = timeCheck(toHourTextField, toMinuteTextField, hourTo, 2);
     }//GEN-LAST:event_toHourTextFieldKeyReleased
 
     private void toMinuteTextFieldKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_toMinuteTextFieldKeyReleased
-        toMinute = timeCheck(toMinuteTextField, searchBtn, toMinute, 2);
+        minuteTo = timeCheck(toMinuteTextField, searchBtn, minuteTo, 2);
     }//GEN-LAST:event_toMinuteTextFieldKeyReleased
 
     private String timeCheck(JTextField textField, Component nextField, String time, int maxLength) {
@@ -829,10 +823,10 @@ public class ShiftPanel extends javax.swing.JPanel {
     private LocalDateTime filterDate;
     private LocalDateTime filterDateTimeFrom;
     private LocalDateTime filterDateTimeTo;
-    private String fromHour = "";
-    private String fromMinute = "";
-    private String toHour = "";
-    private String toMinute = "";
+    private String hourFrom = "";
+    private String minuteFrom = "";
+    private String hourTo = "";
+    private String minuteTo = "";
 
     private ShiftDAO shiftDAO;
     private InvoiceDAO invoiceDAO;

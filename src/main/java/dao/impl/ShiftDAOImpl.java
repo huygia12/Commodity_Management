@@ -123,11 +123,15 @@ public class ShiftDAOImpl implements ShiftDAO {
     }
 
     @Override
-    public Shift getLatestShift(EntityManager em) {
+    public Shift getLatestShift(Long storeId, EntityManager em) {
+        System.out.println("storeid " + storeId);
         try {
+            String jpql = "SELECT s FROM Shift s WHERE storeId = :storeId ORDER BY s.createdAt DESC";
             TypedQuery<Shift> query = em.createQuery(
-                    "SELECT s FROM Shift s ORDER BY s.createdAt DESC", Shift.class
+                    jpql, Shift.class
             );
+            query.setParameter("storeId", storeId);
+
             query.setMaxResults(1);
             return query.getSingleResult();
         } catch (NoResultException e) {

@@ -53,6 +53,7 @@ public class ProductUtil {
                         ImportedProduct.builder()
                                 .productId(p.getProductId())
                                 .productName(p.getProductName())
+                                .provider(p.getProvider())
                                 .createdAt(s.getCreatedAt())
                                 .unit(p.getUnit())
                                 .shipmentId(s.getShipmentId())

@@ -57,4 +57,13 @@ public class InvoiceDAOImpl implements InvoiceDAO {
         query.setParameter("shiftId", shiftId);
         return query.getResultList();
     }
+
+    @Override
+    public List<Invoice> getInvoicesFromStore(Long storeId, EntityManager em) {
+        TypedQuery<Invoice> query = em.createQuery(
+                "SELECT i FROM Invoice i WHERE i.shift.store.storeId = :storeId", Invoice.class
+        );
+        query.setParameter("storeId", storeId);
+        return query.getResultList();
+    }
 }

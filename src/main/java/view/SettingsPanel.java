@@ -232,13 +232,19 @@ public class SettingsPanel extends javax.swing.JPanel {
             JOptionPane.showMessageDialog(this, "Email đã được sử dụng!", "Cảnh báo", JOptionPane.WARNING_MESSAGE);
             return;
         };
-
-        boolean result = this.storeDAO.updateStore(Store.builder().storeName(name).email(email).build(), this.hibernateConfig.getEntityManager());
+        Store editedStore = Store.builder()
+                .storeId(this.store.getStoreId())
+                .storeName(name).email(email)
+                .build();
+        boolean result = this.storeDAO.updateStore(editedStore, this.hibernateConfig.getEntityManager());
         if (!result) {
             JOptionPane.showMessageDialog(this, "Cập nhật thông tin thất bại!", "Cảnh báo", JOptionPane.WARNING_MESSAGE);
             return;
         }
-
+        
+        this.store.setEmail(email);
+        this.store.setStoreName(name);
+        this.header.setStoreInfor();
         JOptionPane.showMessageDialog(this, "Các thay đổi đã được lưu!");
     }//GEN-LAST:event_changeInfoButtonActionPerformed
 
