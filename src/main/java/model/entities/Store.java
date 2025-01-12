@@ -1,7 +1,6 @@
 package model.entities;
 
 import java.time.LocalDateTime;
-import java.util.ArrayList;
 import java.util.List;
 import lombok.*;
 import javax.persistence.*;

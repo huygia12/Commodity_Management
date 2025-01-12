@@ -81,7 +81,10 @@ public class InvoiceUtil {
 
         for (Map.Entry<Long, StaticalProduct> entry : staticalProducts.entrySet()) {
             StaticalProduct staticalProduct = entry.getValue();
-            staticalProduct.setRatio(String.format("%.1f", new BigDecimal(staticalProduct.getRevenue()).divide(sum)));
+            staticalProduct.setRatio(String.format("%.1f", new BigDecimal(staticalProduct.getRevenue())
+                    .divide(sum, 2, RoundingMode.DOWN)
+                    .multiply(new BigDecimal("100"))
+                    .setScale(1, RoundingMode.DOWN)));
         }
 
         return staticalProducts;

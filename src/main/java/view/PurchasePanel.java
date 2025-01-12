@@ -9,7 +9,6 @@ import java.awt.Font;
 import java.awt.event.KeyEvent;
 import java.util.ArrayList;
 import java.util.List;
-import javax.swing.ImageIcon;
 import javax.swing.JOptionPane;
 import javax.swing.ScrollPaneConstants;
 import javax.swing.SwingConstants;
@@ -967,25 +966,26 @@ public class PurchasePanel extends javax.swing.JPanel {
     }//GEN-LAST:event_filterSwitchRadioBtnActionPerformed
 
     private void payBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_payBtnActionPerformed
-        if (this.invoice.getInvoiceProducts().isEmpty()) { // Kiểm tra xem đã chọn sản phẩm nào chưa
+        if (invoice.getInvoiceProducts().isEmpty()) { // Kiểm tra xem đã chọn sản phẩm nào chưa
             JOptionPane.showMessageDialog(this, NOTHING_CHOOSEN_WARNING, "Cảnh báo", JOptionPane.WARNING_MESSAGE);
             return;
-        } else if (this.invoice.getPaymentMethod().equals(PaymentOption.CASH)
-                && InvoiceUtil.isInsufficient(this.invoice)) {
+        } else if (invoice.getPaymentMethod().equals(PaymentOption.CASH)
+                && InvoiceUtil.isInsufficient(invoice)) {
             insertWarningToTextField(customerMoneyText, INSUFFICIENT_MONEY);
             customerMoneyWarningCheck = false;
             return;
         }
         // thực hiện chức năng
-        this.invoice.setShift(this.shift);
+        invoice.setShift(shift);
 
-        boolean result = invoiceDAO.addInvoice(this.invoice, this.hibernateConfig.getEntityManager());
+        boolean result = invoiceDAO.addInvoice(invoice, hibernateConfig.getEntityManager());
         if (!result) {
             JOptionPane.showMessageDialog(this, "Thanh toán thất bại!", "Thông báo", JOptionPane.INFORMATION_MESSAGE);
             return;
         }
 
-        this.store.setProducts(productDAO.getProductsInStore(this.store.getStoreId(), this.hibernateConfig.getEntityManager()));
+        shift.getInvoices().add(invoice);
+        store.setProducts(productDAO.getProductsInStore(store.getStoreId(), hibernateConfig.getEntityManager()));
         initNewOrder();
         refreshProductTable();
         refreshInvoiceTable();
@@ -993,25 +993,26 @@ public class PurchasePanel extends javax.swing.JPanel {
     }//GEN-LAST:event_payBtnActionPerformed
 
     private void payAnfPrintBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_payAnfPrintBtnActionPerformed
-        if (this.invoice.getInvoiceProducts().isEmpty()) { // Kiểm tra xem đã chọn sản phẩm nào chưa
+        if (invoice.getInvoiceProducts().isEmpty()) { // Kiểm tra xem đã chọn sản phẩm nào chưa
             JOptionPane.showMessageDialog(this, NOTHING_CHOOSEN_WARNING, "Cảnh báo", JOptionPane.WARNING_MESSAGE);
             return;
-        } else if (this.invoice.getPaymentMethod().equals(PaymentOption.CASH)
-                && InvoiceUtil.isInsufficient(this.invoice)) { //Kiểm tra xem có thiếu tiền kh
+        } else if (invoice.getPaymentMethod().equals(PaymentOption.CASH)
+                && InvoiceUtil.isInsufficient(invoice)) { //Kiểm tra xem có thiếu tiền kh
             insertWarningToTextField(customerMoneyText, INSUFFICIENT_MONEY);
             customerMoneyWarningCheck = false;
             return;
         }
         // thực hiện chức năng
-        this.invoice.setShift(this.shift);
-        boolean result = invoiceDAO.addInvoice(this.invoice, this.hibernateConfig.getEntityManager());
+        invoice.setShift(shift);
+        boolean result = invoiceDAO.addInvoice(invoice, hibernateConfig.getEntityManager());
         if (!result) {
             JOptionPane.showMessageDialog(this, "Thanh toán thất bại!", "Thông báo", JOptionPane.INFORMATION_MESSAGE);
             return;
         }
 
-        this.store.setProducts(productDAO.getProductsInStore(this.store.getStoreId(), this.hibernateConfig.getEntityManager()));
-        PrinterUtil.exportBillToTxtFile(this.invoice, this.store);
+        shift.getInvoices().add(invoice);
+        store.setProducts(productDAO.getProductsInStore(this.store.getStoreId(), hibernateConfig.getEntityManager()));
+        PrinterUtil.exportBillToTxtFile(invoice, store);
         initNewOrder();
         refreshProductTable();
         refreshInvoiceTable();
@@ -1392,9 +1393,8 @@ public class PurchasePanel extends javax.swing.JPanel {
         setDefaultValuesToAllComponents();
     }
 
-    public void setup(HibernateConfig hibernateConfig, Store store, Shift shift) {
+    public void setup(HibernateConfig hibernateConfig, Store store) {
         this.store = store;
-        this.shift = shift;
         this.hibernateConfig = hibernateConfig;
         this.invoiceDAO = new InvoiceDAOImpl();
         this.productDAO = new ProductDAOImpl();
@@ -1407,7 +1407,10 @@ public class PurchasePanel extends javax.swing.JPanel {
         invoiceTableModel = (DefaultTableModel) invoiceTable.getModel();
     }
 
-    public void refreshView() {
+    public void refreshView(Shift shift) {
+        if(this.shift == null || !shift.getShiftId().equals(this.shift.getShiftId())){
+            this.shift = shift;
+        }
         if (this.shift.getState().equals(ShiftState.OPENED) && this.invoice == null) {
             initNewOrder();
         }

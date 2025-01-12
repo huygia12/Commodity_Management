@@ -27,6 +27,7 @@ public class ShiftEmployee {
     @JoinColumn(name = "shiftId", referencedColumnName = "shiftId")
     private Shift shift;
 
+    @ToString.Exclude
     @ManyToOne(optional = true)
     @JoinColumn(name = "employeeId", referencedColumnName = "employeeId", foreignKey = @ForeignKey(ConstraintMode.NO_CONSTRAINT))
     private Employee employee;

@@ -6,15 +6,12 @@ import dao.ShiftDAO;
 import dao.impl.EmployeeDAOImpl;
 import dao.impl.ShiftDAOImpl;
 import java.awt.Font;
-import java.awt.event.KeyEvent;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
-import java.util.UUID;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.ImageIcon;
 import javax.swing.JOptionPane;
-import javax.swing.JTextField;
 import javax.swing.ScrollPaneConstants;
 import javax.swing.SwingConstants;
 import javax.swing.table.DefaultTableCellRenderer;
@@ -328,7 +325,6 @@ public class OpenShiftFrame extends javax.swing.JFrame {
                 JOptionPane.showMessageDialog(this, "Mở ca thất bại!", "Thông báo", JOptionPane.INFORMATION_MESSAGE);
                 return;
             }
-            System.out.println("current shift : " + this.shift);
         } else {
             boolean result = shiftDAO.updateShift(this.shift, this.shiftEmployees, this.hibernateConfig.getEntityManager());
             if (!result) {
@@ -336,7 +332,7 @@ public class OpenShiftFrame extends javax.swing.JFrame {
                 return;
             }
         }
-        shiftPanel.refreshCurrentShiftView();
+        shiftPanel.refreshView(this.shift);
         this.dispose();
     }//GEN-LAST:event_acceptBtnActionPerformed
 
@@ -441,7 +437,6 @@ public class OpenShiftFrame extends javax.swing.JFrame {
     }
 
     public void setToCurrentShiftValue() {
-        System.out.println("shift" + shift);
         // thành các giá trị của shift hiện tại
         shiftOpenBalance = this.shift.getOpeningBalance();
         Optional<Employee> matchedEmployee = this.store.getEmployees()

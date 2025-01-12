@@ -1,6 +1,7 @@
 package model.entities;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 import lombok.*;
 import javax.persistence.*;
@@ -52,9 +53,11 @@ public class Shift {
     @JoinColumn(name = "storeId", referencedColumnName = "storeId")
     private Store store;
 
+    @Builder.Default
     @OneToMany(mappedBy = "shift", cascade = CascadeType.REMOVE, orphanRemoval = true)
-    private List<Invoice> invoices;
+    private List<Invoice> invoices = new ArrayList<>();
 
+    @Builder.Default
     @OneToMany(mappedBy = "shift", cascade = CascadeType.MERGE, orphanRemoval = true)
-    private List<ShiftEmployee> employees;
+    private List<ShiftEmployee> employees = new ArrayList<>();
 }

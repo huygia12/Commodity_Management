@@ -206,11 +206,11 @@ public class MainFrame extends javax.swing.JFrame {
     }
 
     private void setupPanels() {
-        purchasePanel1.setup(hibernateConfig, store, shift);
+        purchasePanel1.setup(hibernateConfig, store);
         employJPanel1.setup(hibernateConfig, store);
         repoPanel1.setup(hibernateConfig, store, this);
         shipmentPanel1.setup(hibernateConfig, store, this);
-        shiftPanel1.setup(hibernateConfig, store, shift, this);
+        shiftPanel1.setup(hibernateConfig, store, this);
         settingsPanel1.setup(hibernateConfig, store, header);
         historyPanel1.setup(hibernateConfig, store);
         header.setStoreInfor();
@@ -286,7 +286,7 @@ public class MainFrame extends javax.swing.JFrame {
                 drawerCtr.hide();
                 purchasePanel1.setEnableToAllPanel(shift.getState().equals(ShiftState.OPENED));
                 if (shift.getState().equals(ShiftState.OPENED)) {
-                    purchasePanel1.refreshView();
+                    purchasePanel1.refreshView(this.shift);
                 } else {
                     showShiftNotOpenWarning();
                 }
@@ -295,7 +295,7 @@ public class MainFrame extends javax.swing.JFrame {
                 displayPanel.add(shiftPanel1, "shift");
                 cardLayout.show(displayPanel, "shift");
                 drawerCtr.hide();
-                shiftPanel1.refreshCurrentShiftView();
+                shiftPanel1.refreshView(this.shift);
             }
             case 3 -> {
                 displayPanel.add(employJPanel1, "employee");
@@ -369,6 +369,11 @@ public class MainFrame extends javax.swing.JFrame {
     public void switchRepoPanel() {
         repoPanelStateCheck = true;
         switchPanel(0);
+    }
+    
+    public void switchShiftPanel() {
+        this.shift = shiftDAO.addShift(store, this.hibernateConfig.getEntityManager());
+        switchPanel(2);
     }
 
     private final ShiftDAO shiftDAO;

@@ -17,7 +17,7 @@ public class FormatOutput {
     }
 
     public static String convertLocalDateTimeToString(LocalDateTime date) {
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("hh:mm dd/MM/yyyy");
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("HH:mm dd/MM/yyyy");
         String formattedDateTime = date.format(formatter);
         return formattedDateTime;
     }
@@ -45,9 +45,8 @@ public class FormatOutput {
 
     public static LocalDateTime convertStringToLocalDateTime(String dateString, String timeString) {
         try {
-            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("d/M/yyyy H:m");
-            LocalDate date = LocalDate.parse(dateString + " " + timeString, formatter);
-            LocalDateTime dateTime = date.atStartOfDay();
+            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("d/M/yyyy HH:mm");
+            LocalDateTime dateTime = LocalDateTime.parse(dateString + " " + timeString, formatter);
             return dateTime;
         } catch (DateTimeParseException ex) {
             return null;

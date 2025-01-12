@@ -9,5 +9,5 @@ public interface InvoiceDAO {
     
     public Invoice getInvoice(Long invoiceId, EntityManager em);
     
-    public List<Invoice> getInvoices(EntityManager em);
+    public List<Invoice> getInvoices(Long shiftId, EntityManager em);
 }

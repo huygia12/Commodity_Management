@@ -1495,8 +1495,8 @@ public class HistoryPanel extends javax.swing.JPanel {
 
     private void refreshOrderHistoryPanel() {
         refreshCashierComboBox();
-        List<Invoice> fetchedInvoices = this.invoiceDAO.getInvoices(this.hibernateConfig.getEntityManager());
-        displayInvoiceTable(fetchedInvoices);
+//        List<Invoice> fetchedInvoices = this.invoiceDAO.getInvoices(this.hibernateConfig.getEntityManager());
+//        displayInvoiceTable(fetchedInvoices);
         setDefaultValueToAllComponentInOrderHistoryPanel();
     }
 
@@ -1517,7 +1517,7 @@ public class HistoryPanel extends javax.swing.JPanel {
         this.store = store;
         this.hibernateConfig = hibernateConfig;
         this.invoiceDAO = new InvoiceDAOImpl();
-        this.invoices = this.invoiceDAO.getInvoices(this.hibernateConfig.getEntityManager());
+//        this.invoices = this.invoiceDAO.getInvoices(this.hibernateConfig.getEntityManager());
         // Table 
         invoiceTableModel = (DefaultTableModel) invoiceHistoryTable.getModel();
         overViewJScrollPane.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_ALWAYS);

@@ -42,6 +42,7 @@ public class InvoiceProduct {
     @Column(nullable = false)
     private Long shipmentId;
 
+    @ToString.Exclude
     @ManyToOne(optional = false)
     @JoinColumn(name = "InvoiceId", referencedColumnName = "InvoiceId")
     private Invoice invoice;
