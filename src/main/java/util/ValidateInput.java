@@ -19,8 +19,8 @@ public class ValidateInput {
         return matcher.matches();
     }
 
-    public static <T extends Number> boolean isEqualZero(T number) {
-        return new BigDecimal(number + "").compareTo(BigDecimal.ZERO) == 0;
+    public static boolean isEqualZero(String input) {
+        return new BigDecimal(input).compareTo(BigDecimal.ZERO) == 0;
     }
 
     public static boolean isBeforeSecondDate(String dateString, String anotherDateString) {

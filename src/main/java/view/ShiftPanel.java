@@ -5,14 +5,18 @@ import dao.InvoiceDAO;
 import dao.ShiftDAO;
 import dao.impl.InvoiceDAOImpl;
 import dao.impl.ShiftDAOImpl;
+import java.awt.Font;
 import java.awt.event.KeyEvent;
 import java.time.LocalDateTime;
 import java.util.UUID;
 import javax.swing.JOptionPane;
 import javax.swing.JTextField;
 import javax.swing.ScrollPaneConstants;
+import javax.swing.SwingConstants;
 import javax.swing.border.TitledBorder;
+import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
+import javax.swing.table.JTableHeader;
 import model.entities.Invoice;
 import model.entities.Shift;
 import model.entities.Store;
@@ -34,6 +38,23 @@ public class ShiftPanel extends javax.swing.JPanel {
         tb = (TitledBorder) currentShiftOverViewPanel.getBorder();
         tb.setTitleFont(new java.awt.Font("Segoe UI", 1, 14));
         tb.setTitleJustification(TitledBorder.DEFAULT_POSITION);
+        
+        DefaultTableCellRenderer centerRenderer = new DefaultTableCellRenderer();
+        centerRenderer.setVerticalTextPosition(SwingConstants.CENTER);
+        centerRenderer.setHorizontalTextPosition(SwingConstants.CENTER);
+        centerRenderer.setHorizontalAlignment(SwingConstants.CENTER);
+        centerRenderer.setVerticalAlignment(SwingConstants.CENTER);
+        for (int i = 0; i < invoiceTable.getColumnCount(); i++) {
+            invoiceTable.getColumnModel().getColumn(i).setCellRenderer(centerRenderer);
+        }
+        JTableHeader header = invoiceTable.getTableHeader();
+        header.setFont(new Font("Arial", Font.BOLD, 14));
+
+        for (int i = 0; i < invoiceDetailTable.getColumnCount(); i++) {
+            invoiceDetailTable.getColumnModel().getColumn(i).setCellRenderer(centerRenderer);
+        }
+        header = invoiceDetailTable.getTableHeader();
+        header.setFont(new Font("Arial", Font.BOLD, 14));
     }
 
     @SuppressWarnings("unchecked")
@@ -58,7 +79,7 @@ public class ShiftPanel extends javax.swing.JPanel {
         orderDateLabel = new javax.swing.JLabel();
         refreshBtn = new javax.swing.JButton();
         orderListJScrollPane = new javax.swing.JScrollPane();
-        orderTable = new javax.swing.JTable();
+        invoiceTable = new javax.swing.JTable();
         otherFunctionPanel = new javax.swing.JPanel();
         currentShiftOverViewPanel = new javax.swing.JPanel();
         openBalanceLabel = new javax.swing.JLabel();
@@ -79,7 +100,7 @@ public class ShiftPanel extends javax.swing.JPanel {
         editShiftBtn = new javax.swing.JButton();
         shiftCashierTextField = new javax.swing.JTextField();
         orderDetailJScrollPane = new javax.swing.JScrollPane();
-        orderDetailTable = new javax.swing.JTable();
+        invoiceDetailTable = new javax.swing.JTable();
 
         setMinimumSize(new java.awt.Dimension(1400, 800));
         setPreferredSize(new java.awt.Dimension(1400, 800));
@@ -274,7 +295,7 @@ public class ShiftPanel extends javax.swing.JPanel {
 
         searchAndTablePanel.add(searchPanel, java.awt.BorderLayout.PAGE_START);
 
-        orderTable.setModel(new javax.swing.table.DefaultTableModel(
+        invoiceTable.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
 
             },
@@ -290,14 +311,14 @@ public class ShiftPanel extends javax.swing.JPanel {
                 return canEdit [columnIndex];
             }
         });
-        orderTable.setAutoResizeMode(javax.swing.JTable.AUTO_RESIZE_ALL_COLUMNS);
-        orderTable.setShowGrid(true);
-        orderTable.addMouseListener(new java.awt.event.MouseAdapter() {
+        invoiceTable.setAutoResizeMode(javax.swing.JTable.AUTO_RESIZE_ALL_COLUMNS);
+        invoiceTable.setShowGrid(true);
+        invoiceTable.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
-                orderTableMouseClicked(evt);
+                invoiceTableMouseClicked(evt);
             }
         });
-        orderListJScrollPane.setViewportView(orderTable);
+        orderListJScrollPane.setViewportView(invoiceTable);
 
         searchAndTablePanel.add(orderListJScrollPane, java.awt.BorderLayout.CENTER);
 
@@ -485,7 +506,7 @@ public class ShiftPanel extends javax.swing.JPanel {
 
         otherFunctionPanel.add(currentShiftOverViewPanel, java.awt.BorderLayout.PAGE_START);
 
-        orderDetailTable.setModel(new javax.swing.table.DefaultTableModel(
+        invoiceDetailTable.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
 
             },
@@ -501,9 +522,9 @@ public class ShiftPanel extends javax.swing.JPanel {
                 return canEdit [columnIndex];
             }
         });
-        orderDetailTable.setAutoResizeMode(javax.swing.JTable.AUTO_RESIZE_ALL_COLUMNS);
-        orderDetailTable.setShowGrid(true);
-        orderDetailJScrollPane.setViewportView(orderDetailTable);
+        invoiceDetailTable.setAutoResizeMode(javax.swing.JTable.AUTO_RESIZE_ALL_COLUMNS);
+        invoiceDetailTable.setShowGrid(true);
+        orderDetailJScrollPane.setViewportView(invoiceDetailTable);
 
         otherFunctionPanel.add(orderDetailJScrollPane, java.awt.BorderLayout.CENTER);
 
@@ -673,17 +694,17 @@ public class ShiftPanel extends javax.swing.JPanel {
         }
     }//GEN-LAST:event_toMinuteTextFieldKeyPressed
 
-    private void orderTableMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_orderTableMouseClicked
-        int selectedRow = orderTable.getSelectedRow();
+    private void invoiceTableMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_invoiceTableMouseClicked
+        int selectedRow = invoiceTable.getSelectedRow();
         if (selectedRow != -1) {
-            Long invoiceId = Long.valueOf(orderTable.getValueAt(selectedRow, 0).toString());
+            Long invoiceId = Long.valueOf(invoiceTable.getValueAt(selectedRow, 0).toString());
             Invoice invoice = invoiceDAO.getInvoice(invoiceId, this.hibernateConfig.getEntityManager());
 
             displayOrderDetail(invoice);
             orderIDTextField.setText(invoice.getInvoiceId().toString());
             orderDateTextField.setText(FormatOutput.convertLocalDateTimeToString(invoice.getCreatedAt()));
         }
-    }//GEN-LAST:event_orderTableMouseClicked
+    }//GEN-LAST:event_invoiceTableMouseClicked
 
     private void refreshBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_refreshBtnActionPerformed
         this.searchingInvoiceId = null;
@@ -760,7 +781,7 @@ public class ShiftPanel extends javax.swing.JPanel {
                 p.getProductCode(),
                 p.getProductName(),
                 p.getUnit(),
-                p.getPrice(),
+                FormatOutput.formatToMoneyAmountForm(p.getPrice()+""),
                 p.getShipmentId(),
                 p.getQuantity()
             });
@@ -781,7 +802,8 @@ public class ShiftPanel extends javax.swing.JPanel {
             orderTableModel.addRow(new Object[]{
                 i.getInvoiceId(),
                 FormatOutput.convertLocalDateTimeToString(i.getCreatedAt()),
-                InvoiceUtil.getTotal(i),});
+                FormatOutput.formatToMoneyAmountForm(InvoiceUtil.getTotal(i))
+            });
         }
         );
     }
@@ -826,8 +848,8 @@ public class ShiftPanel extends javax.swing.JPanel {
     public void setEnableAllComponents(boolean enable) {
         setEnableComponentsInCurrentShiftOverViewPanel(enable);
         setEnableComponentsInSearchPanel(enable);
-        orderTable.setEnabled(enable);
-        orderDetailTable.setEnabled(enable);
+        invoiceTable.setEnabled(enable);
+        invoiceDetailTable.setEnabled(enable);
     }
 
     public void refreshCurrentShiftView() {
@@ -837,10 +859,10 @@ public class ShiftPanel extends javax.swing.JPanel {
         if (checkOpenShift) { // nếu đã mở ca thì refresh lại các thông số ca
             //right
             numberOfOrderTextField.setText(String.format("%d", this.shift.getInvoices().size()));
-            grossRevenueTextField.setText(ShiftUtil.getGrossRevenue(shift));
-            netRevenueTextField.setText(ShiftUtil.getNetRevenue(shift));
+            grossRevenueTextField.setText(FormatOutput.formatToMoneyAmountForm(ShiftUtil.getGrossRevenue(shift)));
+            netRevenueTextField.setText(FormatOutput.formatToMoneyAmountForm(ShiftUtil.getNetRevenue(shift)));
             //left
-            openBalanceTextField.setText(String.format("%d", shift.getOpeningBalance()));
+            openBalanceTextField.setText(FormatOutput.formatToMoneyAmountForm(shift.getOpeningBalance()+""));
             shiftCashierTextField.setText(this.shift.getCashierName());
             surchargeTextField.setText(String.format("%d", shift.getSurcharge()));
             refreshEmployeesCombobox();
@@ -862,10 +884,10 @@ public class ShiftPanel extends javax.swing.JPanel {
         //table
         orderListJScrollPane.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_ALWAYS);
         orderListJScrollPane.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
-        orderTableModel = (DefaultTableModel) orderTable.getModel();
+        orderTableModel = (DefaultTableModel) invoiceTable.getModel();
         orderDetailJScrollPane.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_ALWAYS);
         orderDetailJScrollPane.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
-        orderDetailTableModel = (DefaultTableModel) orderDetailTable.getModel();
+        orderDetailTableModel = (DefaultTableModel) invoiceDetailTable.getModel();
     }
 
     private String searchingInvoiceId;
@@ -895,6 +917,8 @@ public class ShiftPanel extends javax.swing.JPanel {
     private javax.swing.JTextField fromMinuteTextField;
     private javax.swing.JLabel grossRevenueLabel;
     private javax.swing.JTextField grossRevenueTextField;
+    private javax.swing.JTable invoiceDetailTable;
+    private javax.swing.JTable invoiceTable;
     private javax.swing.JSeparator jSeparator2;
     private javax.swing.JLabel netRevenueLabel;
     private javax.swing.JTextField netRevenueTextField;
@@ -905,11 +929,9 @@ public class ShiftPanel extends javax.swing.JPanel {
     private javax.swing.JLabel orderDateLabel;
     private javax.swing.JTextField orderDateTextField;
     private javax.swing.JScrollPane orderDetailJScrollPane;
-    private javax.swing.JTable orderDetailTable;
     private javax.swing.JLabel orderIDLabel;
     private javax.swing.JTextField orderIDTextField;
     private javax.swing.JScrollPane orderListJScrollPane;
-    private javax.swing.JTable orderTable;
     private javax.swing.JPanel ordersAndShipsHistoryPanel;
     private javax.swing.JPanel otherFunctionPanel;
     private javax.swing.JButton refreshBtn;

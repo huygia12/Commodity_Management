@@ -83,8 +83,8 @@ public class MainFrame extends javax.swing.JFrame {
         setTitle("Phần mềm quản lý bán hàng");
         setAutoRequestFocus(false);
         setFocusable(false);
-        setMinimumSize(new java.awt.Dimension(1400, 850));
-        setPreferredSize(new java.awt.Dimension(1400, 850));
+        setMinimumSize(new java.awt.Dimension(1400, 870));
+        setPreferredSize(new java.awt.Dimension(1400, 870));
         setResizable(false);
 
         toolBarPanel.setBackground(new java.awt.Color(255, 255, 255));
@@ -271,17 +271,20 @@ public class MainFrame extends javax.swing.JFrame {
                 if (repoPanelStateCheck) {
                     displayPanel.add(repoPanel1, "repo");
                     cardLayout.show(displayPanel, "repo");
+                    drawerCtr.hide();
+                    repoPanel1.refreshView();
                 } else {
                     displayPanel.add(shipmentPanel1, "shipment");
                     cardLayout.show(displayPanel, "shipment");
+                    drawerCtr.hide();
+                    shipmentPanel1.refreshView();
                 }
-                drawerCtr.hide();
             }
             case 1 -> {
-                purchasePanel1.setEnableToAllPanel(shift.getState().equals(ShiftState.OPENED));
                 displayPanel.add(purchasePanel1, "purchase");
                 cardLayout.show(displayPanel, "purchase");
                 drawerCtr.hide();
+                purchasePanel1.setEnableToAllPanel(shift.getState().equals(ShiftState.OPENED));
                 if (shift.getState().equals(ShiftState.OPENED)) {
                     purchasePanel1.refreshView();
                 } else {
@@ -298,7 +301,6 @@ public class MainFrame extends javax.swing.JFrame {
                 displayPanel.add(employJPanel1, "employee");
                 cardLayout.show(displayPanel, "employee");
                 drawerCtr.hide();
-//                employJPanel1.refreshEmployees();
             }
             case 4 -> {
                 displayPanel.add(historyPanel1, "history");

@@ -1,13 +1,14 @@
 package view;
 
 import config.HibernateConfig;
+import dao.ProductDAO;
 import dao.ShipmentDAO;
+import dao.impl.ProductDAOImpl;
 import dao.impl.ShipmentDAOImpl;
 import java.awt.Component;
 import java.awt.Font;
 import java.time.DateTimeException;
 import java.time.LocalDate;
-import java.time.Month;
 import java.util.List;
 import java.util.ListIterator;
 import java.util.stream.Collectors;
@@ -775,7 +776,7 @@ public class ShipmentPanel extends javax.swing.JPanel {
     private void updateRowInTable(int rowIndex, Shipment shipment) {
         Object[] newRowData = {
             shipment.getShipmentId(),
-            shipment.getImportPrice(),
+            FormatOutput.formatToMoneyAmountForm(shipment.getImportPrice()+""),
             shipment.getQuantityInStock(),
             shipment.getManufacturingDate() != null
             ? FormatOutput.convertLocalDateToString(shipment.getManufacturingDate()) : "-",
@@ -794,7 +795,7 @@ public class ShipmentPanel extends javax.swing.JPanel {
     private void addShipmentToTable(Shipment shipment) {
         shipmentTableModel.addRow(new Object[]{
             shipment.getShipmentId(),
-            shipment.getImportPrice(),
+            FormatOutput.formatToMoneyAmountForm(shipment.getImportPrice()+""),
             shipment.getQuantityInStock(),
             shipment.getManufacturingDate() != null
             ? FormatOutput.convertLocalDateToString(shipment.getManufacturingDate()) : "-",
@@ -892,6 +893,7 @@ public class ShipmentPanel extends javax.swing.JPanel {
         this.hibernateConfig = hibernateConfig;
         this.shipmentTableModel = (DefaultTableModel) shipmentTable.getModel();
         this.shipmentDAO = new ShipmentDAOImpl();
+        this.productDAO = new ProductDAOImpl();
     }
 
     public void setProduct(Product product) {
@@ -899,6 +901,12 @@ public class ShipmentPanel extends javax.swing.JPanel {
         displayShipments(product.getShipments());
     }
 
+    public void refreshView(){
+        product = productDAO.getProduct(product.getProductId(), hibernateConfig.getEntityManager());
+        displayShipments(product.getShipments());
+    }
+    
+    private ProductDAO productDAO;
     private ShipmentDAO shipmentDAO;
     private HibernateConfig hibernateConfig;
     private MainFrame mf;

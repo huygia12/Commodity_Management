@@ -7,7 +7,6 @@ import dao.impl.InvoiceDAOImpl;
 import dao.impl.ProductDAOImpl;
 import java.awt.Font;
 import java.awt.event.KeyEvent;
-import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 import javax.swing.ImageIcon;
@@ -541,11 +540,6 @@ public class PurchasePanel extends javax.swing.JPanel {
 
         priceRangeComboBox.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         priceRangeComboBox.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Trống", "< 100.000", "100.000 - 300.000", "300.000 - 500.000", "> 500.000" }));
-        priceRangeComboBox.addItemListener(new java.awt.event.ItemListener() {
-            public void itemStateChanged(java.awt.event.ItemEvent evt) {
-                priceRangeComboBoxItemStateChanged(evt);
-            }
-        });
         mainOrderFunctionPanel.add(priceRangeComboBox, new org.netbeans.lib.awtextra.AbsoluteConstraints(110, 8, 240, 43));
 
         priceRangeLabel.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
@@ -603,30 +597,19 @@ public class PurchasePanel extends javax.swing.JPanel {
         jSeparator3.setOrientation(javax.swing.SwingConstants.VERTICAL);
         mainOrderFunctionPanel.add(jSeparator3, new org.netbeans.lib.awtextra.AbsoluteConstraints(100, 60, 10, 70));
 
-        fromDateTextField.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         fromDateTextField.setHorizontalAlignment(javax.swing.JTextField.CENTER);
-        fromDateTextField.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
-                fromDateTextFieldMouseClicked(evt);
-            }
-        });
         fromDateTextField.addKeyListener(new java.awt.event.KeyAdapter() {
-            public void keyPressed(java.awt.event.KeyEvent evt) {
-                fromDateTextFieldKeyPressed(evt);
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                fromDateTextFieldKeyReleased(evt);
             }
         });
         mainOrderFunctionPanel.add(fromDateTextField, new org.netbeans.lib.awtextra.AbsoluteConstraints(157, 61, 190, 35));
 
         toDateTextField.setHorizontalAlignment(javax.swing.JTextField.CENTER);
         toDateTextField.setPreferredSize(new java.awt.Dimension(64, 26));
-        toDateTextField.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
-                toDateTextFieldMouseClicked(evt);
-            }
-        });
         toDateTextField.addKeyListener(new java.awt.event.KeyAdapter() {
-            public void keyPressed(java.awt.event.KeyEvent evt) {
-                toDateTextFieldKeyPressed(evt);
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                toDateTextFieldKeyReleased(evt);
             }
         });
         mainOrderFunctionPanel.add(toDateTextField, new org.netbeans.lib.awtextra.AbsoluteConstraints(157, 101, 190, 36));
@@ -645,6 +628,11 @@ public class PurchasePanel extends javax.swing.JPanel {
         filterSwitchRadioBtn.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
         filterSwitchRadioBtn.setText("Bật Bộ Lọc");
         filterSwitchRadioBtn.setRolloverEnabled(false);
+        filterSwitchRadioBtn.addItemListener(new java.awt.event.ItemListener() {
+            public void itemStateChanged(java.awt.event.ItemEvent evt) {
+                filterSwitchRadioBtnItemStateChanged(evt);
+            }
+        });
         filterSwitchRadioBtn.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 filterSwitchRadioBtnActionPerformed(evt);
@@ -702,8 +690,6 @@ public class PurchasePanel extends javax.swing.JPanel {
             JOptionPane.showMessageDialog(this, "Sản phẩm không tồn tại!", "Thông báo", JOptionPane.WARNING_MESSAGE);
             return;
         }
-
-        keyWordTextField.setText(this.selectedProduct.getProductName());
     }//GEN-LAST:event_productTableMouseClicked
 
     private void invoiceTableMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_invoiceTableMouseClicked
@@ -720,17 +706,12 @@ public class PurchasePanel extends javax.swing.JPanel {
             return;
         }
 
-        keyWordTextField.setText(this.selectedInvoiceProduct.getProductName());
         quantityTextField.setText(String.format("%d", this.selectedInvoiceProduct.getQuantity()));
     }//GEN-LAST:event_invoiceTableMouseClicked
 
     private void customerMoneyTextMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_customerMoneyTextMouseClicked
         if (!customerMoneyWarningCheck) {
             textFieldMouseClick(customerMoneyText);
-            return;
-        }
-        if (customerMoneyText.getText().length() > (customerMoneyText.getSize().getWidth() / 11)) {
-            JOptionPane.showMessageDialog(mainFeePanel, feePanel, expirDateTo, HEIGHT, new ImageIcon());
         }
     }//GEN-LAST:event_customerMoneyTextMouseClicked
 
@@ -828,103 +809,116 @@ public class PurchasePanel extends javax.swing.JPanel {
     }//GEN-LAST:event_discountTextMouseExited
 
     private void searchBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_searchBtnActionPerformed
-        String keyString = keyWordTextField.getText().trim();
-        // Kiểm tra điều kiện
         if (this.store.getProducts().isEmpty()) {
             JOptionPane.showMessageDialog(this, EMPTY_LIST_WARNING, "Cảnh báo", JOptionPane.WARNING_MESSAGE);
             return;
         }
-        this.searchString = keyString;
+
+        if (!validateFilterDate()) {
+            return;
+        }
+
         refreshProductTable();
     }//GEN-LAST:event_searchBtnActionPerformed
 
     private void editBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_editBtnActionPerformed
-        String quantityAsStr = quantityTextField.getText().trim();
-        int rowIndex = productTable.getSelectedRow();
-        if(rowIndex == -1 || selectedInvoiceProduct == null){
+        int rowIndex = invoiceTable.getSelectedRow();
+        if (rowIndex == -1 || selectedInvoiceProduct == null) {
             JOptionPane.showMessageDialog(this, CHOOSE_IN_GOODSLIST_TABLE, "Cảnh báo", JOptionPane.WARNING_MESSAGE);
             return;
         }
-        if (shipmentId.isBlank()) { // kiểm tra xem shipment text field có trống không
-            JOptionPane.showMessageDialog(this, NOTHING_CHOOSEN_WARNING, "Cảnh báo", JOptionPane.WARNING_MESSAGE);
-            return;
-        }
+
+        String quantityAsStr = quantityTextField.getText().trim();
         if (quantityAsStr.isBlank()) { // kiểm tra xem ô số lượng có trống không
             insertWarningToTextField(quantityTextField, EMPTY_TEXT_FIELD_WARNING);
             return;
-        } else if (!ValidateInput.isAPositiveInteger(quantityAsStr)) { // kiểm tra xem có phải là số hợp lệ không
+        } else if (!ValidateInput.isAPositiveInteger(quantityAsStr)
+                || ValidateInput.isEqualZero(quantityAsStr)) { // kiểm tra xem có phải là số hợp lệ không
             insertWarningToTextField(quantityTextField, INVALID_WARNING);
             return;
         }
 
-        InvoiceProduct invoiceProduct = InvoiceUtil.getInvoiceProductFrom(Long.valueOf((String) shipmentId), this.invoice);
+        Long shipmentId = (Long) invoiceTableModel.getValueAt(rowIndex, 4);
+        InvoiceProduct invoiceProduct = InvoiceUtil.getInvoiceProductFrom(shipmentId, this.invoice);
         int quantityAsInteger = Integer.parseInt(quantityAsStr);
-        Product product = ProductUtil.getProductFrom(invoiceProduct.getProductId(), this.store.getProducts());
-        Shipment shipment = ShipmentUtil.getShipmentFrom(Long.valueOf(shipmentId), product);
 
-        if (ShipmentUtil.isInStock(shipment, invoiceProduct.getQuantity() + quantityAsInteger)) {
+        Product product = ProductUtil.getProductFrom(invoiceProduct.getProductId(), this.store.getProducts());
+        Shipment shipment = ShipmentUtil.getShipmentFrom(shipmentId, product);
+
+        if (!ShipmentUtil.isInStock(shipment, quantityAsInteger)) {
             insertWarningToTextField(quantityTextField, NOT_ENOUGH_QUANTITY);
             return;
         }
         // thực hiện chức năng
-        InvoiceUtil.updateInvoiceProductQuantity(this.invoice, quantityAsInteger, Long.valueOf(shipmentId));
-
-        setDefaultValuesToComponentsInMainOrderFunctionPanel();
+        InvoiceUtil.updateInvoiceProductQuantity(this.invoice, quantityAsInteger, shipmentId);
+        
+        quantityTextField.setText("");
         refreshInvoiceTable();
         refreshMainFee();
+        selectedInvoiceProduct = null;
     }//GEN-LAST:event_editBtnActionPerformed
 
     private void resetBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_resetBtnActionPerformed
-        this.selectedInvoiceProduct = null;
-        this.invoice.getInvoiceProducts().clear();
-
-        setDefaultValuesToComponentsInMainFeePanel();
-        invoiceTableModel.setRowCount(0);
+        invoice.getInvoiceProducts().clear();
+        selectedInvoiceProduct = null;
+        selectedProduct = null;
+        productionDateFrom = "";
+        productionDateTo = "";
+        expirDateFrom = "";
+        expirDateTo = "";
+        
+        setDefaultValuesToAllComponents();
+        refreshInvoiceTable();
+        refreshProductTable();
     }//GEN-LAST:event_resetBtnActionPerformed
 
     private void removeBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_removeBtnActionPerformed
-        if (shipmentId.isBlank()) {// Kiểm tra xem đã chọn hay chưa
-            insertWarningToTextField(warningTextField, NOTHING_CHOOSEN_WARNING);
-            return;
-        } else if (this.selectedInvoiceProduct == null) { // kiểm tra xem có chọn đúng bảng hay không
-            insertWarningToTextField(warningTextField, CHOOSE_IN_GOODSLIST_TABLE);
+        int rowIndex = invoiceTable.getSelectedRow();
+        if (rowIndex == -1 || selectedInvoiceProduct == null) {
+            JOptionPane.showMessageDialog(this, CHOOSE_IN_GOODSLIST_TABLE, "Cảnh báo", JOptionPane.WARNING_MESSAGE);
             return;
         }
-        // thực hiện chức năng
-        InvoiceUtil.removeInvoiceProduct(this.invoice, Long.valueOf(shipmentId));
 
-        setDefaultValuesToComponentsInMainOrderFunctionPanel();
+        Long shipmentId = (Long) invoiceTableModel.getValueAt(rowIndex, 4);
+        // thực hiện chức năng
+        InvoiceUtil.removeInvoiceProduct(this.invoice, shipmentId);
+
+        quantityTextField.setText("");
         refreshInvoiceTable();
         refreshMainFee();
+        selectedInvoiceProduct = null;
     }//GEN-LAST:event_removeBtnActionPerformed
 
     private void addBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_addBtnActionPerformed
-        String quantity = quantityTextField.getText().trim();
-        if (shipmentId.isBlank() || this.selectedProduct == null) { // kiểm tra xem shipmentID textField có trống không
-            insertWarningToTextField(warningTextField, NOTHING_CHOOSEN_WARNING);
+        int rowIndex = productTable.getSelectedRow();
+        if (rowIndex == -1 || selectedProduct == null) {
+            JOptionPane.showMessageDialog(this, CHOOSE_IN_GOODSLIST_TABLE, "Cảnh báo", JOptionPane.WARNING_MESSAGE);
             return;
-        } else if (quantity.isBlank()) {// kiểm tra xem quantity có trống không
+        }
+
+        String quantity = quantityTextField.getText().trim();
+        if (quantity.isBlank()) {// kiểm tra xem quantity có trống không
             insertWarningToTextField(quantityTextField, EMPTY_TEXT_FIELD_WARNING);
             return;
-        } else if (!ValidateInput.isAPositiveInteger(quantity)) {// kiểm tra xem có phải số hợp lệ hay không
-            insertWarningToTextField(quantityTextField, INVALID_WARNING);
-            return;
-        } else if (ValidateInput.isEqualZero(new BigDecimal(quantity))) {
+        } else if (!ValidateInput.isAPositiveInteger(quantity)
+                || ValidateInput.isEqualZero(quantity)) {// kiểm tra xem có phải số hợp lệ hay không
             insertWarningToTextField(quantityTextField, INVALID_WARNING);
             return;
         }
 
         int quantityInInteger = Integer.parseInt(quantity);
-        Shipment addedShipment = ShipmentUtil.getShipmentFrom(Long.valueOf(shipmentId), this.selectedProduct);
+
+        Long shipmentId = (Long) productTable.getValueAt(rowIndex, 5);
+        Shipment addedShipment = ShipmentUtil.getShipmentFrom(shipmentId, selectedProduct);
         if (!ShipmentUtil.isInStock(addedShipment, quantityInInteger)) {
             insertWarningToTextField(quantityTextField, NOT_ENOUGH_QUANTITY);
             return;
         }
 
         // thực hiện chức năng
-        InvoiceUtil.addInvoiceProduct(this.invoice, this.selectedProduct, quantityInInteger, addedShipment);
+        InvoiceUtil.addInvoiceProduct(invoice, selectedProduct, quantityInInteger, addedShipment);
 
-        setDefaultValuesToComponentsInMainOrderFunctionPanel();
+        quantityTextField.setText("");
         refreshInvoiceTable();
         refreshMainFee();
     }//GEN-LAST:event_addBtnActionPerformed
@@ -939,178 +933,29 @@ public class PurchasePanel extends javax.swing.JPanel {
         textFieldMouseClick(quantityTextField);
     }//GEN-LAST:event_quantityTextFieldMouseClicked
 
-    private void priceRangeComboBoxItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_priceRangeComboBoxItemStateChanged
-        int selectedIndex = priceRangeComboBox.getSelectedIndex();
-        rangeFilterCheck = (selectedIndex != 0) && (selectedIndex != -1);
-    }//GEN-LAST:event_priceRangeComboBoxItemStateChanged
-
     private void productionDateRadioBtnItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_productionDateRadioBtnItemStateChanged
         fromDateTextField.setEditable(true);
         toDateTextField.setEditable(true);
         if (productionDateRadioBtn.isSelected()) {
-            setDefaultOptionToTextField(fromDateTextField);
-            setDefaultOptionToTextField(toDateTextField);
             fromDateTextField.setText(productionDateFrom);
             toDateTextField.setText(productionDateTo);
         }
     }//GEN-LAST:event_productionDateRadioBtnItemStateChanged
 
-    private void fromDateTextFieldKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_fromDateTextFieldKeyPressed
-        if (evt.getKeyCode() == KeyEvent.VK_ENTER) {
-            String fromDateStr = fromDateTextField.getText();
-            if (productionDateRadioBtn.isSelected()) {
-                if (!fromDateStr.isBlank() && !ValidateInput.isValidDate(fromDateStr)) {// kiểm tra dateString có hợp lệ không
-                    insertWarningToTextField(fromDateTextField, INVALID_WARNING);
-                    productionDateFromValid = false;
-                    productionDateFrom = "";
-                    return;
-                }
-                productionDateFrom = fromDateStr;
-                productionDateFromValid = true;
-            } else if (expirDateRadioBtn.isSelected()) {
-                if (!fromDateStr.isBlank() && !ValidateInput.isValidDate(fromDateStr)) {// kiểm tra dateString có hợp lệ không
-                    insertWarningToTextField(fromDateTextField, INVALID_WARNING);
-                    expirationDateFromValid = false;
-                    expirDateFrom = "";
-                    return;
-                }
-                expirDateFrom = fromDateStr;
-                expirationDateFromValid = true;
-            }
-        }
-    }//GEN-LAST:event_fromDateTextFieldKeyPressed
-
-    private void toDateTextFieldKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_toDateTextFieldKeyPressed
-        if (evt.getKeyCode() == KeyEvent.VK_ENTER) {
-            String toDateStr = toDateTextField.getText();
-            if (productionDateRadioBtn.isSelected()) {
-                if (!toDateStr.isBlank() && !ValidateInput.isValidDate(toDateStr)) {// kiểm tra dateString có hợp lệ không
-                    insertWarningToTextField(toDateTextField, INVALID_WARNING);
-                    productionDateToValid = false;
-                    productionDateTo = "";
-                    return;
-                }
-                productionDateTo = toDateStr;
-                productionDateToValid = true;
-            } else if (expirDateRadioBtn.isSelected()) {
-                if (!toDateStr.isBlank() && !ValidateInput.isValidDate(toDateStr)) {// kiểm tra dateString có hợp lệ không
-                    insertWarningToTextField(toDateTextField, INVALID_WARNING);
-                    expirationDateToValid = false;
-                    expirDateTo = "";
-                    return;
-                }
-                expirDateTo = toDateStr;
-                expirationDateToValid = true;
-            }
-        }
-    }//GEN-LAST:event_toDateTextFieldKeyPressed
-
     private void expirDateRadioBtnItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_expirDateRadioBtnItemStateChanged
         fromDateTextField.setEditable(true);
         toDateTextField.setEditable(true);
         if (expirDateRadioBtn.isSelected()) {
-            setDefaultOptionToTextField(fromDateTextField);
-            setDefaultOptionToTextField(toDateTextField);
             fromDateTextField.setText(expirDateFrom);
             toDateTextField.setText(expirDateTo);
         }
     }//GEN-LAST:event_expirDateRadioBtnItemStateChanged
 
-    private void fromDateTextFieldMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_fromDateTextFieldMouseClicked
-        if (productionDateRadioBtn.isSelected()) {
-            if (!productionDateFromValid) {
-                textFieldMouseClick(fromDateTextField);
-            }
-        } else if (expirDateRadioBtn.isSelected()) {
-            if (!expirationDateFromValid) {
-                textFieldMouseClick(fromDateTextField);
-            }
-        }
-    }//GEN-LAST:event_fromDateTextFieldMouseClicked
-
-    private void toDateTextFieldMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_toDateTextFieldMouseClicked
-        if (productionDateRadioBtn.isSelected()) {
-            if (!productionDateToValid) {
-                textFieldMouseClick(toDateTextField);
-            }
-        } else if (expirDateRadioBtn.isSelected()) {
-            if (!expirationDateToValid) {
-                textFieldMouseClick(toDateTextField);
-            }
-        }
-    }//GEN-LAST:event_toDateTextFieldMouseClicked
-
     private void filterBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_filterBtnActionPerformed
-//        filterGoodsList = orderCtr.makeDraftGoodsList(draftGoodsList);
-//        if (rangeFilterCheck) {
-//            String selectedRange = priceRangeComboBox.getSelectedItem().toString();
-//            CustomPair priceRange = settingsCtr.convertFromComparisonOperatorToRange(selectedRange);
-//            filterGoodsList = new FilterGoodsList(filterGoodsList)
-//                    .withinPriceRange((BigDecimal) priceRange.getK(), (BigDecimal) priceRange.getV());
-//        }
-//        if (unitFilterCheck) {
-//            String selectedUnit = unitComboBox.getSelectedItem().toString();
-//            filterGoodsList = new FilterGoodsList(filterGoodsList).withSameUnit(selectedUnit);
-//        }
-//        if (productionDateFromValid
-//                && productionDateToValid
-//                && !fromDateTextField.getText().isBlank()
-//                && !toDateTextField.getText().isBlank()) {
-//            productionDateFrom = fromDateTextField.getText();
-//            productionDateTo = toDateTextField.getText();
-//            if (ctions.checkIfDateIsBeforeAnotherDate(productionDateFrom, productionDateTo)) {
-//                filterGoodsList = new FilterGoodsList(filterGoodsList)
-//                        .withinProductionDateRange(
-//                                LocalDate.parse(productionDateFrom, DateTimeFormatter.ofPattern(INPUT_DATE_PATTERN)),
-//                                LocalDate.parse(productionDateTo, DateTimeFormatter.ofPattern(INPUT_DATE_PATTERN)));
-//                productionDateFromValid = true;
-//                productionDateToValid = true;
-//            } else {
-//                if (!ctions.checkIfValidDate(productionDateFrom)) {// kiểm tra dateString có hợp lệ không
-//                    productionDateRadioBtn.setSelected(true);
-//                    insertWarningToTextField(fromDateTextField, INVALID_WARNING, 12);
-//                    productionDateFromValid = false;
-//                    productionDateFrom = "";
-//                }
-//                if (!ctions.checkIfValidDate(productionDateTo)) {// kiểm tra dateString có hợp lệ không
-//                    productionDateRadioBtn.setSelected(true);
-//                    insertWarningToTextField(toDateTextField, INVALID_WARNING, 12);
-//                    productionDateToValid = false;
-//                    productionDateTo = "";
-//                }
-//                return;
-//            }
-//        }
-//        if (expirationDateFromValid
-//                && expirationDateToValid
-//                && !fromDateTextField.getText().isBlank()
-//                && !toDateTextField.getText().isBlank()) {
-//            expirDateFrom = fromDateTextField.getText();
-//            expirDateTo = toDateTextField.getText();
-//            if (ctions.checkIfDateIsBeforeAnotherDate(expirDateFrom, expirDateTo)) {
-//                filterGoodsList = new FilterGoodsList(filterGoodsList)
-//                        .withinExpirDateRange(
-//                                LocalDate.parse(expirDateFrom, DateTimeFormatter.ofPattern(INPUT_DATE_PATTERN)),
-//                                LocalDate.parse(expirDateTo, DateTimeFormatter.ofPattern(INPUT_DATE_PATTERN)));
-//                expirationDateFromValid = true;
-//                expirationDateToValid = true;
-//            } else {
-//                if (!ctions.checkIfValidDate(expirDateFrom)) {// kiểm tra dateString có hợp lệ không
-//                    expirDateRadioBtn.setSelected(true);
-//                    insertWarningToTextField(fromDateTextField, INVALID_WARNING, 12);
-//                    expirationDateFromValid = false;
-//                    expirDateFrom = "";
-//                }
-//                if (!ctions.checkIfValidDate(expirDateTo)) {// kiểm tra dateString có hợp lệ không
-//                    expirDateRadioBtn.setSelected(true);
-//                    insertWarningToTextField(toDateTextField, INVALID_WARNING, 12);
-//                    expirationDateToValid = false;
-//                    expirDateTo = "";
-//                }
-//                return;
-//            }
-//        }
-//        refreshProductTable(filterGoodsList);
+        if (!validateFilterDate()) {
+            return;
+        }
+        refreshProductTable();
     }//GEN-LAST:event_filterBtnActionPerformed
 
     private void filterSwitchRadioBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_filterSwitchRadioBtnActionPerformed
@@ -1123,23 +968,23 @@ public class PurchasePanel extends javax.swing.JPanel {
 
     private void payBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_payBtnActionPerformed
         if (this.invoice.getInvoiceProducts().isEmpty()) { // Kiểm tra xem đã chọn sản phẩm nào chưa
-            insertWarningToTextField(warningTextField, NOTHING_CHOOSEN_WARNING);
+            JOptionPane.showMessageDialog(this, NOTHING_CHOOSEN_WARNING, "Cảnh báo", JOptionPane.WARNING_MESSAGE);
             return;
         } else if (this.invoice.getPaymentMethod().equals(PaymentOption.CASH)
-            && InvoiceUtil.isInsufficient(this.invoice)) {
+                && InvoiceUtil.isInsufficient(this.invoice)) {
             insertWarningToTextField(customerMoneyText, INSUFFICIENT_MONEY);
             customerMoneyWarningCheck = false;
             return;
         }
         // thực hiện chức năng
         this.invoice.setShift(this.shift);
-        
+
         boolean result = invoiceDAO.addInvoice(this.invoice, this.hibernateConfig.getEntityManager());
         if (!result) {
             JOptionPane.showMessageDialog(this, "Thanh toán thất bại!", "Thông báo", JOptionPane.INFORMATION_MESSAGE);
             return;
         }
-        
+
         this.store.setProducts(productDAO.getProductsInStore(this.store.getStoreId(), this.hibernateConfig.getEntityManager()));
         initNewOrder();
         refreshProductTable();
@@ -1149,10 +994,10 @@ public class PurchasePanel extends javax.swing.JPanel {
 
     private void payAnfPrintBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_payAnfPrintBtnActionPerformed
         if (this.invoice.getInvoiceProducts().isEmpty()) { // Kiểm tra xem đã chọn sản phẩm nào chưa
-            insertWarningToTextField(warningTextField, NOTHING_CHOOSEN_WARNING);
+            JOptionPane.showMessageDialog(this, NOTHING_CHOOSEN_WARNING, "Cảnh báo", JOptionPane.WARNING_MESSAGE);
             return;
         } else if (this.invoice.getPaymentMethod().equals(PaymentOption.CASH)
-            && InvoiceUtil.isInsufficient(this.invoice)) { //Kiểm tra xem có thiếu tiền kh
+                && InvoiceUtil.isInsufficient(this.invoice)) { //Kiểm tra xem có thiếu tiền kh
             insertWarningToTextField(customerMoneyText, INSUFFICIENT_MONEY);
             customerMoneyWarningCheck = false;
             return;
@@ -1164,7 +1009,7 @@ public class PurchasePanel extends javax.swing.JPanel {
             JOptionPane.showMessageDialog(this, "Thanh toán thất bại!", "Thông báo", JOptionPane.INFORMATION_MESSAGE);
             return;
         }
-        
+
         this.store.setProducts(productDAO.getProductsInStore(this.store.getStoreId(), this.hibernateConfig.getEntityManager()));
         PrinterUtil.exportBillToTxtFile(this.invoice, this.store);
         initNewOrder();
@@ -1221,6 +1066,76 @@ public class PurchasePanel extends javax.swing.JPanel {
         refreshMainFee();
     }//GEN-LAST:event_paymentOptionComboboxActionPerformed
 
+    private void fromDateTextFieldKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_fromDateTextFieldKeyReleased
+        if (productionDateRadioBtn.isSelected()) {
+            productionDateFrom = fromDateTextField.getText().trim();
+        } else if (expirDateRadioBtn.isSelected()) {
+            expirDateFrom = fromDateTextField.getText().trim();
+        }
+    }//GEN-LAST:event_fromDateTextFieldKeyReleased
+
+    private void toDateTextFieldKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_toDateTextFieldKeyReleased
+        if (productionDateRadioBtn.isSelected()) {
+            productionDateTo = toDateTextField.getText().trim();
+        } else if (expirDateRadioBtn.isSelected()) {
+            expirDateTo = toDateTextField.getText().trim();
+        }
+    }//GEN-LAST:event_toDateTextFieldKeyReleased
+
+    private void filterSwitchRadioBtnItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_filterSwitchRadioBtnItemStateChanged
+        if (filterSwitchRadioBtn.isSelected()) {
+            setEnableFilterPanel(true);
+        } else {
+            setEnableFilterPanel(false);
+        }
+    }//GEN-LAST:event_filterSwitchRadioBtnItemStateChanged
+
+    private boolean validateFilterDate() {
+        if (filterSwitchRadioBtn.isSelected()) {
+            if (!productionDateFrom.isBlank()
+                    && FormatOutput.convertStringToLocalDate(productionDateFrom) == null) { //biên trái của nsx không hợp lệ
+                JOptionPane.showMessageDialog(this, "Ngày sản xuất ở bộ lọc không hợp lệ!", "Cảnh báo", JOptionPane.WARNING_MESSAGE);
+                return false;
+            } else if (!productionDateFrom.isBlank()
+                    && productionDateTo.isBlank()) { //biên trái của nsx hợp lệ nhưng biên phải không hợp lệ
+                JOptionPane.showMessageDialog(this, "Ngày sản xuất ở bộ lọc không hợp lệ!", "Cảnh báo", JOptionPane.WARNING_MESSAGE);
+                return false;
+            }
+
+            if (!productionDateTo.isBlank()
+                    && FormatOutput.convertStringToLocalDate(productionDateTo) == null) { //biên phải của nsx không hợp lệ
+                JOptionPane.showMessageDialog(this, "Ngày sản xuất ở bộ lọc không hợp lệ!", "Cảnh báo", JOptionPane.WARNING_MESSAGE);
+                return false;
+            } else if (!productionDateTo.isBlank()
+                    && productionDateFrom.isBlank()) { //biên phải của nsx hợp lệ nhưng biên trái không hợp lệ
+                JOptionPane.showMessageDialog(this, "Ngày sản xuất ở bộ lọc không hợp lệ!", "Cảnh báo", JOptionPane.WARNING_MESSAGE);
+                return false;
+            }
+
+            if (!expirDateFrom.isBlank()
+                    && FormatOutput.convertStringToLocalDate(expirDateFrom) == null) { //biên trái của nsx không hợp lệ
+                JOptionPane.showMessageDialog(this, "Ngày hết hạn ở bộ lọc không hợp lệ!", "Cảnh báo", JOptionPane.WARNING_MESSAGE);
+                return false;
+            } else if (!expirDateFrom.isBlank()
+                    && expirDateTo.isBlank()) { //biên trái của nsx hợp lệ nhưng biên phải không hợp lệ
+                JOptionPane.showMessageDialog(this, "Ngày hết hạn ở bộ lọc không hợp lệ!", "Cảnh báo", JOptionPane.WARNING_MESSAGE);
+                return false;
+            }
+
+            if (!expirDateTo.isBlank()
+                    && FormatOutput.convertStringToLocalDate(expirDateTo) == null) { //biên phải của nsx không hợp lệ
+                JOptionPane.showMessageDialog(this, "Ngày hết hạn ở bộ lọc không hợp lệ!", "Cảnh báo", JOptionPane.WARNING_MESSAGE);
+                return false;
+            } else if (!expirDateTo.isBlank()
+                    && expirDateFrom.isBlank()) { //biên phải của nsx hợp lệ nhưng biên trái không hợp lệ
+                JOptionPane.showMessageDialog(this, "Ngày hết hạn ở bộ lọc không hợp lệ!", "Cảnh báo", JOptionPane.WARNING_MESSAGE);
+                return false;
+            }
+        }
+
+        return true;
+    }
+
     private void textFieldMouseClick(javax.swing.JTextField textField) {
         setDefaultOptionToTextField(textField);
         textField.setEditable(true);
@@ -1238,40 +1153,101 @@ public class PurchasePanel extends javax.swing.JPanel {
         textField.setEditable(false);
     }
 
+    private boolean isProductSatisfyFilters(Product product) {
+        if (!product.getProductName()
+                .toLowerCase()
+                .contains(keyWordTextField.getText().trim().toLowerCase())) { // loc theo keysearch
+            return false;
+        }
+
+        if (filterSwitchRadioBtn.isSelected()) { // loc theo gia
+            if (priceRangeComboBox.getSelectedIndex() == 1
+                    && product.getPrice() >= 100000) {
+                return false;
+            } else if (priceRangeComboBox.getSelectedIndex() == 2
+                    && (product.getPrice() < 100000
+                    || product.getPrice() > 300000)) {
+                return false;
+            } else if (priceRangeComboBox.getSelectedIndex() == 3
+                    && (product.getPrice() < 300000
+                    || product.getPrice() > 500000)) {
+                return false;
+            } else if (priceRangeComboBox.getSelectedIndex() == 4
+                    && product.getPrice() <= 500000) {
+                return false;
+            }
+        }
+
+        return true;
+    }
+
+    private boolean isShipmentSatisfyFilters(Shipment shipment) {
+        if (filterSwitchRadioBtn.isSelected()) {
+            if (!productionDateFrom.isBlank()
+                    && !productionDateTo.isBlank()) { // loc theo nsx
+                if (shipment.getManufacturingDate() == null) {
+                    return false;
+                }
+                if (FormatOutput.convertStringToLocalDate(productionDateFrom).isAfter(shipment.getManufacturingDate())
+                        || FormatOutput.convertStringToLocalDate(productionDateTo).isBefore(shipment.getManufacturingDate())) {
+                    return false;
+                }
+            }
+
+            if (!expirDateFrom.isBlank()
+                    && !expirDateTo.isBlank()) { // loc theo hsd
+                if (shipment.getExpiryDate() == null) {
+                    return false;
+                }
+                if (FormatOutput.convertStringToLocalDate(expirDateFrom).isAfter(shipment.getExpiryDate())
+                        || FormatOutput.convertStringToLocalDate(expirDateTo).isBefore(shipment.getExpiryDate())) {
+                    return false;
+                }
+            }
+        }
+
+        return true;
+    }
+
     private void refreshProductTable() {
         productTableModel.setRowCount(0);
 
         this.store.getProducts().stream().forEach(product -> {
             List<Shipment> productShipments = product.getShipments();
-            if (productShipments.isEmpty()) {
+            if (productShipments.isEmpty()
+                    || !isProductSatisfyFilters(product)) {
                 return;
             }
-
-            if (!product.getProductName()
-                    .toLowerCase()
-                    .contains(this.searchString.toLowerCase())) {
-                return;
+            int counter = 0;
+            int len = productShipments.size();
+            while(counter < len && !isShipmentSatisfyFilters(productShipments.get(counter))){
+                counter++;
             }
+            if(counter == len)return; //duyet het shipments nhung khong co cai nao thoa man
 
             Object[] rowData = {
                 product.getProductCode(),
                 product.getProductName(),
                 product.getProvider(),
                 product.getUnit(),
-                product.getPrice(),
-                productShipments.get(0).getShipmentId(),
-                productShipments.get(0).getManufacturingDate() != null
-                ? FormatOutput.convertLocalDateToString(productShipments.get(0).getManufacturingDate())
+                FormatOutput.formatToMoneyAmountForm(product.getPrice() + ""),
+                productShipments.get(counter).getShipmentId(),
+                productShipments.get(counter).getManufacturingDate() != null
+                ? FormatOutput.convertLocalDateToString(productShipments.get(counter).getManufacturingDate())
                 : "-",
-                productShipments.get(0).getExpiryDate() != null
-                ? FormatOutput.convertLocalDateToString(productShipments.get(0).getExpiryDate())
+                productShipments.get(counter).getExpiryDate() != null
+                ? FormatOutput.convertLocalDateToString(productShipments.get(counter).getExpiryDate())
                 : "-",
-                productShipments.get(0).getQuantityInStock(),
+                productShipments.get(counter).getQuantityInStock(),
                 product.getProductId()
             };
             productTableModel.addRow(rowData);
 
-            productShipments.stream().skip(1).forEach(shipment -> {
+            productShipments.stream().skip(counter + 1).forEach(shipment -> {
+                if (!isShipmentSatisfyFilters(shipment)) {
+                    return;
+                }
+
                 Object[] innerRowData = {
                     "",
                     "",
@@ -1305,7 +1281,7 @@ public class PurchasePanel extends javax.swing.JPanel {
                 product.getProductCode(),
                 product.getProductName(),
                 product.getUnit(),
-                product.getPrice(),
+                FormatOutput.formatToMoneyAmountForm(product.getPrice() + ""),
                 product.getShipmentId(),
                 product.getQuantity(),};
             invoiceTableModel.addRow(rowData);
@@ -1317,6 +1293,8 @@ public class PurchasePanel extends javax.swing.JPanel {
         toDateTextField.setText("");
         keyWordTextField.setText("");
         quantityTextField.setText("");
+        priceRangeComboBox.setSelectedIndex(0);
+        filterSwitchRadioBtn.setSelected(false);
     }
 
     private void setDefaultValuesToComponentsInSubFeePanel() {
@@ -1397,10 +1375,10 @@ public class PurchasePanel extends javax.swing.JPanel {
     }
 
     private void refreshMainFee() {
-        subTotalTextField.setText(InvoiceUtil.getSubTotal(this.invoice));
-        discountAmountTextField.setText(InvoiceUtil.getDiscountAmount(this.invoice));
-        totalTextField.setText(InvoiceUtil.getTotal(this.invoice));
-        changeAmountTextField.setText(InvoiceUtil.getChange(this.invoice));
+        subTotalTextField.setText(FormatOutput.formatToMoneyAmountForm(InvoiceUtil.getSubTotal(this.invoice)));
+        discountAmountTextField.setText(FormatOutput.formatToMoneyAmountForm(InvoiceUtil.getDiscountAmount(this.invoice)));
+        totalTextField.setText(FormatOutput.formatToMoneyAmountForm(InvoiceUtil.getTotal(this.invoice)));
+        changeAmountTextField.setText(FormatOutput.formatToMoneyAmountForm(InvoiceUtil.getChange(this.invoice)));
     }
 
     private void initNewOrder() {
@@ -1450,23 +1428,15 @@ public class PurchasePanel extends javax.swing.JPanel {
     private Invoice invoice;
     private Product selectedProduct;
     private InvoiceProduct selectedInvoiceProduct;
+    private String productionDateFrom = "";
+    private String productionDateTo = "";
+    private String expirDateFrom = "";
+    private String expirDateTo = "";
 
-    private String searchString = "";
-    private String productionDateFrom;
-    private String productionDateTo;
-    private String expirDateFrom;
-    private String expirDateTo;
-    private boolean rangeFilterCheck = false;
-    private boolean productionDateFromValid = true;
-    private boolean productionDateToValid = true;
-    private boolean expirationDateFromValid = false;
-    private boolean expirationDateToValid = false;
     private boolean discountWarningCheck = false;
     private boolean customerMoneyWarningCheck = false;
 
-    final String INPUT_DATE_PATTERN = "d/M/y";
     private final String EMPTY_LIST_WARNING = "Danh sách trống!";
-    private final String NOTHING_FOUND_WARNING = "Không tìm thấy từ khóa!";
     private final String NOTHING_CHOOSEN_WARNING = "Bạn chưa chọn mặt hàng nào!";
     private final String EMPTY_TEXT_FIELD_WARNING = "Ô nhập Trống!";
     private final String INVALID_WARNING = "Không hợp lệ!";

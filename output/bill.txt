@@ -3,13 +3,15 @@
 ----------------------------------------
 Store: 123
 Email: 12@gmail.com
-Date: 07:27 11/01/2025
+Date: 07:13 12/01/2025
 
 Name                      Quantity   Price           Total          
 ------------------------- ---------- --------------- ---------------
 Kẹo                       12         12000           144000         
 SubTotal: 144000
-Discount Amount(Discount=0%): 0
-Payment Option: OTHER
-Total: 144000
+Discount Amount(Discount=99%): 142560
+Payment Option: CASH
+Total: 1440
+Customer payment: 2000
+Change: 560
 ----------------------------------------

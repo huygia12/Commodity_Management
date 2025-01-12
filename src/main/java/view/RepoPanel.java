@@ -15,6 +15,7 @@ import javax.swing.table.DefaultTableModel;
 import javax.swing.table.JTableHeader;
 import model.entities.Product;
 import model.entities.Store;
+import util.FormatOutput;
 import util.ProductUtil;
 import util.ValidateInput;
 
@@ -394,7 +395,7 @@ public class RepoPanel extends javax.swing.JPanel {
                 product.getProductName(),
                 product.getUnit(),
                 product.getProvider(),
-                product.getPrice(),
+                FormatOutput.formatToMoneyAmountForm(product.getPrice()+""),
                 ProductUtil.getTotalQuantityInStock(product),
                 product.getProductId(),};
             productTableModel.addRow(rowData);
@@ -411,7 +412,7 @@ public class RepoPanel extends javax.swing.JPanel {
             product.getProductName(),
             product.getUnit(),
             product.getProvider(),
-            product.getPrice(),
+            FormatOutput.formatToMoneyAmountForm(product.getPrice()+""),
             ProductUtil.getTotalQuantityInStock(product),
             product.getProductId()
         });
@@ -452,7 +453,12 @@ public class RepoPanel extends javax.swing.JPanel {
         productTableModel = (DefaultTableModel) productTable.getModel();
         displayProducts(this.store.getProducts());
     }
-
+    
+    public void refreshView (){
+        store.setProducts(productDAO.getProductsInStore(store.getStoreId(), hibernateConfig.getEntityManager()));
+        displayProducts(this.store.getProducts());
+    }
+    
     private Long selectedProductId;
     private ProductDAO productDAO;
     private HibernateConfig hibernateConfig;

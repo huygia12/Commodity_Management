@@ -2,6 +2,7 @@ package util;
 
 import java.math.BigDecimal;
 import java.math.BigInteger;
+import java.math.RoundingMode;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -18,14 +19,12 @@ public class InvoiceUtil {
     public static boolean isInsufficient(Invoice invoice) {
         BigInteger customerMoney = BigInteger.valueOf(invoice.getCustomerMoney());
         BigInteger totalBill = new BigInteger(getTotal(invoice));
-        System.out.println("customerMoney " + customerMoney);
-        System.out.println("totalBill " + totalBill);
         return totalBill.compareTo(customerMoney) > 0;
     }
 
     public static String getTotal(Invoice invoice) {
-        BigDecimal total = new BigDecimal(getSubTotal(invoice))
-                .multiply(new BigDecimal(1.0 - invoice.getDiscount() * 1.0 / 100));
+        BigInteger total = new BigInteger(getSubTotal(invoice))
+                .subtract(new BigInteger(getDiscountAmount(invoice)));
         return total.toString();
     }
 
@@ -36,7 +35,8 @@ public class InvoiceUtil {
                     .subtract(BigInteger.valueOf(p.getImportPrice()));
             result = result.add(gap.multiply(BigInteger.valueOf(p.getQuantity())));
         }
-        return (new BigDecimal(result).subtract(new BigDecimal(getDiscountAmount(invoice)))).toString();
+        return (new BigDecimal(result)
+                .subtract(new BigDecimal(getDiscountAmount(invoice)))).setScale(0, RoundingMode.CEILING).toString();
     }
 
     public static String getSubTotal(Invoice invoice) {
@@ -89,11 +89,13 @@ public class InvoiceUtil {
 
     public static String getDiscountAmount(Invoice invoice) {
         return (new BigDecimal(getSubTotal(invoice))
-                .multiply(new BigDecimal(invoice.getDiscount() * 1.0 / 100))).toString();
+                .multiply(BigDecimal.valueOf(invoice.getDiscount() * 1.0 / 100)).setScale(0, RoundingMode.CEILING)).toString();
     }
 
     public static String getChange(Invoice invoice) {
-        if(invoice.getPaymentMethod().equals(PaymentOption.OTHER)) return "0";
+        if (invoice.getPaymentMethod().equals(PaymentOption.OTHER)) {
+            return "0";
+        }
         return String.valueOf(invoice.getCustomerMoney() - Integer.valueOf(getTotal(invoice)));
     }
 
@@ -141,7 +143,7 @@ public class InvoiceUtil {
         InvoiceProduct invoiceProduct = getInvoiceProductFrom(shipmentId, invoice);
 
         if (invoiceProduct != null) {
-            invoiceProduct.setQuantity(invoiceProduct.getQuantity() + quantity);
+            invoiceProduct.setQuantity(quantity);
         }
     }
 
