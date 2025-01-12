@@ -19,7 +19,7 @@ public final class Header extends javax.swing.JPanel {
         this.store = store;
         setStoreInfor();
         // Kiểm tra nếu có tệp avatar.png trong thư mục gốc của dự án, thì tải hình ảnh lên
-        File avatarFile = new File("data/avatar.png");
+        File avatarFile = new File(this.store.getAvatar());
         if (avatarFile.exists()) {
             try {
                 BufferedImage avatarImage = ImageIO.read(avatarFile);

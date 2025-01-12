@@ -1,6 +1,5 @@
 package util;
 
-
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
@@ -28,17 +27,18 @@ public class FileUtil {
         return null;
     }
 
-    public static String saveImage(BufferedImage image, String folderName) {
+    public static String saveImage(BufferedImage image, String folderName, String savedName) {
         try {
-            String srcPath = System.getProperty("user.dir") + folderName;
-            File outputFile = new File(srcPath, UUID.randomUUID().toString());
-            
+            String srcPath = System.getProperty("user.dir") + "/" + folderName;
+            String fileName = savedName +".png";
+            File outputFile = new File(srcPath, fileName);
+
             File parentDir = outputFile.getParentFile();
             if (parentDir != null && !parentDir.exists()) {
                 parentDir.mkdirs();
             }
             ImageIO.write(image, "png", outputFile);
-            return outputFile.getAbsolutePath();
+            return folderName + "/" + fileName;
         } catch (IOException e) {
             Logger.getLogger(FileUtil.class.getName()).log(Level.SEVERE, null, e);
             return null;

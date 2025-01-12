@@ -379,7 +379,8 @@ public class RepoPanel extends javax.swing.JPanel {
 
     private void searchTextFieldKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_searchTextFieldKeyPressed
         if(evt.getKeyCode() == KeyEvent.VK_ENTER){
-            List<Product> products = productDAO.findProductsByNameKeyword(searchTextField.getText().trim(), 
+            List<Product> products = productDAO.findProductsByNameKeyword(searchTextField.getText().trim(),
+                    this.store.getStoreId(),
                     this.hibernateConfig.getEntityManager());
             
             displayProducts(products);

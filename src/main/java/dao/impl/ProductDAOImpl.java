@@ -83,15 +83,17 @@ public class ProductDAOImpl implements ProductDAO {
     }
 
     @Override
-    public List<Product> findProductsByNameKeyword(String keyword, EntityManager em) {
+    public List<Product> findProductsByNameKeyword(String keyword, Long storeId, EntityManager em) {
         try {
             String jpql = """
             SELECT p FROM Product p 
-            WHERE LOWER(p.productName) LIKE LOWER(:keyword)
-                OR LOWER(p.productCode) LIKE LOWER(:keyword)
+            WHERE (LOWER(p.productName) LIKE LOWER(:keyword)
+                OR LOWER(p.productCode) LIKE LOWER(:keyword))
+                AND storeId = :storeId
             """;
             TypedQuery<Product> query = em.createQuery(jpql, Product.class);
             query.setParameter("keyword", "%" + keyword + "%");
+            query.setParameter("storeId", storeId);
             return query.getResultList();
         } catch (Exception e) {
             Logger.getLogger(this.getClass().getName()).log(Level.SEVERE, null, e);

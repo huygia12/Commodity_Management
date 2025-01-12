@@ -22,7 +22,6 @@ public class StoreDAOImpl implements StoreDAO {
 
             store = query.getSingleResult();
         } catch (Exception e) {
-            Logger.getLogger(this.getClass().getName()).log(Level.SEVERE, null, e);
             return null;
         } 
         

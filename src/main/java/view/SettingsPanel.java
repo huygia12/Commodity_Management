@@ -171,7 +171,7 @@ public class SettingsPanel extends javax.swing.JPanel {
             File f = fileChooser.getSelectedFile();
             BufferedImage originalImage = FileUtil.loadImage(f.getAbsolutePath());
 
-            String savedImagePath = FileUtil.saveImage(originalImage, "/data/avatar");
+            String savedImagePath = FileUtil.saveImage(originalImage, "data/avatar", this.store.getStoreId()+"");
 
             if (savedImagePath == null) {
                 JOptionPane.showMessageDialog(this, "Lưu ảnh thất bại!", "Cảnh báo", JOptionPane.WARNING_MESSAGE);
