@@ -114,10 +114,10 @@ public class RepoPanel extends javax.swing.JPanel {
                 return canEdit [columnIndex];
             }
         });
-        productTable.setMaximumSize(new java.awt.Dimension(2147483647, 200));
-        productTable.setMinimumSize(new java.awt.Dimension(90, 200));
+        productTable.setMaximumSize(new java.awt.Dimension(2147483647, 600));
+        productTable.setMinimumSize(new java.awt.Dimension(1800, 600));
         productTable.setName(""); // NOI18N
-        productTable.setPreferredSize(new java.awt.Dimension(1000, 200));
+        productTable.setPreferredSize(new java.awt.Dimension(1800, 600));
         productTable.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
         productTable.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
         productTable.setShowGrid(true);
@@ -350,7 +350,7 @@ public class RepoPanel extends javax.swing.JPanel {
             nameTextField.setText(productTableModel.getValueAt(productTable.getSelectedRow(), 1).toString());
             unitTextField.setText(productTableModel.getValueAt(productTable.getSelectedRow(), 2).toString());
             manufacturerTextField.setText(productTableModel.getValueAt(productTable.getSelectedRow(), 3).toString());
-            priceTextField.setText(productTableModel.getValueAt(productTable.getSelectedRow(), 4).toString());
+            priceTextField.setText(productTableModel.getValueAt(productTable.getSelectedRow(), 4).toString().replace(".", ""));
             totalQuantityTextField.setText(productTableModel.getValueAt(productTable.getSelectedRow(), 5).toString());
             selectedProductId = (Long) productTableModel.getValueAt(productTable.getSelectedRow(), 6);
         }

@@ -440,10 +440,10 @@ public class ShipmentPanel extends javax.swing.JPanel {
     private void shipmentTableMouseReleased(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_shipmentTableMouseReleased
         if (shipmentTable.getSelectedRow() != -1) {
             shipmentIDTextField.setText(String.valueOf((Long) shipmentTableModel.getValueAt(shipmentTable.getSelectedRow(), 0)));
-            importPriceTextField.setText(shipmentTableModel.getValueAt(shipmentTable.getSelectedRow(), 1).toString());
+            importPriceTextField.setText(shipmentTableModel.getValueAt(shipmentTable.getSelectedRow(), 1).toString().replace(".", ""));
             quantityTextField.setText(shipmentTableModel.getValueAt(shipmentTable.getSelectedRow(), 6).toString());
             shipmentQuantity = Integer.parseInt(shipmentTableModel.getValueAt(shipmentTable.getSelectedRow(), 2).toString());
-            shipmentPrice = Integer.parseInt(shipmentTableModel.getValueAt(shipmentTable.getSelectedRow(), 1).toString());
+            shipmentPrice = Integer.parseInt(shipmentTableModel.getValueAt(shipmentTable.getSelectedRow(), 1).toString().replace(".", ""));
             if (!(shipmentTableModel.getValueAt(shipmentTable.getSelectedRow(), 3)).toString().equals("-")) { //neu co hsd va nsx
                 doesExpiredToggleBtn.setSelected(true);
                 setVisibleDate(true, false);
@@ -875,7 +875,7 @@ public class ShipmentPanel extends javax.swing.JPanel {
         for (Shipment shipment : shipments) {
             Object[] rowData = {
                 shipment.getShipmentId(),
-                shipment.getImportPrice(),
+                FormatOutput.formatToMoneyAmountForm(shipment.getImportPrice()+""),
                 shipment.getQuantityInStock(),
                 shipment.getManufacturingDate() != null
                 ? FormatOutput.convertLocalDateToString(shipment.getManufacturingDate()) : "-",

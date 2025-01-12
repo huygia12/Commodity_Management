@@ -125,8 +125,8 @@ public class PurchasePanel extends javax.swing.JPanel {
         setPreferredSize(new java.awt.Dimension(1400, 800));
         setLayout(new java.awt.BorderLayout());
 
-        aboutGoodsAndCusPanel.setMinimumSize(new java.awt.Dimension(985, 190));
-        aboutGoodsAndCusPanel.setPreferredSize(new java.awt.Dimension(968, 190));
+        aboutGoodsAndCusPanel.setMinimumSize(new java.awt.Dimension(1400, 300));
+        aboutGoodsAndCusPanel.setPreferredSize(new java.awt.Dimension(1400, 300));
         aboutGoodsAndCusPanel.setLayout(new java.awt.BorderLayout(5, 0));
 
         goodsPanel.setBorder(javax.swing.BorderFactory.createTitledBorder("Thông tin sản phẩm"));
@@ -170,22 +170,23 @@ public class PurchasePanel extends javax.swing.JPanel {
             goodsPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(goodsPanelLayout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(productScrollPane, javax.swing.GroupLayout.DEFAULT_SIZE, 1376, Short.MAX_VALUE)
+                .addComponent(productScrollPane, javax.swing.GroupLayout.DEFAULT_SIZE, 1378, Short.MAX_VALUE)
                 .addContainerGap())
         );
         goodsPanelLayout.setVerticalGroup(
             goodsPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(goodsPanelLayout.createSequentialGroup()
-                .addComponent(productScrollPane, javax.swing.GroupLayout.PREFERRED_SIZE, 162, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(0, 5, Short.MAX_VALUE))
+                .addComponent(productScrollPane, javax.swing.GroupLayout.DEFAULT_SIZE, 269, Short.MAX_VALUE)
+                .addContainerGap())
         );
 
         aboutGoodsAndCusPanel.add(goodsPanel, java.awt.BorderLayout.CENTER);
 
         add(aboutGoodsAndCusPanel, java.awt.BorderLayout.PAGE_START);
 
-        aboutOrderPanel.setMinimumSize(new java.awt.Dimension(36, 390));
-        aboutOrderPanel.setPreferredSize(new java.awt.Dimension(965, 390));
+        aboutOrderPanel.setMinimumSize(new java.awt.Dimension(1400, 496));
+        aboutOrderPanel.setPreferredSize(new java.awt.Dimension(1400, 496));
+        aboutOrderPanel.setRequestFocusEnabled(false);
         aboutOrderPanel.setLayout(new java.awt.BorderLayout());
 
         feePanel.setBorder(javax.swing.BorderFactory.createTitledBorder("Chi tiết hóa đơn"));
@@ -400,14 +401,13 @@ public class PurchasePanel extends javax.swing.JPanel {
         mainFeePanelLayout.setHorizontalGroup(
             mainFeePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(mainFeePanelLayout.createSequentialGroup()
-                .addContainerGap()
+                .addGap(10, 10, 10)
                 .addGroup(mainFeePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(mainFeePanelLayout.createSequentialGroup()
                         .addComponent(payAnfPrintBtn)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGap(2, 2, 2)
                         .addComponent(payBtn, javax.swing.GroupLayout.DEFAULT_SIZE, 174, Short.MAX_VALUE))
                     .addGroup(mainFeePanelLayout.createSequentialGroup()
-                        .addGap(4, 4, 4)
                         .addGroup(mainFeePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(totalLabel)
                             .addComponent(discountAmountLabel)
@@ -424,7 +424,7 @@ public class PurchasePanel extends javax.swing.JPanel {
         mainFeePanelLayout.setVerticalGroup(
             mainFeePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(mainFeePanelLayout.createSequentialGroup()
-                .addGap(22, 22, 22)
+                .addGap(12, 12, 12)
                 .addGroup(mainFeePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addComponent(subTotalLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(subTotalTextField, javax.swing.GroupLayout.PREFERRED_SIZE, 38, javax.swing.GroupLayout.PREFERRED_SIZE))
@@ -432,22 +432,22 @@ public class PurchasePanel extends javax.swing.JPanel {
                 .addGroup(mainFeePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addComponent(discountAmountTextField, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(discountAmountLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(30, 30, 30)
+                .addGap(18, 18, 18)
                 .addGroup(mainFeePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addComponent(totalTextField, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(totalLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(32, 32, 32)
+                .addGap(18, 18, 18)
                 .addGroup(mainFeePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(changeAmountLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(changeAmountTextField, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 83, Short.MAX_VALUE)
-                .addGroup(mainFeePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(payAnfPrintBtn, javax.swing.GroupLayout.DEFAULT_SIZE, 49, Short.MAX_VALUE)
-                    .addComponent(payBtn, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                .addContainerGap())
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(mainFeePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(payAnfPrintBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 49, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(payBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 49, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap(7, Short.MAX_VALUE))
         );
 
-        feePanel.add(mainFeePanel, java.awt.BorderLayout.LINE_START);
+        feePanel.add(mainFeePanel, java.awt.BorderLayout.CENTER);
 
         aboutOrderPanel.add(feePanel, java.awt.BorderLayout.LINE_END);
 
@@ -491,7 +491,7 @@ public class PurchasePanel extends javax.swing.JPanel {
                 addBtnActionPerformed(evt);
             }
         });
-        mainOrderFunctionPanel.add(addBtn, new org.netbeans.lib.awtextra.AbsoluteConstraints(800, 90, 85, 30));
+        mainOrderFunctionPanel.add(addBtn, new org.netbeans.lib.awtextra.AbsoluteConstraints(790, 90, 85, 30));
 
         removeBtn.setBackground(new java.awt.Color(255, 0, 0));
         removeBtn.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
@@ -503,7 +503,7 @@ public class PurchasePanel extends javax.swing.JPanel {
                 removeBtnActionPerformed(evt);
             }
         });
-        mainOrderFunctionPanel.add(removeBtn, new org.netbeans.lib.awtextra.AbsoluteConstraints(890, 90, 100, 30));
+        mainOrderFunctionPanel.add(removeBtn, new org.netbeans.lib.awtextra.AbsoluteConstraints(880, 90, 100, 30));
 
         resetBtn.setBackground(new java.awt.Color(51, 51, 51));
         resetBtn.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
@@ -516,7 +516,7 @@ public class PurchasePanel extends javax.swing.JPanel {
                 resetBtnActionPerformed(evt);
             }
         });
-        mainOrderFunctionPanel.add(resetBtn, new org.netbeans.lib.awtextra.AbsoluteConstraints(890, 130, 100, 30));
+        mainOrderFunctionPanel.add(resetBtn, new org.netbeans.lib.awtextra.AbsoluteConstraints(880, 130, 100, 30));
 
         editBtn.setBackground(new java.awt.Color(0, 255, 0));
         editBtn.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
@@ -527,7 +527,7 @@ public class PurchasePanel extends javax.swing.JPanel {
                 editBtnActionPerformed(evt);
             }
         });
-        mainOrderFunctionPanel.add(editBtn, new org.netbeans.lib.awtextra.AbsoluteConstraints(800, 130, 85, 30));
+        mainOrderFunctionPanel.add(editBtn, new org.netbeans.lib.awtextra.AbsoluteConstraints(790, 130, 85, 30));
 
         fromLabel.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         fromLabel.setText("Từ:");
@@ -639,7 +639,7 @@ public class PurchasePanel extends javax.swing.JPanel {
         });
         mainOrderFunctionPanel.add(filterSwitchRadioBtn, new org.netbeans.lib.awtextra.AbsoluteConstraints(8, 140, -1, -1));
 
-        orderDisplayPanel.add(mainOrderFunctionPanel, new org.netbeans.lib.awtextra.AbsoluteConstraints(5, 20, 998, -1));
+        orderDisplayPanel.add(mainOrderFunctionPanel, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 20, 990, 170));
 
         orderScrollPane.setPreferredSize(new java.awt.Dimension(452, 216));
 
@@ -669,7 +669,7 @@ public class PurchasePanel extends javax.swing.JPanel {
         });
         orderScrollPane.setViewportView(invoiceTable);
 
-        orderDisplayPanel.add(orderScrollPane, new org.netbeans.lib.awtextra.AbsoluteConstraints(5, 200, 998, 403));
+        orderDisplayPanel.add(orderScrollPane, new org.netbeans.lib.awtextra.AbsoluteConstraints(5, 203, 998, 290));
 
         aboutOrderPanel.add(orderDisplayPanel, java.awt.BorderLayout.CENTER);
 
